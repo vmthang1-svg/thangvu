@@ -1,0 +1,1659 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FPT IS × MK Group — Đề xuất Hợp tác Chuyển đổi Số</title>
+<style>
+  /* ───────────── RESET & BASE ───────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --fpt-orange:  #F15A22;
+    --fpt-dark:    #1A1A2E;
+    --fpt-navy:    #16213E;
+    --fpt-blue:    #0F3460;
+    --fpt-accent:  #E94560;
+    --mk-teal:     #00A99D;
+    --mk-dark:     #003D3B;
+    --gold:        #F5A623;
+    --green-ok:    #27AE60;
+    --yellow-warn: #F39C12;
+    --red-crit:    #E74C3C;
+    --slide-w:     1280px;
+    --slide-h:     720px;
+    --font-main:   'Segoe UI', Arial, sans-serif;
+  }
+  html { font-family: var(--font-main); background: #0d0d1a; }
+
+  /* ───────────── SLIDE WRAPPER ───────────── */
+  .deck { width: 100%; max-width: var(--slide-w); margin: 0 auto; }
+  .slide {
+    width: var(--slide-w);
+    min-height: var(--slide-h);
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto 6px;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+  }
+
+  /* ───────────── TYPOGRAPHY ───────────── */
+  h1 { font-size: 2.6rem; font-weight: 800; line-height: 1.15; }
+  h2 { font-size: 1.9rem; font-weight: 700; line-height: 1.2; }
+  h3 { font-size: 1.25rem; font-weight: 700; }
+  h4 { font-size: 1rem; font-weight: 700; }
+  p, li { font-size: 0.9rem; line-height: 1.6; }
+  .small { font-size: 0.78rem; }
+  .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 20px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+
+  /* ───────────── SLIDE 1 — COVER ───────────── */
+  .s-cover {
+    background: linear-gradient(135deg, var(--fpt-dark) 0%, var(--fpt-blue) 60%, var(--mk-dark) 100%);
+    justify-content: center; align-items: center; text-align: center;
+    color: #fff; padding: 60px;
+  }
+  .s-cover .logo-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 30px; margin-bottom: 40px;
+  }
+  .logo-box {
+    border-radius: 16px; padding: 14px 28px;
+    font-size: 1.5rem; font-weight: 900; letter-spacing: 2px;
+  }
+  .logo-fpt { background: var(--fpt-orange); color: #fff; }
+  .logo-mk  { background: var(--mk-teal);   color: #fff; }
+  .connector {
+    font-size: 2rem; color: rgba(255,255,255,.5); font-weight: 300;
+  }
+  .s-cover h1 { font-size: 2.8rem; margin-bottom: 16px; }
+  .s-cover .subtitle {
+    font-size: 1.2rem; color: rgba(255,255,255,.75); margin-bottom: 36px;
+  }
+  .cover-chips { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .cover-chips .tag { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.25); }
+  .cover-date { margin-top: 40px; color: rgba(255,255,255,.45); font-size: .85rem; }
+  .cover-deco {
+    position: absolute; width: 500px; height: 500px;
+    border-radius: 50%; opacity: .07;
+    background: radial-gradient(circle, var(--fpt-orange), transparent);
+  }
+  .cover-deco.d1 { top: -150px; right: -100px; }
+  .cover-deco.d2 { bottom: -200px; left: -100px; background: radial-gradient(circle, var(--mk-teal), transparent); }
+
+  /* ───────────── SLIDE 2 — AGENDA ───────────── */
+  .s-agenda {
+    background: #f8f9fb;
+    padding: 50px 70px;
+  }
+  .slide-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 40px; padding-bottom: 18px;
+    border-bottom: 3px solid var(--fpt-orange);
+  }
+  .slide-header .h-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--fpt-orange); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .agenda-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+  .agenda-card {
+    border-radius: 16px; padding: 24px; display: flex; gap: 16px;
+    align-items: flex-start; background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    border-left: 5px solid var(--fpt-orange);
+    transition: transform .2s;
+  }
+  .agenda-card.mk  { border-left-color: var(--mk-teal); }
+  .agenda-card.blue { border-left-color: var(--fpt-blue); }
+  .agenda-card.gold { border-left-color: var(--gold); }
+  .agenda-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--fpt-orange); color: #fff;
+    font-weight: 800; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .agenda-card.mk  .agenda-num { background: var(--mk-teal); }
+  .agenda-card.blue .agenda-num { background: var(--fpt-blue); }
+  .agenda-card.gold .agenda-num { background: var(--gold); }
+  .agenda-card h3 { margin-bottom: 6px; color: var(--fpt-dark); }
+  .agenda-card p  { color: #666; font-size: .85rem; }
+
+  /* ───────────── SLIDE 3 — MK OVERVIEW ───────────── */
+  .s-mk-overview {
+    background: linear-gradient(160deg, var(--fpt-dark) 0%, var(--fpt-blue) 100%);
+    color: #fff; padding: 50px 70px;
+  }
+  .s-mk-overview .slide-header .h-icon { background: var(--mk-teal); }
+  .s-mk-overview .slide-header h2 { color: #fff; }
+  .overview-body { display: grid; grid-template-columns: 1fr 1.8fr; gap: 36px; }
+  .company-id {
+    background: rgba(255,255,255,.07); border-radius: 16px;
+    padding: 24px; border: 1px solid rgba(255,255,255,.12);
+  }
+  .company-id .mk-logo-big {
+    background: var(--mk-teal); color: #fff; font-size: 2rem;
+    font-weight: 900; border-radius: 12px; padding: 12px 24px;
+    display: inline-block; margin-bottom: 20px; letter-spacing: 3px;
+  }
+  .id-row { display: flex; flex-direction: column; gap: 10px; }
+  .id-item { display: flex; gap: 10px; align-items: flex-start; }
+  .id-label { font-size: .75rem; color: rgba(255,255,255,.5); min-width: 90px; }
+  .id-val   { font-size: .85rem; color: #fff; font-weight: 600; }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,.09); border-radius: 14px;
+    padding: 20px 16px; text-align: center;
+    border: 1px solid rgba(255,255,255,.1);
+  }
+  .stat-num {
+    font-size: 2.2rem; font-weight: 800; color: var(--mk-teal);
+    line-height: 1;
+  }
+  .stat-label { font-size: .75rem; color: rgba(255,255,255,.65); margin-top: 6px; }
+  .stat-sub   { font-size: .7rem; color: rgba(255,255,255,.4); margin-top: 4px; }
+
+  /* ───────────── SLIDE 4 — SUBSIDIARIES ───────────── */
+  .s-subs {
+    background: #f0f4f8; padding: 50px 70px;
+  }
+  .sub-cards {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+  }
+  .sub-card {
+    border-radius: 18px; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,.1);
+    background: #fff; display: flex; flex-direction: column;
+  }
+  .sub-head {
+    padding: 20px 18px 14px; color: #fff;
+  }
+  .sub-head.teal  { background: linear-gradient(135deg, var(--mk-teal), #007a72); }
+  .sub-head.navy  { background: linear-gradient(135deg, var(--fpt-blue), #0a2244); }
+  .sub-head.purple{ background: linear-gradient(135deg, #6C3483, #4a235a); }
+  .sub-head.slate { background: linear-gradient(135deg, #2E4057, #1a2535); }
+  .sub-head .sub-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .sub-head h3 { font-size: 1.1rem; }
+  .sub-head .sub-tag { background: rgba(255,255,255,.2); color: #fff; margin-top: 6px; }
+  .sub-body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .sub-item { display: flex; gap: 8px; align-items: flex-start; }
+  .sub-dot  { width: 6px; height: 6px; border-radius: 50%; background: var(--mk-teal); margin-top: 6px; flex-shrink: 0; }
+  .sub-item p { font-size: .8rem; color: #444; }
+  .sub-highlight {
+    margin-top: auto; padding: 8px 12px; border-radius: 8px;
+    background: #f0fafa; border-left: 3px solid var(--mk-teal);
+    font-size: .78rem; font-weight: 700; color: var(--mk-dark);
+  }
+
+  /* ───────────── SLIDE 5 — PAIN POINTS ───────────── */
+  .s-pain {
+    background: #fff; padding: 44px 70px;
+  }
+  .pain-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+  }
+  .pain-col { display: flex; flex-direction: column; gap: 10px; }
+  .pain-col-head {
+    border-radius: 12px; padding: 12px 10px; text-align: center;
+    color: #fff; font-weight: 800; font-size: .82rem;
+    letter-spacing: .5px; text-transform: uppercase;
+  }
+  .ph-finance  { background: linear-gradient(135deg, #8E44AD, #6c3483); }
+  .ph-mfg      { background: linear-gradient(135deg, var(--fpt-orange), #c0392b); }
+  .ph-purchase { background: linear-gradient(135deg, #2980B9, #1a5276); }
+  .ph-sales    { background: linear-gradient(135deg, var(--green-ok), #1e8449); }
+  .ph-scm      { background: linear-gradient(135deg, var(--mk-teal), #00756b); }
+  .pain-item {
+    border-radius: 10px; padding: 10px 12px;
+    border: 1px solid #eee;
+    background: #fafafa;
+  }
+  .pain-item h4 { font-size: .8rem; color: var(--fpt-dark); margin-bottom: 4px; }
+  .pain-item p  { font-size: .73rem; color: #666; }
+  .pain-item .risk {
+    display: inline-block; margin-top: 6px;
+    padding: 2px 8px; border-radius: 10px;
+    font-size: .68rem; font-weight: 700;
+  }
+  .risk-h { background: #fde8e8; color: #c0392b; }
+  .risk-m { background: #fef9e7; color: #d68910; }
+
+  /* ───────────── SLIDE 6 — KPI MATRIX ───────────── */
+  .s-kpi {
+    background: var(--fpt-dark); color: #fff; padding: 44px 70px;
+  }
+  .s-kpi .slide-header h2 { color: #fff; }
+  .kpi-table {
+    width: 100%; border-collapse: separate; border-spacing: 0 6px;
+  }
+  .kpi-table thead th {
+    padding: 10px 14px; text-align: left;
+    background: rgba(255,255,255,.08); font-size: .78rem;
+    color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .5px;
+  }
+  .kpi-table thead th:first-child { border-radius: 8px 0 0 8px; }
+  .kpi-table thead th:last-child  { border-radius: 0 8px 8px 0; }
+  .kpi-table tbody tr td {
+    padding: 9px 14px; background: rgba(255,255,255,.05);
+    font-size: .82rem; vertical-align: middle;
+  }
+  .kpi-table tbody tr td:first-child { border-radius: 8px 0 0 8px; color: rgba(255,255,255,.55); font-size: .75rem; }
+  .kpi-table tbody tr td:last-child  { border-radius: 0 8px 8px 0; }
+  .kpi-name { font-weight: 700; color: #fff; }
+  .kpi-val  { color: var(--mk-teal); font-weight: 800; }
+  .kpi-bench{ color: rgba(255,255,255,.5); font-size: .75rem; }
+  .area-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 12px;
+    font-size: .7rem; font-weight: 700; color: #fff;
+  }
+  .ab-fin  { background: #8E44AD; }
+  .ab-mfg  { background: var(--fpt-orange); }
+  .ab-scm  { background: var(--mk-teal); }
+  .ab-pur  { background: #2980B9; }
+  .ab-sal  { background: var(--green-ok); }
+
+  /* ───────────── SLIDE 7 — FPT IS INTRO ───────────── */
+  .s-fpt {
+    background: linear-gradient(135deg, var(--fpt-orange) 0%, #c0392b 100%);
+    color: #fff; padding: 50px 70px;
+  }
+  .s-fpt .slide-header h2 { color: #fff; }
+  .s-fpt .slide-header .h-icon { background: rgba(255,255,255,.2); }
+  .fpt-body { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+  .fpt-left { display: flex; flex-direction: column; gap: 18px; }
+  .fpt-stat-row { display: flex; gap: 16px; }
+  .fpt-stat {
+    flex: 1; background: rgba(255,255,255,.15); border-radius: 14px;
+    padding: 18px 14px; text-align: center;
+  }
+  .fpt-stat .num { font-size: 2rem; font-weight: 800; line-height: 1; }
+  .fpt-stat .lbl { font-size: .75rem; opacity: .8; margin-top: 4px; }
+  .fpt-desc {
+    background: rgba(255,255,255,.12); border-radius: 14px;
+    padding: 18px 20px; font-size: .88rem; line-height: 1.7;
+  }
+  .fpt-right { display: flex; flex-direction: column; gap: 12px; }
+  .fpt-sector {
+    background: rgba(255,255,255,.13); border-radius: 12px;
+    padding: 14px 18px; display: flex; gap: 14px; align-items: center;
+  }
+  .fpt-sector .icon { font-size: 1.5rem; }
+  .fpt-sector h4 { font-size: .9rem; margin-bottom: 4px; }
+  .fpt-sector p  { font-size: .78rem; opacity: .75; }
+
+  /* ───────────── SLIDE 8 — SOLUTION MAP ───────────── */
+  .s-solmap {
+    background: #f8f9fb; padding: 44px 70px;
+  }
+  .solmap-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  }
+  .sol-col { display: flex; flex-direction: column; gap: 8px; }
+  .sol-col-head {
+    border-radius: 10px; padding: 12px; text-align: center;
+    font-weight: 800; font-size: .82rem; color: #fff;
+    text-transform: uppercase; letter-spacing: .4px;
+  }
+  .sc-mfg { background: linear-gradient(135deg, var(--fpt-orange), #d35400); }
+  .sc-fin { background: linear-gradient(135deg, #8E44AD, #6c3483); }
+  .sc-sec { background: linear-gradient(135deg, #1a5276, var(--fpt-blue)); }
+  .sc-ops { background: linear-gradient(135deg, var(--mk-teal), var(--mk-dark)); }
+  .sol-pill {
+    border-radius: 10px; padding: 10px 12px;
+    background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    border-left: 4px solid #ccc;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .sp-mfg { border-left-color: var(--fpt-orange); }
+  .sp-fin { border-left-color: #8E44AD; }
+  .sp-sec { border-left-color: var(--fpt-blue); }
+  .sp-ops { border-left-color: var(--mk-teal); }
+  .sol-pill h4 { font-size: .8rem; color: var(--fpt-dark); }
+  .sol-pill p  { font-size: .72rem; color: #777; }
+  .sol-pill .kpi-tag {
+    font-size: .68rem; font-weight: 700;
+    color: var(--green-ok); background: #eafaf1;
+    padding: 1px 7px; border-radius: 8px; display: inline-block;
+    margin-top: 2px;
+  }
+
+  /* ───────────── SLIDE 9 — ROADMAP ───────────── */
+  .s-roadmap {
+    background: var(--fpt-navy); color: #fff; padding: 50px 70px;
+  }
+  .s-roadmap .slide-header h2 { color: #fff; }
+  .roadmap-lanes {
+    display: grid; grid-template-columns: 100px 1fr 1fr 1fr; gap: 0;
+  }
+  .rl-label {
+    display: flex; flex-direction: column; gap: 0;
+    border-right: 2px solid rgba(255,255,255,.1);
+    padding-right: 14px; justify-content: space-around;
+  }
+  .rl-name {
+    font-size: .75rem; font-weight: 700; text-transform: uppercase;
+    color: rgba(255,255,255,.5); writing-mode: vertical-rl; transform: rotate(180deg);
+    text-align: center; height: 90px; display: flex; align-items: center; justify-content: center;
+  }
+  .phase-col {
+    border-radius: 0; padding: 0 12px;
+    display: flex; flex-direction: column;
+  }
+  .phase-head {
+    text-align: center; padding: 10px 8px 14px;
+    border-bottom: 2px solid rgba(255,255,255,.1);
+    margin-bottom: 14px;
+  }
+  .ph-tag {
+    display: inline-block; padding: 4px 14px; border-radius: 14px;
+    font-size: .75rem; font-weight: 800; margin-bottom: 6px;
+  }
+  .pt1 { background: var(--fpt-orange); color: #fff; }
+  .pt2 { background: var(--mk-teal); color: #fff; }
+  .pt3 { background: var(--gold); color: var(--fpt-dark); }
+  .phase-head h4 { font-size: .9rem; color: rgba(255,255,255,.9); }
+  .phase-head p  { font-size: .75rem; color: rgba(255,255,255,.5); }
+  .rm-item {
+    margin-bottom: 8px; background: rgba(255,255,255,.07);
+    border-radius: 8px; padding: 8px 10px;
+    border-left: 3px solid rgba(255,255,255,.2);
+  }
+  .rm-item.rmi-1 { border-left-color: var(--fpt-orange); }
+  .rm-item.rmi-2 { border-left-color: var(--mk-teal); }
+  .rm-item.rmi-3 { border-left-color: var(--gold); }
+  .rm-item h4 { font-size: .78rem; color: #fff; margin-bottom: 2px; }
+  .rm-item p  { font-size: .7rem; color: rgba(255,255,255,.55); }
+
+  /* ───────────── SLIDE 10 — PHASE 1 DETAIL ───────────── */
+  .s-ph1 {
+    background: linear-gradient(160deg, #fff9f5 0%, #fff 100%);
+    padding: 44px 70px;
+  }
+  .ph1-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .ph1-card {
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+  .ph1-head {
+    padding: 16px 20px; color: #fff; display: flex; gap: 12px; align-items: center;
+  }
+  .ph1-head.orange { background: linear-gradient(135deg, var(--fpt-orange), #c0392b); }
+  .ph1-head.teal   { background: linear-gradient(135deg, var(--mk-teal), var(--mk-dark)); }
+  .ph1-head.navy   { background: linear-gradient(135deg, var(--fpt-blue), #0a2244); }
+  .ph1-head.purple { background: linear-gradient(135deg, #8E44AD, #5b2c6f); }
+  .ph1-head .icon  { font-size: 1.6rem; }
+  .ph1-head h3     { font-size: 1rem; }
+  .ph1-head p      { font-size: .75rem; opacity: .8; }
+  .ph1-body { background: #fff; padding: 16px 20px; }
+  .ph1-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .ph1-row .label { font-size: .72rem; font-weight: 700; color: #999; min-width: 70px; text-transform: uppercase; }
+  .ph1-row .val   { font-size: .8rem; color: var(--fpt-dark); font-weight: 600; }
+  .kpi-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .kpi-badge {
+    background: #e8f8f5; color: var(--mk-dark); border-radius: 8px;
+    padding: 4px 10px; font-size: .72rem; font-weight: 700;
+    border: 1px solid #a9dfda;
+  }
+  .kpi-badge.orange { background: #fef0e8; color: #c0392b; border-color: #f5b7a5; }
+  .kpi-badge.purple { background: #f5eef8; color: #6c3483; border-color: #d2b4de; }
+  .kpi-badge.navy   { background: #eaf2fb; color: #1a5276; border-color: #a9cce3; }
+
+  /* ───────────── SLIDE 11 — VALUE TABLE ───────────── */
+  .s-value {
+    background: #fff; padding: 40px 70px;
+  }
+  .value-table {
+    width: 100%; border-collapse: separate; border-spacing: 0 5px;
+    font-size: .8rem;
+  }
+  .value-table thead th {
+    padding: 10px 12px; background: var(--fpt-dark); color: rgba(255,255,255,.7);
+    font-size: .75rem; text-transform: uppercase; letter-spacing: .4px;
+  }
+  .value-table thead th:first-child { border-radius: 8px 0 0 8px; }
+  .value-table thead th:last-child  { border-radius: 0 8px 8px 0; }
+  .value-table tbody tr td {
+    padding: 8px 12px; background: #f8f9fb; color: #333;
+  }
+  .value-table tbody tr td:first-child { border-radius: 8px 0 0 8px; font-weight: 700; color: var(--fpt-dark); }
+  .value-table tbody tr td:last-child  { border-radius: 0 8px 8px 0; }
+  .value-table tbody tr:hover td { background: #e8f5f4; }
+  .p-tag {
+    display: inline-block; padding: 2px 9px; border-radius: 10px;
+    font-size: .68rem; font-weight: 700;
+  }
+  .p-urgent  { background: #fde8e8; color: #c0392b; }
+  .p-import  { background: #fef9e7; color: #d68910; }
+  .p-strat   { background: #eafaf1; color: #1e8449; }
+  .company-tag {
+    display: inline-block; background: #f0fafa; border: 1px solid var(--mk-teal);
+    color: var(--mk-dark); padding: 2px 8px; border-radius: 8px;
+    font-size: .68rem; font-weight: 700; margin: 1px;
+  }
+
+  /* ───────────── SLIDE 12 — WHY FPT ───────────── */
+  .s-why {
+    background: linear-gradient(135deg, var(--fpt-dark) 0%, #162032 100%);
+    color: #fff; padding: 50px 70px;
+  }
+  .s-why .slide-header h2 { color: #fff; }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .why-card {
+    background: rgba(255,255,255,.07); border-radius: 16px;
+    padding: 24px 20px; border: 1px solid rgba(255,255,255,.1);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .why-card .w-icon { font-size: 2rem; }
+  .why-card h3 { font-size: 1rem; color: var(--mk-teal); }
+  .why-card p { font-size: .83rem; color: rgba(255,255,255,.7); line-height: 1.6; }
+  .why-card .w-proof {
+    margin-top: auto; font-size: .75rem; font-weight: 700;
+    color: var(--gold); background: rgba(245,166,35,.1);
+    padding: 6px 12px; border-radius: 8px;
+  }
+
+  /* ───────────── SLIDE 13 — CLOSING ───────────── */
+  .s-close {
+    background: linear-gradient(135deg, var(--mk-teal) 0%, var(--fpt-dark) 60%, var(--fpt-orange) 150%);
+    color: #fff; justify-content: center; align-items: center;
+    text-align: center; padding: 60px;
+  }
+  .close-inner { max-width: 800px; }
+  .close-inner h1 { font-size: 2.4rem; margin-bottom: 20px; }
+  .close-inner p  { font-size: 1.1rem; opacity: .85; margin-bottom: 36px; line-height: 1.7; }
+  .close-cta {
+    display: inline-block; padding: 16px 48px;
+    border: 2px solid rgba(255,255,255,.6); border-radius: 50px;
+    font-size: 1rem; font-weight: 700; color: #fff;
+    text-decoration: none; letter-spacing: 1px;
+    background: rgba(255,255,255,.1);
+  }
+  .close-contacts {
+    display: flex; gap: 40px; justify-content: center;
+    margin-top: 40px;
+  }
+  .close-c .lbl { font-size: .75rem; opacity: .55; }
+  .close-c .val { font-size: .9rem; font-weight: 700; margin-top: 4px; }
+
+  /* ───────────── PAGINATION BAR ───────────── */
+  .page-bar {
+    position: absolute; bottom: 16px; right: 24px;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .page-bar .pnum {
+    font-size: .72rem; color: rgba(255,255,255,.4);
+    font-weight: 700;
+  }
+  .page-bar .pnum.dark { color: rgba(0,0,0,.25); }
+  .page-bar .pdot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,.25);
+  }
+  .pdot.active { background: var(--fpt-orange); }
+
+  /* ───────────── SLIDE NUMBER BADGE ───────────── */
+  .slide-num {
+    position: absolute; top: 16px; right: 24px;
+    font-size: .7rem; font-weight: 800; letter-spacing: 1px;
+    color: rgba(255,255,255,.25); text-transform: uppercase;
+  }
+  .slide-num.dark { color: rgba(0,0,0,.2); }
+
+  /* ───────────── DIVIDER ───────────── */
+  .divider { height: 2px; background: linear-gradient(90deg, var(--fpt-orange), transparent); margin: 16px 0; }
+
+  /* ───────────── SCROLL HINT ───────────── */
+  .scroll-hint {
+    text-align: center; padding: 16px;
+    color: rgba(255,255,255,.4); font-size: .78rem;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 1 — COVER
+══════════════════════════════════════════════ -->
+<div class="slide s-cover">
+  <div class="cover-deco d1"></div>
+  <div class="cover-deco d2"></div>
+
+  <div class="logo-row">
+    <div class="logo-box logo-fpt">FPT IS</div>
+    <div class="connector">×</div>
+    <div class="logo-box logo-mk">MK GROUP</div>
+  </div>
+
+  <h1>Đề xuất Hợp tác Chuyển đổi Số<br>Chiến lược 2025–2027</h1>
+  <p class="subtitle">Xây dựng nền tảng số bền vững cho Tập đoàn Công nghệ Thẻ & Bảo mật hàng đầu Việt Nam</p>
+
+  <div class="cover-chips">
+    <span class="tag">Sản xuất thẻ thông minh</span>
+    <span class="tag">Bảo mật số</span>
+    <span class="tag">Định danh điện tử</span>
+    <span class="tag">Giao thông thông minh</span>
+    <span class="tag">AI Vision</span>
+  </div>
+
+  <p class="cover-date">📅 Tháng 6 / 2025 &nbsp;|&nbsp; Tài liệu Nội bộ — FPT Information System</p>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 2 — AGENDA
+══════════════════════════════════════════════ -->
+<div class="slide s-agenda">
+  <span class="slide-num dark">02 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon">📋</div>
+    <div>
+      <h2>Nội dung Trình bày</h2>
+      <p class="small" style="color:#999">Lộ trình 13 trang — từ phân tích đến đề xuất giải pháp</p>
+    </div>
+  </div>
+
+  <div class="agenda-grid">
+    <div class="agenda-card mk">
+      <div class="agenda-num" style="background:var(--mk-teal)">1</div>
+      <div>
+        <h3>Tổng quan Tập đoàn MK Group</h3>
+        <p>Hồ sơ doanh nghiệp, hệ sinh thái công ty con, các con số nổi bật và vị thế cạnh tranh tại thị trường Việt Nam & quốc tế.</p>
+      </div>
+    </div>
+    <div class="agenda-card">
+      <div class="agenda-num">2</div>
+      <div>
+        <h3>Đánh giá Pain Points Hoạt động</h3>
+        <p>Phân tích 5 lĩnh vực trọng yếu: Finance, Manufacturing, Purchasing, Sales, SCM — theo framework KPI chuẩn doanh nghiệp sản xuất.</p>
+      </div>
+    </div>
+    <div class="agenda-card blue">
+      <div class="agenda-num">3</div>
+      <div>
+        <h3>FPT IS & Năng lực Giải pháp</h3>
+        <p>Hệ sinh thái sản phẩm FPT IS phù hợp đặc thù ngành sản xuất thẻ chip, bảo mật và định danh số.</p>
+      </div>
+    </div>
+    <div class="agenda-card gold">
+      <div class="agenda-num" style="background:var(--gold)">4</div>
+      <div>
+        <h3>Lộ trình & Đề xuất Hợp tác</h3>
+        <p>3 giai đoạn triển khai, bảng tổng hợp giải pháp — giá trị kinh doanh đo lường được cho từng công ty thành viên.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 3 — MK GROUP OVERVIEW
+══════════════════════════════════════════════ -->
+<div class="slide s-mk-overview">
+  <span class="slide-num">03 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon">🏢</div>
+    <div>
+      <h2>Tập đoàn MK Group — Tổng quan</h2>
+      <p class="small" style="color:rgba(255,255,255,.55)">Tiên phong công nghệ nhận dạng & bảo mật tại Việt Nam từ năm 1999</p>
+    </div>
+  </div>
+
+  <div class="overview-body">
+    <div class="company-id">
+      <div class="mk-logo-big">MK</div>
+      <div class="id-row">
+        <div class="id-item"><span class="id-label">Thành lập</span><span class="id-val">1999 — 26+ năm</span></div>
+        <div class="id-item"><span class="id-label">Lĩnh vực</span><span class="id-val">Thẻ thông minh, Bảo mật số, eID</span></div>
+        <div class="id-item"><span class="id-label">Trụ sở</span><span class="id-val">Hà Nội & TP. Hồ Chí Minh</span></div>
+        <div class="id-item"><span class="id-label">Xuất khẩu</span><span class="id-val">15+ quốc gia & vùng lãnh thổ</span></div>
+        <div class="id-item"><span class="id-label">Website</span><span class="id-val">mkgroup.com.vn</span></div>
+        <div class="id-item"><span class="id-label">Vị thế</span><span class="id-val">Thương hiệu Quốc gia 2022</span></div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">85%</div>
+        <div class="stat-label">Thị phần thẻ ngân hàng Việt Nam</div>
+        <div class="stat-sub">Dẫn đầu tuyệt đối trong nước</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">80+</div>
+        <div class="stat-label">Ngân hàng & Tổ chức tài chính</div>
+        <div class="stat-sub">Khách hàng trực tiếp</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">300M</div>
+        <div class="stat-label">Thẻ/năm — năng lực sản xuất</div>
+        <div class="stat-sub">Top 10 Châu Á về quy mô</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Quốc gia xuất khẩu sản phẩm</div>
+        <div class="stat-sub">Châu Á, Châu Phi, Châu Mỹ</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">Top 2</div>
+        <div class="stat-label">Nhà sản xuất thẻ Đông Nam Á</div>
+        <div class="stat-sub">MK Smart — thành viên chiến lược</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1/6</div>
+        <div class="stat-label">Công ty trên TG có công nghệ gốc ePassport</div>
+        <div class="stat-sub">Sở hữu hệ điều hành chip độc quyền</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">700+</div>
+        <div class="stat-label">Chuyên gia & Kỹ sư (MK Smart)</div>
+        <div class="stat-sub">Nhân lực kỹ thuật cao</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">Top 19</div>
+        <div class="stat-label">Nhà máy Châu Á — chuẩn bảo mật SIM cao nhất</div>
+        <div class="stat-sub">Chứng nhận GSMA Security</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4.5M$</div>
+        <div class="stat-label">Đầu tư chiến lược vào CNCTech (10%)</div>
+        <div class="stat-sub">Mở rộng liên minh công nghệ</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 4 — SUBSIDIARIES
+══════════════════════════════════════════════ -->
+<div class="slide s-subs">
+  <span class="slide-num dark">04 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon" style="background:var(--mk-teal)">🔗</div>
+    <div>
+      <h2>Hệ sinh thái Công ty Thành viên</h2>
+      <p class="small" style="color:#999">Chuỗi giá trị công nghệ khép kín — từ R&D đến sản xuất, triển khai và quốc tế hóa</p>
+    </div>
+  </div>
+
+  <div class="sub-cards">
+
+    <div class="sub-card">
+      <div class="sub-head teal">
+        <div class="sub-icon">🏭</div>
+        <h3>MK Smart</h3>
+        <span class="tag sub-tag">Sản xuất thẻ</span>
+      </div>
+      <div class="sub-body">
+        <div class="sub-item"><div class="sub-dot"></div><p>Top 2 nhà sản xuất thẻ Đông Nam Á</p></div>
+        <div class="sub-item"><div class="sub-dot"></div><p>2 nhà máy + 1 cơ sở in bảo mật</p></div>
+        <div class="sub-item"><div class="sub-dot"></div><p>Sản xuất thẻ EMV, SIM, ePassport, CCCD</p></div>
+        <div class="sub-item"><div class="sub-dot"></div><p>Chứng nhận VISA, MasterCard, JCB</p></div>
+        <div class="sub-item"><div class="sub-dot"></div><p>Đối tác chiến lược: Dai Nippon Printing (DNP)</p></div>
+        <div class="sub-highlight">📦 300 triệu thẻ/năm | 700+ chuyên gia</div>
+      </div>
+    </div>
+
+    <div class="sub-card">
+      <div class="sub-head navy">
+        <div class="sub-icon">🪪</div>
+        <h3>MK Hi-tek</h3>
+        <span class="tag sub-tag">eID & Giao thông</span>
+      </div>
+      <div class="sub-body">
+        <div class="sub-item"><div class="sub-dot" style="background:var(--fpt-blue)"></div><p>Giải pháp định danh công dân điện tử (eID)</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:var(--fpt-blue)"></div><p>Hệ thống AFC — thu vé tự động giao thông</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:var(--fpt-blue)"></div><p>Kiểm soát cửa khẩu, biên giới</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:var(--fpt-blue)"></div><p>Giải pháp ePassport cho Chính phủ</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:var(--fpt-blue)"></div><p>Triển khai dự án Căn cước công dân VN</p></div>
+        <div class="sub-highlight" style="border-left-color:var(--fpt-blue);background:#eaf2fb;">🏛️ Đối tác Chính phủ chiến lược</div>
+      </div>
+    </div>
+
+    <div class="sub-card">
+      <div class="sub-head purple">
+        <div class="sub-icon">👁️</div>
+        <h3>MK Vision</h3>
+        <span class="tag sub-tag">AI Camera</span>
+      </div>
+      <div class="sub-body">
+        <div class="sub-item"><div class="sub-dot" style="background:#8E44AD"></div><p>Camera AI xử lý tại biên (AI on Edge)</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:#8E44AD"></div><p>Giải pháp giao thông thông minh đô thị</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:#8E44AD"></div><p>Đèn giao thông thông minh tối ưu lưu thông</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:#8E44AD"></div><p>Camera an ninh công cộng & giám sát</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:#8E44AD"></div><p>Trưng bày tại DX Summit 2026</p></div>
+        <div class="sub-highlight" style="border-left-color:#8E44AD;background:#f5eef8;">🤖 Smart City & Smart Traffic</div>
+      </div>
+    </div>
+
+    <div class="sub-card">
+      <div class="sub-head slate">
+        <div class="sub-icon">🌎</div>
+        <h3>MK Americas</h3>
+        <span class="tag sub-tag">Quốc tế hóa</span>
+      </div>
+      <div class="sub-body">
+        <div class="sub-item"><div class="sub-dot" style="background:#2E4057"></div><p>Pháp nhân tại thị trường châu Mỹ</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:#2E4057"></div><p>Phân phối thẻ thông minh khu vực Mỹ Latin</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:#2E4057"></div><p>Hợp tác đối tác địa phương & tổ chức tài chính</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:#2E4057"></div><p>Mở rộng kênh xuất khẩu cho MK Smart</p></div>
+        <div class="sub-item"><div class="sub-dot" style="background:#2E4057"></div><p>Tham dự ID4Africa, triển lãm quốc tế</p></div>
+        <div class="sub-highlight" style="border-left-color:#2E4057;background:#f2f3f4;">🌐 Cầu nối thương mại quốc tế</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 5 — PAIN POINTS
+══════════════════════════════════════════════ -->
+<div class="slide s-pain">
+  <span class="slide-num dark">05 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon" style="background:var(--red-crit)">⚠️</div>
+    <div>
+      <h2>Đánh giá Pain Points Hoạt động</h2>
+      <p class="small" style="color:#999">Phân tích 5 lĩnh vực — đặc thù ngành sản xuất thẻ chip & tài liệu bảo an | Nguồn: Wisebase KPI Framework</p>
+    </div>
+  </div>
+
+  <div class="pain-grid">
+
+    <!-- FINANCE -->
+    <div class="pain-col">
+      <div class="pain-col-head ph-finance">💰 Finance</div>
+      <div class="pain-item">
+        <h4>Hợp nhất BCTC đa pháp nhân</h4>
+        <p>4 công ty con, đa tiền tệ, hợp nhất thủ công</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Chi phí sản xuất theo tỷ giá</h4>
+        <p>Chip, polycarbonate nhập khẩu biến động mạnh</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Quản lý công nợ phải thu</h4>
+        <p>DSO khó kiểm soát với 80+ ngân hàng</p>
+        <span class="risk risk-m">🟡 TB-Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>ROA thấp do tài sản nặng</h4>
+        <p>Máy cá thể hóa, hệ thống phát hành đắt tiền</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+      <div class="pain-item">
+        <h4>Hóa đơn B2B khối lượng lớn</h4>
+        <p>80+ khách hàng ngân hàng — chứng từ phức tạp</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+    </div>
+
+    <!-- MANUFACTURING -->
+    <div class="pain-col">
+      <div class="pain-col-head ph-mfg">🏭 Manufacturing</div>
+      <div class="pain-item">
+        <h4>Quản lý công suất nhà máy</h4>
+        <p>3 cơ sở sản xuất, kế hoạch SX thủ công</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Unplanned Downtime thiết bị</h4>
+        <p>Máy Datacard MXD/MXi/DX hỏng = trễ giao hàng</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Manufacturing Cycle Time dài</h4>
+        <p>Lamination → chip → personalization → QC → pack</p>
+        <span class="risk risk-m">🟡 TB-Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Quản lý chất lượng thẻ</h4>
+        <p>PCI/CC EAL — tỷ lệ lỗi nhỏ ảnh hưởng lớn</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Truy xuất nguồn gốc chip</h4>
+        <p>15+ quốc gia đòi hỏi lot/batch tracking đầy đủ</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+    </div>
+
+    <!-- PURCHASING -->
+    <div class="pain-col">
+      <div class="pain-col-head ph-purchase">🛒 Purchasing</div>
+      <div class="pain-item">
+        <h4>Phụ thuộc chip nước ngoài</h4>
+        <p>Infineon, NXP, ST — rủi ro gián đoạn nguồn cung</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>MRO Inventory không tối ưu</h4>
+        <p>Phụ tùng đặc thù, nhập khẩu lâu — over/under stock</p>
+        <span class="risk risk-m">🟡 TB-Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Supplier Management đa quốc gia</h4>
+        <p>Nhiều nhà cung cấp quốc tế, điều kiện phức tạp</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+      <div class="pain-item">
+        <h4>Spend Analytics thiếu công cụ</h4>
+        <p>Strategic Spend % thấp, thiếu dữ liệu phân tích chi tiêu</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+      <div class="pain-item">
+        <h4>Discount từ NCC bị mất</h4>
+        <p>Thanh toán trễ hạn do quy trình PO thủ công</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+    </div>
+
+    <!-- SALES -->
+    <div class="pain-col">
+      <div class="pain-col-head ph-sales">📈 Sales</div>
+      <div class="pain-item">
+        <h4>Quản lý pipeline & đấu thầu</h4>
+        <p>Thầu Chính phủ + B2B ngân hàng — thiếu CRM</p>
+        <span class="risk risk-m">🟡 TB-Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Theo dõi đơn hàng xuất khẩu</h4>
+        <p>15+ thị trường quốc tế, thiếu hệ thống trung tâm</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+      <div class="pain-item">
+        <h4>Quản lý hợp đồng & SLA</h4>
+        <p>SLA giao thẻ ngân hàng nghiêm ngặt — dễ vi phạm</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+      <div class="pain-item">
+        <h4>Forecast độ chính xác thấp</h4>
+        <p>Phụ thuộc kế hoạch phát hành thẻ ngân hàng — khó dự báo</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+      <div class="pain-item">
+        <h4>Lost Orders do thiếu visibility</h4>
+        <p>Cơ hội bán hàng quốc tế bị bỏ lỡ vì thiếu công cụ</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+    </div>
+
+    <!-- SCM -->
+    <div class="pain-col">
+      <div class="pain-col-head ph-scm">🔗 SCM</div>
+      <div class="pain-item">
+        <h4>On-Time Delivery Performance</h4>
+        <p>80+ ngân hàng cần thẻ đúng kế hoạch phát hành</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Logistics bảo mật cao</h4>
+        <p>Thẻ EMV = hàng đặc biệt — chain-of-custody nghiêm</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Thiếu tích hợp giữa công ty con</h4>
+        <p>MK Smart / Hi-tek / Vision — hệ thống tách rời</p>
+        <span class="risk risk-m">🟡 TB-Cao</span>
+      </div>
+      <div class="pain-item">
+        <h4>Inventory Visibility thấp</h4>
+        <p>Chip, ribbon, polycarbonate phân tán nhiều kho</p>
+        <span class="risk risk-m">🟡 TB</span>
+      </div>
+      <div class="pain-item">
+        <h4>Order Fill Accuracy</h4>
+        <p>Thẻ cá thể hóa theo ngân hàng — đóng gói sai = thiệt hại lớn</p>
+        <span class="risk risk-h">🔴 Cao</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 6 — KPI MATRIX
+══════════════════════════════════════════════ -->
+<div class="slide s-kpi">
+  <span class="slide-num">06 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon">📊</div>
+    <div>
+      <h2>Ma trận KPI — Khoảng cách Hiện tại vs. Mục tiêu</h2>
+      <p class="small" style="color:rgba(255,255,255,.5)">Benchmark doanh nghiệp sản xuất — Wisebase Enterprise KPI Framework</p>
+    </div>
+  </div>
+
+  <table class="kpi-table">
+    <thead>
+      <tr>
+        <th>Lĩnh vực</th>
+        <th>KPI</th>
+        <th>Hiện trạng ước tính MK</th>
+        <th>Benchmark ngành</th>
+        <th>Mục tiêu kỳ vọng</th>
+        <th>FPT IS Giải pháp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="area-badge ab-mfg">MFG</span></td>
+        <td class="kpi-name">Machine Uptime</td>
+        <td>~82%</td>
+        <td class="kpi-bench">Top quartile: 92%+</td>
+        <td class="kpi-val">90–95%</td>
+        <td>akaMES — Predictive Maintenance</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-mfg">MFG</span></td>
+        <td class="kpi-name">Manufacturing Cycle Time</td>
+        <td>~7–10 ngày/lô</td>
+        <td class="kpi-bench">Best-in-class: &lt;5 ngày</td>
+        <td class="kpi-val">Giảm 20–30%</td>
+        <td>akaMES — Shop-floor Planning</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-mfg">MFG</span></td>
+        <td class="kpi-name">Production Plan Adherence</td>
+        <td>~78–85%</td>
+        <td class="kpi-bench">Target: >95%</td>
+        <td class="kpi-val">&gt;95%</td>
+        <td>akaMES — Capacity Utilization</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-fin">FIN</span></td>
+        <td class="kpi-name">Average Time to Close</td>
+        <td>~12–15 ngày</td>
+        <td class="kpi-bench">Best: &lt;5 ngày</td>
+        <td class="kpi-val">&lt;7 ngày</td>
+        <td>FPT.dPlat — Financial Consolidation</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-fin">FIN</span></td>
+        <td class="kpi-name">Ship-to-Invoice Cycle Time</td>
+        <td>~5–7 ngày</td>
+        <td class="kpi-bench">Best: &lt;2 ngày</td>
+        <td class="kpi-val">&lt;2 ngày</td>
+        <td>FPT.eInvoice — Automation</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-fin">FIN</span></td>
+        <td class="kpi-name">Invoices Online Processing</td>
+        <td>~40–55%</td>
+        <td class="kpi-bench">Best: >85%</td>
+        <td class="kpi-val">&gt;90%</td>
+        <td>FPT.eInvoice + eContract</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-scm">SCM</span></td>
+        <td class="kpi-name">On-Time Delivery Performance</td>
+        <td>~88%</td>
+        <td class="kpi-bench">Best: >98%</td>
+        <td class="kpi-val">&gt;97%</td>
+        <td>FPT.eTMS + akaMES tích hợp</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-scm">SCM</span></td>
+        <td class="kpi-name">Order Fill Rate & Accuracy</td>
+        <td>~94%</td>
+        <td class="kpi-bench">Best: >99%</td>
+        <td class="kpi-val">&gt;99%</td>
+        <td>AkaBot RPA — Order Automation</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-pur">PUR</span></td>
+        <td class="kpi-name">MRO Inventory Level</td>
+        <td>Quá cao / Thiếu đột ngột</td>
+        <td class="kpi-bench">Balanced stock &lt;2% revenue</td>
+        <td class="kpi-val">Giảm MRO cost 15–25%</td>
+        <td>akaMES — Maintenance Module</td>
+      </tr>
+      <tr>
+        <td><span class="area-badge ab-pur">PUR</span></td>
+        <td class="kpi-name">Spend Managed Strategically</td>
+        <td>~50–60%</td>
+        <td class="kpi-bench">Best: >75%</td>
+        <td class="kpi-val">&gt;75%</td>
+        <td>FPT.eSales — Spend Analytics</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 7 — FPT IS PROFILE
+══════════════════════════════════════════════ -->
+<div class="slide s-fpt">
+  <span class="slide-num">07 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon">🚀</div>
+    <div>
+      <h2>FPT IS — Năng lực Đối tác</h2>
+      <p class="small" style="opacity:.75">Hơn 30 năm đồng hành chuyển đổi số cho các doanh nghiệp Việt Nam và khu vực</p>
+    </div>
+  </div>
+
+  <div class="fpt-body">
+    <div class="fpt-left">
+      <div class="fpt-stat-row">
+        <div class="fpt-stat"><div class="num">30+</div><div class="lbl">Năm kinh nghiệm</div></div>
+        <div class="fpt-stat"><div class="num">3,400+</div><div class="lbl">Chuyên gia & kỹ sư</div></div>
+        <div class="fpt-stat"><div class="num">70,000+</div><div class="lbl">Khách hàng eInvoice</div></div>
+      </div>
+      <div class="fpt-stat-row">
+        <div class="fpt-stat"><div class="num">300+</div><div class="lbl">Bệnh viện triển khai</div></div>
+        <div class="fpt-stat"><div class="num">200+</div><div class="lbl">Đối tác TradeFlat</div></div>
+        <div class="fpt-stat"><div class="num">PCI QSA</div><div class="lbl">Chứng chỉ bảo mật</div></div>
+      </div>
+      <div class="fpt-desc">
+        <strong>FPT IS</strong> (FPT Information System) — thành viên chiến lược của Tập đoàn FPT, chuyên cung cấp <strong>giải pháp chuyển đổi số toàn diện</strong> cho Chính phủ, ngân hàng, y tế, sản xuất và bất động sản. Hệ sinh thái sản phẩm bao gồm SaaS, Cloud, AI/ML, RPA, Blockchain, OCR, Big Data và bảo mật nâng cao.
+      </div>
+    </div>
+
+    <div class="fpt-right">
+      <div class="fpt-sector">
+        <div class="icon">🏦</div>
+        <div><h4>Tài chính — Ngân hàng</h4><p>FPT.eInvoice, eContract, eSign, TellerApp, Digital Onboarding, ATM Guard, IDCheck — triển khai toàn hệ sinh thái ngân hàng VN</p></div>
+      </div>
+      <div class="fpt-sector">
+        <div class="icon">🏭</div>
+        <div><h4>Sản xuất Công nghiệp</h4><p>akaMES, akaPLM, AkaBot Agentic Automation, FPT.dPlat — số hóa nhà máy end-to-end từ shop-floor đến boardroom</p></div>
+      </div>
+      <div class="fpt-sector">
+        <div class="icon">🔐</div>
+        <div><h4>Bảo mật & Compliance</h4><p>FPT.EagleEye MDR, mSOC, PCI DSS, malBot, ATM Guard — giám sát & ứng phó sự cố bảo mật 24/7 theo MITRE ATT&CK</p></div>
+      </div>
+      <div class="fpt-sector">
+        <div class="icon">🌐</div>
+        <div><h4>Thương mại & Nhân sự</h4><p>TradeFlat, FPT.eSales, FPT.iHRP, eLearning, AkaBot, eBizTrip — quản trị vận hành doanh nghiệp toàn diện</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 8 — SOLUTION MAP
+══════════════════════════════════════════════ -->
+<div class="slide s-solmap">
+  <span class="slide-num dark">08 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon" style="background:var(--mk-teal)">🗺️</div>
+    <div>
+      <h2>Bản đồ Giải pháp FPT IS → Giá trị cho MK Group</h2>
+      <p class="small" style="color:#999">Mapping pain points → giải pháp → KPI đo lường</p>
+    </div>
+  </div>
+
+  <div class="solmap-grid">
+
+    <!-- MFG -->
+    <div class="sol-col">
+      <div class="sol-col-head sc-mfg">🏭 Sản xuất</div>
+      <div class="sol-pill sp-mfg">
+        <h4>akaMES</h4>
+        <p>Quản lý thực thi sản xuất thẻ chip — shop-floor real-time, lot tracking, QC tích hợp</p>
+        <span class="kpi-tag">↑ Uptime +10–15%</span>
+      </div>
+      <div class="sol-pill sp-mfg">
+        <h4>akaPLM</h4>
+        <p>Quản lý vòng đời sản phẩm thẻ — R&D chip OS, thiết kế thẻ mới, tài liệu kỹ thuật</p>
+        <span class="kpi-tag">↓ Time-to-market</span>
+      </div>
+      <div class="sol-pill sp-mfg">
+        <h4>AkaBot Agentic</h4>
+        <p>Tự động hóa quy trình sản xuất lặp lại — nhập liệu, kiểm tra lô, báo cáo tự động</p>
+        <span class="kpi-tag">↓ Manual effort 60%</span>
+      </div>
+      <div class="sol-pill sp-mfg">
+        <h4>FPT.dPlat</h4>
+        <p>Nền tảng dữ liệu tập trung — tích hợp dữ liệu từ 3 nhà máy, real-time analytics</p>
+        <span class="kpi-tag">Visibility toàn chuỗi</span>
+      </div>
+    </div>
+
+    <!-- FINANCE -->
+    <div class="sol-col">
+      <div class="sol-col-head sc-fin">💰 Tài chính</div>
+      <div class="sol-pill sp-fin">
+        <h4>FPT.eInvoice</h4>
+        <p>Phát hành & xử lý hóa đơn điện tử tự động với 80+ ngân hàng — tuân thủ Nghị định 123/2020</p>
+        <span class="kpi-tag" style="color:#8E44AD;background:#f5eef8">↓ Cycle time 50%</span>
+      </div>
+      <div class="sol-pill sp-fin">
+        <h4>FPT.eContract + eSign</h4>
+        <p>Ký số & quản lý hợp đồng cung cấp thẻ — theo dõi SLA, điều khoản thanh toán tự động</p>
+        <span class="kpi-tag" style="color:#8E44AD;background:#f5eef8">↓ Rủi ro SLA</span>
+      </div>
+      <div class="sol-pill sp-fin">
+        <h4>FPT.dPlat Financial</h4>
+        <p>Hợp nhất BCTC đa pháp nhân (MK Smart, Hi-tek, Vision, Americas) — đa tiền tệ</p>
+        <span class="kpi-tag" style="color:#8E44AD;background:#f5eef8">↓ Close time 40%</span>
+      </div>
+      <div class="sol-pill sp-fin">
+        <h4>AkaBot AR/AP</h4>
+        <p>Tự động đối chiếu công nợ phải thu/trả — giảm DSO, tối ưu cash flow</p>
+        <span class="kpi-tag" style="color:#8E44AD;background:#f5eef8">↓ DSO 20–30%</span>
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="sol-col">
+      <div class="sol-col-head sc-sec">🔐 Bảo mật</div>
+      <div class="sol-pill sp-sec">
+        <h4>FPT.EagleEye PCI DSS</h4>
+        <p>Tư vấn & giám sát tuân thủ PCI liên tục cho môi trường sản xuất thẻ ngân hàng</p>
+        <span class="kpi-tag" style="color:#1a5276;background:#eaf2fb">PCI QSA maintained</span>
+      </div>
+      <div class="sol-pill sp-sec">
+        <h4>FPT.EagleEye MDR</h4>
+        <p>Phát hiện & xử lý sự cố bảo mật — MITRE ATT&CK framework, bảo vệ dữ liệu thẻ</p>
+        <span class="kpi-tag" style="color:#1a5276;background:#eaf2fb">↓ Detection time 80%</span>
+      </div>
+      <div class="sol-pill sp-sec">
+        <h4>FPT.EagleEye mSOC</h4>
+        <p>Security Operations Center 24/7 — giám sát toàn bộ         hạ tầng IT/OT của MK Group, cảnh báo real-time</p>
+        <span class="kpi-tag" style="color:#1a5276;background:#eaf2fb">24/7 SOC coverage</span>
+      </div>
+      <div class="sol-pill sp-sec">
+        <h4>FPT.EagleEye malBot</h4>
+        <p>Phân tích & ngăn chặn mã độc tự động — bảo vệ hệ thống personalization & chip OS</p>
+        <span class="kpi-tag" style="color:#1a5276;background:#eaf2fb">↓ Malware risk 90%</span>
+      </div>
+    </div>
+
+    <!-- OPS & HR -->
+    <div class="sol-col">
+      <div class="sol-col-head sc-ops">⚙️ Vận hành & Nhân sự</div>
+      <div class="sol-pill sp-ops">
+        <h4>FPT.iHRP</h4>
+        <p>Quản trị nhân sự 700+ kỹ sư MK Smart — chấm công, lương, đào tạo, đánh giá KPI</p>
+        <span class="kpi-tag">↓ HR admin 50%</span>
+      </div>
+      <div class="sol-pill sp-ops">
+        <h4>FPT.eSales</h4>
+        <p>Quản lý pipeline bán hàng B2B ngân hàng & Chính phủ — CRM tích hợp, forecast tự động</p>
+        <span class="kpi-tag">↑ Win rate</span>
+      </div>
+      <div class="sol-pill sp-ops">
+        <h4>FPT.eTMS</h4>
+        <p>Quản lý vận chuyển bảo mật thẻ EMV — chain-of-custody, tracking real-time đến ngân hàng</p>
+        <span class="kpi-tag">↑ OTD >97%</span>
+      </div>
+      <div class="sol-pill sp-ops">
+        <h4>FPT.eLearning</h4>
+        <p>Đào tạo nội bộ kỹ thuật chip, bảo mật PCI, quy trình sản xuất — LMS tập trung toàn tập đoàn</p>
+        <span class="kpi-tag">↑ Skill compliance</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 9 — ROADMAP
+══════════════════════════════════════════════ -->
+<div class="slide s-roadmap">
+  <span class="slide-num">09 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon">🗓️</div>
+    <div>
+      <h2>Lộ trình Triển khai 3 Giai đoạn</h2>
+      <p class="small" style="color:rgba(255,255,255,.5)">2025 Q3 → 2027 Q2 — Phân kỳ theo mức độ ưu tiên & độ phức tạp kỹ thuật</p>
+    </div>
+  </div>
+
+  <div class="roadmap-lanes">
+
+    <!-- LANE LABELS -->
+    <div class="rl-label">
+      <div class="rl-name">Tài chính</div>
+      <div class="rl-name">Sản xuất</div>
+      <div class="rl-name">Bảo mật</div>
+      <div class="rl-name">Vận hành</div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="phase-col">
+      <div class="phase-head">
+        <div class="ph-tag pt1">Phase 1</div>
+        <h4>Nền tảng & Quick Win</h4>
+        <p>Q3/2025 — Q1/2026 (6 tháng)</p>
+      </div>
+      <div class="rm-item rmi-1">
+        <h4>FPT.eInvoice + eContract</h4>
+        <p>Số hóa hóa đơn & hợp đồng với 80+ ngân hàng</p>
+      </div>
+      <div class="rm-item rmi-1">
+        <h4>akaMES — MK Smart Pilot</h4>
+        <p>Triển khai 1 nhà máy, lot tracking & QC số hóa</p>
+      </div>
+      <div class="rm-item rmi-1">
+        <h4>EagleEye PCI DSS Assessment</h4>
+        <p>Đánh giá & roadmap tuân thủ PCI toàn tập đoàn</p>
+      </div>
+      <div class="rm-item rmi-1">
+        <h4>FPT.iHRP Go-live</h4>
+        <p>Quản trị nhân sự 700+ kỹ sư MK Smart</p>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-col">
+      <div class="phase-head">
+        <div class="ph-tag pt2">Phase 2</div>
+        <h4>Mở rộng & Tích hợp</h4>
+        <p>Q2/2026 — Q4/2026 (9 tháng)</p>
+      </div>
+      <div class="rm-item rmi-2">
+        <h4>FPT.dPlat Financial Hub</h4>
+        <p>Hợp nhất BCTC 4 pháp nhân, đa tiền tệ real-time</p>
+      </div>
+      <div class="rm-item rmi-2">
+        <h4>akaMES — Roll-out toàn tập đoàn</h4>
+        <p>Mở rộng sang nhà máy 2 & cơ sở in bảo mật</p>
+      </div>
+      <div class="rm-item rmi-2">
+        <h4>EagleEye MDR + mSOC</h4>
+        <p>Vận hành SOC 24/7, giám sát toàn bộ hạ tầng</p>
+      </div>
+      <div class="rm-item rmi-2">
+        <h4>FPT.eSales + FPT.eTMS</h4>
+        <p>CRM B2B ngân hàng & quản lý vận chuyển bảo mật</p>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-col">
+      <div class="phase-head">
+        <div class="ph-tag pt3">Phase 3</div>
+        <h4>Tối ưu & Thông minh hóa</h4>
+        <p>Q1/2027 — Q2/2027 (6 tháng)</p>
+      </div>
+      <div class="rm-item rmi-3">
+        <h4>AkaBot Agentic — AR/AP Auto</h4>
+        <p>Tự động hóa đối chiếu công nợ, tối ưu cash flow</p>
+      </div>
+      <div class="rm-item rmi-3">
+        <h4>akaPLM + AI Analytics</h4>
+        <p>Quản lý R&D chip OS, predictive quality cho thẻ EMV</p>
+      </div>
+      <div class="rm-item rmi-3">
+        <h4>EagleEye malBot + Zero Trust</h4>
+        <p>Kiến trúc Zero Trust cho hệ thống personalization</p>
+      </div>
+      <div class="rm-item rmi-3">
+        <h4>FPT.dPlat AI Dashboard</h4>
+        <p>Báo cáo thông minh toàn tập đoàn — CEO/CFO view</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 10 — PHASE 1 DETAIL
+══════════════════════════════════════════════ -->
+<div class="slide s-ph1">
+  <span class="slide-num dark">10 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon" style="background:var(--fpt-orange)">🔍</div>
+    <div>
+      <h2>Chi tiết Giai đoạn 1 — Quick Win & Foundation</h2>
+      <p class="small" style="color:#999">Q3/2025 → Q1/2026 | Giải ngân nhanh — ROI đo lường ngay trong 6 tháng đầu</p>
+    </div>
+  </div>
+
+  <div class="ph1-grid">
+
+    <div class="ph1-card">
+      <div class="ph1-head orange">
+        <div class="icon">🧾</div>
+        <div>
+          <h3>FPT.eInvoice + eContract + eSign</h3>
+          <p>Số hóa chứng từ thương mại toàn tập đoàn</p>
+        </div>
+      </div>
+      <div class="ph1-body">
+        <div class="ph1-row"><span class="label">Phạm vi</span><span class="val">MK Smart + MK Hi-tek — 80+ đối tác ngân hàng</span></div>
+        <div class="ph1-row"><span class="label">Thời gian</span><span class="val">8–12 tuần triển khai & Go-live</span></div>
+        <div class="ph1-row"><span class="label">Tích hợp</span><span class="val">Kết nối API với hệ thống kế toán hiện tại, cổng thuế VNPT/MISA</span></div>
+        <div class="ph1-row"><span class="label">Tuân thủ</span><span class="val">Nghị định 123/2020, Thông tư 78/2021</span></div>
+        <div class="kpi-badges">
+          <span class="kpi-badge orange">↓ Ship-to-Invoice: 5 ngày → <2 ngày</span>
+          <span class="kpi-badge orange">↑ Online Processing: 40% → 90%</span>
+          <span class="kpi-badge orange">↓ Chi phí in ấn/lưu trữ 70%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ph1-card">
+      <div class="ph1-head teal">
+        <div class="icon">🏭</div>
+        <div>
+          <h3>akaMES — Pilot tại MK Smart Nhà máy 1</h3>
+          <p>Số hóa shop-floor sản xuất thẻ chip</p>
+        </div>
+      </div>
+      <div class="ph1-body">
+        <div class="ph1-row"><span class="label">Phạm vi</span><span class="val">Toàn bộ dây chuyền: Lamination → Chip → Personalization → QC → Packing</span></div>
+        <div class="ph1-row"><span class="label">Thời gian</span><span class="val">16–20 tuần (pilot) + 4 tuần stabilize</span></div>
+        <div class="ph1-row"><span class="label">Tích hợp</span><span class="val">Máy Datacard MXD/MXi/DX, hệ thống QC hiện tại</span></div>
+        <div class="ph1-row"><span class="label">Đặc thù</span><span class="val">Lot/batch tracking bảo mật, chain-of-custody số hóa</span></div>
+        <div class="kpi-badges">
+          <span class="kpi-badge">↑ Machine Uptime: 82% → 90%+</span>
+          <span class="kpi-badge">↓ Cycle Time 20–25%</span>
+          <span class="kpi-badge">↑ Plan Adherence: 85% → 95%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ph1-card">
+      <div class="ph1-head navy">
+        <div class="icon">🔐</div>
+        <div>
+          <h3>EagleEye PCI DSS Assessment & Roadmap</h3>
+          <p>Đánh giá toàn diện tuân thủ bảo mật thẻ</p>
+        </div>
+      </div>
+      <div class="ph1-body">
+        <div class="ph1-row"><span class="label">Phạm vi</span><span class="val">Toàn bộ môi trường CDE (Cardholder Data Environment) của MK Smart</span></div>
+        <div class="ph1-row"><span class="label">Thời gian</span><span class="val">6–8 tuần assessment + báo cáo + roadmap</span></div>
+        <div class="ph1-row"><span class="label">Đầu ra</span><span class="val">Gap analysis report, remediation plan, priority list</span></div>
+        <div class="ph1-row"><span class="label">Chứng nhận</span><span class="val">FPT IS là PCI QSA — đủ năng lực cấp chứng chỉ</span></div>
+        <div class="kpi-badges">
+          <span class="kpi-badge navy">PCI DSS v4.0 Compliance</span>
+          <span class="kpi-badge navy">↓ Audit cost 30%</span>
+          <span class="kpi-badge navy">Zero critical findings</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ph1-card">
+      <div class="ph1-head purple">
+        <div class="icon">👥</div>
+        <div>
+          <h3>FPT.iHRP — Quản trị Nhân sự Tập đoàn</h3>
+          <p>HRM toàn diện cho 700+ kỹ sư & chuyên gia</p>
+        </div>
+      </div>
+      <div class="ph1-body">
+        <div class="ph1-row"><span class="label">Phạm vi</span><span class="val">MK Smart (700+ người) + MK Hi-tek + MK Vision</span></div>
+        <div class="ph1-row"><span class="label">Thời gian</span><span class="val">10–14 tuần triển khai, data migration từ Excel/hệ thống cũ</span></div>
+        <div class="ph1-row"><span class="label">Tính năng</span><span class="val">Chấm công, lương, BHXH, đánh giá KPI, đào tạo, tuyển dụng</span></div>
+        <div class="ph1-row"><span class="label">Tuân thủ</span><span class="val">Bộ luật Lao động 2019, BHXH điện tử</span></div>
+        <div class="kpi-badges">
+          <span class="kpi-badge purple">↓ HR admin effort 50%</span>
+          <span class="kpi-badge purple">↑ Payroll accuracy 99.9%</span>
+          <span class="kpi-badge purple">Self-service portal</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 11 — VALUE TABLE
+══════════════════════════════════════════════ -->
+<div class="slide s-value">
+  <span class="slide-num dark">11 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon" style="background:var(--green-ok)">💎</div>
+    <div>
+      <h2>Bảng Tổng hợp Đề xuất Giải pháp & Giá trị</h2>
+      <p class="small" style="color:#999">Mapping toàn bộ giải pháp → công ty thành viên → mức độ ưu tiên → giá trị kinh doanh đo lường được</p>
+    </div>
+  </div>
+
+  <table class="value-table">
+    <thead>
+      <tr>
+        <th>Giải pháp FPT IS</th>
+        <th>Công ty áp dụng</th>
+        <th>Pain Point giải quyết</th>
+        <th>KPI cải thiện</th>
+        <th>Ưu tiên</th>
+        <th>Giai đoạn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>FPT.eInvoice</td>
+        <td><span class="company-tag">MK Smart</span><span class="company-tag">MK Hi-tek</span></td>
+        <td>Hóa đơn B2B khối lượng lớn, Ship-to-Invoice chậm</td>
+        <td>↓ Cycle time 50%, ↑ Online 90%</td>
+        <td><span class="p-tag p-urgent">🔴 Khẩn cấp</span></td>
+        <td>Phase 1</td>
+      </tr>
+      <tr>
+        <td>FPT.eContract + eSign</td>
+        <td><span class="company-tag">MK Smart</span><span class="company-tag">MK Americas</span></td>
+        <td>Quản lý hợp đồng SLA ngân hàng & quốc tế</td>
+        <td>↓ Rủi ro SLA, ↓ Contract cycle 60%</td>
+        <td><span class="p-tag p-urgent">🔴 Khẩn cấp</span></td>
+        <td>Phase 1</td>
+      </tr>
+      <tr>
+        <td>akaMES</td>
+        <td><span class="company-tag">MK Smart</span></td>
+        <td>Downtime thiết bị, Cycle time dài, QC thủ công</td>
+        <td>↑ Uptime 90%+, ↓ Cycle 25%, ↑ OTD 97%</td>
+        <td><span class="p-tag p-urgent">🔴 Khẩn cấp</span></td>
+        <td>Phase 1→2</td>
+      </tr>
+      <tr>
+        <td>EagleEye PCI DSS</td>
+        <td><span class="company-tag">MK Smart</span><span class="company-tag">MK Hi-tek</span></td>
+        <td>Tuân thủ PCI trong môi trường CDE thẻ ngân hàng</td>
+        <td>PCI v4.0 compliant, ↓ Audit cost 30%</td>
+        <td><span class="p-tag p-urgent">🔴 Khẩn cấp</span></td>
+        <td>Phase 1</td>
+      </tr>
+      <tr>
+        <td>FPT.iHRP</td>
+        <td><span class="company-tag">MK Smart</span><span class="company-tag">MK Vision</span></td>
+        <td>Quản lý 700+ kỹ sư phân tán, báo cáo nhân sự thủ công</td>
+        <td>↓ HR effort 50%, ↑ Payroll accuracy 99.9%</td>
+        <td><span class="p-tag p-import">🟡 Quan trọng</span></td>
+        <td>Phase 1</td>
+      </tr>
+      <tr>
+        <td>FPT.dPlat Financial</td>
+        <td><span class="company-tag">Tập đoàn MK</span></td>
+        <td>Hợp nhất BCTC đa pháp nhân, đa tiền tệ thủ công</td>
+        <td>↓ Close time 40%, Real-time consolidation</td>
+        <td><span class="p-tag p-import">🟡 Quan trọng</span></td>
+        <td>Phase 2</td>
+      </tr>
+      <tr>
+        <td>EagleEye MDR + mSOC</td>
+        <td><span class="company-tag">MK Smart</span><span class="company-tag">MK Hi-tek</span></td>
+        <td>Thiếu giám sát bảo mật 24/7, rủi ro dữ liệu thẻ</td>
+        <td>↓ Detection time 80%, 24/7 SOC</td>
+        <td><span class="p-tag p-import">🟡 Quan trọng</span></td>
+        <td>Phase 2</td>
+      </tr>
+      <tr>
+        <td>FPT.eSales (CRM)</td>
+        <td><span class="company-tag">MK Smart</span><span class="company-tag">MK Americas</span></td>
+        <td>Thiếu CRM cho pipeline B2B ngân hàng & Chính phủ</td>
+        <td>↑ Win rate, ↑ Forecast accuracy 85%+</td>
+        <td><span class="p-tag p-import">🟡 Quan trọng</span></td>
+        <td>Phase 2</td>
+      </tr>
+      <tr>
+        <td>FPT.eTMS</td>
+        <td><span class="company-tag">MK Smart</span></td>
+        <td>Logistics bảo mật thẻ EMV, chain-of-custody</td>
+        <td>↑ OTD >97%, Full traceability</td>
+        <td><span class="p-tag p-import">🟡 Quan trọng</span></td>
+        <td>Phase 2</td>
+      </tr>
+      <tr>
+        <td>AkaBot Agentic</td>
+        <td><span class="company-tag">Tập đoàn MK</span></td>
+        <td>Quy trình AR/AP thủ công, nhập liệu lặp lại</td>
+        <td>↓ Manual effort 60%, ↓ DSO 25%</td>
+        <td><span class="p-tag p-strat">🟢 Chiến lược</span></td>
+        <td>Phase 3</td>
+      </tr>
+      <tr>
+        <td>akaPLM</td>
+        <td><span class="company-tag">MK Smart</span><span class="company-tag">MK Hi-tek</span></td>
+        <td>R&D chip OS không có PLM, tài liệu kỹ thuật phân tán</td>
+        <td>↓ Time-to-market 30%, IP management</td>
+        <td><span class="p-tag p-strat">🟢 Chiến lược</span></td>
+        <td>Phase 3</td>
+      </tr>
+      <tr>
+        <td>FPT.eLearning</td>
+        <td><span class="company-tag">Tập đoàn MK</span></td>
+        <td>Đào tạo kỹ thuật chip & PCI compliance phân tán</td>
+        <td>↑ Skill compliance 95%, ↓ Training cost 40%</td>
+        <td><span class="p-tag p-strat">🟢 Chiến lược</span></td>
+        <td>Phase 3</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 12 — WHY FPT IS
+══════════════════════════════════════════════ -->
+<div class="slide s-why">
+  <span class="slide-num">12 / 13</span>
+  <div class="slide-header">
+    <div class="h-icon">🏆</div>
+    <div>
+      <h2>Tại sao Chọn FPT IS làm Đối tác Chuyển đổi Số?</h2>
+      <p class="small" style="color:rgba(255,255,255,.5)">6 lý do chiến lược — dựa trên năng lực thực chứng, không chỉ là cam kết</p>
+    </div>
+  </div>
+
+  <div class="why-grid">
+
+    <div class="why-card">
+      <div class="w-icon">🏦</div>
+      <h3>Hiểu sâu Hệ sinh thái Ngân hàng Việt Nam</h3>
+      <p>FPT IS triển khai giải pháp cho toàn bộ hệ thống ngân hàng Việt Nam — đúng đối tác của MK Smart. Am hiểu quy trình phát hành thẻ, SLA ngân hàng, và hạ tầng kỹ thuật của khách hàng MK.</p>
+      <div class="w-proof">✅ 80+ ngân hàng & tổ chức tài chính đang dùng FPT IS</div>
+    </div>
+
+    <div class="why-card">
+      <div class="w-icon">🔐</div>
+      <h3>PCI QSA — Chứng nhận Bảo mật Thẻ Chính thức</h3>
+      <p>FPT IS là một trong số ít đơn vị tại Việt Nam đạt chứng nhận PCI QSA (Qualified Security Assessor) — đủ năng lực tư vấn, kiểm tra và cấp chứng chỉ PCI DSS cho môi trường sản xuất thẻ ngân hàng của MK Smart.</p>
+      <div class="w-proof">✅ PCI QSA Certified — Unique competitive advantage</div>
+    </div>
+
+    <div class="why-card">
+      <div class="w-icon">🏭</div>
+      <h3>akaMES — Giải pháp MES Made-in-Vietnam</h3>
+      <p>akaMES được xây dựng và tinh chỉnh cho thực tế sản xuất Việt Nam — linh hoạt tích hợp với thiết bị Datacard, hỗ trợ quy trình bảo mật đặc thù, hiểu yêu cầu lot-tracking thẻ EMV & ePassport.</p>
+      <div class="w-proof">✅ Triển khai thành công tại doanh nghiệp sản xuất VN</div>
+    </div>
+
+    <div class="why-card">
+      <div class="w-icon">🤖</div>
+      <h3>Agentic AI & RPA — Tự động hóa Cấp độ Mới</h3>
+      <p>AkaBot Agentic Automation của FPT IS không chỉ là RPA truyền thống — AI agent có khả năng xử lý ngoại lệ, ra quyết định theo ngữ cảnh, phù hợp với quy trình phức tạp của ngành thẻ bảo mật.</p>
+      <div class="w-proof">✅ Agentic AI — vượt trội hơn RPA thế hệ cũ</div>
+    </div>
+
+    <div class="why-card">
+      <div class="w-icon">🌐</div>
+      <h3>Hệ sinh thái Sản phẩm Toàn diện — One Vendor</h3>
+      <p>Từ MES → ERP Finance → Security → HR → CRM → TMS → eLearning — FPT IS cung cấp toàn bộ trong một hệ sinh thái tích hợp, giúp MK Group tránh rủi ro multi-vendor, giảm chi phí tích hợp và vận hành.</p>
+      <div class="w-proof">✅ 30+ sản phẩm tích hợp — Single ecosystem partner</div>
+    </div>
+
+    <div class="why-card">
+      <div class="w-icon">🇻🇳</div>
+      <h3>Đồng hành Chiến lược — Hiểu Văn hóa & Quy định VN</h3>
+      <p>FPT IS am hiểu sâu môi trường pháp lý Việt Nam: Nghị định 123/2020 eInvoice, Thông tư 78/2021, Bộ luật Lao động, quy định NHNN về thẻ ngân hàng — đảm bảo compliance ngay từ ngày đầu tiên.</p>
+      <div class="w-proof">✅ 30+ năm — Đồng hành cùng doanh nghiệp Việt Nam</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 13 — CLOSING
+══════════════════════════════════════════════ -->
+<div class="slide s-close">
+  <div class="close-inner">
+    <div style="font-size:1rem; font-weight:700; letter-spacing:3px; opacity:.6; margin-bottom:16px; text-transform:uppercase;">
+      FPT IS × MK Group
+    </div>
+
+    <h1>Cùng Xây dựng<br>Nền tảng Số Bền vững</h1>
+
+    <p>
+      MK Group đang ở vị thế dẫn đầu thị trường thẻ thông minh Việt Nam và đang mở rộng mạnh ra quốc tế.<br>
+      FPT IS cam kết đồng hành trong hành trình chuyển đổi số — từ shop-floor sản xuất thẻ chip đến boardroom tài chính,<br>
+      từ bảo mật PCI đến định danh điện tử thế hệ tiếp theo.
+    </p>
+
+    <a class="close-cta" href="mailto:contact@fis.com.vn">
+      🤝 Bắt đầu Hợp tác Ngay
+    </a>
+
+    <div class="close-contacts">
+      <div class="close-c">
+        <div class="lbl">📧 Email liên hệ</div>
+        <div class="val">contact@fis.com.vn</div>
+      </div>
+      <div class="close-c">
+        <div class="lbl">🌐 Website</div>
+        <div class="val">fis.com.vn</div>
+      </div>
+      <div class="close-c">
+        <div class="lbl">📍 Trụ sở</div>
+        <div class="val">Hà Nội & TP. Hồ Chí Minh</div>
+      </div>
+      <div class="close-c">
+        <div class="lbl">👥 Quy mô</div>
+        <div class="val">3,400+ chuyên gia</div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px; padding-top:24px; border-top:1px solid rgba(255,255,255,.15);
+                display:flex; gap:32px; justify-content:center; flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem; font-weight:900; color:var(--mk-teal);">Phase 1</div>
+        <div style="font-size:.75rem; opacity:.6; margin-top:4px;">Q3/2025 — Q1/2026</div>
+        <div style="font-size:.8rem; font-weight:700; margin-top:4px;">eInvoice · akaMES · PCI · HRM</div>
+      </div>
+      <div style="display:flex; align-items:center; opacity:.3; font-size:1.5rem;">→</div>
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem; font-weight:900; color:var(--gold);">Phase 2</div>
+        <div style="font-size:.75rem; opacity:.6; margin-top:4px;">Q2/2026 — Q4/2026</div>
+        <div style="font-size:.8rem; font-weight:700; margin-top:4px;">dPlat · MDR/SOC · eSales · eTMS</div>
+      </div>
+      <div style="display:flex; align-items:center; opacity:.3; font-size:1.5rem;">→</div>
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem; font-weight:900; color:var(--fpt-orange);">Phase 3</div>
+        <div style="font-size:.75rem; opacity:.6; margin-top:4px;">Q1/2027 — Q2/2027</div>
+        <div style="font-size:.8rem; font-weight:700; margin-top:4px;">AkaBot AI · akaPLM · Zero Trust</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .deck -->
+
+<div class="scroll-hint">▼ &nbsp; SCROLL ĐỂ XEM CÁC SLIDE TIẾP THEO &nbsp; ▼</div>
+
+</body>
+</html>
