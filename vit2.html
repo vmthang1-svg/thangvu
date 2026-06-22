@@ -1,0 +1,1271 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIT × FPT | Tại sao FAST → SAP?</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:    #1a56db;
+    --blue-lt: #e8f0fe;
+    --red:     #e02424;
+    --red-lt:  #fde8e8;
+    --green:   #057a55;
+    --green-lt:#def7ec;
+    --orange:  #d97706;
+    --orange-lt:#fef3c7;
+    --gray-dk: #1f2937;
+    --gray:    #4b5563;
+    --gray-lt: #f3f4f6;
+    --white:   #ffffff;
+    --border:  #e5e7eb;
+    --shadow:  0 2px 12px rgba(0,0,0,.08);
+    --radius:  12px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    color: var(--gray-dk);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #1a56db 0%, #0e3a8c 100%);
+    color: #fff;
+    padding: 28px 40px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 20px rgba(26,86,219,.35);
+  }
+  .header-inner { max-width: 1200px; margin: auto; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; flex: 1; }
+
+  /* ── NAV ── */
+  .nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex; gap: 4px;
+    overflow-x: auto;
+    position: sticky; top: 76px; z-index: 99;
+  }
+  .nav a {
+    display: block;
+    padding: 13px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all .2s;
+  }
+  .nav a:hover { color: var(--blue); border-bottom-color: var(--blue); }
+
+  /* ── LAYOUT ── */
+  .main { max-width: 1200px; margin: 32px auto; padding: 0 24px; }
+  .section { margin-bottom: 52px; }
+  .section-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--gray-dk);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: '';
+    width: 4px; height: 22px;
+    background: var(--blue);
+    border-radius: 2px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+
+  /* ── KPI ── */
+  .kpi {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 18px;
+    border: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  }
+  .kpi.red::before   { background: var(--red); }
+  .kpi.blue::before  { background: var(--blue); }
+  .kpi.green::before { background: var(--green); }
+  .kpi.orange::before{ background: var(--orange); }
+  .kpi-value { font-size: 28px; font-weight: 800; line-height: 1.1; margin-bottom: 4px; }
+  .kpi-label { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: .5px; }
+  .kpi-sub   { font-size: 11px; color: var(--gray); margin-top: 5px; }
+  .kpi.red    .kpi-value { color: var(--red); }
+  .kpi.blue   .kpi-value { color: var(--blue); }
+  .kpi.green  .kpi-value { color: var(--green); }
+  .kpi.orange .kpi-value { color: var(--orange); }
+
+  /* ── ALERT ── */
+  .alert {
+    border-radius: 10px; padding: 14px 18px;
+    display: flex; gap: 12px; align-items: flex-start;
+    margin-bottom: 12px; border: 1px solid;
+  }
+  .alert.red    { background: var(--red-lt);    border-color: #fca5a5; }
+  .alert.blue   { background: var(--blue-lt);   border-color: #93c5fd; }
+  .alert.green  { background: var(--green-lt);  border-color: #6ee7b7; }
+  .alert.orange { background: var(--orange-lt); border-color: #fcd34d; }
+  .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .alert-body strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .alert-body span   { font-size: 13px; color: var(--gray); }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: var(--gray-lt); color: var(--gray-dk);
+    font-weight: 700; padding: 10px 13px; text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+  td { padding: 10px 13px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: #f9fafb; }
+  .tag {
+    display: inline-block; border-radius: 20px;
+    padding: 2px 9px; font-size: 11px; font-weight: 700; letter-spacing: .3px;
+  }
+  .tag.red    { background: var(--red-lt);    color: var(--red); }
+  .tag.green  { background: var(--green-lt);  color: var(--green); }
+  .tag.blue   { background: var(--blue-lt);   color: var(--blue); }
+  .tag.orange { background: var(--orange-lt); color: var(--orange); }
+
+  /* ── PROGRESS BAR ── */
+  .bar-row { margin-bottom: 14px; }
+  .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+  .bar-track { background: var(--gray-lt); border-radius: 6px; height: 10px; overflow: hidden; }
+  .bar-fill  { height: 100%; border-radius: 6px; }
+
+  /* ── VS TABLE ── */
+  .vs-table { width: 100%; border-collapse: collapse; }
+  .vs-table th { padding: 12px 14px; text-align: center; font-size: 13px; }
+  .vs-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .vs-table .col-criteria { font-weight: 600; color: var(--gray-dk); }
+  .vs-table .col-fast { text-align: center; color: var(--red); }
+  .vs-table .col-sap  { text-align: center; color: var(--green); }
+  .vs-head-fast { background: var(--red-lt);   color: var(--red); }
+  .vs-head-sap  { background: var(--green-lt); color: var(--green); }
+  .vs-head-crit { background: var(--gray-lt); }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px;
+    width: 2px; background: var(--border);
+  }
+  .tl-item { position: relative; margin-bottom: 22px; }
+  .tl-dot {
+    position: absolute; left: -24px; top: 4px;
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--white); box-shadow: 0 0 0 2px currentColor;
+  }
+  .tl-dot.blue   { color: var(--blue);   background: var(--blue); }
+  .tl-dot.orange { color: var(--orange); background: var(--orange); }
+  .tl-dot.green  { color: var(--green);  background: var(--green); }
+  .tl-dot.red    { color: var(--red);    background: var(--red); }
+  .tl-date  { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; }
+  .tl-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .tl-body  { font-size: 13px; color: var(--gray); }
+
+  /* ── PAIN CARD ── */
+  .pain-card { border-radius: 10px; padding: 14px 16px; border: 1px solid; margin-bottom: 12px; }
+  .pain-card.red    { background: var(--red-lt);    border-color: #fca5a5; }
+  .pain-card.orange { background: var(--orange-lt); border-color: #fcd34d; }
+  .pain-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+  .pain-title { font-size: 13px; font-weight: 700; }
+  .pain-value { font-size: 16px; font-weight: 800; color: var(--red); }
+  .pain-body  { font-size: 12.5px; color: var(--gray); }
+  .pain-fix   { font-size: 12px; margin-top: 6px; padding: 5px 9px; background: var(--green-lt); border-radius: 6px; color: var(--green); font-weight: 600; }
+
+  /* ── ROI BOX ── */
+  .roi-box { background: linear-gradient(135deg,#065f46,#047857); color: #fff; border-radius: var(--radius); padding: 24px; text-align: center; }
+  .roi-box h3 { font-size: 14px; opacity: .85; margin-bottom: 6px; }
+  .roi-value  { font-size: 44px; font-weight: 900; line-height: 1; }
+  .roi-label  { font-size: 13px; opacity: .8; margin-top: 5px; }
+  .roi-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .roi-item   { background: rgba(255,255,255,.12); border-radius: 8px; padding: 10px; }
+  .roi-item-v { font-size: 20px; font-weight: 800; }
+  .roi-item-l { font-size: 11px; opacity: .8; margin-top: 2px; }
+
+  /* ── QUOTE ── */
+  .quote {
+    background: var(--blue-lt); border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0; padding: 14px 18px;
+    font-style: italic; font-size: 13.5px; color: var(--gray-dk); margin: 14px 0;
+  }
+  .quote cite { display: block; margin-top: 6px; font-style: normal; font-size: 11.5px; color: var(--gray); font-weight: 600; }
+
+  /* ── CONCLUSION ── */
+  .conclusion {
+    background: linear-gradient(135deg,#1a56db 0%,#0e3a8c 100%);
+    color: #fff; border-radius: var(--radius); padding: 32px 36px; text-align: center;
+  }
+  .conclusion h2 { font-size: 20px; margin-bottom: 10px; }
+  .conclusion p  { font-size: 14px; opacity: .85; max-width: 600px; margin: 0 auto 20px; }
+  .conclusion-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .conclusion-item { background: rgba(255,255,255,.12); border-radius: 10px; padding: 14px 10px; }
+  .conclusion-icon { font-size: 26px; margin-bottom: 6px; }
+  .conclusion-item strong { display: block; font-size: 12.5px; margin-bottom: 3px; }
+  .conclusion-item span   { font-size: 11.5px; opacity: .8; }
+
+  /* ── SLIDE GUIDE ── */
+  .slide-item {
+    border-radius: 10px; padding: 14px 16px; border-left: 4px solid;
+    background: var(--gray-lt); margin-bottom: 10px;
+  }
+  .slide-item.blue   { border-color: var(--blue);   background: var(--blue-lt); }
+  .slide-item.red    { border-color: var(--red);    background: var(--red-lt); }
+  .slide-item.green  { border-color: var(--green);  background: var(--green-lt); }
+  .slide-item.orange { border-color: var(--orange); background: var(--orange-lt); }
+  .slide-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--gray); margin-bottom: 3px; }
+  .slide-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .slide-desc  { font-size: 12.5px; color: var(--gray); }
+
+  /* ── FUNNEL CHART ── */
+  .funnel { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  .funnel-step {
+    border-radius: 6px; padding: 10px 16px; text-align: center;
+    font-size: 13px; font-weight: 700; color: #fff; position: relative;
+  }
+  .funnel-arrow { font-size: 18px; color: var(--gray); line-height: 1; }
+
+  /* ── SCORE CARD ── */
+  .score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .score-label { flex: 1; font-size: 13px; font-weight: 600; }
+  .score-bar-wrap { flex: 2; background: var(--gray-lt); border-radius: 6px; height: 8px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 6px; }
+  .score-val { font-size: 12px; font-weight: 700; width: 42px; text-align: right; }
+
+  /* ── ECOSYSTEM ── */
+  .eco-center {
+    background: linear-gradient(135deg,#1a56db,#0e3a8c);
+    color: #fff; border-radius: 50%; width: 110px; height: 110px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; text-align: center; margin: auto;
+    box-shadow: 0 0 0 8px rgba(26,86,219,.15);
+  }
+  .eco-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 16px; }
+  .eco-item {
+    background: var(--gray-lt); border-radius: 8px; padding: 10px 8px;
+    text-align: center; font-size: 11.5px; font-weight: 600; border: 1px solid var(--border);
+  }
+  .eco-item-icon { font-size: 20px; margin-bottom: 4px; }
+  .eco-arrow { text-align: center; font-size: 20px; color: var(--blue); margin: 4px 0; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 24px; font-size: 12px;
+    color: var(--gray); border-top: 1px solid var(--border); margin-top: 40px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:768px){
+    .header { padding: 16px 20px; }
+    .header h1 { font-size: 16px; }
+    .nav { padding: 0 16px; }
+    .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; }
+    .conclusion-grid { grid-template-columns: 1fr; }
+    .roi-grid { grid-template-columns: 1fr; }
+    .main { padding: 0 12px; }
+  }
+
+  @media print {
+    .nav,.header { position: static !important; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     HEADER
+══════════════════════════════ -->
+<div class="header">
+  <div class="header-inner">
+    <span class="badge">🔒 NỘI BỘ · FPT IS</span>
+    <h1>🔄 Tại sao Viglacera Tiên Sơn cần chuyển từ FAST → SAP S/4HANA?</h1>
+    <span class="badge">📅 06/2026 · Vòng 3</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     NAV
+══════════════════════════════ -->
+<nav class="nav">
+  <a href="#s0">📊 Tổng quan</a>
+  <a href="#s1">⚠️ Vấn đề cốt lõi</a>
+  <a href="#s2">🏭 8 Điểm giới hạn</a>
+  <a href="#s3">💸 Chi phí ẩn</a>
+  <a href="#s4">⚖️ FAST vs SAP</a>
+  <a href="#s5">📈 ROI & Timeline</a>
+  <a href="#s6">🏆 Lợi thế FPT</a>
+  <a href="#s7">📋 Cấu trúc Slide</a>
+  <a href="#s8">🎯 Kết luận</a>
+</nav>
+
+<!-- ══════════════════════════════
+     MAIN
+══════════════════════════════ -->
+<div class="main">
+
+<!-- ───────────────────────────
+     S0 · TỔNG QUAN
+─────────────────────────────── -->
+<div class="section" id="s0">
+  <div class="section-title">📊 Tổng quan tình trạng VIT — Tại sao đây là thời điểm quyết định</div>
+  <div class="grid-4" style="margin-bottom:20px;">
+    <div class="kpi red">
+      <div class="kpi-value">~3.000 tỷ</div>
+      <div class="kpi-label">Doanh thu năm</div>
+      <div class="kpi-sub">Đã vượt ngưỡng FAST từ 2–3 năm trước</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-value">4</div>
+      <div class="kpi-label">Nhà máy hoạt động</div>
+      <div class="kpi-sub">Tiên Sơn · Thái Bình · Mỹ Đức · Hải Dương</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-value">344,7 tỷ</div>
+      <div class="kpi-label">Chi phí ẩn / năm</div>
+      <div class="kpi-sub">= 469% LNST 2025 (73,5 tỷ)</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-value">11/01/2027</div>
+      <div class="kpi-label">Deadline GoLive</div>
+      <div class="kpi-sub">Cam kết Tổng Công ty — không thay đổi</div>
+    </div>
+  </div>
+
+  <!-- Ecosystem overview -->
+  <div class="grid-2">
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;">🏗️ Hệ sinh thái số VIT đang xây dựng (FPT Digital đã thiết kế)</div>
+      <div class="eco-center">
+        <div style="font-size:22px;">⚙️</div>
+        <div>SAP S/4HANA<br><span style="font-size:10px;opacity:.8;">LÕI TRUNG TÂM</span></div>
+      </div>
+      <div class="eco-grid">
+        <div class="eco-item"><div class="eco-item-icon">🏭</div>MES<br>Sản xuất</div>
+        <div class="eco-item"><div class="eco-item-icon">🛒</div>CRM/DMS<br>Bán hàng</div>
+        <div class="eco-item"><div class="eco-item-icon">📦</div>WMS<br>Kho vận</div>
+        <div class="eco-item"><div class="eco-item-icon">👥</div>HRM<br>Nhân sự</div>
+        <div class="eco-item"><div class="eco-item-icon">🔧</div>CMMS<br>Thiết bị</div>
+        <div class="eco-item"><div class="eco-item-icon">🧾</div>AI Invoice<br>Tài chính</div>
+      </div>
+      <div class="alert red" style="margin-top:14px;margin-bottom:0;">
+        <div class="alert-icon">🚫</div>
+        <div class="alert-body">
+          <strong>FAST không thể làm "lõi trung tâm"</strong>
+          <span>API đóng, không real-time, không kết nối được hệ sinh thái 6 tầng trên</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;">📉 Đường cong phù hợp của hệ thống ERP</div>
+      <div style="padding:10px 0;">
+        <!-- Visual growth curve -->
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
+            <div style="flex:1;background:var(--green-lt);border-radius:6px;padding:8px 12px;font-size:12.5px;">
+              <strong style="color:var(--green);">FAST phù hợp</strong> — DT &lt; 500 tỷ, 1 pháp nhân, 1–2 nhà máy
+            </div>
+          </div>
+          <div style="text-align:center;font-size:18px;color:var(--gray);">↓</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--orange);flex-shrink:0;"></div>
+            <div style="flex:1;background:var(--orange-lt);border-radius:6px;padding:8px 12px;font-size:12.5px;">
+              <strong style="color:var(--orange);">Vùng chuyển tiếp</strong> — DT 500–1.500 tỷ, bắt đầu cần SAP
+            </div>
+          </div>
+          <div style="text-align:center;font-size:18px;color:var(--gray);">↓</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--red);flex-shrink:0;"></div>
+            <div style="flex:1;background:var(--red-lt);border-radius:6px;padding:8px 12px;font-size:12.5px;">
+              <strong style="color:var(--red);">SAP bắt buộc</strong> — DT &gt; 1.500 tỷ, đa pháp nhân, sáp nhập
+            </div>
+          </div>
+          <div style="text-align:center;font-size:18px;color:var(--blue);">↓</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:16px;height:16px;border-radius:50%;background:var(--blue);flex-shrink:0;border:2px solid white;box-shadow:0 0 0 3px var(--blue);"></div>
+            <div style="flex:1;background:var(--blue-lt);border-radius:6px;padding:10px 12px;font-size:13px;border:2px solid var(--blue);">
+              <strong style="color:var(--blue);">📍 VIT đang đứng tại ~3.000 tỷ</strong><br>
+              <span style="font-size:11.5px;color:var(--gray);">Vượt ngưỡng chuyển đổi 2–3 năm. Sáp nhập đang diễn ra. Hành động ngay.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────
+     S1 · VẤN ĐỀ CỐT LÕI
+─────────────────────────────── -->
+<div class="section" id="s1">
+  <div class="section-title">⚠️ Vấn đề cốt lõi — Tâm lý "mông lung" của lãnh đạo VIT</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="quote">
+        "Bây giờ mình đang dùng FAST thì anh em đang dùng quen rồi. Về nghiệp vụ thì vẫn đang đáp ứng được... Về tương lai thì em cũng không biết là nó có vướng mắc hay không."
+        <cite>— Anh Nguyễn Tiến Trung, Trưởng Ban Chuyển đổi số VIT (Transcript 20/06/2026)</cite>
+      </div>
+      <div class="alert orange" style="margin-bottom:10px;">
+        <div class="alert-icon">💡</div>
+        <div class="alert-body">
+          <strong>"Đang đáp ứng được" ≠ "Đang tối ưu"</strong>
+          <span>FAST đang che giấu 344,7 tỷ chi phí ẩn mỗi năm. Cảm giác an toàn là nguy hiểm nhất khi tốc độ tăng trưởng vượt khả năng hệ thống.</span>
+        </div>
+      </div>
+      <div class="alert blue" style="margin-bottom:0;">
+        <div class="alert-icon">🎯</div>
+        <div class="alert-body">
+          <strong>Nhiệm vụ FPT tại Mục số 2 — Vòng 3</strong>
+          <span>Dùng dẫn chứng cụ thể để giúp anh Trung + anh Cương <strong>tự tin</strong> trình bày trước Chủ tịch Mậu, TGĐ Dũng và Kế toán trưởng Đồng của Tổng Công ty.</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--gray-dk);">3 Áp lực hội tụ — Tại sao phải chuyển đổi NGAY bây giờ?</div>
+      <div class="alert red" style="margin-bottom:10px;">
+        <div class="alert-icon">🏗️</div>
+        <div class="alert-body">
+          <strong>Áp lực 1: Quy mô đã vượt ngưỡng từ lâu</strong>
+          <span>DT ~3.000 tỷ + 4 nhà máy + sáp nhập vào Tổng Công ty → FAST hết vùng phù hợp từ 2–3 năm trước. Tiếp tục dùng = rủi ro leo thang mỗi ngày.</span>
+        </div>
+      </div>
+      <div class="alert orange" style="margin-bottom:10px;">
+        <div class="alert-icon">💸</div>
+        <div class="alert-body">
+          <strong>Áp lực 2: Chi phí ẩn đang "chảy máu" hàng ngày</strong>
+          <span>~344,7 tỷ/năm = <strong>944 triệu/ngày</strong> mất đi vì thiếu hệ thống tích hợp. Được xác nhận bởi kiểm toán Deloitte 2025.</span>
+        </div>
+      </div>
+      <div class="alert blue" style="margin-bottom:0;">
+        <div class="alert-icon">📋</div>
+        <div class="alert-body">
+          <strong>Áp lực 3: Cam kết GoLive 11/01/2027 — không đổi</strong>
+          <span>Anh Trung nhấn mạnh nhiều lần trong transcript: <em>"Không thay đổi được cái này."</em> Mỗi tháng trì hoãn = mất thêm 28,7 tỷ chi phí ẩn.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────
+     S2 · 8 ĐIỂM GIỚI HẠN
+─────────────────────────────── -->
+<div class="section" id="s2">
+  <div class="section-title">🏭 8 Điểm FAST đang bị giới hạn — Được xác nhận từ 15 biên bản khảo sát</div>
+  <div class="grid-2">
+    <div>
+      <div class="pain-card red">
+        <div class="pain-header">
+          <div class="pain-title">1️⃣ Tài chính đa pháp nhân</div>
+          <div class="pain-value">❌</div>
+        </div>
+        <div class="pain-body">Hợp nhất BCTC 4 nhà máy bằng Excel thủ công → sai sót cao, kiểm toán Deloitte phát hiện nhiều điểm cần điều chỉnh. Không có intercompany tự động khi sáp nhập.</div>
+        <div class="pain-fix">✅ SAP FI Consolidation — real-time, chuẩn VAS/IFRS, đa pháp nhân</div>
+      </div>
+      <div class="pain-card red">
+        <div class="pain-header">
+          <div class="pain-title">2️⃣ Kế hoạch sản xuất (PP/MRP)</div>
+          <div class="pain-value">❌</div>
+        </div>
+        <div class="pain-body">Lệnh sản xuất lập thủ công theo kinh nghiệm, không theo demand thực tế. BOM không version control. Không tính được capacity từng nhà máy. CNC outsource +176%.</div>
+        <div class="pain-fix">✅ SAP PP + MRP Live — tự động lập kế hoạch từ đơn hàng, Capacity Planning</div>
+      </div>
+      <div class="pain-card red">
+        <div class="pain-header">
+          <div class="pain-title">3️⃣ Kho đa địa điểm (4 nhà máy)</div>
+          <div class="pain-value">❌</div>
+        </div>
+        <div class="pain-body">4 kho hoạt động độc lập, không nhìn thấy nhau. Mã vật tư không chuẩn hóa: cùng 1 nguyên liệu, 4 mã khác nhau. Không thể điều phối hàng giữa kho.</div>
+        <div class="pain-fix">✅ SAP EWM + MDG — multi-warehouse, Master Data chuẩn hóa toàn tập đoàn</div>
+      </div>
+      <div class="pain-card red">
+        <div class="pain-header">
+          <div class="pain-title">4️⃣ Đặt hàng & Kéo hàng đại lý</div>
+          <div class="pain-value">❌</div>
+        </div>
+        <div class="pain-body">Đại lý đặt hàng qua Zalo/điện thoại. Không biết đại lý nào đặt mà chưa kéo hàng → HTK tăng vọt, vốn bị giam. Anh Cương xác nhận: đây là bài toán cấp bách nhất.</div>
+        <div class="pain-fix">✅ SAP SD + DMS — theo dõi end-to-end: đặt → sản xuất → kéo hàng</div>
+      </div>
+    </div>
+    <div>
+      <div class="pain-card orange">
+        <div class="pain-header">
+          <div class="pain-title">5️⃣ Mua hàng phân tán</div>
+          <div class="pain-value">❌</div>
+        </div>
+        <div class="pain-body">Yêu cầu mua từ 4 nhà máy không tập hợp → không đàm phán được giá tổng. Không có vendor evaluation. Chi phí DV mua ngoài tăng +68,9% → 91 tỷ.</div>
+        <div class="pain-fix">✅ SAP MM Central Purchasing — đàm phán tập trung, tiết kiệm 10–15%</div>
+      </div>
+      <div class="pain-card orange">
+        <div class="pain-header">
+          <div class="pain-title">6️⃣ R&D — BOM & Công thức phối liệu</div>
+          <div class="pain-value">❌</div>
+        </div>
+        <div class="pain-body">Công thức phối liệu lưu trong Word/Excel → không version control, dễ nhầm/mất. Chuyển giao từ R&D sang sản xuất thủ công → sai sót chất lượng tiềm ẩn.</div>
+        <div class="pain-fix">✅ SAP PLM — BOM lifecycle, revision control, chuyển giao tự động</div>
+      </div>
+      <div class="pain-card orange">
+        <div class="pain-header">
+          <div class="pain-title">7️⃣ Tích hợp hệ sinh thái số</div>
+          <div class="pain-value">❌</div>
+        </div>
+        <div class="pain-body">VIT đang xây: SAP + MES + CRM + WMS + HRM + CMMS. FAST không thể là "lõi trung tâm" — API đóng, không real-time, không kết nối được hệ sinh thái 6 tầng.</div>
+        <div class="pain-fix">✅ SAP BTP — nền tảng mở, REST API, kết nối toàn bộ hệ sinh thái</div>
+      </div>
+      <div class="pain-card orange">
+        <div class="pain-header">
+          <div class="pain-title">8️⃣ Đa pháp nhân sau sáp nhập</div>
+          <div class="pain-value">❌</div>
+        </div>
+        <div class="pain-body">FAST thiết kế cho 1 pháp nhân → không xử lý intercompany, không có transfer pricing nội bộ, không báo cáo hợp nhất tự động khi sáp nhập vào Tổng Công ty.</div>
+        <div class="pain-fix">✅ SAP Multi-Company Code — đa pháp nhân, intercompany tự động</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────
+     S3 · CHI PHÍ ẨN
+─────────────────────────────── -->
+<div class="section" id="s3">
+  <div class="section-title">💸 Chi phí ẩn từ BCTC VIT 2025 — Số liệu thực tế từ kiểm toán Deloitte</div>
+  <div class="grid-2">
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:16px;">📊 5 Điểm "chảy máu" được xác nhận từ BCTC Deloitte 2025</div>
+
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>🔴 Dự phòng giảm giá HTK</span>
+          <span style="color:var(--red);font-weight:700;">+352% → 41,8 tỷ</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--red);"></div></div>
+        <div style="font-size:11px;color:var(--gray);margin-top:3px;">Nguyên nhân gốc: Không có Demand Planning, không có MRP → sản xuất dư không kiểm soát được</div>
+      </div>
+
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>🔴 CNC Outsource tăng vọt</span>
+          <span style="color:var(--red);font-weight:700;">+176% → 54,9 tỷ</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:82%;background:var(--red);"></div></div>
+        <div style="font-size:11px;color:var(--gray);margin-top:3px;">Nguyên nhân gốc: Không có Production Planning tích hợp → không phân bổ được lệnh SX tối ưu</div>
+      </div>
+
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>🟠 Chi phí DV mua ngoài</span>
+          <span style="color:var(--orange);font-weight:700;">+68,9% → 91 tỷ</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:68%;background:var(--orange);"></div></div>
+        <div style="font-size:11px;color:var(--gray);margin-top:3px;">Nguyên nhân gốc: Không có Procurement tập trung, không tối ưu được giá đầu vào</div>
+      </div>
+
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>🟠 Hàng bán bị trả lại</span>
+          <span style="color:var(--orange);font-weight:700;">Tăng ×5,2 lần</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:76%;background:var(--orange);"></div></div>
+        <div style="font-size:11px;color:var(--gray);margin-top:3px;">Nguyên nhân gốc: Không có WMS, Batch traceability, ATP check → giao sai/thiếu/hỏng</div>
+      </div>
+
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>🟡 Kiểm toán Deloitte phức tạp</span>
+          <span style="color:#92400e;font-weight:700;">Chi phí leo thang</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:48%;background:#d97706;"></div></div>
+        <div style="font-size:11px;color:var(--gray);margin-top:3px;">Nguyên nhân gốc: BCTC hợp nhất thủ công bằng Excel → sai sót, nhiều điểm cần điều chỉnh</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="roi-box" style="margin-bottom:16px;">
+        <h3>💰 Tổng Chi phí ẩn ước tính hàng năm</h3>
+        <div class="roi-value">344,7 tỷ</div>
+        <div class="roi-label">đang "chảy máu" vì thiếu hệ thống tích hợp</div>
+        <div class="roi-grid">
+          <div class="roi-item">
+            <div class="roi-item-v">469%</div>
+            <div class="roi-item-l">của LNST 2025 (73,5 tỷ)</div>
+          </div>
+          <div class="roi-item">
+            <div class="roi-item-v">944 tr</div>
+            <div class="roi-item-l">mất đi mỗi ngày</div>
+          </div>
+          <div class="roi-item">
+            <div class="roi-item-v">28,7 tỷ</div>
+            <div class="roi-item-l">mỗi tháng trì hoãn</div>
+          </div>
+          <div class="roi-item">
+            <div class="roi-item-v">&lt; 8 tháng</div>
+            <div class="roi-item-l">Payback period SAP</div>
+          </div>
+        </div>
+      </div>
+      <div class="alert blue" style="margin-bottom:0;">
+        <div class="alert-icon">🗣️</div>
+        <div class="alert-body">
+          <strong>Thông điệp cho Chủ tịch + TGĐ + Kế toán trưởng:</strong>
+          <span style="font-style:italic;">"Chi phí triển khai SAP chỉ mất một lần. Chi phí license mất hàng năm nhưng vẫn nhỏ hơn 344,7 tỷ chi phí ẩn. Mỗi tháng không có SAP, VIT đang mất 28,7 tỷ có thể phòng ngừa được."</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────
+     S4 · FAST vs SAP
+─────────────────────────────── -->
+<div class="section" id="s4">
+  <div class="section-title">⚖️ FAST vs SAP S/4HANA — So sánh trực tiếp theo tiêu chí của VIT</div>
+  <div class="card">
+    <div class="table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr>
+            <th class="vs-head-crit" style="width:28%;">Tiêu chí đánh giá</th>
+            <th class="vs-head-fast" style="width:28%;">❌ FAST (Hiện tại)</th>
+            <th class="vs-head-sap"  style="width:30%;">✅ SAP S/4HANA Public Cloud</th>
+            <th class="vs-head-crit" style="width:14%;">Mức độ ưu tiên</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-criteria">Phân khúc thiết kế</td>
+            <td class="col-fast">SME, 1–3 pháp nhân, &lt;500 tỷ doanh thu</td>
+            <td class="col-sap">Tập đoàn, đa pháp nhân, không giới hạn quy mô</td>
+            <td><span class="tag red">🔴 Cực cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Quản lý sản xuất (PP/MRP)</td>
+            <td class="col-fast">Không có / rất hạn chế</td>
+            <td class="col-sap">PP, MRP Live, Capacity Planning đầy đủ</td>
+            <td><span class="tag red">🔴 Cực cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Hợp nhất BCTC tập đoàn</td>
+            <td class="col-fast">Thủ công bằng Excel, sai sót cao</td>
+            <td class="col-sap">Consolidation real-time, chuẩn VAS/IFRS tự động</td>
+            <td><span class="tag red">🔴 Cực cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Kho đa địa điểm (4 nhà máy)</td>
+            <td class="col-fast">4 kho độc lập, không liên thông</td>
+            <td class="col-sap">EWM — multi-warehouse, real-time visibility</td>
+            <td><span class="tag red">🔴 Cực cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Đặt hàng & Kéo hàng đại lý</td>
+            <td class="col-fast">Qua điện thoại/Zalo, thủ công</td>
+            <td class="col-sap">SD + DMS — theo dõi end-to-end real-time</td>
+            <td><span class="tag red">🔴 Cực cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Đa pháp nhân sau sáp nhập</td>
+            <td class="col-fast">Không hỗ trợ intercompany</td>
+            <td class="col-sap">Multi-Company Code, intercompany tự động</td>
+            <td><span class="tag red">🔴 Cực cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Tích hợp hệ sinh thái (API)</td>
+            <td class="col-fast">API đóng, không mở, không real-time</td>
+            <td class="col-sap">SAP BTP — REST API mở, tích hợp mọi hệ thống</td>
+            <td><span class="tag red">🔴 Cực cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Mua hàng tập trung</td>
+            <td class="col-fast">Phân tán 4 nhà máy, không tối ưu giá</td>
+            <td class="col-sap">Central Purchasing, Vendor Evaluation, 3-way match</td>
+            <td><span class="tag orange">🟠 Cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">BOM & R&D lifecycle</td>
+            <td class="col-fast">Word/Excel, không version control</td>
+            <td class="col-sap">SAP PLM — revision control, lifecycle management</td>
+            <td><span class="tag orange">🟠 Cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Báo cáo real-time cho lãnh đạo</td>
+            <td class="col-fast">Báo cáo định kỳ, chủ yếu Excel</td>
+            <td class="col-sap">SAP Analytics Cloud — dashboard live, mobile</td>
+            <td><span class="tag orange">🟠 Cao</span></td>
+          </tr>
+          <tr>
+            <td class="col-criteria">Tối ưu License theo hệ sinh thái</td>
+            <td class="col-fast">N/A — không có hệ sinh thái</td>
+            <td class="col-sap">FPT Mesh giảm PP user, WMS thay EWM, HRM riêng</td>
+            <td><span class="tag blue">🔵 Đặc biệt</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────
+     S5 · ROI & TIMELINE
+─────────────────────────────── -->
+<div class="section" id="s5">
+  <div class="section-title">📈 ROI & Timeline — Tính khả thi GoLive trong 6 tháng</div>
+  <div class="grid-2">
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;">💰 Phân tích Chi phí — Ngôn ngữ của lãnh đạo đầu tư</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Hạng mục</th>
+              <th style="text-align:right;">Giá trị</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#fef2f2;">
+              <td><strong>Chi phí ẩn hiện tại</strong></td>
+              <td style="text-align:right;"><strong style="color:var(--red);">344,7 tỷ/năm</strong></td>
+              <td>Từ BCTC Deloitte 2025</td>
+            </tr>
+            <tr style="background:#fef2f2;">
+              <td>Tương đương mỗi ngày</td>
+              <td style="text-align:right;color:var(--red);">944 triệu/ngày</td>
+              <td>Đang mất, có thể ngăn chặn</td>
+            </tr>
+            <tr><td colspan="3" style="background:#f9fafb;padding:4px 13px;font-size:11px;color:var(--gray);">─── Chi phí đầu tư SAP ───</td></tr>
+            <tr style="background:#f0fdf4;">
+              <td><strong>Chi phí triển khai SAP</strong></td>
+              <td style="text-align:right;"><strong style="color:var(--green);">50–80 tỷ</strong></td>
+              <td>Chi một lần duy nhất</td>
+            </tr>
+            <tr style="background:#f0fdf4;">
+              <td>License/năm (100 users)</td>
+              <td style="text-align:right;color:var(--green);">3–5 tỷ/năm</td>
+              <td>35 core + 65 light users</td>
+            </tr>
+            <tr style="background:#f0fdf4;">
+              <td>Maintenance nội địa FPT</td>
+              <td style="text-align:right;color:var(--green);">1–2 tỷ/năm</td>
+              <td>5 năm đầu (anh Cương yêu cầu)</td>
+            </tr>
+            <tr style="background:#eff6ff;font-weight:700;">
+              <td>⏱️ Payback Period</td>
+              <td style="text-align:right;color:var(--blue);">&lt; 8 tháng</td>
+              <td>Chi phí ẩn tiết kiệm bù đắp</td>
+            </tr>
+            <tr style="background:#eff6ff;font-weight:700;">
+              <td>📈 ROI 5 năm (ước tính bảo thủ)</td>
+              <td style="text-align:right;color:var(--blue);">&gt; 900%</td>
+              <td>Chưa tính lợi ích định tính</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert orange" style="margin-top:14px;margin-bottom:0;">
+        <div class="alert-icon">💡</div>
+        <div class="alert-body">
+          <strong>Lưu ý anh Trung nhấn mạnh trong transcript:</strong>
+          <span><em>"Chi phí license là phí mất hàng năm — đây là điểm lãnh đạo quan tâm nhất. FPT phải chứng minh tối ưu được license nhờ hệ sinh thái nội địa (Mesh, WMS, HRM)."</em></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;">⏱️ Bằng chứng GoLive 6 tháng — Case thực tế tại Việt Nam</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot green"></div>
+          <div class="tl-date">🏆 Case tốt nhất — Cùng ngành VLXD</div>
+          <div class="tl-title">Phú Tài Quartz Stone + FPT IS</div>
+          <div class="tl-body">SAP Public Cloud · Sản xuất đá thạch anh · <strong style="color:var(--green);">GoLive sau 4,5 tháng</strong> · FPT IS là đơn vị thực hiện → Có template ngành sẵn</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot blue"></div>
+          <div class="tl-date">⚡ Case nhanh nhất</div>
+          <div class="tl-title">FPT IS + Genfarma (Dược phẩm)</div>
+          <div class="tl-body">SAP S/4HANA · Sản xuất · <strong style="color:var(--blue);">GoLive sau 2 tháng</strong> · Scope tối giản, ưu tiên FI/CO + MM</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-date">🌏 Case đa pháp nhân</div>
+          <div class="tl-title">Win Brothers Group (Myanmar)</div>
+          <div class="tl-body">SAP S/4HANA · Đa pháp nhân, đa quốc gia · <strong style="color:var(--orange);">GoLive sau 5 tháng</strong> · Cùng bài toán hợp nhất của VIT</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot blue"></div>
+          <div class="tl-date">📦 Case phân phối lớn</div>
+          <div class="tl-title">Digiworld Corporation</div>
+          <div class="tl-body">SAP Public Cloud · <strong style="color:var(--blue);">GoLive 01/01/2024 sau 6 tháng</strong> · Vận hành ổn định ngay ngày đầu năm</div>
+        </div>
+      </div>
+      <div class="alert green" style="margin-top:12px;margin-bottom:0;">
+        <div class="alert-icon">✅</div>
+        <div class="alert-body">
+          <strong>6 tháng (07/2026 → 01/2027) là HOÀN TOÀN KHẢ THI</strong>
+          <span>FPT đã có template ngành sản xuất từ Phú Tài. FPT Digital đã hiểu toàn bộ hệ sinh thái VIT qua 170 cuộc phỏng vấn. Scope Giai đoạn 1 được giới hạn hợp lý.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────
+     S6 · LỢI THẾ FPT
+─────────────────────────────── -->
+<div class="section" id="s6">
+  <div class="section-title">🏆 Lợi thế độc quyền của FPT — Điều không đơn vị nào khác có</div>
+  <div class="grid-3" style="margin-bottom:20px;">
+    <div class="card" style="border-top:4px solid var(--blue);">
+      <div style="font-size:28px;margin-bottom:8px;">🧠</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--blue);">FPT Digital đã phỏng vấn 170 người VGT</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">Bao gồm lãnh đạo, trưởng phòng ban từ Bắc vào Nam → hiểu văn hóa, pain point, mong muốn từng bộ phận của VIT. Kiến trúc tổng thể hệ sinh thái đã sẵn có — không đơn vị nào khác có được điều này.</div>
+      <div class="alert blue" style="margin-bottom:0;">
+        <div class="alert-icon">💡</div>
+        <div class="alert-body">
+          <strong>Anh Trung nhấn mạnh (Transcript)</strong>
+          <span><em>"Đã có một ông đi xây dựng kiến trúc tổng thể rồi, hiểu về văn hóa rồi, hiểu về mong muốn của các phòng ban rồi. Thì bọn tôi khai thác luôn dữ liệu ở đấy."</em></span>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="border-top:4px solid var(--green);">
+      <div style="font-size:28px;margin-bottom:8px;">🏭</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--green);">Case Phú Tài — Cùng ngành, thành công thực tế</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">Phú Tài Quartz Stone: sản xuất đá thạch anh (VLXD) + SAP Public Cloud + FPT IS + GoLive 4,5 tháng → bằng chứng tính khả thi rõ nhất cho VIT. SciTech chưa có case nào trong ngành gạch/đá.</div>
+      <div class="alert green" style="margin-bottom:0;">
+        <div class="alert-icon">✅</div>
+        <div class="alert-body">
+          <strong>FPT đã có template ngành VLXD sản xuất sẵn</strong>
+          <span>Giảm rủi ro triển khai, rút ngắn timeline, tăng tỷ lệ thành công — không phải thử nghiệm lần đầu</span>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="border-top:4px solid var(--orange);">
+      <div style="font-size:28px;margin-bottom:8px;">🔗</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--orange);">Hệ sinh thái nội địa FPT — Tối ưu License</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:12px;">FPT Mesh (giảm PP user), Qlify WMS (thay EWM), FPT HRM, AI Invoice (kết nối Bộ Tài chính trực tiếp) → tối ưu số SAP user cần thiết, tiết kiệm chi phí license hàng năm đáng kể.</div>
+      <div class="alert orange" style="margin-bottom:0;">
+        <div class="alert-icon">💰</div>
+        <div class="alert-body">
+          <strong>AI Invoice: FPT kết nối Bộ Tài chính trực tiếp</strong>
+          <span>Đơn vị khác phải qua bên thứ 3 → FPT kết nối trực tiếp, rẻ hơn, an toàn hơn, nhanh hơn</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- So sánh FPT vs SciTech -->
+  <div class="card">
+    <div style="font-size:14px;font-weight:700;margin-bottom:14px;">🥊 FPT vs SciTech vs Đơn vị khác — Đối chiếu lợi thế cạnh tranh</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tiêu chí đánh giá</th>
+            <th style="text-align:center;">✅ FPT IS</th>
+            <th style="text-align:center;">⚠️ SciTech</th>
+            <th style="text-align:center;">❓ Đơn vị thứ 3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hiểu hệ sinh thái VGT (170 phỏng vấn)</td>
+            <td style="text-align:center;"><span class="tag green">✅ Có sẵn</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Không</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Không</span></td>
+          </tr>
+          <tr>
+            <td>Case ngành gạch/đá/VLXD thành công</td>
+            <td style="text-align:center;"><span class="tag green">✅ Phú Tài</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Chưa có</span></td>
+            <td style="text-align:center;"><span class="tag orange">⚠️ Chưa rõ</span></td>
+          </tr>
+          <tr>
+            <td>SAP Public Cloud Production (nhiều case)</td>
+            <td style="text-align:center;"><span class="tag green">✅ Nhiều case</span></td>
+            <td style="text-align:center;"><span class="tag orange">⚠️ Có</span></td>
+            <td style="text-align:center;"><span class="tag orange">⚠️ Chưa rõ</span></td>
+          </tr>
+          <tr>
+            <td>AI Invoice kết nối Bộ Tài chính trực tiếp</td>
+            <td style="text-align:center;"><span class="tag green">✅ Trực tiếp</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Qua bên thứ 3</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Qua bên thứ 3</span></td>
+          </tr>
+          <tr>
+            <td>Hệ sinh thái nội địa tối ưu License SAP</td>
+            <td style="text-align:center;"><span class="tag green">✅ Mesh+WMS+HRM</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Không</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Không</span></td>
+          </tr>
+          <tr>
+            <td>Kiến trúc tổng thể đã sẵn (FPT Digital)</td>
+            <td style="text-align:center;"><span class="tag green">✅ Có</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Không</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Không</span></td>
+          </tr>
+          <tr>
+            <td>Hiểu rõ roadmap tích hợp SAP ↔ MES ↔ DMS ↔ WMS</td>
+            <td style="text-align:center;"><span class="tag green">✅ Biết input/output</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Không</span></td>
+            <td style="text-align:center;"><span class="tag red">❌ Không</span></td>
+          </tr>
+          <tr>
+            <td>Cam kết nguồn lực hùng hậu tại Hà Nội</td>
+            <td style="text-align:center;"><span class="tag green">✅ 70% HN + 30% HCM</span></td>
+            <td style="text-align:center;"><span class="tag orange">⚠️ Hạn chế</span></td>
+            <td style="text-align:center;"><span class="tag orange">⚠️ Chưa rõ</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────
+     S7 · CẤU TRÚC SLIDE
+─────────────────────────────── -->
+<div class="section" id="s7">
+  <div class="section-title">📋 Cấu trúc Slide Vòng 3 — Theo đề xuất của anh Nguyễn Tiến Trung</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;">📐 5 Mục bắt buộc theo transcript 20/06/2026</div>
+      <div class="slide-item blue">
+        <div class="slide-num">Mục 1</div>
+        <div class="slide-title">🤝 Tại sao VIT nên chọn FPT?</div>
+        <div class="slide-desc">Năng lực FPT IS: case gần đây trong sản xuất (Phú Tài, Genfarma) · Lợi thế FPT Digital 170 phỏng vấn · Hệ sinh thái nội địa AI Invoice + Mesh + WMS + HRM · Cam kết đồng hành dài hạn</div>
+      </div>
+      <div class="slide-item red">
+        <div class="slide-num">Mục 2 ⭐ Trọng tâm hôm nay</div>
+        <div class="slide-title">⚠️ Sự cần thiết phải chuyển từ FAST → SAP</div>
+        <div class="slide-desc">Dẫn chứng cụ thể từ BCTC Deloitte · 8 điểm giới hạn của FAST · 344,7 tỷ chi phí ẩn · Các tập đoàn lớn đều đã chuyển sang SAP/Oracle khi đạt quy mô này</div>
+      </div>
+      <div class="slide-item green">
+        <div class="slide-num">Mục 3</div>
+        <div class="slide-title">🗺️ Phương án triển khai đảm bảo thành công</div>
+        <div class="slide-desc">Public Cloud vs Private · Scope Giai đoạn 1 rõ ràng (phân hệ nào GoLive T1/2027, phân hệ nào để Giai đoạn 2) · Kết quả cụ thể từng module · Tích hợp với hệ sinh thái</div>
+      </div>
+      <div class="slide-item orange">
+        <div class="slide-num">Mục 4</div>
+        <div class="slide-title">⏱️ Cam kết tiến độ GoLive 11/01/2027</div>
+        <div class="slide-desc">Lịch trình chi tiết từng giai đoạn (Khảo sát → Thiết kế → Xây dựng → Kiểm thử → GoLive) · Số lượng nhân sự FPT theo từng giai đoạn · CV nhân sự chủ chốt kèm theo</div>
+      </div>
+      <div class="slide-item blue">
+        <div class="slide-num">Mục 5</div>
+        <div class="slide-title">💰 Chi phí — Triển khai + License + Maintenance</div>
+        <div class="slide-desc">Chi phí triển khai (1 lần) · License 100 users = 35 core + 65 light · Maintenance 5 năm đầu (anh Cương yêu cầu) · Tối ưu license nhờ hệ sinh thái FPT Mesh + WMS</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;">🎯 Hướng dẫn chi tiết cho Mục 2 — Slide "Tại sao FAST → SAP?"</div>
+        <div class="slide-item blue">
+          <div class="slide-num">Slide 2.1</div>
+          <div class="slide-title">📍 VIT đang đứng ở đâu trên đường cong tăng trưởng?</div>
+          <div class="slide-desc">FAST OK &lt;500 tỷ → Vùng chuyển tiếp → &gt;1.500 tỷ SAP bắt buộc. Đánh dấu VIT tại ~3.000 tỷ. Trực quan, đơn giản, không cần giải thích</div>
+        </div>
+        <div class="slide-item red">
+          <div class="slide-num">Slide 2.2</div>
+          <div class="slide-title">💸 344,7 tỷ/năm đang mất đi — Số liệu từ Deloitte</div>
+          <div class="slide-desc">5 điểm chảy máu từ BCTC 2025: HTK +352%, CNC +176%, DV mua ngoài +68,9%, hàng trả lại ×5,2 lần. Mỗi số đều có nguyên nhân gốc là thiếu hệ thống</div>
+        </div>
+        <div class="slide-item orange">
+          <div class="slide-num">Slide 2.3</div>
+          <div class="slide-title">🏭 8 Bài toán FAST không giải được</div>
+          <div class="slide-desc">Từng bài toán kèm giải pháp SAP tương ứng. Nhấn mạnh 4 bài toán cực cao: Tài chính đa pháp nhân, PP/MRP, Kho đa điểm, Đặt hàng-Kéo hàng</div>
+        </div>
+        <div class="slide-item green">
+          <div class="slide-num">Slide 2.4</div>
+          <div class="slide-title">🌏 Tập đoàn lớn nào đã chuyển sang SAP?</div>
+          <div class="slide-desc">Các DN VLXD lớn trong nước, khu vực ASEAN. Thông điệp: "Đây là xu hướng tất yếu, không phải thí nghiệm"</div>
+        </div>
+        <div class="slide-item blue">
+          <div class="slide-num">Slide 2.5</div>
+          <div class="slide-title">⚖️ Chi phí không đổi > Chi phí đổi</div>
+          <div class="slide-desc">So sánh trực tiếp: Chi phí SAP 5 năm vs 344,7 tỷ/năm chi phí ẩn. Payback &lt;8 tháng. ROI &gt;900%. "Không triển khai SAP mới là rủi ro thực sự"</div>
+        </div>
+      </div>
+      <div class="alert blue" style="margin-bottom:0;">
+        <div class="alert-icon">⏰</div>
+        <div class="alert-body">
+          <strong>Deadline slide: Thứ 2 (22/06/2026) — Anh Trung review lần cuối</strong>
+          <span>Anh Trung: <em>"Anh gửi sớm thì bọn em góp ý sớm, mà anh gửi đêm thì bọn em góp ý đêm."</em> · Buổi bảo vệ dự kiến thứ 3–thứ 6 tuần tới, khoảng 4 tiếng</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thành phần tham dự -->
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;margin-bottom:14px;">👥 Thành phần tham dự Vòng 3 & Điều cần chuẩn bị</div>
+    <div class="grid-3">
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Phía Tổng Công ty (Quyết định 51%+)</div>
+        <div class="alert red" style="margin-bottom:8px;">
+          <div class="alert-icon">👔</div>
+          <div class="alert-body">
+            <strong>Anh Mậu — Chủ tịch HĐQT</strong>
+            <span>Quan tâm: Chiến lược dài hạn, rủi ro, tính khả thi GoLive 2027. Đã chỉ đạo khép lại sớm</span>
+          </div>
+        </div>
+        <div class="alert red" style="margin-bottom:8px;">
+          <div class="alert-icon">👔</div>
+          <div class="alert-body">
+            <strong>Anh Dũng — Tổng Giám đốc</strong>
+            <span>Quan tâm: Phương án triển khai, tiến độ, nguồn lực FPT, cam kết thực tế</span>
+          </div>
+        </div>
+        <div class="alert orange" style="margin-bottom:0;">
+          <div class="alert-icon">📊</div>
+          <div class="alert-body">
+            <strong>Anh Đồng — Kế toán trưởng</strong>
+            <span>Quan tâm: Chi phí license hàng năm, phân hệ tài chính, consolidation, VAS/IFRS</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Phía VIT (Đề xuất 49%)</div>
+        <div class="alert blue" style="margin-bottom:8px;">
+          <div class="alert-icon">🔄</div>
+          <div class="alert-body">
+            <strong>Anh Trung — Ban Chuyển đổi số</strong>
+            <span>Người đề xuất 5 mục slide. Cần dẫn chứng để tự tin trình bày Mục 2 trước lãnh đạo Tổng Công ty</span>
+          </div>
+        </div>
+        <div class="alert blue" style="margin-bottom:0;">
+          <div class="alert-icon">⚙️</div>
+          <div class="alert-body">
+            <strong>Anh Cương — Phụ trách kỹ thuật</strong>
+            <span>Pain point chính: Đặt hàng & Kéo hàng đại lý. Yêu cầu chi phí Maintenance 5 năm đầu từ FPT nội địa</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Cần chuẩn bị thêm</div>
+        <div class="alert green" style="margin-bottom:8px;">
+          <div class="alert-icon">📄</div>
+          <div class="alert-body">
+            <strong>CV nhân sự chủ chốt + Danh sách Excel đầy đủ</strong>
+            <span>CV chi tiết (Huyền, Dương, Bách...) + danh sách Excel số năm kinh nghiệm theo giai đoạn</span>
+          </div>
+        </div>
+        <div class="alert green" style="margin-bottom:8px;">
+          <div class="alert-icon">🔗</div>
+          <div class="alert-body">
+            <strong>Đồng bộ với FPT Digital (anh Ngọc/Lĩnh)</strong>
+            <span>Sáng thứ 2 phải họp ngay. Đồng bộ roadmap tổng thể, scope từng giai đoạn, tối ưu license SAP</span>
+          </div>
+        </div>
+        <div class="alert orange" style="margin-bottom:0;">
+          <div class="alert-icon">💡</div>
+          <div class="alert-body">
+            <strong>Đưa case Phú Tài vào Mục 1 rõ ràng</strong>
+            <span>Không chỉ liệt kê tên — phải nêu: ngành gạch/đá, Public Cloud, 4,5 tháng GoLive, kết quả cụ thể</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────
+     S8 · KẾT LUẬN
+─────────────────────────────── -->
+<div class="section" id="s8">
+  <div class="section-title">🎯 Kết luận chiến lược — 3 Sự thật VIT cần đối mặt</div>
+
+  <div class="alert blue" style="margin-bottom:20px;">
+    <div class="alert-icon">💬</div>
+    <div class="alert-body">
+      <strong>Thông điệp cốt lõi cho Chủ tịch Mậu + TGĐ Dũng + Kế toán trưởng Đồng:</strong>
+      <span style="font-style:italic;">"FAST không phải là phần mềm kém — FAST đơn giản là đã hết vùng phù hợp với quy mô hiện tại của VIT. Câu hỏi không còn là 'có nên đổi không', mà là 'ai sẽ đồng hành hiệu quả nhất trong cuộc chuyển đổi này.'"</span>
+    </div>
+  </div>
+
+  <div class="conclusion" style="margin-bottom:20px;">
+    <h2>🔄 3 Sự thật VIT cần đối mặt — Nền tảng để phê duyệt SAP</h2>
+    <p>Ba sự thật này là cơ sở để lãnh đạo VIT tự tin phê duyệt dự án SAP tại Vòng 3 bảo vệ trước Tổng Công ty.</p>
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <div class="conclusion-icon">📏</div>
+        <strong>Sự thật 1: FAST đã hết vùng phù hợp</strong>
+        <span>VIT ~3.000 tỷ + 4 nhà máy + sáp nhập Tổng Công ty → vượt ngưỡng tối đa FAST phục vụ được từ 2–3 năm trước</span>
+      </div>
+      <div class="conclusion-item">
+        <div class="conclusion-icon">💸</div>
+        <strong>Sự thật 2: Chi phí không đổi > Chi phí đổi</strong>
+        <span>344,7 tỷ/năm = 469% LNST đang mất. Payback SAP &lt;8 tháng. ROI 5 năm &gt;900%. Mỗi tháng trì hoãn = mất thêm 28,7 tỷ</span>
+      </div>
+      <div class="conclusion-item">
+        <div class="conclusion-icon">⏰</div>
+        <strong>Sự thật 3: Window of opportunity duy nhất</strong>
+        <span>Sáp nhập đang xảy ra → chuẩn hóa ngay = làm 1 lần. Deadline 11/01/2027 không thay đổi — anh Trung xác nhận nhiều lần</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Items -->
+  <div class="grid-2">
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;">✅ Checklist Action Plan — Trước thứ 2 (22/06/2026)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Action Item</th>
+            <th style="text-align:center;">Owner</th>
+            <th style="text-align:center;">Deadline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hoàn thiện Slide Mục 2 (FAST→SAP) với dẫn chứng BCTC</td>
+            <td style="text-align:center;"><span class="tag blue">Dương+Thắng</span></td>
+            <td style="text-align:center;"><span class="tag red">CN tối</span></td>
+          </tr>
+          <tr>
+            <td>Họp đồng bộ FPT Digital (anh Ngọc/Lĩnh) về roadmap & license</td>
+            <td style="text-align:center;"><span class="tag blue">Sinh</span></td>
+            <td style="text-align:center;"><span class="tag red">Sáng T2</span></td>
+          </tr>
+          <tr>
+            <td>Chuẩn bị CV nhân sự chủ chốt (Huyền, Dương, Bách + danh sách Excel)</td>
+            <td style="text-align:center;"><span class="tag blue">Huyền</span></td>
+            <td style="text-align:center;"><span class="tag red">CN tối</span></td>
+          </tr>
+          <tr>
+            <td>Tính toán tối ưu license SAP dựa trên hệ sinh thái FPT Mesh + WMS</td>
+            <td style="text-align:center;"><span class="tag blue">Dương</span></td>
+            <td style="text-align:center;"><span class="tag orange">T2 trưa</span></td>
+          </tr>
+          <tr>
+            <td>Gửi slide hoàn chỉnh cho anh Trung + anh Cương review</td>
+            <td style="text-align:center;"><span class="tag blue">Sinh</span></td>
+            <td style="text-align:center;"><span class="tag red">T2 chiều</span></td>
+          </tr>
+          <tr>
+            <td>Confirm lịch buổi bảo vệ Vòng 3 (thứ 3–6) với anh Trung</td>
+            <td style="text-align:center;"><span class="tag blue">Sinh</span></td>
+            <td style="text-align:center;"><span class="tag red">Sáng T2</span></td>
+          </tr>
+          <tr>
+            <td>Chuẩn bị case Phú Tài với số liệu cụ thể (ngành, thời gian, kết quả)</td>
+            <td style="text-align:center;"><span class="tag blue">Thắng</span></td>
+            <td style="text-align:center;"><span class="tag red">CN tối</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;">🏆 Điểm mạnh độc quyền FPT cần nhấn mạnh trong buổi bảo vệ</div>
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>🧠 FPT Digital đã phỏng vấn 170 người</span>
+          <span style="color:var(--blue);font-weight:700;">Độc quyền</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>🏭 Case Phú Tài — Cùng ngành VLXD</span>
+          <span style="color:var(--green);font-weight:700;">Độc quyền</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--green);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>🧾 AI Invoice kết nối Bộ Tài chính trực tiếp</span>
+          <span style="color:var(--blue);font-weight:700;">Độc quyền</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--blue);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>⚙️ FPT Mesh giảm PP license</span>
+          <span style="color:var(--orange);font-weight:700;">Lợi thế</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--orange);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>📦 Qlify WMS thay thế EWM</span>
+          <span style="color:var(--orange);font-weight:700;">Lợi thế</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--orange);"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">
+          <span>📊 SAP Public Cloud Production (nhiều case VN)</span>
+          <span style="color:var(--green);font-weight:700;">Mạnh</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--green);"></div></div>
+      </div>
+      <div class="alert green" style="margin-top:6px;margin-bottom:0;">
+        <div class="alert-icon">🎯</div>
+        <div class="alert-body">
+          <strong>Thông điệp kết của anh Trung (Transcript):</strong>
+          <span><em>"Đây là cái điểm nhấn rất lớn khi mà anh bảo vệ — nó sẽ toát lên cái ý mà các đơn vị khác không có."</em></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- END .main -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div style="margin-bottom:8px;">
+    <strong>🔒 TÀI LIỆU NỘI BỘ — FPT IS × Viglacera Tiên Sơn</strong>
+  </div>
+  <div style="margin-bottom:4px;">
+    Tổng hợp từ: BCTC Deloitte 2025 · 15 Biên bản khảo sát · Transcript họp 20/06/2026 · FPT Digital Wisebase
+  </div>
+  <div>
+    Dashboard phục vụ chuẩn bị Vòng 3 · Deadline slide: <strong>Thứ 2, 22/06/2026</strong> · GoLive target: <strong>11/01/2027</strong>
+  </div>
+</div>
+
+</body>
+</html>
