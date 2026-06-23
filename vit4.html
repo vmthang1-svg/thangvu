@@ -1,0 +1,1221 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIT — Hiện trạng & Phân tích Pain Point | FPT IS</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a0f1e; color: #e8eaf6; overflow-x: hidden; }
+
+/* ===== SLIDE ===== */
+.slide { min-height: 100vh; padding: 60px 80px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.slide-cover { background: linear-gradient(135deg,#0a0f1e,#1a1f3a 50%,#0d1b2a); align-items: center; text-align: center; }
+.slide-dark { background: linear-gradient(160deg,#0a0f1e,#111827); }
+.slide-red { background: linear-gradient(160deg,#1a0808,#0f0404); }
+.slide-blue { background: linear-gradient(160deg,#080f1a,#04081a); }
+.slide-purple { background: linear-gradient(160deg,#0f0a1a,#080415); }
+.slide-orange { background: linear-gradient(160deg,#1a0f00,#0f0800); }
+.slide-teal { background: linear-gradient(160deg,#001a15,#000f0a); }teal
+
+/* ===== BRAND / NUM ===== */
+.brand-bar { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#e53935,#ff6f00,#f9a825,#43a047,#1e88e5,#8e24aa); }
+.slide-num { position:absolute; top:24px; right:40px; font-size:11px; color:rgba(255,255,255,0.25); letter-spacing:2px; text-transform:uppercase; }
+
+/* ===== TAGS ===== */
+.tag { display:inline-flex; align-items:center; gap:8px; padding:5px 14px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:18px; width:fit-content; }
+.tag-white { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.6); }
+.tag-red { background:rgba(229,57,53,0.14); border:1px solid rgba(229,57,53,0.38); color:#ef9a9a; }
+.tag-blue { background:rgba(30,136,229,0.14); border:1px solid rgba(30,136,229,0.38); color:#90caf9; }
+.tag-purple { background:rgba(142,36,170,0.14); border:1px solid rgba(142,36,170,0.38); color:#ce93d8; }
+.tag-orange { background:rgba(255,111,0,0.14); border:1px solid rgba(255,111,0,0.38); color:#ffcc80; }
+.tag-teal { background:rgba(0,150,136,0.14); border:1px solid rgba(0,150,136,0.38); color:#80cbc4; }
+.tag-green { background:rgba(67,160,71,0.14); border:1px solid rgba(67,160,71,0.38); color:#a5d6a7; }
+
+/* ===== HEADINGS ===== */
+.slide-title { font-size:38px; font-weight:800; line-height:1.15; margin-bottom:10px; }
+.slide-sub { font-size:14px; color:rgba(255,255,255,0.42); margin-bottom:32px; line-height:1.6; }
+
+/* ===== GRADIENT TEXT ===== */
+.gr-red { background:linear-gradient(135deg,#ef5350,#ff8a65); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.gr-blue { background:linear-gradient(135deg,#42a5f5,#7c4dff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.gr-gold { background:linear-gradient(135deg,#ffb300,#ff6f00); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.gr-green { background:linear-gradient(135deg,#66bb6a,#26a69a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.gr-purple { background:linear-gradient(135deg,#ab47bc,#7c4dff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+/* ===== LAYOUT ===== */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+.four-col { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.five-col { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+
+/* ===== KPI CARD ===== */
+.kcard { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:18px; position:relative; overflow:hidden; }
+.kcard::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+.kcard.red::before { background:linear-gradient(90deg,#e53935,#ef9a9a); }
+.kcard.green::before { background:linear-gradient(90deg,#43a047,#a5d6a7); }
+.kcard.orange::before { background:linear-gradient(90deg,#ff6f00,#ffcc80); }
+.kcard.blue::before { background:linear-gradient(90deg,#1e88e5,#90caf9); }
+.kcard.purple::before { background:linear-gradient(90deg,#8e24aa,#ce93d8); }
+.kcard.teal::before { background:linear-gradient(90deg,#00897b,#80cbc4); }
+.kcard-lbl { font-size:10px; color:rgba(255,255,255,0.38); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:7px; }
+.kcard-val { font-size:26px; font-weight:800; margin-bottom:4px; line-height:1; }
+.kcard-desc { font-size:12px; color:rgba(255,255,255,0.42); line-height:1.5; }
+.kbadge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:700; margin-top:7px; }
+.kb-red { background:rgba(229,57,53,0.18); color:#ef9a9a; }
+.kb-green { background:rgba(67,160,71,0.18); color:#a5d6a7; }
+.kb-orange { background:rgba(255,111,0,0.18); color:#ffcc80; }
+
+/* ===== TABLE ===== */
+.dtable { width:100%; border-collapse:collapse; font-size:12.5px; }
+.dtable th { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.45); font-size:10px; text-transform:uppercase; letter-spacing:1.5px; padding:9px 13px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.07); }
+.dtable td { padding:9px 13px; border-bottom:1px solid rgba(255,255,255,0.035); vertical-align:middle; }
+.dtable tr:hover td { background:rgba(255,255,255,0.02); }
+.tr { color:rgba(255,255,255,0.8); }
+.tr-red { color:#ef5350; font-weight:700; }
+.tr-green { color:#66bb6a; font-weight:700; }
+.tr-orange { color:#ffa726; font-weight:700; }
+
+/* ===== ALERT ===== */
+.alert { border-radius:9px; padding:13px 17px; margin-bottom:12px; border-left:3px solid; display:flex; gap:10px; align-items:flex-start; }
+.alert-red { background:rgba(229,57,53,0.07); border-color:#e53935; }
+.alert-green { background:rgba(67,160,71,0.07); border-color:#43a047; }
+.alert-blue { background:rgba(30,136,229,0.07); border-color:#1e88e5; }
+.alert-orange { background:rgba(255,111,0,0.07); border-color:#ff6f00; }
+.alert-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+.alert-text { font-size:12.5px; line-height:1.65; color:rgba(255,255,255,0.7); }
+.alert-text strong { color:rgba(255,255,255,0.92); }
+
+/* ===== SPIRAL ===== */
+.spiral-wrap { background:rgba(229,57,53,0.04); border:1px solid rgba(229,57,53,0.12); border-radius:14px; padding:24px; }
+.spiral-ttl { font-size:12px; font-weight:700; color:#ef9a9a; text-transform:uppercase; letter-spacing:2px; margin-bottom:18px; display:flex; align-items:center; gap:8px; }
+.spiral-step { display:flex; align-items:flex-start; gap:12px; }
+.spiral-line { display:flex; flex-direction:column; align-items:center; flex-shrink:0; margin-top:4px; }
+.spiral-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.spiral-conn { width:1px; height:26px; background:linear-gradient(to bottom,rgba(229,57,53,0.45),rgba(229,57,53,0.08)); }
+.spiral-body { flex:1; padding-bottom:18px; }
+.spiral-txt { font-size:12.5px; line-height:1.6; color:rgba(255,255,255,0.72); }
+.spiral-badge { display:inline-block; margin-top:4px; padding:2px 8px; background:rgba(229,57,53,0.14); border-radius:3px; font-size:10px; font-weight:700; color:#ef9a9a; }
+.spiral-loop { text-align:center; padding:10px; background:rgba(229,57,53,0.09); border-radius:7px; color:#ef9a9a; font-size:12px; font-weight:700; border:1px dashed rgba(229,57,53,0.28); margin-top:4px; }
+
+/* ===== SUMMARY BAND ===== */
+.sband { background:linear-gradient(90deg,rgba(229,57,53,0.09),rgba(229,57,53,0.04)); border:1px solid rgba(229,57,53,0.2); border-radius:12px; padding:18px 24px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:20px; }
+.sband-icon { font-size:30px; }
+.sband-main { flex:1; }
+.sband-ttl { font-size:17px; font-weight:800; color:#ef9a9a; margin-bottom:4px; }
+.sband-desc { font-size:12px; color:rgba(255,255,255,0.5); }
+.sband-fig { text-align:right; flex-shrink:0; }
+.sband-num { font-size:30px; font-weight:900; color:#ef5350; }
+.sband-unit { font-size:11px; color:rgba(255,255,255,0.32); }
+
+/* ===== PROGRESS ===== */
+.prog-row { margin-bottom:13px; }
+.prog-hdr { display:flex; justify-content:space-between; margin-bottom:5px; font-size:12px; }
+.prog-lbl { color:rgba(255,255,255,0.65); }
+.prog-val { font-weight:700; }
+.prog-bar { height:7px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:4px; }
+
+/* ===== COVER ===== */
+.cover-logo { font-size:12px; font-weight:800; letter-spacing:3px; color:#1e88e5; text-transform:uppercase; margin-bottom:36px; display:flex; align-items:center; gap:8px; justify-content:center; }
+.cover-logo span { color:rgba(255,255,255,0.28); }
+.cover-eye { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.32); margin-bottom:14px; }
+.cover-ttl { font-size:52px; font-weight:900; line-height:1.1; margin-bottom:18px; }
+.cover-sub { font-size:17px; color:rgba(255,255,255,0.42); max-width:680px; line-height:1.7; margin:0 auto 44px; }
+.cover-meta { display:flex; gap:32px; justify-content:center; flex-wrap:wrap; }
+.cm-item { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.cm-val { font-size:22px; font-weight:800; }
+.cm-lbl { font-size:10px; color:rgba(255,255,255,0.32); text-transform:uppercase; letter-spacing:1.5px; }
+.cover-decor { position:absolute; border-radius:50%; filter:blur(80px); pointer-events:none; }
+.scroll-hint { position:absolute; bottom:56px; left:50%; transform:translateX(-50%); font-size:10px; color:rgba(255,255,255,0.18); letter-spacing:2px; text-transform:uppercase; display:flex; flex-direction:column; align-items:center; gap:7px; }
+.scroll-arr { width:1px; height:36px; background:linear-gradient(to bottom,rgba(255,255,255,0.3),transparent); animation:scrollP 2s infinite; }
+@keyframes scrollP { 0%,100%{opacity:.3} 50%{opacity:.8} }
+
+/* ===== FOOTNOTE ===== */
+.footnote { position:absolute; bottom:20px; left:80px; right:80px; font-size:10px; color:rgba(255,255,255,0.18); display:flex; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.05); padding-top:10px; }
+
+/* ===== NAV ===== */
+.nav-fixed { position:fixed; right:18px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:7px; z-index:999; }
+.nav-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.18); cursor:pointer; transition:all .2s; text-decoration:none; display:block; }
+.nav-dot:hover { background:rgba(255,255,255,0.7); transform:scale(1.4); }
+
+/* ===== DIVIDER ===== */
+.divider { height:1px; background:rgba(255,255,255,0.06); margin:24px 0; }
+
+/* ===== PAIN CARD ===== */
+.pain-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.pain-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:11px; padding:18px; position:relative; overflow:hidden; }
+.pain-card::after { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; }
+.pain-card.crit::after { background:#e53935; }
+.pain-card.high::after { background:#ff6f00; }
+.pain-ttl { font-size:13px; font-weight:700; margin-bottom:7px; }
+.pain-desc { font-size:12px; color:rgba(255,255,255,0.52); line-height:1.6; margin-bottom:9px; }
+.pain-impact { display:inline-flex; align-items:center; gap:5px; padding:3px 9px; background:rgba(229,57,53,0.09); border:1px solid rgba(229,57,53,0.2); border-radius:4px; font-size:10px; color:#ef9a9a; font-weight:700; }
+
+/* ===== TOTAL BOX ===== */
+.total-box { background:linear-gradient(135deg,rgba(229,57,53,0.12),rgba(229,57,53,0.04)); border:1px solid rgba(229,57,53,0.25); border-radius:14px; padding:24px 28px; text-align:center; }
+.total-lbl { font-size:11px; color:rgba(255,255,255,0.38); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; }
+.total-num { font-size:48px; font-weight:900; color:#ef5350; line-height:1; margin-bottom:6px; }
+.total-sub { font-size:13px; color:rgba(255,255,255,0.5); }
+
+/* ===== CHAIN BOX ===== */
+.chain { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:11px; padding:20px 24px; }
+.chain-ttl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.4); margin-bottom:14px; }
+.chain-row { display:flex; align-items:center; gap:0; margin-bottom:6px; flex-wrap:wrap; }
+.chain-box { padding:7px 12px; border-radius:6px; font-size:12px; font-weight:600; text-align:center; flex-shrink:0; }
+.chain-arrow { font-size:14px; color:rgba(255,255,255,0.25); padding:0 6px; }
+.chain-down { font-size:16px; color:rgba(255,255,255,0.2); text-align:center; padding:2px 0; }
+.cb-red { background:rgba(229,57,53,0.12); border:1px solid rgba(229,57,53,0.2); color:#ef9a9a; }
+.cb-orange { background:rgba(255,111,0,0.12); border:1px solid rgba(255,111,0,0.2); color:#ffcc80; }
+.cb-blue { background:rgba(30,136,229,0.12); border:1px solid rgba(30,136,229,0.2); color:#90caf9; }
+
+/* ===== RISK TABLE ===== */
+.risk-row { display:flex; align-items:flex-start; gap:14px; padding:13px 16px; border-radius:9px; margin-bottom:10px; }
+.risk-row.crit { background:rgba(229,57,53,0.07); border:1px solid rgba(229,57,53,0.15); }
+.risk-row.high { background:rgba(255,111,0,0.07); border:1px solid rgba(255,111,0,0.15); }
+.risk-icon { font-size:22px; flex-shrink:0; }
+.risk-body { flex:1; }
+.risk-ttl { font-size:13px; font-weight:700; margin-bottom:4px; }
+.risk-desc { font-size:12px; color:rgba(255,255,255,0.52); line-height:1.6; }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .slide{padding:36px 20px 70px;}
+  .two-col,.three-col,.four-col,.five-col{grid-template-columns:1fr;}
+  .pain-grid{grid-template-columns:1fr;}
+  .cover-ttl{font-size:32px;}
+  .nav-fixed{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav-fixed">
+  <a class="nav-dot" href="#s0" title="Cover"></a>
+  <a class="nav-dot" href="#s1" title="Nghịch lý"></a>
+  <a class="nav-dot" href="#s2" title="Tài chính"></a>
+  <a class="nav-dot" href="#s3" title="Vòng xoáy TC"></a>
+  <a class="nav-dot" href="#s4" title="Sản xuất"></a>
+  <a class="nav-dot" href="#s5" title="Vòng xoáy SX"></a>
+  <a class="nav-dot" href="#s6" title="Supply Chain"></a>
+  <a class="nav-dot" href="#s7" title="Vòng xoáy SCM"></a>
+  <a class="nav-dot" href="#s8" title="Procurement"></a>
+  <a class="nav-dot" href="#s9" title="Order-to-Cash"></a>
+  <a class="nav-dot" href="#s10" title="Vòng xoáy OTC"></a>
+  <a class="nav-dot" href="#s11" title="Vòng xoáy tổng"></a>
+  <a class="nav-dot" href="#s12" title="Chi phí ẩn"></a>
+  <a class="nav-dot" href="#s13" title="Rủi ro & Kết luận"></a>
+</nav>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 0 — COVER                                    -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-cover" id="s0">
+  <div class="brand-bar"></div>
+  <div class="cover-decor" style="width:600px;height:600px;background:radial-gradient(circle,rgba(30,136,229,0.11),transparent 70%);top:-200px;left:-200px;"></div>
+  <div class="cover-decor" style="width:500px;height:500px;background:radial-gradient(circle,rgba(229,57,53,0.09),transparent 70%);bottom:-150px;right:-150px;"></div>
+
+  <div class="cover-logo">FPT IS <span>×</span> Viglacera Tiên Sơn</div>
+  <div class="cover-eye">Báo cáo phân tích nội bộ · Vòng 3 · 06/2026</div>
+  <h1 class="cover-ttl">
+    <span class="gr-blue">Hiện trạng</span> &<br>
+    <span class="gr-red">Pain Point</span> Toàn diện
+  </h1>
+  <p class="cover-sub">
+    Phân tích 38 KPI trên 5 mảng vận hành từ BCTC Deloitte 2023–2025.<br>
+    Bức tranh đầy đủ về chi phí ẩn và vòng xoáy xuống cấp của VIT.
+  </p>
+  <div class="cover-meta">
+    <div class="cm-item"><div class="cm-val gr-blue">2.307 tỷ</div><div class="cm-lbl">Doanh thu 2025</div></div>
+    <div class="cm-item"><div class="cm-val gr-red">~344 tỷ</div><div class="cm-lbl">Chi phí ẩn / năm</div></div>
+    <div class="cm-item"><div class="cm-val gr-gold">9 / 16</div><div class="cm-lbl">KPI vận hành xấu đi</div></div>
+    <div class="cm-item"><div class="cm-val gr-purple">×862</div><div class="cm-lbl">LNST tăng (nhờ lãi vay)</div></div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-arr"></div>SCROLL</div>
+  <div class="footnote">
+    <span>Nguồn: BCTC Deloitte 2023–2025 · SAP KPI Framework · 15 Biên bản khảo sát</span>
+    <span>01 / 14</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — NGHỊCH LÝ CỐT LÕI                       -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-dark" id="s1">
+  <div class="brand-bar"></div>
+  <div class="slide-num">02 / 14</div>
+  <div class="tag tag-white">🔍 Tổng quan</div>
+  <h2 class="slide-title">Nghịch lý VIT — <span class="gr-red">Bề mặt tốt, nền tảng xấu đi</span></h2>
+  <p class="slide-sub">LNST tăng ×862 trong 3 năm — nhưng 43% đến từ giảm lãi vay, không phải cải thiện vận hành. Khi dư địa này cạn, toàn bộ chi phí ẩn lộ diện.</p>
+
+  <div class="two-col" style="margin-bottom:22px;">
+    <div>
+      <div style="font-size:11px;color:#66bb6a;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;font-weight:700;">✅ Bề mặt tài chính tốt</div>
+      <div class="alert alert-green" style="margin-bottom:9px;"><div class="alert-icon">📈</div><div class="alert-text"><strong>LNST tăng ×862</strong> — từ 0,085 tỷ lên 73,5 tỷ trong 3 năm</div></div>
+      <div class="alert alert-green" style="margin-bottom:9px;"><div class="alert-icon">💰</div><div class="alert-text"><strong>Gross Margin cải thiện +153bps</strong> — tỷ suất gộp đang tốt hơn</div></div>
+      <div class="alert alert-green" style="margin-bottom:9px;"><div class="alert-icon">🏦</div><div class="alert-text"><strong>Lãi vay giảm</strong> 118,5 → 84,1 tỷ — đóng góp <strong>43% tăng LNTT</strong></div></div>
+      <div class="alert alert-green"><div class="alert-icon">📊</div><div class="alert-text"><strong>Doanh thu tăng đều +15,5%</strong> qua 3 năm liên tiếp</div></div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:#ef9a9a;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;font-weight:700;">🔴 Nền tảng vận hành xấu đi</div>
+      <div class="alert alert-red" style="margin-bottom:9px;"><div class="alert-icon">📦</div><div class="alert-text"><strong>Dự phòng HTK +352%</strong> — sản xuất không theo nhu cầu thực</div></div>
+      <div class="alert alert-red" style="margin-bottom:9px;"><div class="alert-icon">⚙️</div><div class="alert-text"><strong>53% máy móc đã khấu hao hết</strong> — lần đầu vượt ngưỡng 50%</div></div>
+      <div class="alert alert-red" style="margin-bottom:9px;"><div class="alert-icon">🔧</div><div class="alert-text"><strong>Đầu tư TSCĐ mới giảm -81%</strong> — tỷ lệ ĐT/KH chỉ còn 0,15×</div></div>
+      <div class="alert alert-red"><div class="alert-icon">📋</div><div class="alert-text"><strong>Đóng sổ BCTC 68 ngày</strong> — chậm nhất 3 năm, chậm hơn SAP 13× lần</div></div>
+    </div>
+  </div>
+
+  <div class="sband">
+    <div class="sband-icon">⚠️</div>
+    <div class="sband-main">
+      <div class="sband-ttl">Cảnh báo cấu trúc: Động lực lợi nhuận đang cạn dần</div>
+      <div class="sband-desc">Lãi vay giảm chậm dần: −25,6 tỷ (2023→2024) → chỉ còn −8,8 tỷ (2024→2025). Khi dư địa cạn — toàn bộ ~344 tỷ chi phí ẩn sẽ lộ diện, xóa sạch lợi nhuận và đẩy LNST về âm.</div>
+    </div>
+    <div class="sband-fig"><div class="sband-num">2–3</div><div class="sband-unit">năm trước điểm gãy dự báo</div></div>
+  </div>
+  <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025</span><span>VIT Pain Point Analysis 2025</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — TÀI CHÍNH PAIN POINTS                   -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-blue" id="s2">
+  <div class="brand-bar"></div>
+  <div class="slide-num">03 / 14</div>
+  <div class="tag tag-blue">💰 Finance Pain Points</div>
+  <h2 class="slide-title">Tài chính — <span class="gr-blue">5 Pain Point Nghiêm trọng</span></h2>
+  <p class="slide-sub">Quy trình thủ công hoàn toàn · 3 hệ thống kế toán riêng lẻ · Không có AR/AP automation · Đóng sổ chậm nhất 3 năm.</p>
+
+  <div class="pain-grid" style="margin-bottom:20px;">
+    <div class="pain-card crit">
+      <div class="pain-ttl">🔴 F7 — Đóng sổ BCTC 68 ngày (Tệ nhất 3 năm)</div>
+      <div class="pain-desc">VIT vận hành 3 hệ thống kế toán riêng tại 3 tỉnh thành + VIKD tại Hà Nội. Hợp nhất BCTC hoàn toàn thủ công qua Excel, mất 4–8 tuần. Năm 2025 phức tạp hơn do phát sinh CNC (54,9 tỷ) — loại giao dịch mới chưa có quy trình chuẩn.<br><br><strong style="color:rgba(255,255,255,0.8);">Ý nghĩa thực tế:</strong> Ban lãnh đạo ra quyết định dựa trên dữ liệu trễ hơn 2 tháng. Chi phí kiểm toán Deloitte leo thang mỗi năm vì phạm vi kiểm toán mở rộng không ngừng.</div>
+      <div class="pain-impact">🔴 2023: 57 ng → 2024: 46 ng → 2025: 68 ng — SAP Best: 3–5 ng</div>
+    </div>
+    <div class="pain-card crit">
+      <div class="pain-ttl">🔴 F2+F3 — DSO +144% · AR mất kiểm soát</div>
+      <div class="pain-desc">AR tăng +158% (54→140 tỷ) trong khi DT chỉ tăng +7,6%. Đặc biệt nghiêm trọng: ~81% AR tập trung vào một bên liên quan duy nhất — VIKD. Không có hệ thống credit management tự động để phát hiện overdue sớm.<br><br><strong style="color:rgba(255,255,255,0.8);">Ý nghĩa thực tế:</strong> Nếu VIKD gặp khó khăn tài chính, VIT phải trích lập dự phòng 113 tỷ — xóa sạch toàn bộ lợi nhuận tích lũy ngay lập tức.</div>
+      <div class="pain-impact">🔴 Rủi ro tập trung cực kỳ nguy hiểm — 1 bên = 81% AR</div>
+    </div>
+    <div class="pain-card crit">
+      <div class="pain-ttl">🔴 F6 — Ứng tiền NCC tăng ×244 lần</div>
+      <div class="pain-desc">Từ 0,47 tỷ (2024) lên 114,3 tỷ (2025). Toàn bộ hóa đơn AP xử lý thủ công, không có OCR/workflow → thanh toán thường xuyên chậm trễ → NCC chiến lược mất tín nhiệm, yêu cầu ứng tiền trước.<br><br><strong style="color:rgba(255,255,255,0.8);">Ý nghĩa thực tế:</strong> NCC mất tin tưởng → rút ưu đãi, tăng giá, ưu tiên khách hàng khác → rủi ro đứt gãy chuỗi cung ứng bất cứ lúc nào.</div>
+      <div class="pain-impact">🔴 Dấu hiệu cấu trúc nghiêm trọng — NCC mất tín nhiệm VIT</div>
+    </div>
+    <div class="pain-card high">
+      <div class="pain-ttl">🟠 F5 — Hóa đơn AP 100% thủ công</div>
+      <div class="pain-desc">~0% invoice xử lý online. Không có OCR, không có workflow duyệt tự động. Mỗi hóa đơn NCC phải nhập tay → sai sót, chậm trễ thanh toán → mất chiết khấu early payment 1–2%/invoice.<br><br><strong style="color:rgba(255,255,255,0.8);">Ý nghĩa thực tế:</strong> VIT đang trả phí cho sự kém hiệu quả — mất chiết khấu NCC ước ~2–3 tỷ/năm, đồng thời tạo ra vòng lặp mất uy tín với nhà cung cấp.</div>
+      <div class="pain-impact">⚠️ SAP Best: >90% invoice online — VIT: ~0%</div>
+    </div>
+    <div class="pain-card high">
+      <div class="pain-ttl">🟠 F9 — Năng suất lao động tài chính giảm liên tục</div>
+      <div class="pain-desc">Nhân sự tăng +21,5% (1.164→1.414) trong khi DT chỉ tăng +13,8%. NC/DT tăng từ 9,73% lên 10,68% — VIT đang trả lương cho sự trùng lặp. 3 nhà máy × 3 bộ phận kế toán, không Shared Service Center.<br><br><strong style="color:rgba(255,255,255,0.8);">Ý nghĩa thực tế:</strong> Mỗi lần doanh thu tăng buộc phải tuyển thêm người — không đạt được lợi thế kinh tế theo quy mô. SAP Benchmark thấp hơn 2,4× hiện tại.</div>
+      <div class="pain-impact">🔴 NSLĐ: 174 → 163 tr/người (-6,3%) dù DT tăng</div>
+    </div>
+    <div class="pain-card high">
+      <div class="pain-ttl">🟠 F1 — Chi phí tài chính còn 3,64% DT</div>
+      <div class="pain-desc">Lãi vay vẫn cao (84,1 tỷ/năm) vì 3 nhà máy tại 3 tỉnh dùng hệ thống riêng lẻ, không thể lập kế hoạch tài chính tập trung, dòng tiền không được tối ưu hóa. SAP benchmark là &lt;1%.<br><br><strong style="color:rgba(255,255,255,0.8);">Ý nghĩa thực tế:</strong> Lãi vay đang đóng góp 43% tăng LNTT — nhưng tốc độ giảm đang chậm lại nhanh. Dư địa chỉ còn 2–3 năm.</div>
+      <div class="pain-impact">⚠️ 3,64% vs SAP Best &lt;1% — gấp 3,6× benchmark</div>
+    </div>
+  </div>
+  <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP Finance KPI Framework</span><span>VIT Pain Point Analysis 2025</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 3 — VÒNG XOÁY TÀI CHÍNH                    -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-red" id="s3">
+  <div class="brand-bar"></div>
+  <div class="slide-num">04 / 14</div>
+  <div class="tag tag-red">🔁 Vòng xoáy</div>
+  <h2 class="slide-title">Vòng Xoáy Tài Chính — <span class="gr-red">Chuỗi nhân quả tự khuếch đại</span></h2>
+  <p class="slide-sub">Mỗi mắt xích làm trầm trọng thêm mắt xích tiếp theo. Không có điểm dừng tự nhiên khi thiếu hệ thống tích hợp.</p>
+
+  <div class="two-col">
+    <div class="spiral-wrap">
+      <div class="spiral-ttl">🔴 Vòng xoáy AR → Rủi ro tập trung</div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;width:11px;height:11px;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt">Không có billing tự động → lập hóa đơn thủ công sau khi giao hàng → chậm trễ</div></div></div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt">DSO tăng từ 9 → 22 ngày (+144%) — AR tích lũy nhanh hơn DT</div><span class="spiral-badge">AR tăng +158%: 54 → 140 tỷ</span></div></div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt">~81% AR tập trung vào VIKD — không có credit limit tự động, không cảnh báo overdue</div></div></div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt">Vốn bị giam ~85,7 tỷ thêm → chi phí vốn tăng → phải tăng lãi vay để bù</div><span class="spiral-badge">Chi phí vốn AR ẩn: ~8,6 tỷ/năm</span></div></div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt">Nếu VIKD gặp khó khăn → phải trích lập dự phòng 113 tỷ → LNST âm ngay lập tức</div><span class="spiral-badge">Rủi ro tập trung cực kỳ nghiêm trọng</span></div></div>
+      <div class="spiral-loop">🔄 AR tăng → Vốn bị giam → Lãi vay cao → Lợi nhuận giảm</div>
+    </div>
+
+    <div>
+      <div class="spiral-wrap" style="margin-bottom:16px;">
+        <div class="spiral-ttl">🔴 Vòng xoáy AP → Mất tín nhiệm NCC</div>
+        <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt">Hóa đơn NCC 100% thủ công → nhập tay → sai sót → chậm thanh toán</div></div></div>
+        <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt">NCC mất tín nhiệm → yêu cầu ứng tiền trước để đảm bảo cung ứng</div><span class="spiral-badge">Ứng tiền: 0,47 → 114,3 tỷ (×244)</span></div></div>
+        <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt">Vốn lưu động bị chiếm dụng thêm → khả năng thanh khoản căng thẳng → tín nhiệm tiếp tục xấu đi</div></div></div>
+        <div class="spiral-loop">🔄 Mất tín nhiệm → Ứng tiền cao → Thiếu vốn lưu động</div>
+      </div>
+      <div class="spiral-wrap">
+        <div class="spiral-ttl">🔴 Vòng xoáy đóng sổ → Quyết định chậm</div>
+        <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt">3 hệ thống kế toán riêng + giao dịch CNC mới → hợp nhất thủ công 68 ngày</div></div></div>
+        <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt">BGĐ ra quyết định dựa trên dữ liệu trễ 2 tháng — bỏ lỡ cơ hội điều chỉnh kịp thời</div></div></div>
+        <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt">Phạm vi kiểm toán Deloitte ngày càng mở rộng → chi phí kiểm toán leo thang</div></div></div>
+        <div class="spiral-loop">🔄 Chậm đóng sổ → Quyết định sai → Chi phí tăng</div>
+      </div>
+    </div>
+  </div>
+  <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025</span><span>VIT Pain Point Analysis 2025</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 4 — SẢN XUẤT PAIN POINTS                    -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-purple" id="s4">
+  <div class="brand-bar"></div>
+  <div class="slide-num">05 / 14</div>
+  <div class="tag tag-purple">🏭 Manufacturing Pain Points</div>
+  <h2 class="slide-title">Sản xuất — <span class="gr-purple">Năng lực nội bộ đang suy yếu</span></h2>
+  <p class="slide-sub">6/9 KPI sản xuất xấu đi. Ba chi phí bất thường tăng tổng cộng +102,3 tỷ chỉ trong năm 2025 — ăn mòn trực tiếp Gross Margin.</p>
+
+  <div class="four-col" style="margin-bottom:20px;">
+    <div class="kcard red">
+      <div class="kcard-lbl">Dự phòng HTK (M2)</div>
+      <div class="kcard-val gr-red">+352%</div>
+      <div class="kcard-desc">9,25 → 41,81 tỷ trong 2 năm. Sản xuất sai spec tích lũy không kiểm soát.</div>
+      <div class="kbadge kb-red">56,9% LNST bị ăn mòn</div>
+    </div>
+    <div class="kcard red">
+      <div class="kcard-lbl">Máy móc đã khấu hao (M4)</div>
+      <div class="kcard-val gr-red">53,1%</div>
+      <div class="kcard-desc">Lần đầu vượt ngưỡng 50%. Hỏng hóc ngày càng thường xuyên hơn.</div>
+      <div class="kbadge kb-red">Cảnh báo nghiêm trọng</div>
+    </div>
+    <div class="kcard red">
+      <div class="kcard-lbl">CNC Outsource (M8)</div>
+      <div class="kcard-val gr-red">+176%</div>
+      <div class="kcard-desc">19,9 → 54,9 tỷ chỉ trong 1 năm. Mất năng lực CNC nội bộ vào tay bên ngoài.</div>
+      <div class="kbadge kb-red">Khoản chi mới từ 2024</div>
+    </div>
+    <div class="kcard red">
+      <div class="kcard-lbl">Đầu tư TSCĐ mới (M9)</div>
+      <div class="kcard-val gr-red">-81%</div>
+      <div class="kcard-desc">Từ ~130 tỷ xuống ~24,7 tỷ. Tỷ lệ ĐT/Khấu hao chỉ còn 0,15×.</div>
+      <div class="kbadge kb-red">Bẫy tài sản</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="chain">
+        <div class="chain-ttl">Ba chi phí bất thường — cùng bùng nổ năm 2025</div>
+        <div class="prog-row">
+          <div class="prog-hdr"><span class="prog-lbl">MRO (CCDC Sản xuất)</span><span class="prog-val tr-red">+44% → 98,3 tỷ</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:44%;background:linear-gradient(90deg,#8e24aa,#ce93d8);"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-hdr"><span class="prog-lbl">DV mua ngoài SX</span><span class="prog-val tr-red">+69% → 91,0 tỷ</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:69%;background:linear-gradient(90deg,#c62828,#ef9a9a);"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-hdr"><span class="prog-lbl">Gia công CNC ngoài</span><span class="prog-val tr-red">+176% → 54,9 tỷ</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:88%;background:linear-gradient(90deg,#b71c1c,#ff5252);"></div></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:rgba(229,57,53,0.07);border-radius:7px;font-size:12px;color:rgba(255,255,255,0.6);">
+          ⚠️ Tổng tăng thêm <strong style="color:#ef9a9a;">+102,3 tỷ</strong> chỉ trong năm 2025 so với 2024.
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="chain">
+        <div class="chain-ttl">Tỷ lệ Đầu tư / Khấu hao — Suy giảm 3 năm liên tiếp</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:11px;width:36px;color:rgba(255,255,255,0.45);">2023</span>
+            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:26px;position:relative;overflow:hidden;">
+              <div style="position:absolute;left:0;top:0;bottom:0;width:100%;background:rgba(67,160,71,0.35);border-radius:4px;"></div>
+              <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#a5d6a7;">1,13× ✅ Bình thường</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:11px;width:36px;color:rgba(255,255,255,0.45);">2024</span>
+            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:26px;position:relative;overflow:hidden;">
+              <div style="position:absolute;left:0;top:0;bottom:0;width:21%;background:rgba(255,111,0,0.4);border-radius:4px;"></div>
+              <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#ffcc80;">0,21× ⚠️ Giảm mạnh</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:11px;width:36px;color:rgba(255,255,255,0.45);">2025</span>
+            <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:26px;position:relative;overflow:hidden;">
+              <div style="position:absolute;left:0;top:0;bottom:0;width:15%;background:rgba(229,57,53,0.55);border-radius:4px;"></div>
+              <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#ef9a9a;">0,15× 🔴 Bẫy tài sản</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:rgba(229,57,53,0.07);border-radius:7px;font-size:12px;color:rgba(255,255,255,0.6);">
+          🔴 VIT đang tiêu hao tài sản nhanh hơn tái đầu tư <strong style="color:#ef9a9a;">6,7 lần</strong>. Năng lực SX nội bộ mất dần mỗi năm.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP Manufacturing KPI Framework</span><span>VIT Pain Point Analysis 2025</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 5 — VÒNG XOÁY SẢN XUẤT                     -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="slide slide-red" id="s5">
+  <div class="brand-bar"></div>
+  <div class="slide-num">06 / 14</div>
+  <div class="tag tag-red">🔁 Vòng xoáy</div>
+  <h2 class="slide-title">Vòng Xoáy Sản Xuất — <span class="gr-red">Machine Availability Spiral</span></h2>
+  <p class="slide-sub">Hai vòng lặp độc lập nhưng cộng hưởng nhau: Máy cũ → chi phí tăng + HTK sai spec → lợi nhuận giảm → không tái đầu tư → máy càng cũ hơn.</p>
+
+  <div class="two-col">
+    <div class="spiral-wrap">
+      <div class="spiral-ttl">🔴 Vòng 1 — Machine Availability Spiral</div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;width:12px;height:12px;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>53% máy móc đã khấu hao hết</strong> — lần đầu vượt ngưỡng nguy hiểm 50% trong 3 năm theo dõi</div><span class="spiral-badge">40,4% (2023) → 53,1% (2025)</span></div></div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Hỏng hóc thường xuyên hơn</strong> → dừng máy đột xuất → không hoàn thành lệnh SX theo kế hoạch</div><span class="spiral-badge">Sửa chữa TSCĐ +56%</span></div></div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Chi phí MRO bùng nổ</strong> — mua phụ tùng khẩn cấp off-contract, không catalog, giá cao hơn 15–20%</div><span class="spiral-badge">MRO: 68 → 98,3 tỷ (+44%)</span></div></div>
+      <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Năng lực nội bộ thiếu hụt</strong> → phải thuê DV mua ngoài + gia công CNC với lead time dài hơn</div><span class="spiral-badge">DV ngoài +69% · CNC +176%</span></div></div>
+      
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Lợi nhuận bị ăn mòn</strong> bởi +102,3 tỷ chi phí bất thường → không có vốn để tái đầu tư</div></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Đầu tư TSCĐ mới giảm -81%</strong> → tỷ lệ ĐT/KH chỉ còn 0,15× — máy ngày càng cũ hơn</div><span class="spiral-badge">Tiêu hao TS nhanh hơn tái đầu tư 6,7 lần</span></div></div>
+              <div class="spiral-loop">🔄 Máy càng cũ → Chi phí tăng → Lợi nhuận giảm → Không tái đầu tư → Vòng lặp tự khuếch đại</div>
+            </div>
+
+            <div>
+              <div class="spiral-wrap" style="margin-bottom:16px;">
+                <div class="spiral-ttl">🔴 Vòng 2 — HTK Sai Spec Spiral</div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;width:11px;height:11px;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Không có MRP/Demand Planning</strong> — 3 nhà máy lập kế hoạch SX bằng Excel riêng lẻ, không kết nối tín hiệu nhu cầu từ VIKD</div></div></div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Sản xuất sai chủng loại</strong> → HTK tích lũy không bán được, kho đầy hàng sai spec</div><span class="spiral-badge">Dự phòng GGHT +352%: 9,25 → 41,81 tỷ</span></div></div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>620 tỷ HTK nhưng thiếu đúng loại khách cần</strong> → phải outsource CNC khẩn cấp với giá cao</div><span class="spiral-badge">Nghịch lý: Kho đầy nhưng vẫn outsource</span></div></div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Trích lập dự phòng 41,81 tỷ</strong> = 56,9% LNST bị ăn mòn chỉ bởi HTK lỗi thời</div></div></div>
+                <div class="spiral-loop">🔄 Sai spec → Outsource → Lỗi thời → Dự phòng → Lặp lại</div>
+              </div>
+
+              <div class="alert alert-red">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-text"><strong>Hai vòng cộng hưởng nhau:</strong> Máy cũ làm giảm năng lực SX → phải outsource → lợi nhuận giảm → không tái đầu tư → máy càng cũ. Đồng thời, không có MRP → sản xuất sai spec → HTK lỗi thời tích lũy → dự phòng tăng → lợi nhuận giảm thêm. Hai vòng xoáy tự khuếch đại lẫn nhau.</div>
+              </div>
+            </div>
+          </div>
+          <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP Manufacturing KPI Framework</span><span>VIT Pain Point Analysis 2025</span></div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- SLIDE 6 — SUPPLY CHAIN PAIN POINTS                -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <section class="slide slide-teal" id="s6">
+          <div class="brand-bar"></div>
+          <div class="slide-num">07 / 14</div>
+          <div class="tag tag-teal">📦 Supply Chain Pain Points</div>
+          <h2 class="slide-title">Supply Chain — <span class="gr-green">8 KPI đều xấu, ~118,7 tỷ chi phí ẩn</span></h2>
+          <p class="slide-sub">Không WMS · Không TMS · Không Demand Planning · 3 kho độc lập không liên thông. Chi phí ẩn SCM = 161% LNST 2025.</p>
+
+          <div class="pain-grid" style="margin-bottom:20px;">
+            <div class="pain-card crit">
+              <div class="pain-ttl">🔴 SCM2 — Inventory Obsolescence +352%</div>
+              <div class="pain-desc">Không có integrated production planning. 3 nhà máy dùng Excel offline riêng lẻ, không kết nối với sales forecast VIKD. Khi demand thay đổi → không điều chỉnh kịp → sản xuất sai chủng loại → HTK tích lũy. DP GGHT từ 9,25 tỷ (2023) lên 41,81 tỷ (2025) — không có what-if scenario để phát hiện sớm.</div>
+              <div class="pain-impact">🔴 DP GGHT +352% · Obsolescence/DT: 0,43%→1,81%</div>
+            </div>
+            <div class="pain-card crit">
+              <div class="pain-ttl">🔴 SCM3 — On-time Delivery: ATP = 0, CTP = 0</div>
+              <div class="pain-desc">VIT không có hệ thống ATP hoặc CTP. Khi VIKD đặt hàng, nhân viên không thể cam kết ngày giao hàng chính xác vì: tồn kho 3 nhà máy không nhìn thấy real-time, máy móc 53% KH → công suất không dự báo được. Lost orders ước tính ~1–2% DT = 23–46 tỷ bị mất mỗi năm.</div>
+              <div class="pain-impact">🔴 Lost Orders ~23–46 tỷ/năm · CNC +176% = capacity gap</div>
+            </div>
+            <div class="pain-card crit">
+              <div class="pain-ttl">🔴 SCM4 — Order Fill Rate: Hàng trả lại ×5,2</div>
+              <div class="pain-desc">Không có WMS tích hợp tại 3 kho. Nhân viên pick/pack thủ công 100%, không barcode, không bin location tracking. Xuất sai mã/quy cách → VIKD nhận hàng không đúng spec → trả lại. Hàng trả về nhập kho không bán được → tích lũy vào HTK lỗi thời → DP GGHT tăng thêm.</div>
+              <div class="pain-impact">🔴 Hàng trả lại: 0,94 → 4,86 tỷ (+419% YoY)</div>
+            </div>
+            <div class="pain-card crit">
+              <div class="pain-ttl">🔴 SCM8 — Forecast Accuracy ~0% Formal</div>
+              <div class="pain-desc">VIT không có bất kỳ hệ thống demand planning chính thức nào. Dự báo nhu cầu hoàn toàn dựa trên kinh nghiệm thủ công bằng Excel, không có SKU-level planning, không có collaborative forecasting với VIKD. Forecast failure trực tiếp gây ra DP HTK +352% và CNC rush +176%.</div>
+              <div class="pain-impact">🔴 Forecast failure → HTK 620 tỷ sai spec + outsource CNC gấp</div>
+            </div>
+            <div class="pain-card high">
+              <div class="pain-ttl">🟠 SCM5 — Order Pick Accuracy: Thủ công 100%</div>
+              <div class="pain-desc">Toàn bộ picking tại 3 kho thủ công 100% — không picking list điện tử, không directed put-away, không batch/wave management. Nhân viên dựa vào trí nhớ để biết hàng ở đâu. Cross-pick, counting error và omission xảy ra thường xuyên. Hàng trả lại ×5,2 là bằng chứng trực tiếp OPA thấp.</div>
+              <div class="pain-impact">⚠️ OPA ước tính &lt;95% vs SAP Best &gt;99,5%</div>
+            </div>
+            <div class="pain-card high">
+              <div class="pain-ttl">🟠 SCM7 — WM FTEs/Revenue: NSLĐ giảm liên tục</div>
+              <div class="pain-desc">Nhân sự tăng +21,5% (1.164→1.414 người) nhưng DT chỉ tăng +13,8%. NSLĐ bình quân giảm từ 174→163 triệu VNĐ/người (-6,3%). Không có wave/batch management, không cross-training, picker đi lại nhiều lần → labor cost kho tăng tuyến tính theo doanh thu — không đạt lợi thế kinh tế theo quy mô.</div>
+              <div class="pain-impact">🔴 FTE +21,5% vs DT +13,8% · Chi phí ẩn ~6,8 tỷ/năm</div>
+            </div>
+          </div>
+
+          <div class="three-col">
+            <div class="kcard teal">
+              <div class="kcard-lbl">Tổng chi phí ẩn SCM</div>
+              <div class="kcard-val gr-green">~118,7 tỷ</div>
+              <div class="kcard-desc">= 161% LNST 2025. Lớn thứ 2 trong 5 mảng, chỉ sau Manufacturing.</div>
+              <div class="kbadge kb-orange">8/8 KPI đều xấu đi</div>
+            </div>
+            <div class="kcard red">
+              <div class="kcard-lbl">Hàng trả lại (2025)</div>
+              <div class="kcard-val gr-red">×5,2</div>
+              <div class="kcard-desc">Từ 0,94 tỷ (2024) lên 4,86 tỷ (2025). Bằng chứng trực tiếp OFR và OPA thấp.</div>
+              <div class="kbadge kb-red">+419% chỉ trong 1 năm</div>
+            </div>
+            <div class="kcard red">
+              <div class="kcard-lbl">Carrying cost HTK</div>
+              <div class="kcard-val gr-red">~62 tỷ</div>
+              <div class="kcard-desc">Chi phí cơ hội vốn ~10%/năm trên 620 tỷ thành phẩm tồn kho sai spec.</div>
+              <div class="kbadge kb-red">4,4% DT vs SAP 2,11%</div>
+            </div>
+          </div>
+          <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP SCM KPI Framework · 8 Files</span><span>VIT Pain Point Analysis 2025</span></div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- SLIDE 7 — VÒNG XOÁY SUPPLY CHAIN                 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <section class="slide slide-red" id="s7">
+          <div class="brand-bar"></div>
+          <div class="slide-num">08 / 14</div>
+          <div class="tag tag-red">🔁 Vòng xoáy</div>
+          <h2 class="slide-title">Vòng Xoáy Supply Chain — <span class="gr-red">OTD & Fill Rate Spiral</span></h2>
+          <p class="slide-sub">Hai vòng luẩn quẩn độc lập nhưng cộng hưởng: không ATP/CTP → giao sai/trễ → trả lại → HTK lỗi thời → mất đơn tiếp tục.</p>
+
+          <div class="two-col">
+            <div class="spiral-wrap">
+              <div class="spiral-ttl">🔴 Vòng 1 — OTD & Lost Orders Spiral</div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;width:11px;height:11px;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Không có ATP/CTP</strong> — nhân viên cam kết ngày giao hàng bằng ước tính thủ công, không có căn cứ tồn kho và lịch sản xuất thực tế</div></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Máy móc 53% KH hết khấu hao</strong> → dừng máy đột xuất → không hoàn thành lịch SX theo cam kết → giao hàng trễ</div><span class="spiral-badge">CNC +176% = dấu hiệu năng lực SX thiếu hụt</span></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>HTK 620 tỷ nhưng sai spec</strong> → hết hàng đúng loại khách cần → mất đơn hoặc giao trễ</div><span class="spiral-badge">DP HTK +170% = proxy hết hàng đúng loại</span></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Khách hàng (VIKD) mất tin tưởng</strong> → VIT tăng chiết khấu để giữ chân thay vì cải thiện chất lượng giao hàng</div><span class="spiral-badge">CK TM: 2,1 → 20,4 tỷ (+873%)</span></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Lost Orders ~1–2% DT</strong> = 23–46 tỷ doanh thu bị mất mỗi năm, không đo được trực tiếp vì không có ATP</div></div></div>
+              <div class="spiral-loop">🔄 Giao trễ → Mất đơn → Tăng chiết khấu → Lợi nhuận giảm → Không cải thiện hệ thống</div>
+            </div>
+
+            <div>
+              <div class="spiral-wrap" style="margin-bottom:16px;">
+                <div class="spiral-ttl">🔴 Vòng 2 — Order Fill Accuracy Spiral</div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>3 kho không có WMS</strong> — pick/pack thủ công 100%, không barcode, không bin location tracking</div></div></div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Xuất sai mã/quy cách</strong> → VIKD nhận hàng không đúng spec → hàng trả lại ×5,2</div><span class="spiral-badge">Trả lại: 0,94 → 4,86 tỷ (+419%)</span></div></div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Hàng trả về nhập kho</strong> → không bán được → tích lũy lỗi thời → DP GGHT tăng thêm</div></div></div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>620 tỷ HTK nhưng 41,81 tỷ không dùng được</strong> → hết đúng loại → Lost Orders tiếp tục</div></div></div>
+                <div class="spiral-loop">🔄 Pick sai → Trả lại → HTK lỗi thời → Hết đúng loại → Mất đơn</div>
+              </div>
+
+              <div class="chain">
+                <div class="chain-ttl">Nghịch lý Supply Chain VIT 2025</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div class="alert alert-red" style="margin:0;padding:10px 14px;">
+                    <div class="alert-icon">📦</div>
+                    <div class="alert-text"><strong>Kho đầy 620 tỷ</strong> nhưng vẫn phải outsource CNC 54,9 tỷ vì hàng trong kho sai spec</div>
+                  </div>
+                  <div class="alert alert-red" style="margin:0;padding:10px 14px;">
+                    <div class="alert-icon">🏭</div>
+                    <div class="alert-text"><strong>3 kho không nhìn thấy nhau</strong> → kho A có hàng nhưng không điều phối cho kho B đang thiếu</div>
+                  </div>
+                  <div class="alert alert-red" style="margin:0;padding:10px 14px;">
+                    <div class="alert-icon">📊</div>
+                    <div class="alert-text"><strong>Không có WMS · TMS · Forecast</strong> → vận hành hoàn toàn mù, không có dữ liệu thực tế</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP SCM KPI Framework</span><span>VIT Pain Point Analysis 2025</span></div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- SLIDE 8 — PROCUREMENT PAIN POINTS                 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <section class="slide slide-orange" id="s8">
+          <div class="brand-bar"></div>
+          <div class="slide-num">09 / 14</div>
+          <div class="tag tag-orange">💜 Procurement Pain Points</div>
+          <h2 class="slide-title">Procurement — <span class="gr-gold">~1.280 tỷ chi tiêu không được quản lý</span></h2>
+          <p class="slide-sub">~0% spend qua strategic sourcing · Mua thủ công 100% · Không RFx · Không CLM · Chi phí ẩn Procurement ~89,4 tỷ = 122% LNST.</p>
+
+          <div class="three-col" style="margin-bottom:20px;">
+            <div class="pain-card crit">
+              <div class="pain-ttl">🔴 PRO1 — Indirect MRO: Maverick Buying</div>
+              <div class="pain-desc">Toàn bộ mua sắm MRO thủ công qua điện thoại/email. Không catalog, không PO tracking, không budget enforcement tại điểm mua. Với 53% máy hết KH → hỏng hóc thường xuyên → mua khẩn cấp off-contract với giá cao hơn 15–20%.<br><br>MRO tăng từ 27,0 → 38,8 tỷ (+44%). Sửa chữa TSCĐ tăng từ 11,8 → 18,5 tỷ (+56%). Không có ROI rõ ràng cho bất kỳ khoản MRO nào.</div>
+              <div class="pain-impact">🔴 Off-contract premium ~15–20% · Chi phí ẩn ~15,6 tỷ/năm</div>
+            </div>
+            <div class="pain-card crit">
+              <div class="pain-ttl">🔴 PRO2 — Direct NVL: Mất Buying Power</div>
+              <div class="pain-desc">3 nhà máy đàm phán NVL riêng lẻ — không bundle volume, không ERS, không demand-driven replenishment. Supplier collaboration hoàn toàn qua điện thoại/email/fax. Cost/PO hiện tại ~$19,21 vs SAP benchmark $7,41.<br><br>NVL tăng +23% (938→1.151 tỷ) nhanh hơn DT +15,5%. Không demand visibility → safety stock quá cao 620 tỷ nhưng vẫn thiếu đúng loại → phải outsource CNC ×2,76 lần.</div>
+              <div class="pain-impact">🔴 Cost/PO cao ×2,6× · NVL/DT tăng 47% → 49,9%</div>
+            </div>
+            <div class="pain-card crit">
+              <div class="pain-ttl">🔴 PRO3 — Strategic Sourcing ~0%</div>
+              <div class="pain-desc">Bộ phận mua hàng VIT hoạt động thuần túy ở vai trò xử lý đơn mua theo yêu cầu — không đấu thầu, không e-bidding/e-auction, không đánh giá nhà cung cấp định kỳ, không có contract lifecycle management.<br><br>Với ~1.280 tỷ tổng spend/năm, VIT đang bỏ qua hàng chục tỷ tiết kiệm tiềm năng. Aberdeen benchmark: strategic sourcing tiết kiệm cao hơn 40% so với mua thủ công.</div>
+              <div class="pain-impact">🔴 ~0% vs SAP Best >70% spend managed strategically</div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="chain">
+              <div class="chain-ttl">Vòng luẩn quẩn Indirect Spend tại VIT</div>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.7;">
+                <div style="display:flex;align-items:center;gap:8px;"><span style="color:#ef9a9a;font-weight:700;">①</span> Máy 53% KH → Hỏng hóc thường xuyên → Mua khẩn cấp off-contract</div>
+                <div style="display:flex;align-items:center;gap:8px;"><span style="color:#ef9a9a;font-weight:700;">②</span> Không catalog → Mua giá cao 15–20% · Không budget check → Overspend</div>
+                <div style="display:flex;align-items:center;gap:8px;"><span style="color:#ef9a9a;font-weight:700;">③</span> MRO +44% · Sửa chữa +56% → Chi phí ẩn ~15,6 tỷ/năm</div>
+                <div style="display:flex;align-items:center;gap:8px;"><span style="color:#ef9a9a;font-weight:700;">④</span> Không PO tracking → Không biết đã mua bao nhiêu → Chu kỳ lặp lại</div>
+                <div style="text-align:center;padding:8px;background:rgba(229,57,53,0.09);border-radius:6px;color:#ef9a9a;font-weight:700;margin-top:6px;border:1px dashed rgba(229,57,53,0.25);">🔄 Máy càng cũ → MRO càng tăng → Vòng lặp không có điểm dừng</div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">Tổng chi phí ẩn Procurement 2025</div>
+              <div class="prog-row">
+                <div class="prog-hdr"><span class="prog-lbl">PRO1 — Indirect MRO off-contract</span><span class="prog-val tr-orange">~15,6 tỷ</span></div>
+                <div class="prog-bar"><div class="prog-fill" style="width:17%;background:linear-gradient(90deg,#ff6f00,#ffcc80);"></div></div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-hdr"><span class="prog-lbl">PRO2 — Direct NVL/CNC không tối ưu</span><span class="prog-val tr-red">~52,4 tỷ</span></div>
+                <div class="prog-bar"><div class="prog-fill" style="width:59%;background:linear-gradient(90deg,#c62828,#ef9a9a);"></div></div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-hdr"><span class="prog-lbl">PRO3 — Mất savings strategic sourcing</span><span class="prog-val tr-orange">~21,4 tỷ</span></div>
+                <div class="prog-bar"><div class="prog-fill" style="width:24%;background:linear-gradient(90deg,#e65100,#ffcc80);"></div></div>
+              </div>
+              <div style="margin-top:12px;padding:14px 18px;background:rgba(255,111,0,0.08);border:1px solid rgba(255,111,0,0.2);border-radius:8px;">
+                <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:4px;">Tổng chi phí ẩn Procurement</div>
+                <div style="font-size:28px;font-weight:900;color:#ff6f00;">~89,4 tỷ</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.45);">= 122% LNST 2025 (73,5 tỷ) · SAP tiết kiệm ~35–45 tỷ/năm</div>
+              </div>
+            </div>
+          </div>
+          <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP Procurement KPI Framework · 3 Files</span><span>VIT Pain Point Analysis 2025</span></div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- SLIDE 9 — ORDER-TO-CASH PAIN POINTS               -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <section class="slide slide-blue" id="s9">
+          <div class="brand-bar"></div>
+          <div class="slide-num">10 / 14</div>
+          <div class="tag tag-blue">🟠 Order-to-Cash Pain Points</div>
+          <h2 class="slide-title">Order-to-Cash — <span class="gr-blue">6 bước thủ công, ~75,9 tỷ chi phí ẩn</span></h2>
+          <p class="slide-sub">~95% doanh thu qua VIKD nhưng toàn bộ chuỗi OTC vận hành thủ công. 4/5 KPI xấu đi nghiêm trọng. Chi phí ẩn OTC = 103% LNST 2025.</p>
+
+          <table class="dtable" style="margin-bottom:20px;">
+            <thead>
+              <tr>
+                <th>KPI OTC</th>
+                <th>Pain Point VIT</th>
+                <th>Bằng chứng BCTC</th>
+                <th>Chi phí ẩn</th>
+                <th>Mức độ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tr" style="font-weight:700;">OTC·1 Order to Ship</td>
+                <td style="font-size:12px;color:rgba(255,255,255,0.6);">6 bước thủ công · 3 nhà máy không liên thông</td>
+                <td class="tr-red">DV ngoài SX +69% · CNC +176%</td>
+                <td class="tr-orange">~12,0 tỷ</td>
+                <td><span class="kbadge kb-red">🔴 Cao</span></td>
+              </tr>
+              <tr>
+                <td class="tr" style="font-weight:700;">OTC·2 Ship to Invoice</td>
+                <td style="font-size:12px;color:rgba(255,255,255,0.6);">Không billing tự động · Lập HĐ thủ công</td>
+                <td class="tr-red">DSO: 9→22 ng (+144%) · AR +158%</td>
+                <td class="tr-orange">~8,6 tỷ</td>
+                <td><span class="kbadge kb-red">🔴 Nghiêm trọng</span></td>
+              </tr>
+              <tr>
+                <td class="tr" style="font-weight:700;">OTC·3 Order Fill Accuracy</td>
+                <td style="font-size:12px;color:rgba(255,255,255,0.6);">Pick/pack thủ công · WMS không tích hợp</td>
+                <td class="tr-red">Hàng trả lại ×5,2 (+419%)</td>
+                <td class="tr-orange">~13,9 tỷ</td>
+                <td><span class="kbadge kb-red">🔴 Nghiêm trọng</span></td>
+              </tr>
+              <tr>
+                <td class="tr" style="font-weight:700;">OTC·4 Days Chargeback</td>
+                <td style="font-size:12px;color:rgba(255,255,255,0.6);">Không có chargeback system · Không đo ROI</td>
+                <td class="tr-red">CK TM: 2,1→20,4 tỷ (+873%)</td>
+                <td class="tr-orange">~18,3 tỷ</td>
+                <td><span class="kbadge kb-red">🔴 Nghiêm trọng</span></td>
+              </tr>
+              <tr>
+                <td class="tr" style="font-weight:700;">OTC·5 Lost Orders %</td>
+                <td style="font-size:12px;color:rgba(255,255,255,0.6);">ATP=0 · Máy 53% KH · HTK sai spec</td>
+                <td class="tr-orange">DP HTK +170% · CNC +176%</td>
+                <td class="tr-orange">~23,1 tỷ</td>
+                <td><span class="kbadge kb-orange">⚠️ Gián tiếp</span></td>
+              </tr>
+              <tr style="background:rgba(229,57,53,0.06);">
+                <td colspan="3" style="font-weight:800;color:#ef9a9a;font-size:13px;">TỔNG CHI PHÍ ẨN ORDER-TO-CASH 2025</td>
+                <td style="font-size:20px;font-weight:900;color:#ef5350;">~75,9 tỷ</td>
+                <td><span class="kbadge kb-red">= 103% LNST</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="two-col">
+            <div class="chain">
+              <div class="chain-ttl">Chuỗi 6 bước Order-to-Ship — Tất cả thủ công</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:rgba(229,57,53,0.06);border-radius:6px;border-left:2px solid #e53935;">
+                  <span style="font-size:11px;font-weight:700;color:#ef9a9a;flex-shrink:0;width:18px;">①</span>
+                  <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);">Tiếp nhận đơn hàng</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">Điện thoại / Email / Zalo → Sai sót tiếp nhận</div></div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:rgba(229,57,53,0.06);border-radius:6px;border-left:2px solid #e53935;">
+                  <span style="font-size:11px;font-weight:700;color:#ef9a9a;flex-shrink:0;width:18px;">②</span>
+                  <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);">Kiểm tra tồn kho</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">Thủ công từng kho riêng → Không thấy toàn hệ thống</div></div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:rgba(229,57,53,0.06);border-radius:6px;border-left:2px solid #e53935;">
+                  <span style="font-size:11px;font-weight:700;color:#ef9a9a;flex-shrink:0;width:18px;">③</span>
+                  <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);">Cam kết ngày giao</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">Ước tính thủ công → Không chính xác → Khách hủy đơn</div></div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:rgba(229,57,53,0.06);border-radius:6px;border-left:2px solid #e53935;">
+                  <span style="font-size:11px;font-weight:700;color:#ef9a9a;flex-shrink:0;width:18px;">④</span>
+                  <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);">Pick & Pack tại kho</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">Thủ công 100% · Không barcode → Sai mã/quy cách</div></div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:rgba(229,57,53,0.06);border-radius:6px;border-left:2px solid #e53935;">
+                  <span style="font-size:11px;font-weight:700;color:#ef9a9a;flex-shrink:0;width:18px;">⑤</span>
+                  <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);">Xuất kho & vận chuyển</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">Chứng từ giấy → Không shipment notification</div></div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 12px;background:rgba(229,57,53,0.06);border-radius:6px;border-left:2px solid #e53935;">
+                  <span style="font-size:11px;font-weight:700;color:#ef9a9a;flex-shrink:0;width:18px;">⑥</span>
+                  <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);">Lập hóa đơn & thu tiền</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">Thủ công → DSO +144% → Vốn bị giam</div></div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="alert alert-red" style="margin-bottom:12px;">
+                <div class="alert-icon">🔴</div>
+                <div class="alert-text"><strong>CK TM tăng +873%:</strong> VIT đang cạnh tranh bằng giá thay vì bằng chất lượng giao hàng. Vì giao hàng trễ/sai → buộc phải bù đắp bằng chiết khấu. Không có hệ thống → không đo được ROI từng chương trình CK. Từ 2,10 tỷ (2023) lên 20,41 tỷ (2025) — chỉ 2 năm.</div>
+              </div>
+              <div class="alert alert-red" style="margin-bottom:12px;">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-text"><strong>AR tập trung 81% vào VIKD:</strong> Không có credit limit tự động. AR bên liên quan tăng từ 30,9 tỷ → 113,2 tỷ (+266%) chỉ trong 1 năm. Nếu VIKD gặp khó khăn → phải trích lập dự phòng 113 tỷ → LNST âm ngay lập tức.</div>
+              </div>
+              <div style="padding:14px 18px;background:rgba(30,136,229,0.07);border:1px solid rgba(30,136,229,0.18);border-radius:8px;">
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">Nghịch lý OTC 2025</div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;">VIT tăng trưởng DT <strong style="color:#90caf9;">+15,5%</strong> nhưng chi phí ẩn OTC <strong style="color:#ef9a9a;">~75,9 tỷ = 103% LNST</strong>. Mỗi đồng DT tăng thêm đang kéo theo chi phí ẩn lớn hơn phần lợi nhuận tạo ra.</div>
+              </div>
+            </div>
+          </div>
+          <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP OTC KPI Framework · 5 Files</span><span>VIT Pain Point Analysis 2025</span></div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- SLIDE 10 — VÒNG XOÁY OTC                         -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <section class="slide slide-red" id="s10">
+          <div class="brand-bar"></div>
+          <div class="slide-num">11 / 14</div>
+          <div class="tag tag-red">🔁 Vòng xoáy</div>
+          <h2 class="slide-title">Vòng Xoáy Order-to-Cash — <span class="gr-red">Chuỗi đứt gãy 6 mắt xích</span></h2>
+          <p class="slide-sub">Từ tiếp nhận đơn → đến thu tiền — mỗi bước thủ công là một điểm sai sót. Lỗi tích lũy qua 6 bước → chi phí ẩn cộng hưởng ở cả hai đầu doanh thu lẫn lợi nhuận.</p>
+
+          <div class="two-col">
+            <div class="spiral-wrap">
+              <div class="spiral-ttl">🔴 Vòng xoáy AR → Chi phí vốn</div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;width:11px;height:11px;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Giao hàng xong nhưng không billing tự động</strong> → lập hóa đơn thủ công sau nhiều ngày, nhiều sai sót</div></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>DSO tăng 9 → 22 ngày (+144%)</strong> — AR tích lũy 54→140 tỷ, trong đó 81% từ VIKD duy nhất</div><span class="spiral-badge">Vốn bị giam thêm 85,7 tỷ · CP vốn ~8,6 tỷ/năm</span></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Không có credit limit tự động cho VIKD</strong> → không phát hiện overdue sớm → AR tập trung rủi ro cực cao</div></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Vốn bị giam → phải đi vay thêm</strong> → chi phí lãi vay tiếp tục cao dù đang giảm dần</div></div></div>
+              <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Nếu VIKD gặp khó khăn</strong> → trích lập DP 113 tỷ → LNST âm ngay lập tức</div><span class="spiral-badge">Rủi ro tập trung cực kỳ nguy hiểm</span></div></div>
+              <div class="spiral-loop">🔄 Billing chậm → Vốn bị giam → Lãi vay cao → Lợi nhuận giảm</div>
+            </div>
+
+            <div>
+              <div class="spiral-wrap" style="margin-bottom:16px;">
+                <div class="spiral-ttl">🔴 Vòng xoáy CK TM → Mất lợi nhuận</div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>Giao hàng trễ/sai → VIKD phàn nàn</strong> → VIT tăng chiết khấu để giữ chân thay vì cải thiện hệ thống</div></div></div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#ef5350;"></div><div class="spiral-conn"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>CK TM tăng +873%</strong> trong 2 năm (2,1→20,4 tỷ). Không có hệ thống → không đo được ROI → không biết chương trình nào hiệu quả</div><span class="spiral-badge">Tiền đang chảy ra mà không biết giá trị</span></div></div>
+                <div class="spiral-step"><div class="spiral-line"><div class="spiral-dot" style="background:#b71c1c;"></div></div><div class="spiral-body"><div class="spiral-txt"><strong>CK TM tăng → lợi nhuận gộp giảm → không có vốn để cải thiện hệ thống → giao hàng tiếp tục kém</strong></div></div></div>
+                <div class="spiral-loop">🔄 Giao hàng kém → CK TM tăng → Lợi nhuận giảm → Không cải thiện</div>
+              </div>
+
+              <div class="alert alert-orange">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-text"><strong>Điểm gãy OTC:</strong> CK TM đã tăng từ 0,11% lên 0,93% DT trong 2 năm — nếu tiếp tục xu hướng này đến 2027, CK TM có thể vượt 1,5% DT = ~35 tỷ/năm, ăn gần hết phần LNST hiện tại chỉ bởi một khoản chi không được kiểm soát.</div>
+              </div>
+            </div>
+          </div>
+          <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP OTC KPI Framework</span><span>VIT Pain Point Analysis 2025</span></div>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- SLIDE 11 — VÒNG XOÁY TỔNG THỂ                    -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <section class="slide slide-dark" id="s11">
+          <div class="brand-bar"></div>
+          <div class="slide-num">12 / 14</div>
+          <div class="tag tag-red">🔁 Vòng xoáy tổng thể</div>
+          <h2 class="slide-title">Vòng Xoáy Tổng Thể — <span class="gr-red">5 Mảng Cộng Hưởng</span></h2>
+          <p class="slide-sub">Không phải 5 vấn đề riêng lẻ — mà là một hệ thống vòng xoáy liên thông. Mỗi mảng khuếch đại vấn đề của mảng khác. Không có điểm dừng tự nhiên.</p>
+
+          <div class="two-col" style="margin-bottom:20px;">
+            <div style="background:rgba(10,15,30,0.8);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;font-family:monospace;font-size:12px;line-height:1.9;color:rgba(255,255,255,0.65);">
+              <div style="color:#ef9a9a;font-weight:700;margin-bottom:12px;font-size:13px;font-family:inherit;">📊 VÒNG XOÁY XUỐNG CẤP TỔNG THỂ VIT</div>
+              <div style="color:#ef9a9a;">Máy móc cũ (53% KH)</div>
+              <div style="color:rgba(255,255,255,0.3);">    │</div>
+              <div><span style="color:rgba(255,255,255,0.3);">    ├──→ </span><span style="color:#ffcc80;">MRO +44% · CNC +176% · DV ngoài +69%</span></div>
+              <div style="color:rgba(255,255,255,0.3);">    │         │</div>
+              <div><span style="color:rgba(255,255,255,0.3);">    │         ├──→ </span><span style="color:#ef9a9a;">Không kịp giao hàng → Lost orders ~46 tỷ</span></div>
+              <div><span style="color:rgba(255,255,255,0.3);">    │         └──→ </span><span style="color:#ef9a9a;">Gross margin bị ăn mòn -102,3 tỷ</span></div>
+              <div style="color:rgba(255,255,255,0.3);">    │</div>
+              <div style="color:#90caf9;">Không có Demand Planning</div>
+              <div style="color:rgba(255,255,255,0.3);">    │</div>
+              <div><span style="color:rgba(255,255,255,0.3);">    ├──→ </span><span style="color:#ffcc80;">Sản xuất sai spec → HTK lỗi thời tích lũy</span></div>
+              <div><span style="color:rgba(255,255,255,0.3);">    ├──→ </span><span style="color:#ef9a9a;">Dự phòng +352% → LNST bị ăn mòn -41,81 tỷ</span></div>
+              <div><span style="color:rgba(255,255,255,0.3);">    └──→ </span><span style="color:#ef9a9a;">Hàng trả lại ×5,2 → DP GGHT tiếp tục tăng</span></div>
+              <div style="color:rgba(255,255,255,0.3);">    │</div>
+              <div style="color:#ce93d8;">Không có Order Management</div>
+              <div style="color:rgba(255,255,255,0.3);">    │</div>
+              <div><span style="color:rgba(255,255,255,0.3);">    ├──→ </span><span style="color:#ffcc80;">Giao hàng trễ/sai → CK TM +873%</span></div>
+              <div><span style="color:rgba(255,255,255,0.3);">    ├──→ </span><span style="color:#ef9a9a;">DSO +144% → Vốn bị giam → Lãi vay cao</span></div>
+              <div><span style="color:rgba(255,255,255,0.3);">    └──→ </span><span style="color:#ef9a9a;">AR 81% VIKD → Rủi ro tập trung cực cao</span></div>
+              <div style="color:rgba(255,255,255,0.3);">    │</div>
+              <div style="color:#ef5350;font-weight:700;">Lợi nhuận không đủ để tái đầu tư</div>
+              <div style="color:rgba(255,255,255,0.3);">    │</div>
+              <div><span style="color:rgba(255,255,255,0.3);">    └──→ </span><span style="color:#ef9a9a;">Máy mới không được mua → Máy càng cũ hơn</span></div>
+              <div style="color:rgba(255,255,255,0.3);">    │</div>
+              <div style="color:#ef5350;font-weight:700;">🔄 VÒNG XOÁY TỰ KHUẾCH ĐẠI</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">5 mảng kết nối — Không thể giải quyết riêng lẻ</div>
+              <div class="risk-row crit">
+                <div class="risk-icon">🏭</div>
+                <div class="risk-body">
+                  <div class="risk-ttl" style="color:#ce93d8;">Manufacturing — ~134,9 tỷ (39,1%)</div>
+                  <div class="risk-desc">Máy 53% KH · MRO +44% · CNC +176% · HTK DP +352% · Đầu tư -81%</div>
+                </div>
+              </div>
+              <div class="risk-row crit">
+                <div class="risk-icon">🔗</div>
+                <div class="risk-body">
+                  <div class="risk-ttl" style="color:#80cbc4;">Supply Chain — ~118,7 tỷ (34,4%)</div>
+                  <div class="risk-desc">Không WMS · TMS · Forecast · ATP/CTP · 3 kho mù thông tin</div>
+                </div>
+              </div>
+              <div class="risk-row high">
+                <div class="risk-icon">💜</div>
+                <div class="risk-body">
+                  <div class="risk-ttl" style="color:#ffcc80;">Procurement — ~89,4 tỷ (25,9%)</div>
+                  <div class="risk-desc">~0% strategic sourcing · ~1.280 tỷ spend không tối ưu · Cost/PO ×2,6×</div>
+                </div>
+              </div>
+              <div class="risk-row high">
+                <div class="risk-icon">🟠</div>
+                <div class="risk-body">
+                  <div class="risk-ttl" style="color:#ffcc80;">Order-to-Cash — ~75,9 tỷ (22,0%)</div>
+                  <div class="risk-desc">CK TM +873% · DSO +144% · Hàng trả lại ×5,2 · Lost orders ~46 tỷ</div>
+                </div>
+              </div>
+              <div class="risk-row high">
+                <div class="risk-icon">💰</div>
+                <div class="risk-body">
+                  <div class="risk-ttl" style="color:#90caf9;">Finance — ~25,8 tỷ (7,5%)</div>
+                  <div class="risk-desc">Đóng sổ 68 ngày · AP thủ công · AR mất kiểm soát · NSLĐ giảm</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sband">
+            <div class="sband-icon">🔴</div>
+            <div class="sband-main">
+              <div class="sband-ttl">Tổng chi phí ẩn 5 mảng — Không có SAP</div>
+              <div class="sband-desc">Manufacturing + Supply Chain + Procurement + Order-to-Cash + Finance · 4 mảng đồng thời tích lũy · Không có điểm dừng tự nhiên nếu không có can thiệp cấu trúc</div>
+            </div>
+                          <div class="sband-fig"><div class="sband-num">~344 tỷ</div><div class="sband-unit">= 4,68× LNST 2025 (73,5 tỷ)</div></div>
+            </div>
+            <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP KPI Framework 5 mảng</span><span>VIT Pain Point Analysis 2025</span></div>
+          </section>
+
+          <!-- ══════════════════════════════════════════════════ -->
+          <!-- SLIDE 12 — CHI PHÍ ẨN TỔNG HỢP                  -->
+          <!-- ══════════════════════════════════════════════════ -->
+          <section class="slide slide-dark" id="s12">
+            <div class="brand-bar"></div>
+            <div class="slide-num">13 / 14</div>
+            <div class="tag tag-orange">💰 Hidden Cost</div>
+            <h2 class="slide-title">Chi Phí Ẩn Toàn Diện — <span class="gr-gold">~344 tỷ = 4,68× LNST</span></h2>
+            <p class="slide-sub">Không phải chi phí lý thuyết — tất cả được đo từ BCTC Deloitte thực tế. Mỗi đồng chi phí ẩn đang ăn mòn trực tiếp lợi nhuận và năng lực cạnh tranh dài hạn của VIT.</p>
+
+            <div class="two-col" style="margin-bottom:20px;">
+              <div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;">Phân bổ chi phí ẩn theo 5 mảng (tỷ VNĐ)</div>
+
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:11px;width:120px;color:rgba(255,255,255,0.6);">🏭 Manufacturing</span>
+                    <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:30px;position:relative;overflow:hidden;">
+                      <div style="position:absolute;left:0;top:0;bottom:0;width:39%;background:linear-gradient(90deg,rgba(142,36,170,0.6),rgba(142,36,170,0.25));border-radius:4px;"></div>
+                      <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#ce93d8;">~134,9 tỷ · 39,1%</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:11px;width:120px;color:rgba(255,255,255,0.6);">🔗 Supply Chain</span>
+                    <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:30px;position:relative;overflow:hidden;">
+                      <div style="position:absolute;left:0;top:0;bottom:0;width:34%;background:linear-gradient(90deg,rgba(0,150,136,0.6),rgba(0,150,136,0.25));border-radius:4px;"></div>
+                      <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#80cbc4;">~118,7 tỷ · 34,4%</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:11px;width:120px;color:rgba(255,255,255,0.6);">💜 Procurement</span>
+                    <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:30px;position:relative;overflow:hidden;">
+                      <div style="position:absolute;left:0;top:0;bottom:0;width:26%;background:linear-gradient(90deg,rgba(255,111,0,0.6),rgba(255,111,0,0.25));border-radius:4px;"></div>
+                      <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#ffcc80;">~89,4 tỷ · 25,9%</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:11px;width:120px;color:rgba(255,255,255,0.6);">🟠 Order-to-Cash</span>
+                    <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:30px;position:relative;overflow:hidden;">
+                      <div style="position:absolute;left:0;top:0;bottom:0;width:22%;background:linear-gradient(90deg,rgba(229,57,53,0.6),rgba(229,57,53,0.25));border-radius:4px;"></div>
+                      <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#ef9a9a;">~75,9 tỷ · 22,0%</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:11px;width:120px;color:rgba(255,255,255,0.6);">💰 Finance</span>
+                    <div style="flex:1;background:rgba(255,255,255,0.05);border-radius:4px;height:30px;position:relative;overflow:hidden;">
+                      <div style="position:absolute;left:0;top:0;bottom:0;width:7.5%;background:linear-gradient(90deg,rgba(30,136,229,0.6),rgba(30,136,229,0.25));border-radius:4px;"></div>
+                      <div style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#90caf9;">~25,8 tỷ · 7,5%</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top:20px;padding:16px 20px;background:rgba(229,57,53,0.08);border:1px solid rgba(229,57,53,0.2);border-radius:10px;">
+                  <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">Tổng chi phí ẩn 5 mảng 2025</div>
+                  <div style="font-size:40px;font-weight:900;color:#ef5350;line-height:1;margin-bottom:6px;">~344 tỷ</div>
+                  <div style="font-size:13px;color:rgba(255,255,255,0.5);">= 4,68× LNST 2025 (73,5 tỷ) · = 14,9% Doanh thu 2025</div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;">Chi phí ẩn vs LNST — Tương quan thực tế</div>
+
+                <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+                  <div style="padding:14px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:9px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:3px;">LNST thực tế 2025</div>
+                      <div style="font-size:20px;font-weight:800;color:#66bb6a;">73,5 tỷ</div>
+                    </div>
+                    <div style="font-size:28px;">📊</div>
+                  </div>
+                  <div style="padding:14px 18px;background:rgba(229,57,53,0.07);border:1px solid rgba(229,57,53,0.18);border-radius:9px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:3px;">Chi phí ẩn hiện tại</div>
+                      <div style="font-size:20px;font-weight:800;color:#ef5350;">~344 tỷ</div>
+                    </div>
+                    <div style="font-size:28px;">🔴</div>
+                  </div>
+                  <div style="padding:14px 18px;background:rgba(30,136,229,0.07);border:1px solid rgba(30,136,229,0.18);border-radius:9px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:3px;">LNST tiềm năng (SAP giảm 50% ẩn phí)</div>
+                      <div style="font-size:20px;font-weight:800;color:#42a5f5;">~245 tỷ</div>
+                    </div>
+                    <div style="font-size:28px;">✅</div>
+                  </div>
+                  <div style="padding:14px 18px;background:rgba(67,160,71,0.07);border:1px solid rgba(67,160,71,0.18);border-radius:9px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:3px;">Tăng LNST tiềm năng (×)</div>
+                      <div style="font-size:20px;font-weight:800;color:#66bb6a;">×3,33 lần</div>
+                    </div>
+                    <div style="font-size:28px;">🚀</div>
+                  </div>
+                </div>
+
+                <div class="alert alert-blue">
+                  <div class="alert-icon">💡</div>
+                  <div class="alert-text"><strong>Không cần tăng thêm một đồng doanh thu</strong> — Chỉ cần giải phóng 50% chi phí ẩn (~172 tỷ) thông qua SAP S/4HANA, LNST có thể tăng từ 73,5 tỷ lên ~245 tỷ — gấp 3,33 lần. Đây là cơ hội tăng trưởng lớn nhất VIT có thể nắm bắt ngay trong 2–3 năm tới.</div>
+                </div>
+              </div>
+            </div>
+
+            <table class="dtable">
+              <thead>
+                <tr>
+                  <th>Mảng</th>
+                  <th>Chi phí ẩn chính</th>
+                  <th>Bằng chứng BCTC</th>
+                  <th>Chi phí ẩn</th>
+                  <th>SAP tiết kiệm</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tr" style="font-weight:700;color:#ce93d8;">🏭 Manufacturing</td>
+                  <td style="font-size:12px;color:rgba(255,255,255,0.6);">MRO +44% · DV ngoài +69% · CNC +176% · DP HTK +352%</td>
+                  <td class="tr-red">+102,3 tỷ CP bất thường 1 năm</td>
+                  <td style="font-size:16px;font-weight:800;color:#ef5350;">~134,9 tỷ</td>
+                  <td><span class="kbadge kb-green">~67 tỷ/năm</span></td>
+                </tr>
+                <tr>
+                  <td class="tr" style="font-weight:700;color:#80cbc4;">🔗 Supply Chain</td>
+                  <td style="font-size:12px;color:rgba(255,255,255,0.6);">Không WMS/TMS/Forecast · OFR · OTD · 3 kho mù</td>
+                  <td class="tr-red">Hàng trả lại ×5,2 · DP HTK ×4,5</td>
+                  <td style="font-size:16px;font-weight:800;color:#ef5350;">~118,7 tỷ</td>
+                  <td><span class="kbadge kb-green">~55–65 tỷ/năm</span></td>
+                </tr>
+                <tr>
+                  <td class="tr" style="font-weight:700;color:#ffcc80;">💜 Procurement</td>
+                  <td style="font-size:12px;color:rgba(255,255,255,0.6);">~0% strategic · MRO off-contract · Cost/PO ×2,6×</td>
+                  <td class="tr-red">~1.280 tỷ spend không tối ưu</td>
+                  <td style="font-size:16px;font-weight:800;color:#ef5350;">~89,4 tỷ</td>
+                  <td><span class="kbadge kb-green">~35–45 tỷ/năm</span></td>
+                </tr>
+                <tr>
+                  <td class="tr" style="font-weight:700;color:#ef9a9a;">🟠 Order-to-Cash</td>
+                  <td style="font-size:12px;color:rgba(255,255,255,0.6);">CK TM +873% · DSO +144% · Trả lại ×5,2 · Lost orders</td>
+                  <td class="tr-red">5/5 KPI xấu đi nghiêm trọng</td>
+                  <td style="font-size:16px;font-weight:800;color:#ef5350;">~75,9 tỷ</td>
+                  <td><span class="kbadge kb-green">~38 tỷ/năm</span></td>
+                </tr>
+                <tr>
+                  <td class="tr" style="font-weight:700;color:#90caf9;">💰 Finance</td>
+                  <td style="font-size:12px;color:rgba(255,255,255,0.6);">Đóng sổ 68 ngày · AP thủ công · NSLĐ giảm · AR tập trung</td>
+                  <td class="tr-red">6/10 KPI tài chính xấu đi</td>
+                  <td style="font-size:16px;font-weight:800;color:#ef5350;">~25,8 tỷ</td>
+                  <td><span class="kbadge kb-green">~22 tỷ/năm</span></td>
+                </tr>
+                <tr style="background:rgba(229,57,53,0.07);">
+                  <td style="font-weight:800;color:#ef9a9a;font-size:13px;" colspan="3">🔴 TỔNG CHI PHÍ ẨN 5 MẢNG · VIT 2025</td>
+                  <td style="font-size:24px;font-weight:900;color:#ef5350;">~344 tỷ</td>
+                  <td><span class="kbadge kb-green">~180–230 tỷ/năm tiết kiệm · ROI 3–4 năm</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="footnote"><span>Nguồn: BCTC Deloitte 2023–2025 · SAP KPI Framework · 19 Files phân tích</span><span>VIT Pain Point Analysis 2025</span></div>
+          </section>
+
+          <!-- ══════════════════════════════════════════════════ -->
+          <!-- SLIDE 13 — RỦI RO & KẾT LUẬN                     -->
+          <!-- ══════════════════════════════════════════════════ -->
+          <section class="slide slide-dark" id="s13">
+            <div class="brand-bar"></div>
+            <div class="slide-num">14 / 14</div>
+            <div class="tag tag-red">⚠️ Rủi ro & Kết luận</div>
+            <h2 class="slide-title">Kết Luận — <span class="gr-red">Hành động ngay hoặc trả giá đắt hơn</span></h2>
+            <p class="slide-sub">Trong 2–3 năm tới, khi dư địa lãi vay cạn dần — toàn bộ ~344 tỷ chi phí ẩn sẽ lộ diện đồng thời. Không có điểm dừng tự nhiên nếu không có can thiệp cấu trúc ngay hôm nay.</p>
+
+            <div class="three-col" style="margin-bottom:20px;">
+              <div>
+                <div style="font-size:11px;color:#ef9a9a;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;font-weight:700;">🔴 6 Rủi ro trong 2–3 năm tới</div>
+                <div class="risk-row crit" style="margin-bottom:8px;">
+                  <div class="risk-icon">📉</div>
+                  <div class="risk-body">
+                    <div class="risk-ttl">Lãi vay hết dư địa giảm</div>
+                    <div class="risk-desc">−25,6 tỷ (2023→24) → −8,8 tỷ (2024→25). Tốc độ chậm dần → 2026–2027 có thể về 0. Mất động lực lợi nhuận chính.</div>
+                  </div>
+                </div>
+                <div class="risk-row crit" style="margin-bottom:8px;">
+                  <div class="risk-icon">⚙️</div>
+                  <div class="risk-body">
+                    <div class="risk-ttl">Máy móc tiếp tục xuống cấp</div>
+                    <div class="risk-desc">53% đã hết KH. Đầu tư mới chỉ 0,15× KH. Hỏng hóc ngày càng thường xuyên → CNC ngoài tiếp tục tăng vượt kiểm soát.</div>
+                  </div>
+                </div>
+                <div class="risk-row crit" style="margin-bottom:8px;">
+                  <div class="risk-icon">📋</div>
+                  <div class="risk-body">
+                    <div class="risk-ttl">AR VIKD 113 tỷ — Rủi ro tập trung</div>
+                    <div class="risk-desc">81% AR từ 1 bên duy nhất. Nếu VIKD gặp khó khăn → trích DP 113 tỷ → LNST âm ngay lập tức. Không có cảnh báo sớm.</div>
+                  </div>
+                </div>
+                <div class="risk-row high" style="margin-bottom:8px;">
+                  <div class="risk-icon">📊</div>
+                  <div class="risk-body">
+                    <div class="risk-ttl">Quyết định chậm 68 ngày</div>
+                    <div class="risk-desc">BGĐ ra quyết định dựa trên BCTC trễ 2 tháng. Bỏ lỡ cơ hội điều chỉnh kịp thời khi thị trường biến động.</div>
+                  </div>
+                </div>
+                <div class="risk-row high" style="margin-bottom:8px;">
+                  <div class="risk-icon">📦</div>
+                  <div class="risk-body">
+                    <div class="risk-ttl">Chi phí ẩn tích lũy ngày càng lớn</div>
+                    <div class="risk-desc">~344 tỷ đang tăng mỗi năm. Không có hệ thống → không đo được → không kiểm soát được. Vòng xoáy tự khuếch đại.</div>
+                  </div>
+                </div>
+                <div class="risk-row high">
+                  <div class="risk-icon">🔍</div>
+                  <div class="risk-body">
+                    <div class="risk-ttl">Kiểm toán ngày càng phức tạp</div>
+                    <div class="risk-desc">Phạm vi Deloitte mở rộng mỗi năm do giao dịch bên liên quan tăng, CNC mới, 3 nhà máy riêng lẻ. Chi phí kiểm toán leo thang.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size:11px;color:#66bb6a;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;font-weight:700;">✅ Con đường phá vỡ nghịch lý — SAP</div>
+
+                <div class="chain" style="margin-bottom:14px;">
+                  <div class="chain-ttl">Roadmap SAP 3 Phase — ROI &lt; 2 năm</div>
+                  <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div style="padding:10px 14px;background:rgba(67,160,71,0.08);border:1px solid rgba(67,160,71,0.18);border-radius:7px;">
+                      <div style="font-size:11px;font-weight:700;color:#a5d6a7;margin-bottom:4px;">PHASE 1 · Tháng 1–6 · Quick Wins</div>
+                      <div style="font-size:12px;color:rgba(255,255,255,0.6);">SAP FI/CO · AP OCR · AR Collections · EWM Basic 3 kho · IBP Demand Sensing</div>
+                      <div style="font-size:12px;font-weight:700;color:#66bb6a;margin-top:4px;">Tiết kiệm ước: ~25 tỷ/năm</div>
+                    </div>
+                    <div style="padding:10px 14px;background:rgba(30,136,229,0.08);border:1px solid rgba(30,136,229,0.18);border-radius:7px;">
+                      <div style="font-size:11px;font-weight:700;color:#90caf9;margin-bottom:4px;">PHASE 2 · Tháng 7–15 · Core Operations</div>
+                      <div style="font-size:12px;color:rgba(255,255,255,0.6);">SAP PP/MRP · PM · MM · aATP · TM · Ariba Sourcing · SD tích hợp</div>
+                      <div style="font-size:12px;font-weight:700;color:#42a5f5;margin-top:4px;">Tiết kiệm lũy kế: ~65 tỷ/năm</div>
+                    </div>
+                    <div style="padding:10px 14px;background:rgba(142,36,170,0.08);border:1px solid rgba(142,36,170,0.18);border-radius:7px;">
+                      <div style="font-size:11px;font-weight:700;color:#ce93d8;margin-bottom:4px;">PHASE 3 · Tháng 16–24 · Advanced Analytics</div>
+                      <div style="font-size:12px;color:rgba(255,255,255,0.6);">SAP IBP Full · S/4HANA Analytics · Tích hợp VIKD vào hệ thống chung</div>
+                      <div style="font-size:12px;font-weight:700;color:#ab47bc;margin-top:4px;">Tiết kiệm lũy kế: ~89 tỷ/năm</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="padding:14px 18px;background:rgba(67,160,71,0.07);border:1px solid rgba(67,160,71,0.18);border-radius:9px;">
+                  <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;">ROI Analysis — SAP VIT</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div><div style="font-size:10px;color:rgba(255,255,255,0.4);">Tiết kiệm/năm ổn định</div><div style="font-size:18px;font-weight:800;color:#66bb6a;">~89 tỷ</div></div>
+                    <div><div style="font-size:10px;color:rgba(255,255,255,0.4);">Chi phí triển khai</div><div style="font-size:18px;font-weight:800;color:#ffcc80;">~120–150 tỷ</div></div>
+                    <div><div style="font-size:10px;color:rgba(255,255,255,0.4);">Payback period</div><div style="font-size:18px;font-weight:800;color:#42a5f5;">&lt; 2 năm</div></div>
+                    <div><div style="font-size:10px;color:rgba(255,255,255,0.4);">LNST tiềm năng</div><div style="font-size:18px;font-weight:800;color:#66bb6a;">~245 tỷ</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">📌 Tóm tắt kết luận toàn diện</div>
+
+                <div class="alert alert-red" style="margin-bottom:10px;">
+                  <div class="alert-icon">🔴</div>
+                  <div class="alert-text"><strong>LNST tăng ×862 là ảo giác tạm thời.</strong> 43% đến từ giảm lãi vay — nguồn này đang cạn dần. 9/16 KPI vận hành đang xấu đi. Cấu trúc không bền vững.</div>
+                </div>
+                <div class="alert alert-orange" style="margin-bottom:10px;">
+                  <div class="alert-icon">⚠️</div>
+                  <div class="alert-text"><strong>~344 tỷ chi phí ẩn = 4,68× LNST.</strong> Không phải lý thuyết — đo được từ BCTC Deloitte. 5 mảng cùng suy yếu đồng thời, cộng hưởng nhau trong vòng xoáy tự khuếch đại.</div>
+                </div>
+                <div class="alert alert-blue" style="margin-bottom:10px;">
+                  <div class="alert-icon">💡</div>
+                  <div class="alert-text"><strong>Điểm gãy dự báo 2026–2027:</strong> Khi lãi vay hết dư địa giảm + chi phí ẩn tiếp tục tích lũy → LNST có thể về dưới 30 tỷ, thậm chí âm nếu có sự cố lớn từ máy móc hoặc AR VIKD.</div>
+                </div>
+                <div class="alert alert-green">
+                  <div class="alert-icon">✅</div>
+                  <div class="alert-text"><strong>SAP S/4HANA là giải pháp duy nhất giải quyết đồng thời tất cả 5 mảng.</strong> LNST tiềm năng ~245 tỷ — gấp 3,33× mà không cần tăng thêm một đồng doanh thu. ROI &lt; 2 năm.</div>
+                </div>
+
+                <div style="margin-top:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(229,57,53,0.1),rgba(30,136,229,0.08));border:1px solid rgba(255,255,255,0.1);border-radius:10px;text-align:center;">
+                  <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:2px;">Câu hỏi chiến lược cho VIT</div>
+                  <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,0.85);line-height:1.7;">"Tiếp tục chịu <span style="color:#ef5350;">~344 tỷ/năm</span> chi phí ẩn<br>— hay đầu tư <span style="color:#42a5f5;">~120–150 tỷ</span> một lần<br>để giải phóng <span style="color:#66bb6a;">~245 tỷ LNST</span> bền vững?"</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sband" style="background:linear-gradient(90deg,rgba(30,136,229,0.1),rgba(30,136,229,0.04));border-color:rgba(30,136,229,0.25);">
+              <div class="sband-icon">🚀</div>
+              <div class="sband-main">
+                <div class="sband-ttl" style="color:#90caf9;">FPT IS × SAP S/4HANA — Đối tác triển khai chiến lược</div>
+                <div class="sband-desc">FPT IS là SAP Gold Partner với kinh nghiệm triển khai SAP S/4HANA cho ngành sản xuất Việt Nam. Sẵn sàng phân tích Business Case chi tiết và lộ trình triển khai cụ thể cho VIT trong vòng 2 tuần.</div>
+              </div>
+              <div class="sband-fig">
+                <div style="font-size:14px;font-weight:700;color:#90caf9;">Bước tiếp theo</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">Business Case Workshop</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.4);">Demo SAP S/4HANA thực tế</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.4);">Roadmap & ROI chi tiết</div>
+              </div>
+            </div>
+
+            <div class="footnote">
+              <span>Nguồn: BCTC Deloitte 2023–2025 · SAP KPI Framework · 19 Files · VIT KPI Tổng Hợp Full</span>
+              <span>FPT IS × VIT — Pain Point Analysis 2025 · Confidential</span>
+            </div>
+          </section>
+
+</body>
+</html>
