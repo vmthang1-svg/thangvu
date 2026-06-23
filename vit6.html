@@ -1,0 +1,1375 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP ERP trong Hệ sinh thái Tập đoàn GELEX — FPT IS</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:       #080C18;
+    --bg2:      #0C1020;
+    --bg3:      #0F1428;
+    --card:     #0D1226;
+    --border:   #1A2240;
+    --border2:  #243060;
+    --green:    #00C853;
+    --green-l:  #69F0AE;
+    --green-bg: #001A0A;
+    --red:      #FF1744;
+    --red-l:    #FF8A80;
+    --red-bg:   #1A0008;
+    --blue:     #2979FF;
+    --blue-l:   #82B1FF;
+    --blue-bg:  #001040;
+    --orange:   #FF6D00;
+    --orange-l: #FFAB40;
+    --orange-bg:#1A0800;
+    --gold:     #FFD600;
+    --gold-l:   #FFECB3;
+    --purple:   #AA00FF;
+    --purple-l: #CE93D8;
+    --teal:     #00BFA5;
+    --teal-l:   #A7FFEB;
+    --white:    #FFFFFF;
+    --w90:      #E8EDF8;
+    --w70:      #B0BAD0;
+    --w50:      #788098;
+    --w30:      #454D60;
+    --font:     'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono:     'Courier New', monospace;
+    --r:        10px;
+    --r-sm:     6px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--w70);
+    font-family: var(--font);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #2979FF 0%, #00C853 35%, #FFD600 65%, #FF6D00 100%);
+  }
+
+  /* ── STICKY NAV ── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,12,24,.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+  }
+  .nav-inner {
+    max-width: 1300px; margin: 0 auto;
+    display: flex; align-items: center; gap: 4px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-brand {
+    font-size: 13px; font-weight: 800; color: var(--blue-l);
+    padding: 13px 16px 13px 0;
+    border-right: 1px solid var(--border);
+    margin-right: 8px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .nav-link {
+    padding: 13px 12px;
+    font-size: 11.5px; color: var(--w50);
+    white-space: nowrap; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    font-weight: 600; transition: all .2s;
+    text-decoration: none;
+  }
+  .nav-link:hover { color: var(--white); border-bottom-color: var(--blue); }
+
+  /* ── PAGE WRAP ── */
+  .wrap { max-width: 1300px; margin: 0 auto; padding: 0 32px 80px; }
+
+  /* ── COVER ── */
+  .cover {
+    padding: 56px 0 44px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+  }
+  @media(max-width:768px){ .cover { grid-template-columns: 1fr; } }
+  .cover-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.8px;
+    text-transform: uppercase; color: var(--blue-l);
+    margin-bottom: 14px;
+  }
+  .cover h1 {
+    font-size: clamp(26px,3.5vw,42px);
+    font-weight: 900; color: var(--white);
+    line-height: 1.15; margin-bottom: 10px;
+  }
+  .cover h1 em { font-style: normal; color: var(--green); }
+  .cover-sub { font-size: 13px; color: var(--w50); max-width: 680px; }
+  .cover-stats {
+    display: grid; grid-template-columns: repeat(2,1fr); gap: 10px;
+    flex-shrink: 0;
+  }
+  .cs-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 14px 16px; text-align: center;
+    min-width: 110px;
+  }
+  .cs-box .v {
+    font-size: 24px; font-weight: 800;
+    line-height: 1; margin-bottom: 4px;
+  }
+  .cs-box .l { font-size: 10.5px; color: var(--w50); }
+  .cs-box.g .v { color: var(--green); }
+  .cs-box.b .v { color: var(--blue-l); }
+  .cs-box.o .v { color: var(--orange-l); }
+  .cs-box.r .v { color: var(--red-l); }
+
+  /* ── SECTION ── */
+  .section { margin: 48px 0; scroll-margin-top: 60px; }
+  .sec-head {
+    display: flex; align-items: center; gap: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .sec-icon {
+    width: 44px; height: 44px; border-radius: var(--r-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+    background: var(--bg3); border: 1px solid var(--border2);
+  }
+  .sec-eyebrow {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.4px; color: var(--w30); margin-bottom: 3px;
+  }
+  .sec-title {
+    font-size: clamp(17px,2vw,22px);
+    font-weight: 800; color: var(--white); line-height: 1.2;
+  }
+  .sec-title em { font-style: normal; }
+  .sec-title.g em { color: var(--green); }
+  .sec-title.b em { color: var(--blue-l); }
+  .sec-title.o em { color: var(--orange-l); }
+  .sec-title.p em { color: var(--purple-l); }
+  .sec-desc { font-size: 12px; color: var(--w50); margin-top: 3px; }
+
+  /* ── DIVIDER ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ── STATUS BADGE ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 9px; border-radius: 20px;
+    font-size: 11px; font-weight: 700; white-space: nowrap;
+  }
+  .badge-done { background: var(--green-bg); border: 1px solid var(--green); color: var(--green-l); }
+  .badge-no   { background: var(--red-bg);   border: 1px solid var(--red);   color: var(--red-l); }
+  .badge-plan { background: var(--orange-bg);border: 1px solid var(--orange-l); color: var(--orange-l); }
+  .badge-vit  { background: #0A0820; border: 1px solid var(--purple); color: var(--purple-l); }
+  .badge-head { background: var(--blue-bg);  border: 1px solid var(--blue);  color: var(--blue-l); }
+
+  /* ── HOLDING CARD ── */
+  .holding-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+    gap: 16px; margin-bottom: 16px;
+  }
+  .holding-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+    position: relative;
+  }
+  .holding-card::before {
+    content:''; position: absolute; top:0;left:0;right:0; height:3px;
+  }
+  .holding-card.ge::before { background: var(--green); }
+  .holding-card.gi::before { background: var(--teal); }
+  .holding-card.vgc::before { background: var(--blue-l); }
+  .holding-card.gex::before { background: var(--gold); }
+  .holding-head {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .holding-logo {
+    width: 38px; height: 38px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 900; flex-shrink: 0;
+  }
+  .ge  .holding-logo { background: #001A08; color: var(--green-l); border: 1px solid var(--green); }
+  .gi  .holding-logo { background: #001A14; color: var(--teal-l);  border: 1px solid var(--teal); }
+  .vgc .holding-logo { background: var(--blue-bg); color: var(--blue-l); border: 1px solid var(--blue); }
+  .gex .holding-logo { background: #1A1400; color: var(--gold-l);  border: 1px solid var(--gold); }
+  .holding-name { font-size: 13.5px; font-weight: 800; color: var(--white); }
+  .holding-ticker { font-size: 11px; color: var(--w50); margin-top: 1px; }
+  .holding-body { padding: 12px 16px; }
+
+  /* ── COMPANY ROW ── */
+  .co-list { display: flex; flex-direction: column; gap: 6px; }
+  .co-row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto auto;
+    gap: 8px; align-items: center;
+    padding: 7px 10px;
+    border-radius: var(--r-sm);
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    transition: background .15s;
+  }
+  .co-row:hover { background: var(--bg3); }
+  .co-row.vit-highlight {
+    border-color: var(--purple);
+    background: #0A0820;
+  }
+  .co-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: var(--w50);
+  }
+  .co-info {}
+  .co-name { font-size: 12.5px; font-weight: 700; color: var(--w90); }
+  .co-name.vit-name { color: var(--purple-l); }
+  .co-sub  { font-size: 11px; color: var(--w50); margin-top: 1px; }
+  .co-year {
+    font-size: 11px; font-weight: 700;
+    color: var(--green); white-space: nowrap;
+    text-align: right;
+  }
+  .co-year.na { color: var(--w30); }
+
+  /* ── MASTER TABLE ── */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  thead tr { background: #0B1022; }
+  thead th {
+    padding: 10px 14px; text-align: left;
+    color: var(--w30); font-size: 10.5px;
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: .9px;
+    border-bottom: 2px solid var(--border2);
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+  tbody tr:hover { background: var(--bg3); }
+  tbody tr.vit-row { background: #0A0820 !important; border-color: var(--purple); }
+  tbody td { padding: 9px 14px; color: var(--w70); vertical-align: middle; }
+  td.w { color: var(--white); font-weight: 700; }
+  td.g { color: var(--green-l); font-weight: 700; }
+  td.r { color: var(--red-l); }
+  td.b { color: var(--blue-l); font-weight: 700; }
+  td.o { color: var(--orange-l); font-weight: 700; }
+  td.p { color: var(--purple-l); font-weight: 700; }
+
+  /* ── SUMMARY BAR ── */
+  .sum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+    gap: 12px; margin: 20px 0;
+  }
+  .sum-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 16px;
+    border-top: 3px solid;
+  }
+  .sum-box.g { border-top-color: var(--green); }
+  .sum-box.r { border-top-color: var(--red); }
+  .sum-box.o { border-top-color: var(--orange-l); }
+  .sum-box.p { border-top-color: var(--purple); }
+  .sum-box .sv { font-size: 28px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+  .sum-box.g .sv { color: var(--green); }
+  .sum-box.r .sv { color: var(--red-l); }
+  .sum-box.o .sv { color: var(--orange-l); }
+  .sum-box.p .sv { color: var(--purple-l); }
+  .sum-box .sl { font-size: 11.5px; color: var(--w50); }
+  .sum-box .sd { font-size: 11px; color: var(--w30); margin-top: 4px; }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 28px; margin: 0; }
+  .timeline::before {
+    content:''; position: absolute;
+    left: 9px; top: 8px; bottom: 8px; width: 2px;
+    background: var(--border2);
+  }
+  .tl-item {
+    position: relative; margin-bottom: 16px;
+    padding-left: 12px;
+  }
+  .tl-item::before {
+    content:''; position: absolute;
+    left: -19px; top: 6px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green); border: 2px solid var(--bg);
+  }
+  .tl-item.plan::before { background: var(--orange-l); }
+  .tl-item.target::before { background: var(--purple); }
+  .tl-year {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--green); margin-bottom: 4px;
+  }
+  .tl-item.plan .tl-year { color: var(--orange-l); }
+  .tl-item.target .tl-year { color: var(--purple-l); }
+  .tl-body { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 10px 14px; }
+  .tl-cos { font-size: 12.5px; color: var(--w90); font-weight: 700; margin-bottom: 2px; }
+  .tl-note { font-size: 11.5px; color: var(--w50); }
+
+  /* ── INSIGHT BOX ── */
+  .insight {
+    display: flex; gap: 14px;
+    padding: 16px 18px;
+    border-radius: var(--r-sm);
+    margin: 12px 0;
+    border-left: 3px solid;
+  }
+  .insight.b  { border-color: var(--blue);   background: var(--blue-bg); }
+  .insight.g  { border-color: var(--green);  background: var(--green-bg); }
+  .insight.o  { border-color: var(--orange-l); background: var(--orange-bg); }
+  .insight.p  { border-color: var(--purple); background: #0A0820; }
+  .insight.gd { border-color: var(--gold);   background: #0D0A00; }
+  .insight-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .insight-body { flex: 1; }
+  .insight-body strong {
+    display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 3px;
+  }
+  .insight.b  .insight-body strong { color: var(--blue-l); }
+  .insight.g  .insight-body strong { color: var(--green-l); }
+  .insight.o  .insight-body strong { color: var(--orange-l); }
+  .insight.p  .insight-body strong { color: var(--purple-l); }
+  .insight.gd .insight-body strong { color: var(--gold-l); }
+  .insight-body p { font-size: 12px; color: var(--w50); }
+
+  /* ── PROGRESS BAR ── */
+  .prog { margin-bottom: 14px; }
+  .prog-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .prog-lbl { font-size: 12px; color: var(--w70); }
+  .prog-pct { font-size: 12px; font-weight: 700; }
+  .prog-track { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+  .prog-fill  { height: 100%; border-radius: 4px; }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding: 14px 18px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    margin-bottom: 20px;
+  }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--w50); }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── TWO / THREE COL ── */
+  .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media(max-width:900px){ .two-col,.three-col { grid-template-columns: 1fr; } }
+
+  /* ── CTA ── */
+  .cta {
+    background: var(--blue-bg);
+    border: 1px solid var(--blue);
+    border-radius: var(--r);
+    padding: 28px 32px;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 24px; align-items: center; margin-top: 40px;
+  }
+  @media(max-width:600px){ .cta { grid-template-columns: 1fr; } }
+  .cta h3 { font-size: 16px; font-weight: 800; color: var(--blue-l); margin-bottom: 6px; }
+  .cta p  { font-size: 12.5px; color: var(--w50); }
+  .cta-btns { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+  .btn {
+    padding: 9px 18px; border-radius: 6px;
+    font-size: 12px; font-weight: 700;
+    text-align: center; white-space: nowrap; cursor: pointer;
+  }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-ghost   { background: transparent; border: 1px solid var(--blue); color: var(--blue-l); }
+
+  /* ── FOOTNOTE ── */
+  .footnote {
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--w30);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px;
+  }
+
+  /* ── VIT SPOTLIGHT ── */
+  .vit-spotlight {
+    background: #080618;
+    border: 1.5px solid var(--purple);
+    border-radius: var(--r);
+    padding: 20px 24px;
+    position: relative; overflow: hidden;
+  }
+  .vit-spotlight::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--purple), var(--blue));
+  }
+  .vit-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.4px; color: var(--purple-l); margin-bottom: 8px;
+  }
+  .vit-headline { font-size: 15px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+  .vit-body { font-size: 12.5px; color: var(--w50); line-height: 1.7; }
+  .vit-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .vit-chip {
+    padding: 3px 10px; border-radius: 20px;
+    background: #120828; border: 1px solid var(--purple);
+    color: var(--purple-l); font-size: 11px; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">FPT IS × GELEX</div>
+    <a class="nav-link" href="#overview">Tổng quan</a>
+    <a class="nav-link" href="#electric">GELEX Electric</a>
+    <a class="nav-link" href="#infra">GELEX Infra</a>
+    <a class="nav-link" href="#viglacera">Viglacera</a>
+    <a class="nav-link" href="#timeline">Timeline</a>
+    <a class="nav-link" href="#matrix">Ma trận đầy đủ</a>
+    <a class="nav-link" href="#opportunity">Cơ hội</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ══ COVER ══ -->
+  <div class="cover">
+    <div>
+      <div class="cover-eyebrow">FPT IS × Tập đoàn GELEX · Bản đồ triển khai SAP S/4HANA · 06/2026</div>
+      <h1>Ứng dụng <em>SAP ERP</em> trong<br>Hệ sinh thái Tập đoàn GELEX</h1>
+      <p class="cover-sub">
+        Bản đồ toàn diện về tình trạng triển khai SAP S/4HANA tại các công ty thành viên Tập đoàn GELEX —
+        từ GELEX Electric (đã xong) đến Viglacera (đang triển khai) và các đơn vị còn lại chưa có SAP.
+        Cơ sở dữ liệu: báo cáo thường niên GELEX, Citek case study, biên bản họp FDX–FIS.
+      </p>
+    </div>
+    <div class="cover-stats">
+      <div class="cs-box g"><div class="v">9</div><div class="l">Đã có SAP</div></div>
+      <div class="cs-box r"><div class="v">12+</div><div class="l">Chưa có SAP</div></div>
+      <div class="cs-box o"><div class="v">1</div><div class="l">Đang triển khai</div></div>
+      <div class="cs-box b"><div class="v">2020</div><div class="l">SAP đầu tiên (CADIVI)</div></div>
+    </div>
+  </div>
+
+  <!-- ══ OVERVIEW ══ -->
+  <section id="overview" class="section">
+    <div class="sec-head">
+      <div class="sec-icon">🏢</div>
+      <div>
+        <div class="sec-eyebrow">Tổng quan · Cấu trúc tập đoàn</div>
+        <div class="sec-title b">Cấu trúc Tập đoàn <em>GELEX</em> — 2 Sub-Holdings chính</div>
+        <div class="sec-desc">GELEX Group (GEX) sở hữu 2 nhánh chính: GELEX Electric (thiết bị điện) và GELEX Infrastructure (hạ tầng, năng lượng, VLXD)</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Đã triển khai SAP S/4HANA (Go-Live)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--orange-l)"></div>Đang triển khai / Kế hoạch xác nhận</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--purple)"></div>VIT — Mục tiêu của FPT IS</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Chưa triển khai SAP</div>
+    </div>
+
+    <div class="sum-grid">
+      <div class="sum-box g">
+        <div class="sv">9</div>
+        <div class="sl">Đã triển khai SAP</div>
+        <div class="sd">CADIVI, THIBIDI, GEE, EMIC, CFT, MEE, HEM, GETC + SAC 2024</div>
+      </div>
+      <div class="sum-box o">
+        <div class="sv">1</div>
+        <div class="sl">Đang triển khai</div>
+        <div class="sd">Viglacera Tiên Sơn (VIT) — GoLive 01/01/2027</div>
+      </div>
+      <div class="sum-box r">
+        <div class="sv">12+</div>
+        <div class="sl">Chưa có SAP</div>
+        <div class="sd">Phần lớn các công ty thuộc Viglacera và GELEX Infra</div>
+      </div>
+      <div class="sum-box p">
+        <div class="sv">~25 tỷ</div>
+        <div class="sl">Chi phí SAP ước tính VIT</div>
+        <div class="sd">License + triển khai 2026–2027 (theo biên bản họp FDX–FIS)</div>
+      </div>
+    </div>
+
+    <div class="insight gd">
+      <div class="insight-icon">⭐</div>
+      <div class="insight-body">
+        <strong>Influencing từ tập đoàn GELEX xuống Viglacera — Yếu tố chiến lược quan trọng nhất</strong>
+        <p>Biên bản họp FDX–FIS ghi rõ: <em>"Tập đoàn GELEX đã triển khai SAP (SCB) và có sự influencing xuống các đơn vị thành viên Viglacera — không bắt buộc nhưng được khuyến khích dùng SAP."</em> Trong nửa năm gần đây, GELEX đã thay đổi từ mô hình đầu tư thuần túy sang quản trị sâu đơn vị thành viên — SAP là ngôn ngữ quản trị chung của toàn hệ sinh thái.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ══ GELEX ELECTRIC ══ -->
+  <section id="electric" class="section">
+    <div class="sec-head">
+      <div class="sec-icon">⚡</div>
+      <div>
+        <div class="sec-eyebrow">Nhánh 1 · GELEX Electric (GEE)</div>
+        <div class="sec-title g">GELEX Electric — <em>SAP đã hoàn thành toàn hệ thống</em></div>
+        <div class="sec-desc">8 công ty thành viên · SAP S/4HANA + SAP Analytics Cloud · Triển khai 2020–2024 bởi Citek</div>
+      </div>
+    </div>
+
+    <div class="insight g">
+      <div class="insight-icon">✅</div>
+      <div class="insight-body">
+        <strong>Toàn bộ nhánh GELEX Electric đã vận hành SAP S/4HANA + SAP Analytics Cloud</strong>
+        <p>Từ 2020–2024, Citek triển khai SAP S/4HANA cho GELEX Electric và toàn bộ đơn vị thành viên. Ngày 27/12/2024, SAP Analytics Cloud chính thức vận hành đồng thời tại GEE, CADIVI, THIBIDI, CFT, EMIC, MEE, HEM, GETC. Đây là cột mốc hoàn thiện hệ sinh thái SAP của nhánh điện.</p>
+      </div>
+    </div>
+
+    <div class="co-list">
+      <div class="co-row">
+        <div class="co-num">1</div>
+        <div class="co-info">
+          <div class="co-name">CADIVI — Công ty CP Dây Cáp Điện Việt Nam</div>
+          <div class="co-sub">Sản xuất dây cáp điện · Đơn vị đầu tiên trong hệ sinh thái GELEX có SAP</div>
+        </div>
+        <div class="co-year">Go-Live: 2020</div>
+        <div><span class="badge badge-done">✅ Đã triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">2</div>
+        <div class="co-info">
+          <div class="co-name">THIBIDI — Công ty CP Thiết Bị Điện</div>
+          <div class="co-sub">Sản xuất máy biến áp · HOSE: THI · Citek tư vấn 10 tháng</div>
+        </div>
+        <div class="co-year">Go-Live: 01/04/2021</div>
+        <div><span class="badge badge-done">✅ Đã triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">3</div>
+        <div class="co-info">
+          <div class="co-name">GELEX Electric (GEE) — Công ty CP Thiết Bị Điện GELEX</div>
+          <div class="co-sub">Sub-holding thiết bị điện · HOSE: GEE · Go-Live cùng EMIC</div>
+        </div>
+        <div class="co-year">Go-Live: 03/01/2022</div>
+        <div><span class="badge badge-done">✅ Đã triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">4</div>
+        <div class="co-info">
+          <div class="co-name">EMIC — Công ty CP Cơ Điện EMIC</div>
+          <div class="co-sub">Sản xuất thiết bị điện · Go-Live đồng thời với GEE ngày 03/01/2022</div>
+        </div>
+        <div class="co-year">Go-Live: 03/01/2022</div>
+        <div><span class="badge badge-done">✅ Đã triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">5</div>
+        <div class="co-info">
+          <div class="co-name">CFT — Công ty CP CFT</div>
+          <div class="co-sub">Sản xuất thiết bị điện · Trong gói triển khai GELEX Electric 2020–2024</div>
+        </div>
+        <div class="co-year">Go-Live: 2020–2024</div>
+        <div><span class="badge badge-done">✅ Đã triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">6</div>
+        <div class="co-info">
+          <div class="co-name">MEE — Công ty CP MEE</div>
+          <div class="co-sub">Sản xuất thiết bị đo đếm điện · Trong gói triển khai GELEX Electric</div>
+        </div>
+        <div class="co-year">Go-Live: 2020–2024</div>
+        <div><span class="badge badge-done">✅ Đã triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">7</div>
+        <div class="co-info">
+          <div class="co-name">HEM — Công ty CP HEM</div>
+          <div class="co-sub">Sản xuất thiết bị điện · Trong gói triển khai GELEX Electric</div>
+        </div>
+        <div class="co-year">Go-Live: 2020–2024</div>
+        <div><span class="badge badge-done">✅ Đã triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">8</div>
+        <div class="co-info">
+          <div class="co-name">GETC — Công ty CP GETC</div>
+          <div class="co-sub">Thương mại thiết bị điện · Trong gói triển khai GELEX Electric</div>
+        </div>
+        <div class="co-year">Go-Live: 2020–2024</div>
+        <div><span class="badge badge-done">✅ Đã triển khai</span></div>
+      </div>
+      <div class="co-row" style="border-color:var(--teal);background:#001A14">
+        <div class="co-num" style="color:var(--teal-l)">+</div>
+        <div class="co-info">
+          <div class="co-name" style="color:var(--teal-l)">SAP Analytics Cloud (SAC) — Toàn bộ GELEX Electric</div>
+          <div class="co-sub">Báo cáo quản trị thông minh cho GEE + CADIVI + THIBIDI + CFT + EMIC + MEE + HEM + GETC</div>
+        </div>
+        <div class="co-year" style="color:var(--teal)">Go-Live: 27/12/2024</div>
+        <div><span class="badge badge-done">✅ Đã vận hành</span></div>
+      </div>
+    </div>
+
+    <div class="prog" style="margin-top:16px">
+      <div class="prog-header">
+        <span class="prog-lbl">Tỷ lệ đơn vị GELEX Electric đã có SAP</span>
+        <span class="prog-pct" style="color:var(--green)">8/8 — 100%</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width:100%;background:var(--green)"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ══ GELEX INFRA ══ -->
+  <section id="infra" class="section">
+    <div class="sec-head">
+      <div class="sec-icon">🏗️</div>
+      <div>
+        <div class="sec-eyebrow">Nhánh 2 · GELEX Infrastructure</div>
+        <div class="sec-title o">GELEX Infrastructure — <em>SAP chưa phổ cập</em></div>
+        <div class="sec-desc">Năng lượng · Nước · BĐS công nghiệp · Xây dựng · Hầu hết chưa triển khai SAP</div>
+      </div>
+    </div>
+
+    <div class="insight o">
+      <div class="insight-icon">⚠️</div>
+      <div class="insight-body">
+        <strong>GELEX Infrastructure — Nhánh chưa được số hóa ERP đồng bộ</strong>
+        <p>Không có thông tin công khai về việc các đơn vị thuộc GELEX Infra (GELEX Power, Song Da Water, Titan Corp...) đã triển khai SAP. Đây là "vùng trắng" lớn trong hệ sinh thái GELEX — cơ hội tiếp theo sau khi VIT go-live thành công.</p>
+      </div>
+    </div>
+
+    <div class="co-list">
+      <div class="co-row">
+        <div class="co-num">1</div>
+        <div class="co-info">
+          <div class="co-name">GELEX Infrastructure (Gelex Infra)</div>
+          <div class="co-sub">Sub-holding hạ tầng · Năng lượng, nước, BĐS công nghiệp, VLXD · Đang chuẩn bị IPO</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">2</div>
+        <div class="co-info">
+          <div class="co-name">GELEX Power Corporation</div>
+          <div class="co-sub">Điện mặt trời, điện gió, thủy điện · Top 50 Công ty hiệu quả nhất VN 2024</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">3</div>
+        <div class="co-info">
+          <div class="co-name">Song Da Water JSC</div>
+          <div class="co-sub">Cấp nước đô thị · Thuộc hệ sinh thái GELEX Infra</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">4</div>
+        <div class="co-info">
+          <div class="co-name">Titan Corporation (Titan Corp)</div>
+          <div class="co-sub">BĐS công nghiệp, khu công nghiệp · FIH Vietnam, Titan Hải Phòng</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <div class="co-row">
+        <div class="co-num">5</div>
+        <div class="co-info">
+          <div class="co-name">PXL (Công ty xây lắp điện)</div>
+          <div class="co-sub">Xây lắp công trình điện · Thuộc hệ sinh thái GELEX Infra</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+    </div>
+
+    <div class="prog" style="margin-top:16px">
+      <div class="prog-header">
+        <span class="prog-lbl">Tỷ lệ đơn vị GELEX Infra đã có SAP</span>
+        <span class="prog-pct" style="color:var(--red-l)">0/5+ — ~0%</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width:4%;background:var(--red)"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ══ VIGLACERA ══ -->
+  <section id="viglacera" class="section">
+    <div class="sec-head">
+      <div class="sec-icon">🏛️</div>
+      <div>
+        <div class="sec-eyebrow">Nhánh 3 · Tổng Công ty Viglacera (VGC) — dưới GELEX Infra</div>
+        <div class="sec-title p">Viglacera — <em>VIT là đơn vị tiên phong SAP</em></div>
+        <div class="sec-desc">Hàng đầu VLXD Việt Nam · Gạch ốp lát, kính xây dựng, sứ vệ sinh, BĐS công nghiệp · GELEX sở hữu ~50,21%</div>
+      </div>
+    </div>
+
+    <!-- VIT Spotlight -->
+    <div class="vit-spotlight" style="margin-bottom:20px">
+      <div class="vit-label">🎯 VIT — Mục tiêu chiến lược của FPT IS</div>
+      <div class="vit-headline">Viglacera Tiên Sơn (VIT) — Đơn vị đầu tiên trong hệ sinh thái Viglacera triển khai SAP S/4HANA</div>
+      <div class="vit-body">
+        VIT đã đăng ký chủ trương triển khai ERP với HĐQT Tổng Công ty Viglacera, với mốc GoLive <strong style="color:var(--purple-l)">01/01/2027</strong> là cam kết cứng không thể thay đổi. Chi phí dự kiến ~20–25 tỷ VNĐ (license + triển khai 2026–2027). Doanh thu 2.307 tỷ — 4 nhà máy — ~344 tỷ chi phí ẩn cần giải phóng. FPT IS (cùng FPT Digital) là đối tác đề xuất chính.
+      </div>
+      <div class="vit-chips">
+        <span class="vit-chip">GoLive: 01/01/2027</span>
+        <span class="vit-chip">FPT IS + FPT Digital</span>
+        <span class="vit-chip">SAP S/4HANA</span>
+        <span class="vit-chip">5 phân hệ core</span>
+        <span class="vit-chip">~25 tỷ VNĐ</span>
+        <span class="vit-chip">4 nhà máy</span>
+      </div>
+    </div>
+
+    <div class="co-list">
+      <!-- VIT — Đang triển khai -->
+      <div class="co-row vit-highlight">
+        <div class="co-num" style="background:var(--purple);color:var(--white)">★</div>
+        <div class="co-info">
+          <div class="co-name vit-name">Viglacera Tiên Sơn (VIT) — Công ty CP Gạch Ốp lát Viglacera Tiên Sơn</div>
+          <div class="co-sub">Gạch ốp lát · 4 nhà máy (Tiên Sơn, Thái Bình, Mỹ Đức, Hải Dương) · DT 2.307 tỷ</div>
+        </div>
+        <div class="co-year" style="color:var(--purple-l)">GoLive: 01/01/2027</div>
+        <div><span class="badge badge-vit">🔄 Đang triển khai</span></div>
+      </div>
+      <!-- Tổng Công ty Viglacera -->
+      <div class="co-row">
+        <div class="co-num">1</div>
+        <div class="co-info">
+          <div class="co-name">Tổng Công ty Viglacera – CTCP (VGC)</div>
+          <div class="co-sub">Công ty mẹ · HOSE: VGC · Quản lý toàn bộ hệ sinh thái Viglacera · Anh Vũ Anh – GĐ CNTT TCT</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <!-- Viglacera Hạ Long -->
+      <div class="co-row">
+        <div class="co-num">2</div>
+        <div class="co-info">
+          <div class="co-name">Viglacera Hạ Long</div>
+          <div class="co-sub">Sản xuất gạch ốp lát · Nhà máy tại Quảng Ninh</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <!-- Viglacera Thăng Long -->
+      <div class="co-row">
+        <div class="co-num">3</div>
+        <div class="co-info">
+          <div class="co-name">Viglacera Thăng Long (VTK)</div>
+          <div class="co-sub">Kính xây dựng · Nhà máy tại Bắc Giang · Cloudify đang được dùng thử ở 1 nhà máy</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <!-- Viglacera Đông Triều -->
+      <div class="co-row">
+        <div class="co-num">4</div>
+        <div class="co-info">
+          <div class="co-name">Viglacera Đông Triều</div>
+          <div class="co-sub">Sản xuất gạch ốp lát · Nhà máy tại Quảng Ninh</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <!-- Viglacera Hà Nội -->
+      <div class="co-row">
+        <div class="co-num">5</div>
+        <div class="co-info">
+          <div class="co-name">Viglacera Hà Nội</div>
+          <div class="co-sub">Sản xuất gạch men · Nhà máy tại Hà Nội</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <!-- Sứ Viglacera (Việt Trì) -->
+      <div class="co-row">
+        <div class="co-num">6</div>
+        <div class="co-info">
+          <div class="co-name">Sứ Viglacera (Công ty CP Sứ Việt Trì Viglacera)</div>
+          <div class="co-sub">Thiết bị vệ sinh, sứ · Nhà máy Việt Trì, Phú Thọ</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <!-- VIKD -->
+      <div class="co-row">
+        <div class="co-num">7</div>
+        <div class="co-info">
+          <div class="co-name">VIKD — Công ty CP Kinh doanh Gạch Ốp Lát Viglacera</div>
+          <div class="co-sub">Phân phối thương mại · Khách hàng chiếm 81% AR của VIT · Dùng Cloudify bán hàng</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+      <!-- Viglacera IP -->
+      <div class="co-row">
+        <div class="co-num">8</div>
+        <div class="co-info">
+          <div class="co-name">Viglacera Infrastructure — BĐS Công nghiệp (Viglacera IP)</div>
+          <div class="co-sub">Khu công nghiệp, khu đô thị · Top 10 BĐS công nghiệp uy tín 2025</div>
+        </div>
+        <div class="co-year na">—</div>
+        <div><span class="badge badge-no">❌ Chưa triển khai</span></div>
+      </div>
+    </div>
+
+    <div class="prog" style="margin-top:16px">
+      <div class="prog-header">
+        <span class="prog-lbl">Tỷ lệ đơn vị Viglacera đã có SAP</span>
+        <span class="prog-pct" style="color:var(--orange-l)">1/8+ — Đang triển khai (VIT)</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width:12%;background:var(--purple)"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ══ TIMELINE ══ -->
+  <section id="timeline" class="section">
+    <div class="sec-head">
+      <div class="sec-icon">📅</div>
+      <div>
+        <div class="sec-eyebrow">Lịch sử & Kế hoạch · SAP trong hệ sinh thái GELEX</div>
+        <div class="sec-title g">Timeline <em>5 năm — 2020 đến 2027</em></div>
+        <div class="sec-desc">Từ CADIVI (đầu tiên, 2020) đến VIT (mục tiêu GoLive 2027)</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-year">2020</div>
+            <div class="tl-body">
+              <div class="tl-cos">CADIVI — SAP S/4HANA</div>
+              <div class="tl-note">Đơn vị đầu tiên trong hệ sinh thái GELEX triển khai SAP. Đối tác: Citek. Vinh danh SAP S/4HANA Partner of Year 2020.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">01/04/2021</div>
+            <div class="tl-body">
+              <div class="tl-cos">THIBIDI — SAP S/4HANA Go-Live</div>
+              <div class="tl-note">Triển khai 10 tháng. Scope: bán hàng, sản xuất, chất lượng, tài chính, mua hàng, kho. Đối tác: Citek.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">03/01/2022</div>
+            <div class="tl-body">
+              <div class="tl-cos">GELEX Electric (GEE) + EMIC — Go-Live đồng thời</div>
+              <div class="tl-note">Lễ vận hành chính thức SAP S/4HANA tại 2 đơn vị cùng ngày. Mốc quan trọng nhất trong lịch sử số hóa GELEX Electric.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">2020–2024</div>
+            <div class="tl-body">
+              <div class="tl-cos">CFT · MEE · HEM · GETC — Roll-out toàn hệ thống</div>
+              <div class="tl-note">4 công ty thành viên còn lại của GELEX Electric hoàn tất triển khai SAP S/4HANA trong gói roll-out tổng thể.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">27/12/2024</div>
+            <div class="tl-body">
+              <div class="tl-cos">SAP Analytics Cloud — Toàn bộ GELEX Electric</div>
+              <div class="tl-note">Hệ thống báo cáo quản trị thông minh vận hành đồng thời tại 8 đơn vị. Citek triển khai trong 12 tháng.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">25/07/2025</div>
+            <div class="tl-body">
+              <div class="tl-cos">CADIVI — Tái cấu trúc SAP S/4HANA</div>
+              <div class="tl-note">CADIVI ký kết dự án nâng cấp/tái cấu trúc lên phiên bản SAP S/4HANA mới nhất với Citek.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="timeline">
+          <div class="tl-item plan">
+            <div class="tl-year">Q3–Q4/2026 — BẮT ĐẦU TRIỂN KHAI</div>
+            <div class="tl-body" style="border-color:var(--orange-l)">
+              <div class="tl-cos" style="color:var(--orange-l)">VIT — Khởi động SAP S/4HANA</div>
+              <div class="tl-note">Đấu thầu xong Q3/2026. Bắt đầu triển khai 5 phân hệ core: Tài chính kế toán · Mua hàng · Bán hàng · Kho · Sản xuất (giá thành). Đối tác đề xuất: FPT IS + FPT Digital.</div>
+            </div>
+          </div>
+          <div class="tl-item target">
+            <div class="tl-year">01/01/2027 — GoLive CAM KẾT CỨNG</div>
+            <div class="tl-body" style="border-color:var(--purple)">
+                          <div class="tl-cos" style="color:var(--purple-l)">VIT — SAP S/4HANA Go-Live</div>
+              <div class="tl-note">Mốc đã đăng ký chủ trương chính thức với HĐQT Tổng Công ty Viglacera. 5 phân hệ core: Tài chính kế toán · Mua hàng · Bán hàng · Kho · Sản xuất (giá thành). Đối tác đề xuất: FPT IS + FPT Digital.</div>
+            </div>
+          </div>
+          <div class="tl-item plan">
+            <div class="tl-year">2027–2028 — GIAI ĐOẠN MỞ RỘNG</div>
+            <div class="tl-body" style="border-color:var(--orange-l)">
+              <div class="tl-cos" style="color:var(--orange-l)">Viglacera — Roll-out sang các đơn vị thành viên khác</div>
+              <div class="tl-note">Sau khi VIT GoLive thành công, dự kiến Tổng Công ty Viglacera sẽ nhân rộng mô hình SAP sang các đơn vị còn lại: Viglacera Thăng Long, Viglacera Hạ Long, Viglacera Đông Triều, Sứ Viglacera... VIT đóng vai trò pilot — template cho toàn hệ thống Viglacera.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight p">
+      <div class="insight-icon">🎯</div>
+      <div class="insight-body">
+        <strong>VIT là "đầu cầu chiến lược" — Không chỉ là 1 dự án ERP đơn lẻ</strong>
+        <p>Biên bản họp FDX–FIS ghi rõ: GELEX đang chuyển từ mô hình <em>"đầu tư tài chính"</em> sang <em>"quản trị sâu đơn vị thành viên"</em>. VIT GoLive thành công = FPT IS tạo được reference case trong toàn hệ sinh thái Viglacera (12+ đơn vị chưa có SAP) và GELEX Infra (5+ đơn vị chưa có SAP). Tổng cơ hội thị trường ước tính 200–400 tỷ VNĐ trong 3–5 năm tới.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ══ MATRIX ══ -->
+  <section id="matrix" class="section">
+    <div class="sec-head">
+      <div class="sec-icon">📋</div>
+      <div>
+        <div class="sec-eyebrow">Ma trận đầy đủ · Toàn bộ hệ sinh thái GELEX</div>
+        <div class="sec-title b">Ma trận <em>Tình trạng SAP — Tất cả đơn vị GELEX</em></div>
+        <div class="sec-desc">Tổng hợp đầy đủ từ báo cáo thường niên GELEX · Citek case study · Biên bản họp FDX–FIS · 06/2026</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Đã Go-Live SAP S/4HANA</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>Đã Go-Live SAP Analytics Cloud (SAC)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--purple)"></div>Đang triển khai / Mục tiêu FPT IS</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--orange-l)"></div>Kế hoạch / Dự kiến sau VIT</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Chưa triển khai SAP</div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Công ty / Đơn vị</th>
+            <th>Nhóm</th>
+            <th>Ngành</th>
+            <th>Năm Go-Live</th>
+            <th>Trạng thái SAP</th>
+            <th>Đối tác triển khai</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- GELEX ELECTRIC — ĐÃ CÓ SAP -->
+          <tr>
+            <td class="w">E1</td>
+            <td class="w">CADIVI — Dây Cáp Điện Việt Nam</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Dây cáp điện</td>
+            <td class="g">2020</td>
+            <td><span class="badge badge-done">✅ Go-Live S/4HANA</span></td>
+            <td>Citek</td>
+          </tr>
+          <tr>
+            <td class="w">E2</td>
+            <td class="w">THIBIDI — Thiết Bị Điện</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Máy biến áp</td>
+            <td class="g">01/04/2021</td>
+            <td><span class="badge badge-done">✅ Go-Live S/4HANA</span></td>
+            <td>Citek</td>
+          </tr>
+          <tr>
+            <td class="w">E3</td>
+            <td class="w">GELEX Electric (GEE)</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Sub-holding điện</td>
+            <td class="g">03/01/2022</td>
+            <td><span class="badge badge-done">✅ Go-Live S/4HANA</span></td>
+            <td>Citek</td>
+          </tr>
+          <tr>
+            <td class="w">E4</td>
+            <td class="w">EMIC — Cơ Điện EMIC</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Thiết bị điện</td>
+            <td class="g">03/01/2022</td>
+            <td><span class="badge badge-done">✅ Go-Live S/4HANA</span></td>
+            <td>Citek</td>
+          </tr>
+          <tr>
+            <td class="w">E5</td>
+            <td class="w">CFT</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Thiết bị điện</td>
+            <td class="g">2020–2024</td>
+            <td><span class="badge badge-done">✅ Go-Live S/4HANA</span></td>
+            <td>Citek</td>
+          </tr>
+          <tr>
+            <td class="w">E6</td>
+            <td class="w">MEE</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Thiết bị đo đếm điện</td>
+            <td class="g">2020–2024</td>
+            <td><span class="badge badge-done">✅ Go-Live S/4HANA</span></td>
+            <td>Citek</td>
+          </tr>
+          <tr>
+            <td class="w">E7</td>
+            <td class="w">HEM</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Thiết bị điện</td>
+            <td class="g">2020–2024</td>
+            <td><span class="badge badge-done">✅ Go-Live S/4HANA</span></td>
+            <td>Citek</td>
+          </tr>
+          <tr>
+            <td class="w">E8</td>
+            <td class="w">GETC</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Thương mại điện</td>
+            <td class="g">2020–2024</td>
+            <td><span class="badge badge-done">✅ Go-Live S/4HANA</span></td>
+            <td>Citek</td>
+          </tr>
+          <tr>
+            <td class="w">E9</td>
+            <td class="w">SAP Analytics Cloud — Toàn GELEX Electric</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Báo cáo quản trị</td>
+            <td class="g" style="color:var(--teal)">27/12/2024</td>
+            <td><span class="badge badge-done" style="background:#001A14;border-color:var(--teal);color:var(--teal-l)">✅ Go-Live SAC</span></td>
+            <td>Citek</td>
+          </tr>
+          <!-- CADIVI TÁI CẤU TRÚC -->
+          <tr>
+            <td class="w">E10</td>
+            <td class="w">CADIVI — Tái cấu trúc SAP S/4HANA</td>
+            <td><span class="chip chip-green">GELEX Electric</span></td>
+            <td>Dây cáp điện</td>
+            <td class="o">Ký: 25/07/2025</td>
+            <td><span class="badge badge-plan">🔄 Đang nâng cấp</span></td>
+            <td>Citek</td>
+          </tr>
+          <!-- VIGLACERA — VIT ĐANG TRIỂN KHAI -->
+          <tr style="background:#0A0820 !important;border-color:var(--purple)">
+            <td class="p">★</td>
+            <td class="p">Viglacera Tiên Sơn (VIT) ← MỤC TIÊU FPT IS</td>
+            <td><span class="chip" style="background:#120828;border:1px solid var(--purple);color:var(--purple-l)">Viglacera</span></td>
+            <td>Gạch ốp lát · 4 NM</td>
+            <td class="p">GoLive: 01/01/2027</td>
+            <td><span class="badge badge-vit">🔄 Đang triển khai</span></td>
+            <td style="color:var(--purple-l);font-weight:700">FPT IS + FPT Digital</td>
+          </tr>
+          <!-- VIGLACERA — CHƯA CÓ SAP -->
+          <tr>
+            <td>V1</td>
+            <td>Tổng Công ty Viglacera (VGC)</td>
+            <td><span class="chip chip-red" style="font-size:10px">Viglacera TCT</span></td>
+            <td>Công ty mẹ · VLXD</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>V2</td>
+            <td>Viglacera Thăng Long (VTK)</td>
+            <td><span class="chip chip-red" style="font-size:10px">Viglacera</span></td>
+            <td>Kính xây dựng</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>V3</td>
+            <td>Viglacera Hạ Long</td>
+            <td><span class="chip chip-red" style="font-size:10px">Viglacera</span></td>
+            <td>Gạch ốp lát</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>V4</td>
+            <td>Viglacera Đông Triều</td>
+            <td><span class="chip chip-red" style="font-size:10px">Viglacera</span></td>
+            <td>Gạch ốp lát</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>V5</td>
+            <td>Viglacera Hà Nội</td>
+            <td><span class="chip chip-red" style="font-size:10px">Viglacera</span></td>
+            <td>Gạch men</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>V6</td>
+            <td>Sứ Viglacera (Sứ Việt Trì)</td>
+            <td><span class="chip chip-red" style="font-size:10px">Viglacera</span></td>
+            <td>Thiết bị vệ sinh</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>V7</td>
+            <td>VIKD — Kinh doanh Gạch Ốp Lát</td>
+            <td><span class="chip chip-red" style="font-size:10px">Viglacera</span></td>
+            <td>Phân phối TM · 81% AR VIT</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">Dùng Cloudify</td>
+          </tr>
+          <tr>
+            <td>V8</td>
+            <td>Viglacera Infrastructure (BĐS CN)</td>
+            <td><span class="chip chip-red" style="font-size:10px">Viglacera</span></td>
+            <td>Khu công nghiệp</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <!-- GELEX INFRA — CHƯA CÓ SAP -->
+          <tr>
+            <td>I1</td>
+            <td>GELEX Infrastructure (Gelex Infra)</td>
+            <td><span class="chip chip-red" style="font-size:10px">GELEX Infra</span></td>
+            <td>Sub-holding hạ tầng</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>I2</td>
+            <td>GELEX Power Corporation</td>
+            <td><span class="chip chip-red" style="font-size:10px">GELEX Infra</span></td>
+            <td>Năng lượng tái tạo</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>I3</td>
+            <td>Song Da Water JSC</td>
+            <td><span class="chip chip-red" style="font-size:10px">GELEX Infra</span></td>
+            <td>Cấp nước đô thị</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>I4</td>
+            <td>Titan Corporation</td>
+            <td><span class="chip chip-red" style="font-size:10px">GELEX Infra</span></td>
+            <td>BĐS công nghiệp</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+          <tr>
+            <td>I5</td>
+            <td>PXL — Xây lắp Điện</td>
+            <td><span class="chip chip-red" style="font-size:10px">GELEX Infra</span></td>
+            <td>Xây lắp công trình điện</td>
+            <td class="w30">—</td>
+            <td><span class="badge badge-no">❌ Chưa triển khai</span></td>
+            <td style="color:var(--w30)">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Progress summary -->
+    <div style="margin-top:20px">
+      <div class="prog">
+        <div class="prog-header">
+          <span class="prog-lbl">GELEX Electric — Tỷ lệ đơn vị có SAP</span>
+          <span class="prog-pct" style="color:var(--green)">10/10 — 100% ✅</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill" style="width:100%;background:var(--green)"></div>
+        </div>
+      </div>
+      <div class="prog">
+        <div class="prog-header">
+          <span class="prog-lbl">Viglacera — Tỷ lệ đơn vị có / đang có SAP</span>
+          <span class="prog-pct" style="color:var(--purple-l)">1/9 — 11% (VIT đang triển khai)</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill" style="width:11%;background:var(--purple)"></div>
+        </div>
+      </div>
+      <div class="prog">
+        <div class="prog-header">
+          <span class="prog-lbl">GELEX Infrastructure — Tỷ lệ đơn vị có SAP</span>
+          <span class="prog-pct" style="color:var(--red-l)">0/5 — 0% ❌</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill" style="width:2%;background:var(--red)"></div>
+        </div>
+      </div>
+      <div class="prog">
+        <div class="prog-header">
+          <span class="prog-lbl">Toàn hệ sinh thái GELEX — Tỷ lệ tổng thể</span>
+          <span class="prog-pct" style="color:var(--blue-l)">10/24 — 42%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill" style="width:42%;background:var(--blue)"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ══ OPPORTUNITY ══ -->
+  <section id="opportunity" class="section">
+    <div class="sec-head">
+      <div class="sec-icon">🚀</div>
+      <div>
+        <div class="sec-eyebrow">Cơ hội chiến lược · FPT IS</div>
+        <div class="sec-title g">Cơ hội <em>Thị trường GELEX — Sau khi VIT GoLive</em></div>
+        <div class="sec-desc">VIT không phải điểm đến cuối cùng — VIT là bàn đạp vào toàn bộ hệ sinh thái Viglacera và GELEX Infra</div>
+      </div>
+    </div>
+
+    <div class="sum-grid">
+      <div class="sum-box g">
+        <div class="sv">12+</div>
+        <div class="sl">Đơn vị chưa có SAP trong hệ GELEX</div>
+        <div class="sd">Viglacera (8 đơn vị) + GELEX Infra (5+ đơn vị) = Cơ hội roll-out sau VIT</div>
+      </div>
+      <div class="sum-box o">
+        <div class="sv">~200–400 tỷ</div>
+        <div class="sl">Cơ hội doanh thu FPT IS (3–5 năm)</div>
+        <div class="sd">Nếu VIT GoLive thành công và FPT IS trở thành preferred SAP partner của Viglacera/GELEX Infra</div>
+      </div>
+      <div class="sum-box p">
+        <div class="sv">×3</div>
+        <div class="sl">Lợi thế so với Citek</div>
+        <div class="sd">FPT IS có: hệ sinh thái FPT (AI Invoice, HRM, Mesh) · FPT Digital tư vấn chiến lược · Case ngành VLXD (Phú Tài)</div>
+      </div>
+      <div class="sum-box" style="border-top-color:var(--teal)">
+        <div class="sv" style="color:var(--teal)">01/01/2027</div>
+        <div class="sl">Deadline cứng — Window đang đóng lại</div>
+        <div class="sd">Đấu thầu giữa Q3/2026 → Bắt đầu triển khai Q3–Q4/2026 → GoLive Q1/2027</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="insight gd">
+          <div class="insight-icon">⭐</div>
+          <div class="insight-body">
+            <strong>3 Lợi thế độc quyền FPT IS tại VIT</strong>
+            <p><strong style="color:var(--gold-l)">1. FPT Digital đã phỏng vấn 170 người</strong> — kiến trúc hệ sinh thái số đã sẵn sàng, không cần khảo sát lại từ đầu.</p>
+            <br>
+            <p><strong style="color:var(--gold-l)">2. Case Phú Tài (VLXD)</strong> — cùng ngành, cùng bài toán sản xuất gạch ốp lát, GoLive thành công 4,5 tháng.</p>
+            <br>
+            <p><strong style="color:var(--gold-l)">3. Hệ sinh thái FPT</strong> — AI Invoice (kết nối Bộ Tài chính), FPT HRM, FPT Mesh (MES), Utop (DMS) — tất cả tích hợp native với SAP S/4HANA.</p>
+          </div>
+        </div>
+
+        <div class="insight b" style="margin-top:12px">
+          <div class="insight-icon">⚠️</div>
+          <div class="insight-body">
+            <strong>Rủi ro cạnh tranh — Citek là đối thủ chính</strong>
+            <p>Citek đã triển khai SAP cho 8 đơn vị GELEX Electric — có lợi thế hiểu văn hóa tập đoàn và quan hệ với ban lãnh đạo GELEX. FPT IS cần nhấn mạnh: <em>kinh nghiệm ngành VLXD (Phú Tài) + hệ sinh thái số FPT rộng hơn Citek + năng lực tư vấn chiến lược (FPT Digital)</em>. Biên bản họp FDX–FIS cũng ghi nhận VIT <strong>không muốn phụ thuộc 1 vendor duy nhất</strong> — đây là lợi thế của FPT IS với hệ sinh thái đa dạng.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px">
+          <div class="sec-eyebrow" style="margin-bottom:14px">🗺️ Lộ trình mở rộng sau VIT GoLive</div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--purple-bg);border:1px solid var(--purple);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--purple-l);flex-shrink:0">1</div>
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:var(--purple-l);margin-bottom:2px">2027 — VIT GoLive ✅</div>
+                <div style="font-size:11.5px;color:var(--w50)">5 phân hệ core · 4 nhà máy · FPT IS trở thành SAP partner tin cậy của Viglacera</div>
+              </div>
+            </div>
+            <div style="width:2px;height:16px;background:var(--border2);margin-left:15px"></div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--blue-bg);border:1px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--blue-l);flex-shrink:0">2</div>
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:var(--blue-l);margin-bottom:2px">2027–2028 — Roll-out Viglacera</div>
+                <div style="font-size:11.5px;color:var(--w50)">VIKD · Viglacera Thăng Long · Viglacera Hạ Long · Sứ Viglacera — dùng VIT làm template</div>
+              </div>
+            </div>
+            <div style="width:2px;height:16px;background:var(--border2);margin-left:15px"></div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--green-bg);border:1px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--green-l);flex-shrink:0">3</div>
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:var(--green-l);margin-bottom:2px">2028–2030 — Mở rộng GELEX Infra</div>
+                <div style="font-size:11.5px;color:var(--w50)">GELEX Power · Song Da Water · Titan Corp · PXL — thị trường hoàn toàn chưa được khai phá</div>
+              </div>
+            </div>
+            <div style="width:2px;height:16px;background:var(--border2);margin-left:15px"></div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:32px;height:32px;border-radius:50%;background:#0D0A00;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--gold);flex-shrink:0">4</div>
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:var(--gold);margin-bottom:2px">2029–2031 — GELEX Group Analytics</div>
+                <div style="font-size:11.5px;color:var(--w50)">SAP Analytics Cloud · BTP Data Platform · Báo cáo tập đoàn real-time toàn hệ sinh thái GELEX</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <div>
+        <h3>🚀 FPT IS — Đối tác SAP chiến lược dài hạn cho hệ sinh thái GELEX</h3>
+        <p>VIT GoLive 01/01/2027 là bước đầu tiên. Với 12+ đơn vị Viglacera và GELEX Infra chưa có SAP, cơ hội thị trường dài hạn ước tính 200–400 tỷ VNĐ trong 3–5 năm. FPT IS + FPT Digital + hệ sinh thái FPT là lựa chọn duy nhất có đủ năng lực đồng hành với quy mô tập đoàn GELEX trong dài hạn.</p>
+      </div>
+      <div class="cta-btns">
+        <div class="btn btn-primary">▸ VIT: Chốt GoLive 01/01/2027</div>
+        <div class="btn btn-ghost">▸ Viglacera Roll-out Plan 2028</div>
+        <div class="btn btn-ghost">▸ GELEX Infra Pipeline 2029</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTNOTE ══ -->
+  <div class="footnote">
+    <span>Nguồn: Báo cáo thường niên GELEX 2024–2025 · Citek Case Study (THIBIDI, GEE, EMIC, CADIVI) · Biên bản họp FDX–FIS 22/06/2026 · BCTC Deloitte VIT 2023–2025</span>
+    <span>FPT IS × Tập đoàn GELEX — SAP Ecosystem Map · 06/2026 · Confidential — Không phát tán bên ngoài</span>
+  </div>
+
+</div><!-- end wrap -->
+</body>
+</html>
