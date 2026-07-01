@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTMH - VIP Need Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { color: #0071e3; text-decoration: none; }
+
+        /* ===== LOGIN SCREEN ===== */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #login-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .login-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 24px;
+            padding: 48px 40px 40px;
+            width: 400px;
+            max-width: 90vw;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.04);
+            text-align: center;
+            animation: fadeUp 0.8s ease-out;
+        }
+        .login-logo { font-size: 32px; margin-bottom: 8px; }
+        .login-card h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.5px; }
+        .login-card p { font-size: 15px; color: #6e6e73; margin-bottom: 28px; }
+        .login-input {
+            width: 100%; padding: 14px 18px; margin-bottom: 12px;
+            border: 1.5px solid #d2d2d7; border-radius: 14px;
+            font-size: 16px; font-family: inherit;
+            background: rgba(255,255,255,0.8);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .login-input:focus { border-color: #0071e3; box-shadow: 0 0 0 4px rgba(0,113,227,0.15); }
+        .login-btn {
+            width: 100%; padding: 14px; margin-top: 4px;
+            background: #0071e3; color: #fff; border: none; border-radius: 14px;
+            font-size: 17px; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: background 0.2s, transform 0.1s;
+        }
+        .login-btn:hover { background: #0077ed; }
+        .login-btn:active { transform: scale(0.97); }
+        .login-error { color: #ff3b30; font-size: 14px; margin-top: 10px; min-height: 20px; }
+
+        /* ===== NAVIGATION ===== */
+        .nav-bar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; align-items: center;
+            padding: 0 24px; height: 52px;
+        }
+        .nav-brand { font-weight: 700; font-size: 15px; letter-spacing: -0.3px; white-space: nowrap; }
+        .nav-brand span { color: #0071e3; }
+        .nav-links { display: flex; gap: 2px; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+        .nav-links::-webkit-scrollbar { display: none; }
+        .nav-link {
+            padding: 6px 14px; font-size: 13px; font-weight: 500;
+            color: #6e6e73; white-space: nowrap; cursor: pointer;
+            border-radius: 8px; transition: all 0.2s;
+            background: transparent; border: none; font-family: inherit;
+        }
+        .nav-link:hover { color: #1d1d1f; background: rgba(0,0,0,0.04); }
+        .nav-link.active { color: #0071e3; background: rgba(0,113,227,0.08); }
+
+        /* ===== MAIN LAYOUT ===== */
+        .main-content { padding-top: 52px; }
+        section {
+            max-width: 1200px; margin: 0 auto; padding: 80px 24px;
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        section.visible { opacity: 1; transform: translateY(0); }
+        .section-title {
+            font-size: 40px; font-weight: 700; letter-spacing: -1.5px;
+            margin-bottom: 12px; line-height: 1.1;
+        }
+        .section-subtitle {
+            font-size: 18px; color: #6e6e73; margin-bottom: 48px;
+            max-width: 600px; line-height: 1.5;
+        }
+        .section-number {
+            font-size: 14px; font-weight: 600; color: #0071e3;
+            letter-spacing: 0.5px; text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: #fff; border-radius: 20px; padding: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04), 0 0 1px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+        .card-grid { display: grid; gap: 20px; }
+        .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+        .stat-card {
+            text-align: center; padding: 28px 20px;
+        }
+        .stat-value { font-size: 36px; font-weight: 700; letter-spacing: -1px; color: #0071e3; }
+        .stat-label { font-size: 14px; color: #6e6e73; margin-top: 6px; font-weight: 500; }
+        .stat-detail { font-size: 13px; color: #8e8e93; margin-top: 4px; }
+
+        /* ===== TABLES ===== */
+        .table-wrap {
+            overflow-x: auto; border-radius: 16px;
+            background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { text-align: left; padding: 16px 20px; font-weight: 600; font-size: 13px; color: #6e6e73; text-transform: uppercase; letter-spacing: 0.5px; background: #f9f9fb; border-bottom: 1px solid #e8e8ed; }
+        td { padding: 14px 20px; border-bottom: 1px solid #f0f0f2; vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+        .cell-label { font-weight: 500; white-space: nowrap; }
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.2px; }
+        .tag-red { background: #fff0f0; color: #ff3b30; }
+        .tag-orange { background: #fff4e5; color: #ff9500; }
+        .tag-green { background: #eaf7ed; color: #34c759; }
+        .tag-blue { background: #e8f0fe; color: #0071e3; }
+        .tag-yellow { background: #fffce5; color: #b8860b; }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 80vh;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 140px 24px 100px;
+            max-width: 1200px; margin: 0 auto;
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .hero.visible { opacity: 1; transform: translateY(0); }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 100px;
+            background: rgba(0,113,227,0.08); color: #0071e3;
+            font-size: 14px; font-weight: 600; margin-bottom: 20px;
+        }
+        .hero h1 { font-size: 64px; font-weight: 700; letter-spacing: -2.5px; line-height: 1.05; margin-bottom: 16px; }
+        .hero .highlight { color: #0071e3; }
+        .hero p { font-size: 22px; color: #6e6e73; max-width: 600px; line-height: 1.5; margin-bottom: 32px; }
+        .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 16px; }
+        .hero-meta-item { font-size: 14px; color: #8e8e93; }
+        .hero-meta-item strong { color: #1d1d1f; }
+
+        /* ===== PAIN POINT CARDS ===== */
+        .pain-card { border-left: 4px solid; padding: 20px 24px; margin-bottom: 12px; border-radius: 0 12px 12px 0; }
+        .pain-card-critical { border-color: #ff3b30; background: #fffafa; }
+        .pain-card-high { border-color: #ff9500; background: #fffcf5; }
+        .pain-card-medium { border-color: #ffcc02; background: #fffef5; }
+        .pain-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+        .pain-card-title { font-weight: 600; font-size: 15px; line-height: 1.4; }
+        .pain-card-desc { font-size: 14px; color: #6e6e73; margin-top: 6px; line-height: 1.5; }
+        .pain-card-module { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+        .pain-card-module span { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: #f0f0f2; color: #6e6e73; }
+
+        /* ===== TIMELINE ===== */
+        .timeline { position: relative; padding-left: 40px; }
+        .timeline::before {
+            content: ''; position: absolute; left: 15px; top: 0; bottom: 0;
+            width: 2px; background: #e8e8ed;
+        }
+        .timeline-item { position: relative; margin-bottom: 28px; padding-left: 20px; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -27px; top: 6px;
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2.5px solid; background: #fff;
+        }
+        .timeline-item.urgent::before { border-color: #ff3b30; background: #fff0f0; }
+        .timeline-item.high::before { border-color: #ff9500; background: #fff4e5; }
+        .timeline-item.medium::before { border-color: #ffcc02; background: #fffef5; }
+        .timeline-title { font-weight: 600; font-size: 16px; }
+        .timeline-desc { font-size: 14px; color: #6e6e73; margin-top: 2px; }
+        .timeline-tag { font-size: 12px; font-weight: 600; margin-left: 8px; }
+
+        /* ===== CHARTS ===== */
+        .chart-container { position: relative; height: 300px; width: 100%; margin-top: 12px; }
+        .chart-container-sm { height: 260px; }
+        .chart-wrapper { background: #fff; border-radius: 20px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+        .chart-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: #1d1d1f; }
+
+        /* ===== MODULES GRID ===== */
+        .module-card {
+            padding: 20px; border-radius: 16px; border: 1.5px solid #e8e8ed;
+            transition: all 0.3s ease;
+        }
+        .module-card:hover { border-color: #0071e3; box-shadow: 0 4px 20px rgba(0,113,227,0.1); }
+        .module-card .phase-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .module-card .phase1 { color: #ff3b30; }
+        .module-card .phase2 { color: #ff9500; }
+        .module-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+        .module-card p { font-size: 13px; color: #6e6e73; line-height: 1.5; }
+
+        /* ===== OPTION COMPARE ===== */
+        .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .option-card { border-radius: 20px; padding: 32px; border: 2px solid; }
+        .option-green { border-color: #34c759; background: linear-gradient(135deg, #f0fff4 0%, #fff 100%); }
+        .option-red { border-color: #ff3b30; background: linear-gradient(135deg, #fff5f5 0%, #fff 100%); }
+        .option-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+        .option-card ul { list-style: none; padding: 0; }
+        .option-card li { padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.04); font-size: 14px; display: flex; gap: 8px; align-items: flex-start; }
+        .option-card li:last-child { border: none; }
+        .option-card .label { font-weight: 600; min-width: 80px; flex-shrink: 0; }
+        .option-card .pro { color: #34c759; }
+        .option-card .con { color: #ff3b30; }
+        .recommend-badge {
+            display: inline-block; margin-top: 16px;
+            padding: 8px 20px; border-radius: 12px;
+            font-size: 14px; font-weight: 600;
+        }
+
+        /* ===== GTM FLOW ===== */
+        .gtm-flow {
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px; flex-wrap: wrap; padding: 24px 0;
+        }
+        .gtm-node {
+            background: #fff; border-radius: 16px; padding: 20px 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            text-align: center; min-width: 160px; flex: 1;
+        }
+        .gtm-node h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .gtm-node p { font-size: 12px; color: #6e6e73; }
+        .gtm-arrow { font-size: 28px; color: #0071e3; font-weight: 300; }
+        .gtm-node.highlight {
+            border: 2px solid #0071e3;
+            background: linear-gradient(135deg, #f0f7ff 0%, #fff 100%);
+        }
+
+        /* ===== NEXT STEPS ===== */
+        .step-card {
+            display: flex; gap: 20px; align-items: flex-start;
+            padding: 20px 24px; background: #fff; border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 12px;
+            transition: transform 0.2s;
+        }
+        .step-card:hover { transform: translateX(4px); }
+        .step-num {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #0071e3; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 16px; flex-shrink: 0;
+        }
+        .step-content h4 { font-size: 15px; font-weight: 600; }
+        .step-content p { font-size: 14px; color: #6e6e73; }
+        .step-content .meta { font-size: 12px; color: #8e8e93; margin-top: 4px; }
+
+        /* ===== IMPACT LIST ===== */
+        .impact-list { list-style: none; padding: 0; }
+        .impact-list li { padding: 12px 0; border-bottom: 1px solid #f0f0f2; font-size: 14px; display: flex; gap: 10px; }
+        .impact-list li:last-child { border: none; }
+
+        /* ===== DIVIDER ===== */
+        .divider { height: 1px; background: #e8e8ed; margin: 48px 0; }
+
+        /* ===== KPI GRID ===== */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .kpi-item { background: #fff; border-radius: 16px; padding: 20px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .kpi-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+        .kpi-item .metric { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+        .kpi-item .metric .baseline { color: #ff3b30; }
+        .kpi-item .metric .target { color: #34c759; }
+
+        /* ===== CHECKLIST ===== */
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { padding: 8px 0; font-size: 14px; display: flex; align-items: center; gap: 10px; color: #6e6e73; }
+        .checklist li::before { content: '☐'; font-size: 18px; color: #0071e3; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .card-grid-2, .card-grid-3, .card-grid-4 { grid-template-columns: 1fr; }
+            .option-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 40px; letter-spacing: -1.5px; }
+            .section-title { font-size: 30px; }
+            .gtm-flow { flex-direction: column; }
+            .gtm-arrow { transform: rotate(90deg); }
+            .nav-links { display: none; }
+        }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        .back-to-top {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            border: none; cursor: pointer; font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s, transform 0.2s;
+            z-index: 900;
+        }
+        .back-to-top.show { opacity: 1; }
+        .back-to-top:hover { transform: scale(1.05); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f5f5f7; }
+        ::-webkit-scrollbar-thumb { background: #c7c7cc; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="login-screen">
+    <div class="login-card">
+        <div class="login-logo">🔐</div>
+        <h1>BTMH VIP Analysis</h1>
+        <p>Vui lòng đăng nhập để xem tài liệu</p>
+        <input type="text" id="username" class="login-input" placeholder="Username" autocomplete="off">
+        <input type="password" id="password" class="login-input" placeholder="Password" autocomplete="off">
+        <button class="login-btn" onclick="handleLogin()">Đăng nhập</button>
+        <div id="login-error" class="login-error"></div>
+    </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<nav class="nav-bar">
+    <div class="nav-inner">
+        <div class="nav-brand">BTMH <span>VIP</span></div>
+        <div class="nav-links">
+            <button class="nav-link active" data-target="hero">Tổng quan</button>
+            <button class="nav-link" data-target="context">Bối cảnh</button>
+            <button class="nav-link" data-target="pain">Pain Points</button>
+            <button class="nav-link" data-target="outcomes">KPI & ROI</button>
+            <button class="nav-link" data-target="solution">Giải pháp</button>
+            <button class="nav-link" data-target="strategy">Chiến lược</button>
+            <button class="nav-link" data-target="nextsteps">Next Steps</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ==================== MAIN CONTENT ==================== -->
+<div class="main-content">
+
+    <!-- ===== HERO ===== -->
+    <section id="hero" class="hero visible">
+        <div class="hero-badge">✦ VIP Need Analysis — v1.0</div>
+        <h1>Bảo Tín Mạnh Hải<br><span class="highlight">VIP Need Analysis</span></h1>
+        <p>Phân tích nhu cầu, nỗi đau và kết quả kinh doanh kỳ vọng — Định hướng chiến lược chuyển đổi số với SAP S/4HANA</p>
+        <div class="hero-meta">
+            <div class="hero-meta-item">📅 <strong>01/07/2026</strong></div>
+            <div class="hero-meta-item">🏢 <strong>FPT IS — BCIS</strong></div>
+            <div class="hero-meta-item">📋 <strong>Trạng thái:</strong> <span style="color:#34c759;">● Sẵn sàng gặp khách</span></div>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:32px;">
+            <a href="#overview" style="padding:12px 28px; background:#0071e3; color:#fff; border-radius:40px; font-weight:600; font-size:15px;">Xem tổng quan →</a>
+            <a href="#solution" style="padding:12px 28px; background:rgba(0,113,227,0.08); color:#0071e3; border-radius:40px; font-weight:600; font-size:15px;">Giải pháp đề xuất</a>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 1: TỔNG QUAN ===== -->
+    <section id="overview">
+        <div class="section-number">01</div>
+        <h2 class="section-title">Tổng quan khách hàng</h2>
+        <p class="section-subtitle">Công ty Cổ phần Vàng bạc Đá quý Bảo Tín Mạnh Hải — Thương hiệu Quốc gia Việt Nam 2024</p>
+
+        <!-- Stats -->
+        <div class="card-grid card-grid-4" style="margin-bottom:24px;">
+            <div class="card stat-card">
+                <div class="stat-value" style="animation: slideUp 0.6s ease;">27.891 tỷ</div>
+                <div class="stat-label">Doanh thu 2025</div>
+                <div class="stat-detail">+1.033% YoY</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value">774 tỷ</div>
+                <div class="stat-label">LNST 2025</div>
+                <div class="stat-detail">+3.400% YoY</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value">16</div>
+                <div class="stat-label">Cửa hàng</div>
+                <div class="stat-detail">→ 80 (2026) → 450 (2030)</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value">~10.000</div>
+                <div class="stat-label">Nhân sự</div>
+                <div class="stat-detail">Nhà máy SX riêng</div>
+            </div>
+        </div>
+
+        <!-- Biz Model + Chart -->
+        <div class="card-grid card-grid-2">
+            <div class="card">
+                <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">🏪 Mô hình kinh doanh cốt lõi</h4>
+                <ul class="impact-list">
+                    <li>💎 <b>Vàng tích lũy (24K)</b> — ~95% doanh thu</li>
+                    <li>🏭 <b>Có nhà máy sản xuất</b> — nấu chảy → đúc → dập</li>
+                    <li>🏬 <b>16 cửa hàng</b> — chủ yếu Hà Nội + TP.HCM</li>
+                    <li>👥 <b>Khách hàng mục tiêu:</b> Người dân tích lũy tài sản</li>
+                    <li>⚡ <b>Đặc thù:</b> Biên LN thấp, dòng tiền & doanh thu rất lớn</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">📊 Định vị cạnh tranh</h4>
+                <div class="chart-container chart-container-sm">
+                    <canvas id="chartCompetitive"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Competitive Table -->
+        <div class="table-wrap" style="margin-top:24px;">
+            <table>
+                <thead>
+                    <tr><th>Tiêu chí</th><th>BTMH</th><th>PNJ (Đối thủ niêm yết)</th><th>Phân tích</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="cell-label">Số cửa hàng</td><td><strong>16</strong></td><td>430+</td><td>BTMH đang ở giai đoạn đầu mở rộng</td></tr>
+                    <tr><td class="cell-label">Doanh thu 2025</td><td><strong>27.891 tỷ</strong></td><td>34.976 tỷ</td><td>Chỉ 16 cửa hàng nhưng đạt 80% doanh thu PNJ</td></tr>
+                    <tr><td class="cell-label">LNST 2025</td><td><strong>774 tỷ</strong></td><td>2.829 tỷ</td><td>Biên LN thấp hơn do tập trung vàng tích lũy</td></tr>
+                    <tr><td class="cell-label">DT/cửa hàng</td><td><strong>~1.743 tỷ</strong></td><td>~81 tỷ</td><td>Gấp <strong>21.5 lần</strong> PNJ — sản lượng cực lớn</td></tr>
+                    <tr><td class="cell-label">Sản phẩm chính</td><td>Vàng tích lũy (24K)</td><td>Trang sức vàng</td><td>Khác biệt chiến lược rõ rệt</td></tr>
+                    <tr><td class="cell-label">Biên LN gộp</td><td><span class="tag tag-orange">Thấp</span></td><td>~22%</td><td>Cần kiểm soát chi phí chặt chẽ</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 2: BỐI CẢNH ===== -->
+    <section id="context">
+        <div class="section-number">02</div>
+        <h2 class="section-title">Bối cảnh & Động lực thay đổi</h2>
+        <p class="section-subtitle">Compelling Events và hiện trạng hệ thống thúc đẩy quyết định đầu tư SAP</p>
+
+        <div class="card-grid card-grid-2" style="margin-bottom:24px;">
+            <div class="card">
+                <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">💻 Hiện trạng hệ thống</h4>
+                <ul class="impact-list">
+                    <li>📋 <b>Augges</b> — Kế toán phổ thông, chưa đáp ứng quy mô</li>
+                    <li>⚠️ <b>Odoo 2018</b> — Triển khai retail qua IZISolution, <span style="color:#ff3b30;font-weight:600;">chưa nghiệm thu</span></li>
+                    <li>✏️ <b>Quy trình thủ công</b> — Tồn kho, bán hàng, đối soát còn manual</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">🔴 Mức độ khẩn cấp tổng thể</h4>
+                <div style="font-size:48px; font-weight:700; color:#ff3b30; text-align:center; padding:20px 0;">RẤT CAO</div>
+                <p style="text-align:center; color:#6e6e73; font-size:14px;">IPO Q4/2026 — Go-live Finance 1/1/2027 — Chỉ còn ~6 tháng</p>
+            </div>
+        </div>
+
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:20px;">📅 Compelling Events Timeline</h4>
+        <div class="timeline">
+            <div class="timeline-item urgent">
+                <div class="timeline-title">🔴 IPO quý IV/2026 <span class="timeline-tag tag tag-red">Cực kỳ cao</span></div>
+                <div class="timeline-desc">Cần hệ thống tài chính minh bạch, báo cáo chuẩn mực — bắt buộc kick-off dự án trước IPO</div>
+            </div>
+            <div class="timeline-item urgent">
+                <div class="timeline-title">🔴 Go-live Finance 1/1/2027 <span class="timeline-tag tag tag-red">Cao</span></div>
+                <div class="timeline-desc">Target gấp — chỉ còn ~6 tháng. Nếu không kịp thì chuyển Q2/2027</div>
+            </div>
+            <div class="timeline-item high">
+                <div class="timeline-title">🟡 Mở rộng 16 → 80 cửa hàng (2026) <span class="timeline-tag tag tag-orange">Cao</span></div>
+                <div class="timeline-desc">Hệ thống hiện tại không thể scale để quản lý 5x số cửa hàng</div>
+            </div>
+            <div class="timeline-item high">
+                <div class="timeline-title">🟡 Mục tiêu 300-450 cửa hàng (2030) <span class="timeline-tag tag tag-orange">Trung bình</span></div>
+                <div class="timeline-desc">Vision dài hạn cần nền tảng công nghệ vững chắc</div>
+            </div>
+            <div class="timeline-item medium">
+                <div class="timeline-title">🟡 Đang chờ cấp phép sản xuất vàng miếng <span class="timeline-tag tag tag-yellow">Trung bình</span></div>
+                <div class="timeline-desc">Khi được cấp phép, quy trình sản xuất sẽ phức tạp hơn nhiều</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 3: PAIN POINTS ===== -->
+    <section id="pain">
+        <div class="section-number">03</div>
+        <h2 class="section-title">Nỗi đau & Thách thức</h2>
+        <p class="section-subtitle">5 nhóm pain points được xác định qua phân tích VIP — tập trung vào sản xuất và tài chính</p>
+
+        <div class="card-grid card-grid-2" style="margin-bottom:24px;">
+            <div class="chart-wrapper">
+                <div class="chart-title">📊 Mức độ nghiêm trọng theo nhóm</div>
+                <div class="chart-container"><canvas id="chartPainLevel"></canvas></div>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-title">🎯 Phân bổ Pain Points</div>
+                <div class="chart-container"><canvas id="chartPainDistribution"></canvas></div>
+            </div>
+        </div>
+
+        <!-- 3.1 Manufacturing -->
+        <h4 style="font-size:20px; font-weight:700; margin-bottom:16px; margin-top:32px;">🏭 3.1 Sản xuất (Manufacturing) <span class="tag tag-red" style="margin-left:8px;">QUAN TRỌNG MỚI PHÁT HIỆN</span></h4>
+        <div class="pain-card pain-card-critical">
+            <div class="pain-card-header">
+                <div>
+                    <div class="pain-card-title">🔴 Không quản lý BOM & Routing</div>
+                    <div class="pain-card-desc">Chỉ quản lý được NVL đầu vào và thành phẩm — không quản lý được bán thành phẩm. Không biết hao hụt/mất mát ở công đoạn nào.</div>
+                    <div class="pain-card-module"><span>S/4HANA PP</span><span>BOM</span><span>Routing</span></div>
+                </div>
+                <span class="tag tag-red">CỰC KỲ NẶNG</span>
+            </div>
+        </div>
+        <div class="pain-card pain-card-critical">
+            <div class="pain-card-header">
+                <div>
+                    <div class="pain-card-title">🔴 Tính giá thành N+11 ngày</div>
+                    <div class="pain-card-desc">Mất 11 ngày sau tháng mới tính xong giá thành. Không đáp ứng yêu cầu báo cáo tài chính kịp thời cho IPO.</div>
+                    <div class="pain-card-module"><span>S/4HANA CO</span><span>Material Ledger</span><span>Actual Costing</span></div>
+                </div>
+                <span class="tag tag-red">CỰC KỲ NẶNG</span>
+            </div>
+        </div>
+        <div class="pain-card pain-card-high">
+            <div class="pain-card-header">
+                <div>
+                    <div class="pain-card-title">🔴 Không lập kế hoạch SX + Master data không đồng bộ</div>
+                    <div class="pain-card-desc">Sales forecast không chính xác → không dự báo được nhu cầu NVL. Material master không đồng bộ giữa retail và sản xuất.</div>
+                    <div class="pain-card-module"><span>PP-DS</span><span>IBP</span><span>MM</span><span>Batch Mgmt</span></div>
+                </div>
+                <span class="tag tag-orange">NẶNG</span>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:16px; background:#fffaf0; border-left:4px solid #ff9500;">
+            <h4 style="font-size:15px; font-weight:600; margin-bottom:8px;">📊 Impact tổng thể mảng sản xuất</h4>
+            <ul class="impact-list">
+                <li>🏭 Có nhà máy thực tế nhưng <b>hoàn toàn mù mờ về chi phí sản xuất</b></li>
+                <li>📉 Giá thành N+11 là <b>rủi ro nghiêm trọng cho IPO</b> — kiểm toán sẽ không chấp nhận</li>
+                <li>📊 Không có số liệu hao hụt → không thể tối ưu, kiểm soát thất thoát</li>
+            </ul>
+        </div>
+
+        <!-- 3.2 Operational -->
+        <h4 style="font-size:20px; font-weight:700; margin-bottom:16px; margin-top:40px;">⚙️ 3.2 Vận hành (Operational)</h4>
+        <div class="pain-card pain-card-high">
+            <div class="pain-card-header">
+                <div>
+                    <div class="pain-card-title">Odoo chưa nghiệm thu — Quy trình thủ công nhiều</div>
+                    <div class="pain-card-desc">Rủi ro trùng lặp/lãng phí đầu tư. Sai sót trong bán hàng, đối soát cuối ngày, kiểm kê kho.</div>
+                </div>
+                <span class="tag tag-orange">NẶNG</span>
+            </div>
+        </div>
+        <div class="pain-card pain-card-high">
+            <div class="pain-card-header">
+                <div>
+                    <div class="pain-card-title">🔴 Bán qua app ngân hàng — xử lý thủ công</div>
+                    <div class="pain-card-desc">Dữ liệu bán hàng từ app ngân hàng đổ về phải xử lý manual — không tự động đồng bộ vào hệ thống kế toán/tồn kho.</div>
+                    <div class="pain-card-module"><span>SAP CPI</span><span>Integration Suite</span></div>
+                </div>
+                <span class="tag tag-orange">NẶNG</span>
+            </div>
+        </div>
+        <div class="pain-card pain-card-medium">
+            <div class="pain-card-header">
+                <div>
+                    <div class="pain-card-title">Không mature bằng Doji + Không có online sales</div>
+                    <div class="pain-card-desc">Thiếu quy trình chuẩn hóa. Mất cơ hội bán hàng online.</div>
+                </div>
+                <span class="tag tag-yellow">TB</span>
+            </div>
+        </div>
+
+        <!-- 3.3 Financial -->
+        <h4 style="font-size:20px; font-weight:700; margin-bottom:16px; margin-top:40px;">💰 3.3 Tài chính (Financial)</h4>
+        <div class="pain-card pain-card-critical">
+            <div class="pain-card-header">
+                <div>
+                    <div class="pain-card-title">🔴 Augges không đáp ứng quy mô + Cần báo cáo chuẩn mực cho IPO</div>
+                    <div class="pain-card-desc">Không thể consolidate báo cáo. Kiểm toán viên và SSI yêu cầu số liệu minh bạch, truy xuất được.</div>
+                    <div class="pain-card-module"><span>S/4HANA Finance</span><span>Group Reporting</span></div>
+                </div>
+                <span class="tag tag-red">NẶNG</span>
+            </div>
+        </div>
+        <div class="pain-card pain-card-critical">
+            <div class="pain-card-header">
+                <div>
+                    <div class="pain-card-title">🔴 Giá vàng biến động + Quản lý dòng tiền mặt lớn + Không quản lý ngân sách</div>
+                    <div class="pain-card-desc">Rủi ro chênh lệch giá vàng tồn kho. Mỗi cửa hàng giao dịch tiền mặt hàng trăm tỷ/ngày. Không kiểm soát chi tiêu theo ngân sách.</div>
+                    <div class="pain-card-module"><span>Materials Ledger</span><span>Treasury</span><span>SAC</span></div>
+                </div>
+                <span class="tag tag-red">NẶNG</span>
+            </div>
+        </div>
+
+        <!-- 3.4 + 3.5 -->
+        <div class="card-grid card-grid-2" style="margin-top:24px;">
+            <div class="card">
+                <h4 style="font-size:16px; font-weight:600; margin-bottom:12px;">🔧 3.4 Công nghệ</h4>
+                <ul class="impact-list">
+                    <li>🟡 Odoo 2018 phiên bản cũ — rủi ro bảo mật</li>
+                    <li>🔴 Tích hợp Odoo ↔ SAP phức tạp, tăng chi phí</li>
+                    <li>🔴 Chưa chốt giải pháp SAP Retail</li>
+                    <li>🔴 Hệ thống không thể scale cho 80+ cửa hàng</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4 style="font-size:16px; font-weight:600; margin-bottom:12px;">👥 3.5 Nhân sự & Tổ chức</h4>
+                <ul class="impact-list">
+                    <li>🔴 Thiếu kinh nghiệm triển khai ERP quy mô lớn</li>
+                    <li>🟡 Nhân sự IT nội bộ chưa đủ mạnh</li>
+                    <li>🔴 Nhiều quy trình chưa chuẩn hóa — cần BPR</li>
+                    <li>🔴 Concern: "Làm thế nào để triển khai thành công?"</li>
+                    <li>🟡 Chi phí Odoo đã đầu tư — lo ngại lãng phí</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4: OUTCOMES ===== -->
+    <section id="outcomes">
+        <div class="section-number">04</div>
+        <h2 class="section-title">Kết quả kinh doanh kỳ vọng</h2>
+        <p class="section-subtitle">Mục tiêu 3 giai đoạn, KPI đo lường thành công và ROI kỳ vọng</p>
+
+        <div class="card-grid card-grid-3" style="margin-bottom:32px;">
+            <div class="card" style="border-top:4px solid #0071e3;">
+                <h4 style="font-weight:600;">📋 Ngắn hạn (0-6 tháng)</h4>
+                <p style="color:#6e6e73; font-size:13px;">Trước IPO</p>
+                <ul class="checklist" style="margin-top:12px;">
+                    <li>Kick-off SAP S/4HANA Q3/2026</li>
+                    <li>Hệ thống tài chính audit-ready</li>
+                    <li>Giải quyết bài toán giá thành</li>
+                    <li>Đánh giá phạm vi Odoo</li>
+                    <li>Master data thống nhất</li>
+                </ul>
+            </div>
+            <div class="card" style="border-top:4px solid #ff9500;">
+                <h4 style="font-weight:600;">🚀 Trung hạn (6-12 tháng)</h4>
+                <p style="color:#6e6e73; font-size:13px;">Go-live + Hậu IPO</p>
+                <ul class="checklist" style="margin-top:12px;">
+                    <li>Go-live Finance 1/1/2027</li>
+                    <li>Sản xuất PP: BOM & Routing</li>
+                    <li>Chuẩn hóa 80+ cửa hàng</li>
+                    <li>Tích hợp/bridge với Odoo</li>
+                    <li>Triển khai quản lý ngân sách</li>
+                </ul>
+            </div>
+            <div class="card" style="border-top:4px solid #34c759;">
+                <h4 style="font-weight:600;">🌟 Dài hạn (12+ → 2030)</h4>
+                <p style="color:#6e6e73; font-size:13px;">Mở rộng toàn diện</p>
+                <ul class="checklist" style="margin-top:12px;">
+                    <li>Rollout 300-450 cửa hàng</li>
+                    <li>SAP Retail (nếu cần)</li>
+                    <li>Online sales / multi-channel</li>
+                    <li>IBP dự báo toàn diện</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- KPI Financial + Manufacturing + Operational -->
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">📈 KPI Tài chính</h4>
+        <div class="table-wrap" style="margin-bottom:24px;">
+            <table>
+                <thead><tr><th>KPI</th><th>Baseline</th><th>Target</th><th>Value Driver</th></tr></thead>
+                <tbody>
+                    <tr><td class="cell-label">DSO</td><td>Cần khảo sát</td><td>&lt; 7 ngày</td><td>Duy trì & quản lý dòng tiền mặt</td></tr>
+                    <tr><td class="cell-label">Cash-to-Cash Cycle</td><td>Phân tích thêm</td><td>Tối ưu hóa</td><td>Quản lý cash position real-time</td></tr>
+                    <tr><td class="cell-label">Inventory Turnover</td><td>Cần khảo sát</td><td>≤ 7 ngày</td><td>Vàng 24K có tính thanh khoản cao</td></tr>
+                    <tr><td class="cell-label">Chi phí quản lý/Cửa hàng</td><td>Chưa có benchmark</td><td>Giảm 15-20%</td><td>Tự động hóa quy trình</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">🏭 KPI Sản xuất & Vận hành</h4>
+        <div class="kpi-grid" style="margin-bottom:24px;">
+            <div class="kpi-item">
+                <h4>Quản lý BOM & Routing</h4>
+                <div class="metric"><span class="baseline">❌ Hiện tại: Không</span><span class="target">✅ Target: 100%</span></div>
+            </div>
+            <div class="kpi-item">
+                <h4>Thời gian tính giá thành</h4>
+                <div class="metric"><span class="baseline">📉 N+11 ngày</span><span class="target">✅ N+3 → N+1 ngày</span></div>
+            </div>
+            <div class="kpi-item">
+                <h4>Quản lý hao hụt SX</h4>
+                <div class="metric"><span class="baseline">❌ Không kiểm soát</span><span class="target">✅ Kiểm soát theo lô</span></div>
+            </div>
+            <div class="kpi-item">
+                <h4>Độ chính xác tồn kho BTP</h4>
+                <div class="metric"><span class="baseline">❌ Không quản lý</span><span class="target">✅ 99.9%+</span></div>
+            </div>
+            <div class="kpi-item">
+                <h4>Đối soát cuối ngày</h4>
+                <div class="metric"><span class="baseline">2-3 giờ/cửa hàng</span><span class="target">&lt; 30 phút tự động</span></div>
+            </div>
+            <div class="kpi-item">
+                <h4>Khóa sổ cuối tháng</h4>
+                <div class="metric"><span class="baseline">Chưa rõ (Augges)</span><span class="target">&lt; 5 ngày</span></div>
+            </div>
+            <div class="kpi-item">
+                <h4>Xử lý data e-commerce</h4>
+                <div class="metric"><span class="baseline">❌ Manual</span><span class="target">✅ Real-time tự động</span></div>
+            </div>
+            <div class="kpi-item">
+                <h4>Quản lý ngân sách</h4>
+                <div class="metric"><span class="baseline">❌ Không có</span><span class="target">✅ Dashboard real-time</span></div>
+            </div>
+        </div>
+
+        <!-- ROI -->
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:16px; margin-top:32px;">💰 ROI kỳ vọng</h4>
+        <div class="card-grid card-grid-3">
+            <div class="card stat-card" style="border-top:4px solid #34c759;">
+                <div class="stat-value" style="color:#34c759;">~5-10 tỷ</div>
+                <div class="stat-label">Tiết kiệm vận hành/năm</div>
+                <div class="stat-detail">Giảm nhân sự đối soát, tự động hóa báo cáo</div>
+            </div>
+            <div class="card stat-card" style="border-top:4px solid #0071e3;">
+                <div class="stat-value" style="color:#0071e3;">~28 tỷ</div>
+                <div class="stat-label">Giảm sai sót tồn kho (0.1%)</div>
+                <div class="stat-detail">Với khối lượng vàng lớn, 0.1% là rất lớn</div>
+            </div>
+            <div class="card stat-card" style="border-top:4px solid #ff9500;">
+                <div class="stat-value" style="color:#ff9500;">~20-50 tỷ</div>
+                <div class="stat-label">Tối ưu dòng tiền/năm</div>
+                <div class="stat-detail">Giảm lãi vay, tối ưu cash pooling</div>
+            </div>
+        </div>
+        <div class="card" style="margin-top:16px; background:#f0f7ff; text-align:center; border-left:4px solid #0071e3;">
+            <p style="font-size:18px; font-weight:600;">🎯 Đáp ứng IPO thành công: <span style="color:#0071e3;">Vô giá</span></p>
+            <p style="font-size:14px; color:#6e6e73;">IPO thành công định giá BTMH cao hơn — SAP là yếu tố then chốt trong due diligence</p>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 5: GIẢI PHÁP ===== -->
+    <section id="solution">
+        <div class="section-number">05</div>
+        <h2 class="section-title">Đề xuất giải pháp SAP</h2>
+        <p class="section-subtitle">Module đề xuất, 2 Option chiến lược và giải pháp Retail</p>
+
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">📦 Module SAP đề xuất theo Phase</h4>
+        <div class="card-grid card-grid-3" style="margin-bottom:32px;">
+            <div class="module-card">
+                <div class="phase-tag phase1">🔴 Phase 1</div>
+                <h4>SAP S/4HANA PCE</h4>
+                <p>Nền tảng ERP cốt lõi — Finance, MM, SD, PP trên Private Cloud</p>
+            </div>
+            <div class="module-card">
+                <div class="phase-tag phase1">🔴 Phase 1</div>
+                <h4>S/4HANA Finance + CO</h4>
+                <p>Kế toán, Group Reporting, quản lý dòng tiền, <b>tính giá thành (Material Ledger)</b></p>
+            </div>
+            <div class="module-card">
+                <div class="phase-tag phase1">🔴 Phase 1</div>
+                <h4>SAP SAC (Analytics)</h4>
+                <p>Báo cáo tài chính IPO, BI quản trị, Dashboard ngân sách</p>
+            </div>
+            <div class="module-card">
+                <div class="phase-tag phase1">🟡 Phase 1-2</div>
+                <h4>S/4HANA PP (Production)</h4>
+                <p>BOM & Routing, quản lý hao hụt, bán thành phẩm, lập kế hoạch SX</p>
+            </div>
+            <div class="module-card">
+                <div class="phase-tag phase1">🔴 Phase 1</div>
+                <h4>SAP Treasury</h4>
+                <p>Quản lý tiền mặt, dự báo dòng tiền, bank reconciliation</p>
+            </div>
+            <div class="module-card">
+                <div class="phase-tag phase2">🟠 Phase 2</div>
+                <h4>MM + SD + EWM</h4>
+                <p>Quản lý tồn kho vàng (Batch Mgmt), bán hàng 300+ cửa hàng</p>
+            </div>
+        </div>
+
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">⚖️ Hai Option chiến lược</h4>
+        <div class="option-grid">
+            <div class="option-card option-green">
+                <h3>🟢 Option 1: Giữ Odoo</h3>
+                <ul>
+                    <li><span class="label pro">✅</span> Tận dụng đầu tư Odoo; Giảm scope SAP; Time-to-market nhanh</li>
+                    <li><span class="label con">❌</span> Chi phí tích hợp Odoo ↔ SAP; Bảo trì 2 hệ thống; Odoo 2018 cũ</li>
+                    <li><span class="label">📋</span> ĐK: Audit kỹ phạm vi Odoo; Master data đồng bộ 2 chiều</li>
+                </ul>
+            </div>
+            <div class="option-card option-red">
+                <h3>🔴 Option 2: Thay cả Odoo bằng SAP</h3>
+                <ul>
+                    <li><span class="label pro">✅</span> Một hệ thống duy nhất; Chi phí bảo trì thấp; Triệt để giá thành N+11</li>
+                    <li><span class="label con">❌</span> Mất chi phí Odoo; Thời gian triển khai lâu hơn; Rủi ro chuyển đổi</li>
+                    <li><span class="label">📋</span> ĐK: Scope SAP bao phủ hết retail; Có SAP Retail specialist</li>
+                </ul>
+                <div class="recommend-badge" style="background:#ff3b30; color:#fff;">⭐ Khuyến nghị: Cân nhắc Option 2 ngay từ đầu</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:24px; background:#fff5f5; border:1.5px solid #ff3b30;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:8px;">🎯 Khuyến nghị với pain points mới</h4>
+            <ul class="impact-list">
+                <li>🔴 <b>Giá thành N+11</b> và không quản lý BOM/Routing là cấp bách cho IPO — không thể đợi Phase 2</li>
+                <li>⚠️ Giữ Odoo (Option 1) → vẫn cần SAP PP+CO → vẫn phải tích hợp → phức tạp</li>
+                <li>✅ Option 2 cho phép <b>PP+CO ngay Phase 1</b>, giải quyết đồng thời Finance + giá thành</li>
+                <li>📋 Odoo 2018 chỉ làm sales platform — có thể chuyển giao dần</li>
+            </ul>
+        </div>
+
+        <div class="divider"></div>
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">🛍️ Retail: S/4HANA Vanilla vs SAP Retail</h4>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Tiêu chí</th><th>S/4HANA Vanilla + Custom</th><th>SAP Retail</th></tr></thead>
+                <tbody>
+                    <tr><td class="cell-label">Phù hợp</td><td>Mô hình retail đặc thù (vàng tích lũy)</td><td>Best practices retail toàn cầu</td></tr>
+                    <tr><td class="cell-label">Ưu điểm</td><td>Linh hoạt, custom theo đặc thù vàng</td><td>Industry best practices sẵn có</td></tr>
+                    <tr><td class="cell-label">Nhược điểm</td><td>Tốn thời gian custom</td><td>Có thể quá nặng với nhu cầu hiện tại</td></tr>
+                    <tr><td class="cell-label">Chi phí</td><td><span class="tag tag-green">Thấp hơn</span></td><td><span class="tag tag-orange">Cao hơn</span></td></tr>
+                    <tr><td class="cell-label">Khuyến nghị</td><td><strong style="color:#0071e3;">✅ Phù hợp Phase 1</strong></td><td>Xem xét Phase 2 khi 300+ cửa hàng</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 6: CHIẾN LƯỢC ===== -->
+    <section id="strategy">
+        <div class="section-number">06</div>
+        <h2 class="section-title">Chiến lược FPT IS</h2>
+        <p class="section-subtitle">Value Proposition, Go-to-Market Strategy và Định vị cạnh tranh</p>
+
+        <div class="card-grid card-grid-2" style="margin-bottom:24px;">
+            <div class="card" style="border-top:4px solid #0071e3;">
+                <h4 style="font-size:17px; font-weight:600; margin-bottom:12px;">🎯 1. Giải quyết nỗi lo số 1</h4>
+                <p style="font-size:14px; color:#6e6e73; line-height:1.6;">"Làm thế nào để triển khai thành công?" — Lộ trình Phase rõ ràng, cam kết go-live Finance 1/1/2027, quy trình SAP Activate</p>
+            </div>
+            <div class="card" style="border-top:4px solid #ff9500;">
+                <h4 style="font-size:17px; font-weight:600; margin-bottom:12px;">🔄 2. Xử lý bài toán Odoo</h4>
+                <p style="font-size:14px; color:#6e6e73; line-height:1.6;">Audit Odoo ngay Phase 1 — Bridge giải pháp hoặc roadmap chuyển đổi rõ ràng</p>
+            </div>
+            <div class="card" style="border-top:4px solid #34c759;">
+                <h4 style="font-size:17px; font-weight:600; margin-bottom:12px;">📊 3. Đồng hành IPO</h4>
+                <p style="font-size:14px; color:#6e6e73; line-height:1.6;">Hệ thống tài chính minh bạch, audit-ready. Báo cáo VAS → IFRS. Group Reporting</p>
+            </div>
+            <div class="card" style="border-top:4px solid #0071e3;">
+                <h4 style="font-size:17px; font-weight:600; margin-bottom:12px;">🚀 4. Roadmap 5 năm</h4>
+                <p style="font-size:14px; color:#6e6e73; line-height:1.6;">SAP là nền tảng scale được. Architecture thiết kế cho multi-store, multi-channel</p>
+            </div>
+        </div>
+
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:20px;">🎯 Go-to-Market Strategy</h4>
+        <div class="card" style="background:#f9f9fb;">
+            <div class="gtm-flow">
+                <div class="gtm-node">
+                    <h4>📋 Buổi gặp đầu tiên</h4>
+                    <p>Hiểu pain points<br>Trình bày năng lực<br>Audit Odoo ngắn</p>
+                </div>
+                <div class="gtm-arrow">→</div>
+                <div class="gtm-node highlight">
+                    <h4>✅ Đồng ý tiếp tục</h4>
+                    <p>Workshop chi tiết<br>Khảo sát Finance focus</p>
+                </div>
+                <div class="gtm-arrow">→</div>
+                <div class="gtm-node">
+                    <h4>📄 Proposal</h4>
+                    <p>Scope + Timeline<br>Budget + Team</p>
+                </div>
+                <div class="gtm-arrow">→</div>
+                <div class="gtm-node">
+                    <h4>🚀 Kick-off</h4>
+                    <p>Q3/2026<br><strong>Go-live 1/1/2027</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">🏆 Định vị FPT IS</h4>
+        <div class="card" style="background:linear-gradient(135deg, #f0f7ff 0%, #fff 100%); border:1.5px solid #0071e3;">
+            <div style="text-align:center; margin-bottom:20px;">
+                <h3 style="font-size:22px; font-weight:700;">🎯 "Đối tác chuyển đổi số toàn diện"</h3>
+                <p style="color:#6e6e73;">Không chỉ triển khai SAP — tư vấn quy trình, đào tạo, đồng hành IPO → 300+ cửa hàng</p>
+            </div>
+            <div class="card-grid card-grid-2" style="gap:16px;">
+                <div style="padding:16px; background:rgba(255,255,255,0.7); border-radius:12px;">
+                    <p style="font-weight:600;">🔑 Khác biệt chính:</p>
+                    <ul class="impact-list" style="font-size:14px;">
+                        <li>1. Kinh nghiệm triển khai S/4HANA PCE tại VN</li>
+                        <li>2. Hệ sinh thái FPT (FPT Retail, FPT Telecom...)</li>
+                        <li>3. Năng lực BPR + Đào tạo chuyển đổi số</li>
+                        <li>4. Hỗ trợ hậu mãi dài hạn (AMS)</li>
+                    </ul>
+                </div>
+                <div style="padding:16px; background:rgba(255,255,255,0.7); border-radius:12px;">
+                    <p style="font-weight:600;">🛡️ Đối thủ & Cạnh tranh:</p>
+                    <ul class="impact-list" style="font-size:14px;">
+                        <li>FPT IS ≠ các đơn vị tư vấn SAP thuần túy</li>
+                        <li>IZISolution (Odoo): đã có vấn đề — chưa nghiệm thu</li>
+                        <li>PNJ: mature hơn — BTMH cần bắt kịp nhanh</li>
+                        <li>Doji: cần tư vấn CNTT lẫn quy trình</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 7: NEXT STEPS ===== -->
+    <section id="nextsteps">
+        <div class="section-number">07</div>
+        <h2 class="section-title">Next Steps</h2>
+        <p class="section-subtitle">Các bước tiếp theo để chốt deal BTMH</p>
+
+        <div class="card" style="margin-bottom:24px; background:#fffce5; border:1.5px solid #ffcc02;">
+            <h4 style="font-size:16px; font-weight:600; margin-bottom:12px;">⚡ Ưu tiên ngay lập tức</h4>
+            <div class="card-grid card-grid-2">
+                <ul class="checklist">
+                    <li>Phối hợp với SAP đồng bộ thông tin</li>
+                    <li>Chuẩn bị Team Credentials Deck</li>
+                    <li>Đề xuất audit nhanh Odoo</li>
+                </ul>
+                <ul class="checklist">
+                    <li>Chuẩn bị lộ trình sơ bộ Phase 1</li>
+                    <li>Chuẩn bị báo giá sơ bộ 2 option</li>
+                </ul>
+            </div>
+        </div>
+
+        <h4 style="font-size:18px; font-weight:600; margin-bottom:16px;">📋 Các bước tiếp theo</h4>
+        <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h4>Buổi làm việc đầu tiên với BTMH + SAP</h4>
+                <p>Trình bày năng lực, hiểu pain points, đề xuất cách tiếp cận</p>
+                <div class="meta">📅 Tuần này — 👤 Anh (Presales)</div>
+            </div>
+        </div>
+        <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h4>Đánh giá sơ bộ Odoo</h4>
+                <p>Hiểu phạm vi thực tế Odoo, xác định integration points</p>
+                <div class="meta">📅 Tuần 1-2 — 👤 Anh + kỹ thuật</div>
+            </div>
+        </div>
+        <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h4>Workshop khảo sát chi tiết (Finance focus)</h4>
+                <p>Khảo sát quy trình tài chính, sản xuất, master data</p>
+                <div class="meta">📅 Tuần 2-3 — 👤 Anh + Solution Architect</div>
+            </div>
+        </div>
+        <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <h4>Gửi Proposal (Scope + Timeline + Budget)</h4>
+                <p>Proposal chi tiết bao gồm 2 option, lộ trình Phase 1</p>
+                <div class="meta">📅 Tuần 3-4 — 👤 Anh</div>
+            </div>
+        </div>
+        <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-content">
+                <h4>🚀 Kick-off dự án</h4>
+                <p>Khởi động dự án SAP S/4HANA, target go-live 1/1/2027</p>
+                <div class="meta">📅 Q3/2026 — 👤 PM</div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="card" style="background:#f0f7ff; text-align:center;">
+            <p style="font-size:16px; font-weight:600;">📬 Em có thể giúp anh: Soạn email/script trao đổi | Proposal chi tiết | Tính toán chi phí | Chuẩn bị slide deck</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section style="padding:40px 24px 60px; text-align:center; opacity:1; transform:none;">
+        <div class="card" style="background:transparent; box-shadow:none;">
+            <p style="font-size:13px; color:#8e8e93;">BTMH VIP Need Analysis — v1.0 | 01/07/2026 | FPT IS — BCIS</p>
+            <p style="font-size:13px; color:#8e8e93;">Phân tích dựa trên thông tin anh cung cấp và nguồn dữ liệu công khai. Một số KPI baseline cần xác nhận qua khảo sát thực tế.</p>
+        </div>
+    </section>
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ============================
+// LOGIN
+// ============================
+function handleLogin() {
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    const error = document.getElementById('login-error');
+    if (user === 'bcis' && pass === 'bcis') {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        setTimeout(initCharts, 100);
+        setTimeout(initScrollAnimations, 200);
+    } else {
+        error.textContent = '❌ Sai username hoặc password. Vui lòng thử lại.';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('username').focus();
+    document.getElementById('password').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleLogin();
+    });
+    document.getElementById('username').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('password').focus();
+    });
+});
+
+// ============================
+// SCROLL ANIMATIONS
+// ============================
+function initScrollAnimations() {
+    const sections = document.querySelectorAll('section:not(#hero)');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    sections.forEach(s => observer.observe(s));
+
+    // Nav highlight
+    const navLinks = document.querySelectorAll('.nav-link');
+    const allSections = document.querySelectorAll('section, .hero');
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id || 'hero';
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.dataset.target === id);
+                });
+            }
+        });
+    }, { threshold: 0.2 });
+    allSections.forEach(s => sectionObserver.observe(s));
+}
+
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        const target = document.getElementById(link.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+
+window.addEventListener('scroll', () => {
+    document.getElementById('backToTop').classList.toggle('show', window.scrollY > 500);
+});
+
+// ============================
+// CHARTS
+// ============================
+function initCharts() {
+    // 1. Competitive Comparison
+    const ctx1 = document.getElementById('chartCompetitive');
+    if (!ctx1) return;
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['DT/cửa hàng (tỷ)', 'Số cửa hàng', 'LNST (tỷ)'],
+            datasets: [
+                {
+                    label: 'BTMH',
+                    data: [1743, 16, 774],
+                    backgroundColor: '#0071e3',
+                    borderRadius: 6,
+                },
+                {
+                    label: 'PNJ',
+                    data: [81, 430, 2829],
+                    backgroundColor: '#ff9500',
+                    borderRadius: 6,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'top', labels: { font: { family: '-apple-system', size: 12 } } } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 2. Pain Level Radar
+    const ctx2 = document.getElementById('chartPainLevel');
+    if (!ctx2) return;
+    new Chart(ctx2, {
+        type: 'radar',
+        data: {
+            labels: ['Sản xuất', 'Vận hành', 'Tài chính', 'Công nghệ', 'Nhân sự'],
+            datasets: [{
+                label: 'Mức độ nghiêm trọng',
+                data: [5, 4, 5, 4, 3.5],
+                backgroundColor: 'rgba(0,113,227,0.15)',
+                borderColor: '#0071e3',
+                borderWidth: 2,
+                pointBackgroundColor: '#0071e3',
+                pointRadius: 5,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                r: { beginAtZero: true, max: 5, ticks: { stepSize: 1, font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.06)' }, pointLabels: { font: { family: '-apple-system', size: 12 } } }
+            }
+        }
+    });
+
+    // 3. Pain Distribution
+    const ctx3 = document.getElementById('chartPainDistribution');
+    if (!ctx3) return;
+    new Chart(ctx3, {
+        type: 'doughnut',
+        data: {
+            labels: ['Sản xuất', 'Vận hành', 'Tài chính', 'Công nghệ', 'Nhân sự'],
+            datasets: [{
+                data: [4, 3, 4, 4, 3],
+                backgroundColor: ['#ff3b30', '#ff9500', '#0071e3', '#af52de', '#34c759'],
+                borderWidth: 0,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'right', labels: { font: { family: '-apple-system', size: 11 }, padding: 12 } } },
+            cutout: '60%',
+        }
+    });
+}
+</script>
+
+</body>
+</html>
