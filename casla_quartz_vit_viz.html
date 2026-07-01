@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPT IS | Kinh nghiệm Quản lý Bộ mã Vật tư — Casla Quartz → Viglacera Tiên Sơn</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --bg: #0f0f1a;
+    --card: #1a1a2e;
+    --card2: #16213e;
+    --accent: #e94560;
+    --accent2: #0f3460;
+    --accent3: #533483;
+    --gold: #f5c518;
+    --text: #e8e8e8;
+    --text2: #a0a0b0;
+    --green: #00c853;
+    --blue: #448aff;
+    --shadow: 0 8px 32px rgba(0,0,0,0.3);
+    --radius: 16px;
+  }
+
+  body {
+    font-family: 'Inter', 'Noto Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed; top:0; left:0; right:0; z-index:1000;
+    display: flex; align-items: center; gap: 4px;
+    padding: 12px 24px;
+    background: rgba(15,15,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    overflow-x: auto;
+  }
+  .nav::-webkit-scrollbar { height: 2px; }
+  .nav::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 4px; }
+
+  .nav-btn {
+    flex-shrink: 0;
+    padding: 8px 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text2);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+  .nav-btn.active { 
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(233,69,96,0.3);
+  }
+
+  .nav-brand {
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    margin-right: 16px;
+    padding-right: 16px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* Slides */
+  .slides-container {
+    margin-top: 64px;
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    height: calc(100vh - 64px);
+  }
+
+  .slide {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 60px 80px;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-bg {
+    position: absolute; inset:0; z-index:0;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+
+  .slide-content { position: relative; z-index:1; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+  /* Slide Typography */
+  .slide-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(233,69,96,0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff, #a0a0b0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  h1.gold { background: linear-gradient(135deg, #f5c518, #e94560); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  h2 {
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #fff;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--gold);
+  }
+
+  .subtitle {
+    font-size: clamp(16px, 2vw, 22px);
+    color: var(--text2);
+    line-height: 1.6;
+    max-width: 700px;
+    margin-bottom: 32px;
+  }
+
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(233,69,96,0.08), rgba(83,52,131,0.08));
+    border: 1px solid rgba(233,69,96,0.2);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin: 20px 0;
+  }
+
+  .highlight-box.gold {
+    background: linear-gradient(135deg, rgba(245,197,24,0.08), rgba(233,69,96,0.05));
+    border-color: rgba(245,197,24,0.2);
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .stat-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-4px); }
+  .stat-number {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--gold), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .stat-label { font-size: 13px; color: var(--text2); margin-top: 8px; }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .card h4 { color: var(--gold); font-size: 15px; margin-bottom: 8px; }
+  .card p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .card .badge { 
+    display: inline-block; 
+    font-size: 11px; padding: 2px 10px; border-radius: 10px;
+    margin-top: 8px;
+  }
+  .badge-blue { background: rgba(68,138,255,0.15); color: var(--blue); }
+  .badge-green { background: rgba(0,200,83,0.15); color: var(--green); }
+  .badge-red { background: rgba(233,69,96,0.15); color: var(--accent); }
+
+  /* Mermaid container */
+  .mermaid-container {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow-x: auto;
+  }
+  .mermaid-container svg { max-width: 100%; height: auto; }
+
+  /* Two columns */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+  }
+  @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+
+  .col-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .col-card h3 { margin-bottom: 16px; font-size: 16px; }
+
+  .comparison-list { list-style: none; }
+  .comparison-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .comparison-list li:last-child { border-bottom: none; }
+  .comparison-list .check { color: var(--green); margin-right: 8px; }
+  .comparison-list .cross { color: var(--accent); margin-right: 8px; }
+
+  /* Phase timeline */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+    margin: 20px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 12px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute; left: -24px; top: 4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-item h4 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .timeline-item p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .timeline-item .phase-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  /* Footer slide */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .contact-item {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 12px 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+  }
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(233,69,96,0.4);
+  }
+
+  /* Trust signals */
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    margin: 24px 0;
+    justify-content: center;
+  }
+  .trust-item {
+    text-align: center;
+    padding: 16px 24px;
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.04);
+    min-width: 140px;
+  }
+  .trust-item .icon { font-size: 32px; margin-bottom: 8px; }
+  .trust-item .label { font-size: 12px; color: var(--text2); }
+  .trust-item .value { font-size: 20px; font-weight: 700; color: var(--gold); }
+
+  /* Slide background variants */
+  .slide:nth-child(2) .slide-bg { background: radial-gradient(ellipse at 20% 50%, rgba(233,69,96,0.08), transparent 60%); }
+  .slide:nth-child(3) .slide-bg { background: radial-gradient(ellipse at 80% 30%, rgba(83,52,131,0.08), transparent 60%); }
+  .slide:nth-child(4) .slide-bg { background: radial-gradient(ellipse at 50% 80%, rgba(15,52,96,0.1), transparent 60%); }
+  .slide:nth-child(5) .slide-bg { background: radial-gradient(ellipse at 30% 60%, rgba(245,197,24,0.06), transparent 60%); }
+  .slide:nth-child(6) .slide-bg { background: radial-gradient(ellipse at 70% 40%, rgba(0,200,83,0.06), transparent 60%); }
+
+  .page-indicator {
+    position: fixed; bottom: 24px; right: 24px;
+    font-size: 12px; color: var(--text2);
+    background: rgba(15,15,26,0.8);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    z-index: 1000;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 11px; padding: 3px 10px;
+    border-radius: 12px;
+    margin: 2px;
+    background: rgba(255,255,255,0.06);
+    color: var(--text2);
+  }
+  .tag.highlight { background: rgba(233,69,96,0.15); color: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .slide { padding: 40px 24px; }
+    .two-col { grid-template-columns: 1fr; }
+    .nav { padding: 10px 12px; }
+    .nav-btn { font-size: 11px; padding: 6px 12px; }
+    .nav-brand { font-size: 12px; margin-right: 8px; padding-right: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-brand">FPT IS ⚡ BCIS</div>
+  <button class="nav-btn active" onclick="goSlide(0)">🏠 Tổng quan</button>
+  <button class="nav-btn" onclick="goSlide(1)">📊 Kiến trúc</button>
+  <button class="nav-btn" onclick="goSlide(2)">🏭 10 Nhóm hàng</button>
+  <button class="nav-btn" onclick="goSlide(3)">🔧 Đặc tính & Class</button>
+  <button class="nav-btn" onclick="goSlide(4)">📦 Batch Rules</button>
+  <button class="nav-btn" onclick="goSlide(5)">🔄 Casla → VIT</button>
+  <button class="nav-btn" onclick="goSlide(6)">🛣️ Lộ trình</button>
+  <button class="nav-btn" onclick="goSlide(7)">🏆 Vì sao FPT IS?</button>
+</div>
+
+<div class="slides-container" id="slider">
+  <!-- SLIDE 1: Cover -->
+  <div class="slide" data-index="0">
+    <div class="slide-bg"></div>
+    <div class="slide-content" style="text-align:center">
+      <div class="slide-label">FPT IS — SAP S/4HANA Public Cloud</div>
+      <h1 class="gold">Quản lý Bộ mã Vật tư<br>Ngành Vật liệu Xây dựng</h1>
+      <p class="subtitle" style="margin:0 auto 40px">
+        Kinh nghiệm triển khai cho <strong>Casla Quartz</strong> — Ứng dụng cho 
+        <strong>Viglacera Tiên Sơn (VIT)</strong>
+      </p>
+
+      <div class="stats-grid" style="max-width:800px;margin:0 auto">
+        <div class="stat-card"><div class="stat-number">8</div><div class="stat-label">Nhóm vật tư</div></div>
+        <div class="stat-card"><div class="stat-number">21</div><div class="stat-label">Class phân loại</div></div>
+        <div class="stat-card"><div class="stat-number">56</div><div class="stat-label">Đặc tính kỹ thuật</div></div>
+        <div class="stat-card"><div class="stat-number">~2.000</div><div class="stat-label">Giá trị tạo sẵn</div></div>
+        <div class="stat-card"><div class="stat-number">49.082</div><div class="stat-label">Vật tư đã phân loại</div></div>
+      </div>
+
+      <div class="trust-row">
+        <div class="trust-item"><div class="icon">🏭</div><div class="value">Đá thạch anh</div><div class="label">Casla Quartz</div></div>
+        <div class="trust-item"><div class="icon">🏗️</div><div class="value">Gạch ốp lát</div><div class="label">Viglacera Tiên Sơn</div></div>
+        <div class="trust-item"><div class="icon">🔄</div><div class="value">Cùng 1 Framework</div><div class="label">SAP S/4HANA Public Cloud</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Architecture - 2-tier Classification -->
+  <div class="slide" data-index="1">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <div class="slide-label">Core Architecture</div>
+      <h2>Kiến trúc Phân loại Vật tư 2-Tier</h2>
+      <p class="subtitle">Mỗi nhóm hàng được quản lý bằng 2 Class: Mã vật tư (001) + Đặc tính lô (023)</p>
+
+      <div class="mermaid-container">
+        <pre class="mermaid">
+flowchart TB
+    subgraph Tier1["Tier 1: Class 001 — Cấp Mã Vật tư"]
+        direction TB
+        A1["M_NVL_THO<br/><i>Nguyên vật liệu thô</i>"] --> C1["Z_LOAI_1<br/>Loại NVL"]
+        A1 --> C2["Z_DAI_HAT_1<br/>Độ hạt"]
+    end
+
+    subgraph Tier2["Tier 2: Class 023 — Cấp Lô (Batch)"]
+        direction TB
+        B1["B_NVL_THO<br/><i>Batch NVL thô</i>"] --> D1["Z_NGAY_SX<br/>Ngày SX"]
+        B1 --> D2["Z_THANH_PHAN<br/>Thành phần"]
+        B1 --> D3["Z_XUAT_XU<br/>Xuất xứ"]
+        B1 --> D4["Z_NHA_CUNG_CAP_1<br/>NCC"]
+        B1 --> D5["Z_HAN_SU_DUNG<br/>HSD"]
+        B1 --> D6["Z_KHOI_LUONG<br/>Khối lượng"]
+        B1 --> D7["Z_DON_VI_TINH<br/>ĐVT"]
+    end
+
+    M1["Mã vật tư: NVL001"] --> A1
+    B1 --> L1["Lô: 26080001"]
+
+    style M1 fill:#0f3460,color:#fff
+    style L1 fill:#533483,color:#fff
+    style A1 fill:#1a1a2e,color:#f5c518
+    style B1 fill:#1a1a2e,color:#f5c518
+</pre>
+      </div>
+
+      <div class="two-col">
+        <div class="col-card">
+          <h3>🏷️ Class 001 (Mã vật tư)</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.6">
+            Đặc tính <strong>cố định</strong> theo từng mã vật tư:<br>
+            • Loại NVL, độ hạt<br>
+            • Mã hàng, độ dày, vein<br>
+            • Chế độ mài, kích thước<br>
+            • <em>Nhập 1 lần — Không đổi theo lô</em>
+          </p>
+        </div>
+        <div class="col-card">
+          <h3>📦 Class 023 (Batch/Lô)</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.6">
+            Đặc tính <strong>thay đổi</strong> theo từng lô:<br>
+            • Ngày SX, hạn sử dụng<br>
+            • Thành phần, xuất xứ<br>
+            • Khối lượng, đơn vị tính<br>
+            • Nhà cung cấp, lot number<br>
+            • <em>Nhập khi nhập kho — Biến động theo lô</em>
+          </p>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        ⚡ <strong>Áp dụng cho VIT:</strong> Gạch men cũng quản lý theo lô nung. Mỗi mã gạch có 
+        class 001 cố định (kích thước, màu sắc, bề mặt) + class 023 biến động (mẻ nung, 
+        ngày SX, độ bóng, sai số kỹ thuật). <strong>Kiến trúc tương tự — đã có sẵn!</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: 10 Product Groups -->
+  <div class="slide" data-index="2">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <div class="slide-label">Product Groups</div>
+      <h2>10 Nhóm hàng — Từ NVL → Thành phẩm → Phế phẩm</h2>
+      <p class="subtitle">Bao phủ toàn bộ vòng đời vật tư trong nhà máy sản xuất vật liệu xây dựng</p>
+
+      <div class="mermaid-container">
+        <pre class="mermaid">
+flowchart LR
+    subgraph Input["Nhập — NVL"]
+        A["🪨 NVL Thô<br/>Quartz, kính"] 
+        B["⚗️ NVL Thành phẩm<br/>Bột Quartz, Crist"]
+        C["🧪 Hóa chất /<br/>Bột màu / NVL khác"]
+    end
+
+    subgraph Process["Sản xuất — BTP"]
+        D["🔨 BTP thô sau RE<br/>Slab chưa mài"]
+        E["✨ TP-BTP sau mài<br/>Slab đã mài"]
+    end
+
+    subgraph Output["Thành phẩm & Phụ phẩm"]
+        F["📐 Thành phẩm CTS<br/>(Custom)"]
+        G["🎨 Thành phẩm mẫu"]
+        H["🔄 Đá dư tận dụng"]
+        I["🗑️ Phế đá dư - Lỗ sink"]
+        J["🖼️ BTP/TP đá in tranh"]
+    end
+
+    Input --> Process
+    Process --> Output
+
+    style A fill:#0f3460,color:#fff
+    style B fill:#0f3460,color:#fff
+    style C fill:#0f3460,color:#fff
+    style D fill:#1a1a2e,color:#f5c518
+    style E fill:#1a1a2e,color:#f5c518
+    style F fill:#533483,color:#fff
+    style G fill:#533483,color:#fff
+    style H fill:#2d2d44,color:#ccc
+    style I fill:#2d2d44,color:#ccc
+    style J fill:#2d2d44,color:#ccc
+</pre>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <h4>🪨 NVL Thô</h4>
+          <p>Quartz thô, kính vụn, kính mảnh<br>2 class: M_NVL_THO + B_NVL_THO<br>9 đặc tính</p>
+          <span class="badge badge-blue">Nhập kho → QC</span>
+        </div>
+        <div class="card">
+          <h4>⚗️ NVL Thành phẩm</h4>
+          <p>Bột Quartz, kính, Cristobalite<br>2 class: 14 đặc tính<br>Kiểm soát hạt, độ trắng</p>
+          <span class="badge badge-blue">Nhập kho → QC</span>
+        </div>
+        <div class="card">
+          <h4>🧪 Hóa chất / Bột màu</h4>
+          <p>Phụ gia, hóa chất, bột màu<br>5 đặc tính<br>Mã hàng 1 hoặc 3</p>
+          <span class="badge badge-blue">Mua hàng → QC</span>
+        </div>
+        <div class="card">
+          <h4>🔨 BTP → TP</h4>
+          <p>Slab thô → Sau mài → TP<br>Độ dày (J13/J20/J30)<br>Vein (1/2/8)</p>
+          <span class="badge badge-green">SX → QA-QC</span>
+        </div>
+        <div class="card">
+          <h4>📐 Thành phẩm CTS</h4>
+          <p>Cắt theo đơn đặt hàng<br>1 class 001, không batch<br>Dự án → Mã hàng → Độ dày</p>
+          <span class="badge badge-red">Sản xuất đơn hàng</span>
+        </div>
+        <div class="card">
+          <h4>🔄 Đá dư / Phế phẩm</h4>
+          <p>Tận dụng từ sản xuất<br>5 class: 023 cho lô<br>Phân loại theo kích thước</p>
+          <span class="badge badge-red">Phụ phẩm → Tái chế</span>
+        </div>
+      </div>
+
+      <div class="highlight-box gold" style="margin-top:16px">
+        🏗️ <strong>Áp dụng cho VIT:</strong> Cấu trúc tương tự với 10 nhóm hàng gạch men:
+        <span class="tag">Nguyên liệu thô (đất, feldspar)</span>
+        <span class="tag">Bột phối liệu</span>
+        <span class="tag">Men & hóa chất</span>
+        <span class="tag">Phôi mộc</span>
+        <span class="tag">Gạch mộc sau nung</span>
+        <span class="tag">Gạch thành phẩm</span>
+        <span class="tag">Gạch mẫu</span>
+        <span class="tag">Gạch lỗi/phế phẩm</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Characteristics & Classes Detail -->
+  <div class="slide" data-index="3">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <div class="slide-label">Data Design Deep-Dive</div>
+      <h2>56 Đặc tính — Kiểm soát từ NVL → TP</h2>
+      <p class="subtitle">Chi tiết mapping class-characteristics cho từng nhóm hàng</p>
+
+      <div class="mermaid-container">
+        <pre class="mermaid">
+flowchart TD
+    subgraph NV["Nguyên vật liệu"]
+        N1["Z_LOAI — Loại NVL
+        Z_DAI_HAT — Độ hạt
+        Z_XUAT_XU — Xuất xứ
+        Z_THANH_PHAN — Thành phần
+        Z_NGAY_SX — Ngày SX
+        Z_HAN_SU_DUNG — HSD
+        Z_NHA_CUNG_CAP — NCC
+        Z_KHOI_LUONG — Khối lượng
+        Z_DVT — Đơn vị tính"]
+    end
+
+    subgraph SX["Sản xuất — Slab"]
+        S1["Z_MA_HANG — Mã hàng
+        Z_DO_DAY — Độ dày (J13/J20/J30)
+        Z_VEIN — Kiểu vân (1/2/8)
+        Z_CHE_DO_MAI — Chế độ mài
+        Z_MAU_SAC — Màu sắc
+        Z_KICH_THUOC — Kích thước
+        Z_CHAT_LUONG — Chất lượng
+        Z_NGAY_SX_LENH — Ngày SX"]
+    end
+
+    subgraph TP["Thành phẩm"]
+        T1["Z_MA_HANG_2 — Mã TP
+        Z_CHE_DO_MAI — Chế độ mài
+        Z_CHIEU_DAI — Chiều dài
+        Z_CHIEU_RONG — Chiều rộng
+        Z_DO_DAY_2 — Độ dày TP
+        Z_KIEU_MAI_CANH — Kiểu mài cạnh
+        Z_DUNG_SAI — Dung sai
+        Z_TEM_MAU — Tem mẫu
+        Z_MAU_SAC_3 — Màu sắc TP"]
+    end
+
+    subgraph KH["Kho — Phụ phẩm"]
+        K1["Z_DONG_GOI — Đóng gói
+        Z_VITRI_KHO — Vị trí kho
+        Z_GHI_CHU — Ghi chú
+        Z_PHE_TRAM — % phế
+        Z_MA_DU_AN — Mã dự án"]
+    end
+
+    NV --> SX --> TP
+    SX --> KH
+
+    style NV fill:#0f3460,color:#fff
+    style SX fill:#1a1a2e,color:#f5c518
+    style TP fill:#533483,color:#fff
+    style KH fill:#2d2d44,color:#ccc
+</pre>
+      </div>
+
+      <div class="two-col">
+        <div class="col-card">
+          <h3>📋 Giá trị tạo sẵn (~2.000 values)</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.6">
+            Ví dụ — <strong>Z_DONG_GOI</strong> (Đóng gói):<br>
+            • TGT — Thùng gỗ thường<br>
+            • TGE — Thùng gỗ ép<br>
+            • TTH — Thùng thép<br>
+            • PAL — Pallet<br>
+            • CAT — Carton<br>
+            • BMX — Bọc mút xốp<br>
+            • CĐG — Chưa đóng gói<br><br>
+            <em>→ Nhập liệu chuẩn hóa, không sai lệch!</em>
+          </p>
+        </div>
+        <div class="col-card">
+          <h3>🏷️ Z_DO_DAY — Độ dày Slab</h3>
+          <p style="font-size:13px;color:var(--text2);line-height:1.6">
+            Ví dụ — Quy tắc đặt tên:<br><br>
+            <strong>J13</strong> — Độ dày 13mm<br>
+            <strong>J20</strong> — Độ dày 20mm<br>
+            <strong>J30</strong> — Độ dày 30mm<br><br>
+            ⚡ <strong>VIT:</strong> Tương tự có thể định nghĩa:<br>
+            <span class="tag">D600 — Gạch 600x600</span>
+            <span class="tag">D800 — Gạch 800x800</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        🔑 <strong>Key insight cho VIT:</strong> 56 đặc tính + 2.000 giá trị tạo sẵn = 
+        <strong>mọi nhập liệu được chuẩn hóa</strong>. Không còn tình trạng "cùng 1 loại 
+        gạch nhưng 3 kho ghi 3 kiểu khác nhau". Toàn bộ master data được kiểm soát bởi 
+        <strong>bộ phận Master Data</strong> duy nhất.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Batch Rules -->
+  <div class="slide" data-index="4">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <div class="slide-label">Batch Management</div>
+      <h2>Quy tắc đặt Mã Lô (Batch) — Tự động hóa</h2>
+      <p class="subtitle">10 ký tự, quy tắc rõ ràng cho từng nhóm — không trùng, không nhầm</p>
+
+      <div class="two-col">
+        <div class="col-card" style="border-left: 3px solid var(--blue)">
+          <h3>🪨 NVL Thô</h3>
+          <p style="font-size:14px;font-weight:600;margin:8px 0"><code>yyww0000</code></p>
+          <p style="font-size:13px;color:var(--text2)">Năm + Tuần + STT bao<br>VD: <strong>26170001</strong> → Tuần 17/2026, bao số 1</p>
+        </div>
+        <div class="col-card" style="border-left: 3px solid var(--green)">
+          <h3>⚗️ NVL Thành phẩm</h3>
+          <p style="font-size:14px;font-weight:600;margin:8px 0"><code>yyww0000</code></p>
+          <p style="font-size:13px;color:var(--text2)">Cùng cấu trúc: Năm+Tuần+STT<br>VD: <strong>26170001</strong></p>
+        </div>
+        <div class="col-card" style="border-left: 3px solid var(--accent)">
+          <h3>🧪 Hóa chất / Bột màu</h3>
+          <p style="font-size:14px;font-weight:600;margin:8px 0"><code>Lot NCC</code></p>
+          <p style="font-size:13px;color:var(--text2)">Dùng luôn số lô nhà cung cấp<br>VD: <strong>7221B02761</strong> (10 ký tự)</p>
+        </div>
+        <div class="col-card" style="border-left: 3px solid var(--gold)">
+          <h3>🧱 Slab SX tại nhà máy</h3>
+          <p style="font-size:14px;font-weight:600;margin:8px 0"><code>yymmdd0000</code></p>
+          <p style="font-size:13px;color:var(--text2)">Ngày SX + STT tấm<br>VD: <strong>2606080001</strong> → 06/08/2026, tấm số 1</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="col-card" style="border-left: 3px solid var(--accent)">
+          <h3>🔄 Đá gia công (Outsource)</h3>
+          <p style="font-size:14px;font-weight:600;margin:8px 0"><code>GyyMdd0000</code></p>
+          <p style="font-size:13px;color:var(--text2)">G + Năm + Tháng(ABC) + Ngày + STT<br>VD: <strong>G26F080001</strong> → Tháng 6=F, ngày 08</p>
+        </div>
+        <div class="col-card" style="border-left: 3px solid var(--accent)">
+          <h3>🎨 Thành phẩm mẫu</h3>
+          <p style="font-size:14px;font-weight:600;margin:8px 0"><code>Mài ± Tem</code></p>
+          <p style="font-size:13px;color:var(--text2)">Kiểu mài cạnh + dung sai + tem mẫu<br>VD: <strong>BL±1CT</strong> (6 ký tự)</p>
+        </div>
+        <div class="col-card" style="border-left: 3px solid var(--green)">
+          <h3>🗑️ Phế đá dư - Lỗ sink</h3>
+          <p style="font-size:14px;font-weight:600;margin:8px 0"><code>0000-0000</code></p>
+          <p style="font-size:13px;color:var(--text2)">Dài-Rộng<br>VD: <strong>1100-500</strong> (9 ký tự)</p>
+        </div>
+        <div class="col-card" style="border-left: 3px solid var(--blue)">
+          <h3>Kính mảnh (NVL thô)</h3>
+          <p style="font-size:14px;font-weight:600;margin:8px 0"><code>XXX0000000</code></p>
+          <p style="font-size:13px;color:var(--text2)">Viết tắt NCC (3 ký tự) + số<br>VD: <strong>TRO2617001</strong></p>
+        </div>
+      </div>
+
+      <div class="highlight-box gold">
+        📦 <strong>Áp dụng cho VIT:</strong> Mỗi mẻ nung (lò) là 1 batch. Quy tắc batch có thể là 
+        <code>yyMMdd-HHNN</code> (Ngày nung + Mã lò + Số hiệu). Tự động sinh từ hệ thống — 
+        <strong>không nhập tay, không sai sót!</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Casla → VIT Comparison -->
+  <div class="slide" data-index="5">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <div class="slide-label">Cross-Industry Application</div>
+      <h2>Casla Quartz → Viglacera Tiên Sơn</h2>
+      <p class="subtitle">Cùng ngành Vật liệu Xây dựng — Cùng cấu trúc quản lý SAP</p>
+
+      <div class="mermaid-container">
+        <pre class="mermaid">
+flowchart LR
+    subgraph C["Casla Quartz — Đá thạch anh"]
+        C1["🪨 Quartz thô"]
+        C2["🧪 Bột màu / Hóa chất"]
+        C3["🔨 Slab thô → Mài"]
+        C4["📐 TP CTS / Mẫu"]
+        C5["🔄 Đá dư / Phế"]
+    end
+
+    subgraph V["Viglacera Tiên Sơn — Gạch men"]
+        V1["🪨 Đất sét / Feldspar"]
+        V2["🧪 Men / Hóa chất màu"]
+        V3["🏺 Phôi mộc → Nung"]
+        V4["📐 Gạch TP / Mẫu"]
+        V5["🔄 Gạch lỗi / Phế"]
+    end
+
+    subgraph SAP["SAP S/4HANA Public Cloud"]
+        S1["🏷️ Class 001: Mã vật tư cố định"]
+        S2["📦 Class 023: Batch lô sx"]
+        S3["📊 56 Characteristics"]
+        S4["✅ ~2,000 Values chuẩn hóa"]
+    end
+
+    C --> SAP
+    V --> SAP
+
+    SAP --> OUT["🌟 Hệ thống quản lý đồng nhất
+    1 Platform — Mọi nhà máy"]
+
+    style C fill:#0f3460,color:#fff
+    style V fill:#533483,color:#fff
+    style SAP fill:#1a1a2e,color:#f5c518
+    style OUT fill:#2d2d44,color:#00c853
+</pre>
+      </div>
+
+      <div class="two-col">
+        <div class="col-card">
+          <h3>✅ Giống nhau — Áp dụng được ngay</h3>
+          <ul class="comparison-list">
+            <li><span class="check">✓</span> <strong>Quản lý NVL đầu vào:</strong> Đất sét ↔ Quartz thô</li>
+            <li><span class="check">✓</span> <strong>Batch theo lô:</strong> Mẻ nung ↔ Lô slab</li>
+            <li><span class="check">✓</span> <strong>BTP → TP:</strong> Phôi mộc → Nung ↔ Slab → Mài</li>
+            <li><span class="check">✓</span> <strong>Phế phẩm:</strong> Gạch lỗi ↔ Đá dư/Pi lỗ sink</li>
+            <li><span class="check">✓</span> <strong>Kiểm soát CL:</strong> Phân loại gạch ↔ QC slab</li>
+            <li><span class="check">✓</span> <strong>TP Mẫu:</strong> Tem mẫu, quy cách</li>
+            <li><span class="check">✓</span> <strong>Giá trị tạo sẵn:</strong> Drop-down chuẩn hóa</li>
+          </ul>
+        </div>
+        <div class="col-card">
+          <h3>🔄 Điều chỉnh — Tinh chỉnh cho VIT</h3>
+          <ul class="comparison-list">
+            <li><span class="cross">→</span> <strong>Z_LOAI:</strong> Loại gạch (Lát/Nền/Ốp)</li>
+            <li><span class="cross">→</span> <strong>Z_KICH_THUOC:</strong> 600x600, 800x800, 300x600</li>
+            <li><span class="cross">→</span> <strong>Z_BE_MAT:</strong> Bóng/Mat/Men nhám</li>
+            <li><span class="cross">→</span> <strong>Z_DO_BONG:</strong> Chỉ số độ bóng GL</li>
+            <li><span class="cross">→</span> <strong>Z_MAU_MEN:</strong> Mã màu men gạch</li>
+            <li><span class="cross">→</span> <strong>Z_DONG_GOI:</strong> Pallet/Thùng carton</li>
+            <li><span class="cross">→</span> <strong>Z_LO_NUNG:</strong> Mã lò nung cho batch</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="highlight-box" style="margin-top:16px">
+        🏆 <strong>Thông điệp chính:</strong> FPT IS đã thiết kế thành công hệ thống master data 
+        cho Casla Quartz với <strong>49.082 vật tư, 21 class, 56 đặc tính</strong>. 
+        Cấu trúc này <strong>áp dụng trực tiếp</strong> cho VIT với các tinh chỉnh về đặc thù 
+        ngành gạch men. <strong>Không phải xây lại từ đầu — chỉ customizing!</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Implementation Roadmap -->
+  <div class="slide" data-index="6">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <div class="slide-label">Implementation Roadmap</div>
+      <h2>Lộ trình 4 bước — Cho VIT</h2>
+      <p class="subtitle">Từ thiết kế → Vận hành: 12-14 tuần</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="phase-badge" style="background:rgba(68,138,255,0.15);color:var(--blue)">PHASE 1 • Tuần 1-2</span>
+          <h4>📋 Workshop & Phân tích hiện trạng</h4>
+          <p>
+            • Khảo sát bộ mã vật tư hiện tại của VIT (ước tính ~5.000-10.000 mã)<br>
+            • Xác định các nhóm hàng: NVL, BTP, TP, Phụ phẩm, Mẫu<br>
+            • Phân tích quy trình nghiệp vụ: Nhập kho, SX, Xuất kho, QC<br>
+            • Xác định 56 đặc tính kỹ thuật cho ngành gạch men
+          </p>
+        </div>
+        <div class="timeline-item">
+          <span class="phase-badge" style="background:rgba(0,200,83,0.15);color:var(--green)">PHASE 2 • Tuần 3-6</span>
+          <h4>🔧 Thiết kế Master Data trên SAP S/4HANA</h4>
+          <p>
+            • Tạo Class 001 + 023 cho từng nhóm hàng (tương tự Casla)<br>
+            • Định nghĩa ~50 đặc tính kỹ thuật + giá trị tạo sẵn<br>
+            • Thiết lập quy tắc đặt mã lô (Batch) tự động<br>
+            • Phân công bộ phận cập nhật thông tin<br>
+            • Mapping dữ liệu từ hệ thống cũ → SAP
+          </p>
+        </div>
+        <div class="timeline-item">
+          <span class="phase-badge" style="background:rgba(245,197,24,0.15);color:var(--gold)">PHASE 3 • Tuần 7-10</span>
+          <h4>⚙️ &gt; Xây dựng & Kiểm thử</h4>
+          <p>
+            • Import dữ liệu master từ Excel lên SAP<br>
+            • Kiểm thử tạo mã, tạo batch, nhập/xuất kho<br>
+            • UAT với user key: Kho, QC, Sản xuất, Kế toán<br>
+            • Tinh chỉnh quy tắc validation
+          </p>
+        </div>
+        <div class="timeline-item">
+          <span class="phase-badge" style="background:rgba(233,69,96,0.15);color:var(--accent)">PHASE 4 • Tuần 11-14</span>
+          <h4>🚀 Go-Live & Bảo trì</h4>
+          <p>
+            • Chuyển đổi dữ liệu chính thức<br>
+            • Đào tạo user: Nhập liệu, tra cứu, báo cáo<br>
+            • Go-Live với vật tư thật<br>
+            • Hỗ trợ 4 tuần sau Go-Live
+          </p>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        💡 <strong>Tổng đầu tư dự kiến:</strong> Master Data & Classification design là 
+        <strong>nền tảng (foundation)</strong> cho toàn bộ hệ thống SAP. Kinh nghiệm từ Casla 
+        giúp rút ngắn thời gian thiết kế ~40%, giảm rủi ro thiết kế sai.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Why FPT IS -->
+  <div class="slide" data-index="7">
+    <div class="slide-bg"></div>
+    <div class="slide-content" style="text-align:center">
+      <div class="slide-label">Why FPT IS — BCIS</div>
+      <h1 class="gold">Vì sao chọn FPT IS?</h1>
+      <p class="subtitle" style="margin:0 auto 40px">Kinh nghiệm thực tế — Không phải lý thuyết suông</p>
+
+      <div class="trust-row">
+        <div class="trust-item">
+          <div class="icon">🏭</div>
+          <div class="value">Casla Quartz</div>
+          <div class="label">Đã thiết kế 49.082 vật tư<br>21 Class • 56 Đặc tính</div>
+        </div>
+        <div class="trust-item">
+          <div class="icon">🏗️</div>
+          <div class="value">Viglacera</div>
+          <div class="label">Hiểu sâu ngành gạch men<br>FDX đã hoàn thành</div>
+        </div>
+        <div class="trust-item">
+          <div class="icon">🌐</div>
+          <div class="value">SAP Public Cloud</div>
+          <div class="label">Triển khai Cloud-native<br>Best Practice tiêu chuẩn</div>
+        </div>
+        <div class="trust-item">
+          <div class="icon">✅</div>
+          <div class="value">Cùng Framework</div>
+          <div class="label">Kiến trúc 2-Tier chuẩn<br>Mở rộng cho mọi nhà máy</div>
+        </div>
+      </div>
+
+      <div class="card-grid" style="max-width:800px;margin:24px auto">
+        <div class="card">
+          <h4>📊 Kinh nghiệm thực chiến</h4>
+          <p>49.082 vật tư đã được phân loại thực tế trên SAP — không phải demo hay POC. Mọi vấn đề phát sinh đã được giải quyết.</p>
+        </div>
+        <div class="card">
+          <h4>🔄 Tái sử dụng được</h4>
+          <p>Framework master data Casla đã được thiết kế tổng quát, có thể áp dụng cho VIT chỉ với tinh chỉnh đặc thù ngành.</p>
+        </div>
+        <div class="card">
+          <h4>⚡ Giảm rủi ro, tăng tốc</h4>
+          <p>Kinh nghiệm có sẵn giúp giảm 40% thời gian thiết kế. Team FPT IS đã hiểu các vấn đề của ngành vật liệu xây dựng.</p>
+        </div>
+        <div class="card">
+          <h4>🛡️ SAP Partner chính thức</h4>
+          <p>FPT IS là Gold Partner của SAP. Đội ngũ BCIS có chứng chỉ SAP Activate, PSM, và kinh nghiệm triển khai thực tế.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <p style="font-size:18px;color:var(--gold);font-weight:600">
+          "Không chỉ bán giải pháp — Chúng tôi mang kinh nghiệm ngành đến cho bạn."
+        </p>
+        <p style="color:var(--text2);margin-top:8px">FPT IS — BCIS • SAP S/4HANA Public Cloud</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-indicator" id="pageIndicator">1 / 8</div>
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#1a1a2e',
+    primaryTextColor: '#e8e8e8',
+    primaryBorderColor: '#333',
+    lineColor: '#e94560',
+    secondaryColor: '#16213e',
+    tertiaryColor: '#0f3460',
+    fontSize: '13px',
+    fontFamily: 'Inter, sans-serif'
+  }
+});
+
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const navBtns = document.querySelectorAll('.nav-btn');
+const slider = document.getElementById('slider');
+
+function goSlide(idx) {
+  slides[idx].scrollIntoView({ behavior: 'smooth' });
+  current = idx;
+  updateNav();
+  updatePage();
+}
+
+function updateNav() {
+  navBtns.forEach((btn, i) => {
+    btn.classList.toggle('active', i === current);
+  });
+}
+
+function updatePage() {
+  document.getElementById('pageIndicator').textContent = `${current + 1} / ${slides.length}`;
+}
+
+// Observe scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const idx = parseInt(entry.target.dataset.index);
+      current = idx;
+      updateNav();
+      updatePage();
+    }
+  });
+}, { threshold: 0.5 });
+
+slides.forEach(s => observer.observe(s));
+
+// Resize Mermaid on tab
+document.addEventListener('click', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.mermaid svg').forEach(svg => {
+      const c = svg.parentElement;
+      if (c) c.style.width = '100%';
+    });
+  }, 100);
+});
+</script>
+</body>
+</html>
