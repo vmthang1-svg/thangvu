@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Casla Quartz - Hệ thống quản lý bộ mã Material trên SAP S/4HANA Public Cloud</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #f0f4f8;
+    color: #1e293b;
+    padding: 40px;
+  }
+  
+  /* ===== LOGIN SCREEN ===== */
+  #loginOverlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+  }
+  #loginOverlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .login-box {
+    background: white;
+    border-radius: 20px;
+    padding: 48px 40px 40px;
+    width: 400px;
+    max-width: 90vw;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  .login-box .logo {
+    font-size: 48px;
+    margin-bottom: 12px;
+  }
+  .login-box h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+  .login-box p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 28px;
+  }
+  .login-box .form-group {
+    margin-bottom: 16px;
+    text-align: left;
+  }
+  .login-box label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+  }
+  .login-box input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .login-box input:focus {
+    border-color: #2563eb;
+  }
+  .login-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #1a365d, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37,99,235,0.3);
+  }
+  #loginError {
+    display: none;
+    margin-top: 12px;
+    padding: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  
+  .slide {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  
+  .slide-header {
+    background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%);
+    color: white;
+    padding: 32px 40px;
+  }
+  
+  .slide-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  
+  .slide-header .subtitle {
+    font-size: 16px;
+    opacity: 0.85;
+    font-weight: 400;
+  }
+  
+  .slide-body {
+    padding: 32px 40px;
+  }
+  
+  /* Architecture Diagram */
+  .arch-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  
+  .arch-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .arch-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    min-width: 180px;
+    flex: 1;
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  
+  .arch-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37,99,235,0.12);
+  }
+  
+  .arch-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .arch-card .label { font-size: 13px; font-weight: 600; color: #475569; }
+  .arch-card .count { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+  
+  .arch-card.level0 { border-left: 4px solid #2563eb; background: #eff6ff; }
+  .arch-card.level1 { border-left: 4px solid #8b5cf6; background: #f5f3ff; }
+  .arch-card.level2 { border-left: 4px solid #10b981; background: #ecfdf5; }
+  .arch-card.level3 { border-left: 4px solid #f59e0b; background: #fffbeb; }
+  
+  .arch-divider {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin: 4px 0;
+  }
+  
+  /* Tree / Flow */
+  .flow-diagram {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    padding: 24px 0;
+    flex-wrap: wrap;
+  }
+  
+  .flow-step {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 140px;
+    flex: 1;
+  }
+  
+  .flow-step .step-num {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .flow-step .step-label { font-size: 13px; font-weight: 600; }
+  .flow-step .step-desc { font-size: 11px; color: #64748b; margin-top: 4px; }
+  
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    color: #94a3b8;
+    font-size: 20px;
+    margin-top: 30px;
+  }
+  
+  /* Table styles */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  
+  .data-table th {
+    background: #f1f5f9;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+    font-size: 12px;
+  }
+  
+  .data-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .data-table tr:hover td { background: #f8fafc; }
+  
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  
+  .badge-blue { background: #dbeafe; color: #1d4ed8; }
+  .badge-purple { background: #ede9fe; color: #7c3aed; }
+  .badge-green { background: #d1fae5; color: #059669; }
+  .badge-amber { background: #fef3c7; color: #d97706; }
+  .badge-red { background: #fee2e2; color: #dc2626; }
+  
+  /* Grid cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  
+  .info-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  
+  .info-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+  }
+  
+  .info-card p {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+  
+  .info-card .example {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #1e293b;
+  }
+  
+  /* Section titles */
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 24px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #2563eb;
+    display: inline-block;
+  }
+  
+  .section-desc {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  
+  /* Comparison */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+  }
+  
+  .comp-card {
+    border-radius: 16px;
+    padding: 24px;
+  }
+  
+  .comp-card.casla {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid #93c5fd;
+  }
+  
+  .comp-card.vit {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border: 1px solid #6ee7b7;
+  }
+  
+  .comp-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  
+  .comp-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .comp-card li {
+    padding: 6px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #334155;
+  }
+  
+  .comp-card li::before {
+    content: "→ ";
+    font-weight: 700;
+  }
+  
+  .comp-card.casla h3 { color: #1d4ed8; }
+  .comp-card.vit h3 { color: #059669; }
+  
+  /* Batch rules */
+  .batch-rule {
+    display: flex;
+    gap: 16px;
+    padding: 14px 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  
+  .batch-rule .product-group {
+    font-weight: 700;
+    font-size: 13px;
+    color: #1e293b;
+    min-width: 180px;
+  }
+  
+  .batch-rule .rule-code {
+    font-family: 'Courier New', monospace;
+    background: #1e293b;
+    color: #10b981;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    min-width: 120px;
+    text-align: center;
+  }
+  
+  .batch-rule .rule-desc {
+    font-size: 13px;
+    color: #64748b;
+    flex: 1;
+  }
+  
+  /* KPI highlight */
+  .kpi-row {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  
+  .kpi-box {
+    flex: 1;
+    min-width: 180px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .kpi-box .kpi-val {
+    font-size: 28px;
+    font-weight: 800;
+  }
+  
+  .kpi-box .kpi-label {
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 4px;
+    opacity: 0.8;
+  }
+  
+  .kpi-box.blue { background: #eff6ff; color: #2563eb; }
+  .kpi-box.purple { background: #f5f3ff; color: #7c3aed; }
+  .kpi-box.green { background: #ecfdf5; color: #059669; }
+  .kpi-box.amber { background: #fffbeb; color: #d97706; }
+  .kpi-box.red { background: #fef2f2; color: #dc2626; }
+  
+  /* Footer */
+  .slide-footer {
+    padding: 16px 40px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 12px;
+    color: #94a3b8;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .arrow-down { text-align: center; color: #94a3b8; font-size: 24px; padding: 8px 0; }
+  
+  @media print {
+    body { background: white; padding: 0; }
+    .slide { box-shadow: none; break-inside: avoid; }
+    .slide-header { background: #1a365d !important; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN OVERLAY ===== -->
+<div id="loginOverlay">
+  <div class="login-box">
+    <div class="logo">🔐</div>
+    <h2>FPT IS — BCIS</h2>
+    <p>Vui lòng đăng nhập để xem tài liệu</p>
+    <div class="form-group">
+      <label for="username">Tên đăng nhập</label>
+      <input type="text" id="username" placeholder="Nhập tên đăng nhập" autofocus>
+    </div>
+    <div class="form-group">
+      <label for="password">Mật khẩu</label>
+      <input type="password" id="password" placeholder="Nhập mật khẩu">
+    </div>
+    <button class="login-btn" onclick="handleLogin()">Đăng nhập</button>
+    <div id="loginError">❌ Tên đăng nhập hoặc mật khẩu không đúng!</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 1: COVER ===================== -->
+<div class="slide">
+  <div class="slide-header">
+    <h1>🏗️ Hệ thống Quản lý Bộ mã Vật tư (Material Master)</h1>
+    <div class="subtitle">Casla Quartz — Triển khai trên SAP S/4HANA Public Cloud | Thiết kế bởi FPT IS</div>
+  </div>
+  <div class="slide-body">
+    <p class="section-desc">
+      Tài liệu này trình bày <strong>thiết kế tổng thể hệ thống quản lý mã vật tư</strong> cho 
+      Casla Quartz (ngành đá thạch anh nhân tạo) trên nền tảng SAP S/4HANA Public Cloud, 
+      do FPT IS thiết kế và triển khai. Đây là minh chứng cho <strong>năng lực chuyên môn sâu</strong> 
+      của FPT trong ngành sản xuất vật liệu xây dựng — hoàn toàn có thể áp dụng cho Viglacera Tiên Sơn.
+    </p>
+    
+    <div class="kpi-row">
+      <div class="kpi-box blue">
+        <div class="kpi-val">8</div>
+        <div class="kpi-label">Nhóm vật tư</div>
+      </div>
+      <div class="kpi-box purple">
+        <div class="kpi-val">21</div>
+        <div class="kpi-label">Class phân loại</div>
+      </div>
+      <div class="kpi-box green">
+        <div class="kpi-val">56</div>
+        <div class="kpi-label">Đặc tính (Characteristic)</div>
+      </div>
+      <div class="kpi-box amber">
+        <div class="kpi-val">~2.000</div>
+        <div class="kpi-label">Giá trị đặc tính tạo sẵn</div>
+      </div>
+      <div class="kpi-box red">
+        <div class="kpi-val">~49.000</div>
+        <div class="kpi-label">Vật tư đã phân loại</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 2: ARCHITECTURE ===================== -->
+<div class="slide">
+  <div class="slide-header">
+    <h1>📐 Kiến trúc Hệ thống Quản lý Mã Vật tư</h1>
+    <div class="subtitle">Phân tầng: Nhóm → Class → Characteristic → Value</div>
+  </div>
+  <div class="slide-body">
+    <div class="arch-container">
+      <!-- Tầng 1 -->
+      <div class="arch-row">
+        <div class="arch-card level0">
+          <div class="icon">🏷️</div>
+          <div class="label">8 Nhóm Đặc tính</div>
+          <div class="count">VD: NVL Thô, NVL Thành phẩm, BTP thô, TP sau mài, ...</div>
+        </div>
+      </div>
+      <div class="arrow-down">⬇</div>
+      
+      <!-- Tầng 2 -->
+      <div class="arch-row">
+        <div class="arch-card level1">
+          <div class="icon">📂</div>
+          <div class="label">21 Class phân loại</div>
+          <div class="count">M_NVL_THO (001 - theo mã) | B_NVL_THANH_PHAM (023 - theo lô)</div>
+        </div>
+      </div>
+      <div class="arrow-down">⬇</div>
+      
+      <!-- Tầng 3 -->
+      <div class="arch-row">
+        <div class="arch-card level2">
+          <div class="icon">📋</div>
+          <div class="label">56 Đặc tính (Characteristics)</div>
+          <div class="count">Z_CHAT_LUONG, Z_KHOI_LUONG, Z_MAU_SAC, Z_KICH_THUOC...</div>
+        </div>
+      </div>
+      <div class="arrow-down">⬇</div>
+      
+      <!-- Tầng 4 -->
+      <div class="arch-row">
+        <div class="arch-card level3">
+          <div class="icon">✅</div>
+          <div class="label">~2.000 Giá trị Đặc tính</div>
+          <div class="count">Giá trị tạo sẵn (VD: chất lượng G10, K1.1D1; màu sắc K1/A...)</div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 28px; padding: 20px; background: #f1f5f9; border-radius: 12px;">
+      <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">💡 Nguyên lý hoạt động</h3>
+      <p style="font-size: 13px; color: #475569; line-height: 1.6;">
+        Mỗi <strong>vật tư (Material)</strong> được gán vào một <strong>Class</strong> phù hợp. 
+        Class sẽ kế thừa các <strong>Characteristic</strong> (đặc tính) đã được định nghĩa. 
+        Khi nhập kho, người dùng nhập giá trị cho các đặc tính đó — giúp quản lý vật tư 
+        <strong>chi tiết đến từng lô, từng tấm, từng bao</strong>, phục vụ truy xuất nguồn gốc 
+        và kiểm soát chất lượng toàn diện.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 3: FLOW CLASSIFICATION ===================== -->
+<div class="slide">
+  <div class="slide-header">
+    <h1>🔄 Quy trình Phân loại Vật tư</h1>
+    <div class="subtitle">Từ nguyên vật liệu đầu vào đến thành phẩm đầu ra</div>
+  </div>
+  <div class="slide-body">
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-label">NVL Thô</div>
+        <div class="step-desc">Quartz, kính vụn</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-label">NVL Thành phẩm</div>
+        <div class="step-desc">Bột Quartz, Crist</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-label">BTP thô sau RE</div>
+        <div class="step-desc">Slab sau rung ép</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-label">TP-BTP sau mài</div>
+        <div class="step-desc">Slab hoàn thiện</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div class="step-label">TP Mẫu / CTS</div>
+        <div class="step-desc">Sản phẩm mẫu, chế tác</div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+      <span class="badge badge-blue">001 - Theo mã (Quản lý theo mã hàng)</span>
+      <span class="badge badge-purple">023 - Theo lô (Quản lý theo lô/batch)</span>
+    </div>
+    
+    <h2 class="section-title">Cấu trúc Class cho từng Nhóm</h2>
+    <table class="data-table">
+      <tr>
+        <th>Nhóm Đặc tính</th>
+        <th>Class (Theo mã)</th>
+        <th>Class (Theo lô)</th>
+        <th>Số đặc tính</th>
+      </tr>
+      <tr>
+        <td>NVL Thô</td>
+        <td><code>M_NVL_THO</code></td>
+        <td><code>B_NVL_THO</code></td>
+        <td>8 đặc tính</td>
+      </tr>
+      <tr>
+        <td>NVL Thành phẩm</td>
+        <td><code>M_NVL_THANH_PHAM</code></td>
+        <td><code>B_NVL_THANH_PHAM</code></td>
+        <td>13 đặc tính</td>
+      </tr>
+      <tr>
+        <td>Bột màu, hóa chất</td>
+        <td><code>M_HOA_CHAT_BOT_MAU</code></td>
+        <td><code>B_HOA_CHAT_BOT_MAU</code></td>
+        <td>4 đặc tính</td>
+      </tr>
+      <tr>
+        <td>BTP thô sau RE</td>
+        <td><code>M_SLAB_BTP</code></td>
+        <td><code>B_SLAB_BTP</code></td>
+        <td>6 đặc tính</td>
+      </tr>
+      <tr>
+        <td>TP-BTP sau mài</td>
+        <td><code>M_SLAB_THANH_PHAM</code></td>
+        <td><code>B_SLAB_THANH_PHAM</code></td>
+        <td>15 đặc tính</td>
+      </tr>
+      <tr>
+        <td>Thành phẩm mẫu</td>
+        <td><code>M_MAU_THANH_PHAM</code></td>
+        <td><code>B_MAU_THANH_PHAM</code></td>
+        <td>4 đặc tính</td>
+      </tr>
+      <tr>
+        <td>Thành phẩm CTS</td>
+        <td><code>M_CHE_TAC_THANH_PHAM</code></td>
+        <td>—</td>
+        <td>4 đặc tính</td>
+      </tr>
+      <tr>
+        <td>Đá dư tận dụng</td>
+        <td><code>M_DA_DU_TAN_DUNG</code></td>
+        <td><code>B_DA_DU_TAN_DUNG</code></td>
+        <td>5 đặc tính</td>
+      </tr>
+      <tr>
+        <td>Phế đá dư - lỗ sink</td>
+        <td><code>M_DA_DU_PHE_LO_SINK</code></td>
+        <td><code>B_DA_DU_PHE_LO_SINK</code></td>
+        <td>2 đặc tính</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 4: CHARACTERISTICS ===================== -->
+<div class="slide">
+  <div class="slide-header">
+    <h1>📊 Danh mục Đặc tính (Characteristics) Chi tiết</h1>
+    <div class="subtitle">56 đặc tính được định nghĩa phục vụ quản lý toàn diện</div>
+  </div>
+  <div class="slide-body">
+    <div class="card-grid">
+      <div class="info-card">
+        <h3>📏 Chất lượng & Kiểm tra</h3>
+        <p>Z_CHAT_LUONG_1, Z_CHAT_LUONG_2, Z_CHAT_LUONG_3, Z_TINH_TRANG, Z_TRANG_THAI</p>
+        <div class="example">VD: G10, K1.1D1, LT1, 52</div>
+      </div>
+      <div class="info-card">
+        <h3>📐 Kích thước & Khối lượng</h3>
+        <p>Z_CHIEU_DAI, Z_CHIEU_RONG, Z_DO_DAY_1, Z_DO_DAY_2, Z_KHOI_LUONG_1, Z_KHOI_LUONG_2</p>
+        <div class="example">VD: 1000, J20, 1206 kg</div>
+      </div>
+      <div class="info-card">
+        <h3>🎨 Màu sắc & Vein</h3>
+        <p>Z_MAU_SAC_1, Z_MAU_SAC_2, Z_MAU_SAC_3, Z_VEIN_1, Z_VEIN_2, Z_SHADE_1, Z_SHADE_2</p>
+        <div class="example">VD: K1/A, 1, 2, 8</div>
+      </div>
+      <div class="info-card">
+        <h3>🏭 Sản xuất & Gia công</h3>
+        <p>Z_LINE_RUNG_EP, Z_LINE_MAI, Z_CHE_DO_MAI, Z_CONG_DOAN, Z_CUM_MAY, Z_NHAP_MUA</p>
+        <div class="example">VD: 0-mua ngoài, 1-Nghiền 1</div>
+      </div>
+      <div class="info-card">
+        <h3>📦 Lô & Truy xuất</h3>
+        <p>Z_LOT, Z_LOT_1, Z_LOT_2, Z_LOT_NCC, Z_STT_BAO, Z_STT_SLAB</p>
+        <div class="example">VD: 2617, 230914, 0308</div>
+      </div>
+      <div class="info-card">
+        <h3>🗓️ Thời gian</h3>
+        <p>Z_NGAY_SAN_XUAT_1, Z_NGAY_SAN_XUAT_2, Z_HAN_SU_DUNG, Z_NGAY_MAI_MOI_NHAT, Z_NGAY_KIEM_MOI_NHAT</p>
+        <div class="example">VD: 20052024, 260608</div>
+      </div>
+      <div class="info-card">
+        <h3>🔗 Mã hàng & Phân loại</h3>
+        <p>Z_MA_HANG_2, Z_MA_HANG_3, Z_LOAI_1, Z_LOAI_2, Z_LOAI_3, Z_MA_DU_AN, Z_PHAN_LOAI_SX</p>
+        <div class="example">VD: C2104, KV, QU, BM</div>
+      </div>
+      <div class="info-card">
+        <h3>📝 Ghi chú & Khác</h3>
+        <p>Z_GHI_CHU_1, Z_GHI_CHU_2, Z_GHI_CHU_3, Z_MANG_PHU, Z_DA_SUA, Z_KHACH_HANG, Z_TEM_MAU</p>
+        <div class="example">VD: Màng PE, Đã sửa A</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 5: BATCH RULES ===================== -->
+<div class="slide">
+  <div class="slide-header">
+    <h1>🔢 Quy tắc Đặt Mã Batch (Lot Numbering)</h1>
+    <div class="subtitle">Mỗi nhóm sản phẩm có quy tắc sinh mã batch riêng — tối đa 10 ký tự</div>
+  </div>
+  <div class="slide-body">
+    <div class="section-desc">
+      <strong>Nguyên tắc chung:</strong> Mã batch dùng để gom nhóm các sản phẩm cùng mã có chung đặc tính. 
+      Với sản phẩm quản lý chi tiết tới từng bao/tấm → mỗi batch ứng với 1 bao/tấm. 
+      Batch code tối đa 10 ký tự.
+    </div>
+    
+    <div class="batch-rule">
+      <div class="product-group">🧪 Bột màu, hóa chất</div>
+      <div class="rule-code">Số lô NCC</div>
+      <div class="rule-desc">Dùng nguyên số lô của nhà cung cấp (tối đa 10 ký tự)</div>
+      <span class="badge badge-purple">VD: 7221B02761</span>
+    </div>
+    
+    <div class="batch-rule">
+      <div class="product-group">🥃 NVL kính mảnh</div>
+      <div class="rule-code">Viết tắt NCC</div>
+      <div class="rule-desc">Tên viết tắt của nhà cung cấp (3 ký tự)</div>
+      <span class="badge badge-purple">VD: TRO, CHU</span>
+    </div>
+    
+    <div class="batch-rule">
+      <div class="product-group">📦 NVL thô, NVL thành phẩm</div>
+      <div class="rule-code">yyww + STT bao</div>
+      <div class="rule-desc">Năm + Tuần sản xuất + Số thứ tự bao (8 ký tự)</div>
+      <span class="badge badge-purple">VD: 26170001</span>
+    </div>
+    
+    <div class="batch-rule">
+      <div class="product-group">🪨 Slab SX tại nhà máy</div>
+      <div class="rule-code">yymmdd + STT tấm</div>
+      <div class="rule-desc">Năm + Tháng + Ngày sản xuất + STT tấm (10 ký tự)</div>
+      <span class="badge badge-purple">VD: 2606080001</span>
+    </div>
+    
+    <div class="batch-rule">
+      <div class="product-group">🪨 Slab gia công</div>
+      <div class="rule-code">G + yy + M(tháng) + dd + STT</div>
+      <div class="rule-desc">"G" + năm + tháng mã hóa chữ cái + ngày + STT (10 ký tự)</div>
+      <span class="badge badge-purple">VD: G26F080001 (F=Tháng 6)</span>
+    </div>
+    
+    <div class="batch-rule">
+      <div class="product-group">📐 TP mẫu</div>
+      <div class="rule-code">Kiểu mài cạnh + Dung sai + Tem</div>
+      <div class="rule-desc">Mã hóa kiểu mài cạnh, dung sai, tem mẫu (6 ký tự)</div>
+      <span class="badge badge-purple">VD: BL±1CT</span>
+    </div>
+    
+    <div class="batch-rule">
+      <div class="product-group">♻️ Đá dư tận dụng</div>
+      <div class="rule-code">Kế thừa slab</div>
+      <div class="rule-desc">Kế thừa mã batch từ slab gốc (10 ký tự)</div>
+      <span class="badge badge-purple">VD: 2606080001</span>
+    </div>
+    
+    <div class="batch-rule">
+      <div class="product-group">🗑️ Phế đá dư</div>
+      <div class="rule-code">Dài + Rộng</div>
+      <div class="rule-desc">Dài + "-" + Rộng (9 ký tự)</div>
+      <span class="badge badge-purple">VD: 1100-500</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 6: APPLICABILITY TO VIT ===================== -->
+<div class="slide">
+  <div class="slide-header">
+    <h1>🎯 Ứng dụng cho Viglacera Tiên Sơn (VIT)</h1>
+    <div class="subtitle">Kinh nghiệm từ Casla Quartz → Giải pháp cho ngành gạch ốp lát</div>
+  </div>
+  <div class="slide-body">
+    <div class="comparison-grid">
+      <div class="comp-card casla">
+        <h3>🏭 Casla Quartz (Đã triển khai)</h3>
+        <ul>
+          <li>Nguyên liệu: Quartz thô, kính vụn, bột màu → Quản lý theo lô, chất lượng, màu sắc</li>
+          <li>Sản xuất: Rung ép → Mài → Thành phẩm (Slab), theo dõi từng tấm</li>
+          <li>Phụ phẩm: Đá dư tận dụng, phế đá lỗ sink → Tận thu, quản lý riêng</li>
+          <li>Đặc thù: Kiểm soát chất lượng theo lô, truy xuất nguồn gốc từng tấm slab</li>
+          <li>Kết quả: ~49.000 vật tư đã phân loại, vận hành trên SAP Public Cloud</li>
+        </ul>
+      </div>
+      <div class="comp-card vit">
+        <h3>🧱 Viglacera Tiên Sơn (Áp dụng được)</h3>
+        <ul>
+          <li>Nguyên liệu: Đất sét, feldspar, men màu → Quản lý theo lô nhập, chất lượng nguyên liệu</li>
+          <li>Sản xuất: Tạo hình → Sấy → Nung → Phân loại (gạch ốp lát)</li>
+          <li>Phụ phẩm: Gạch lỗi, phế phẩm nung → Quản lý tái chế/tận thu</li>
+          <li>Đặc thù: Kiểm soát kích thước, màu sắc men, độ bền, phân loại chất lượng (loại 1/2/3)</li>
+          <li>Kết quả mong đợi: Hệ thống mã vật tư chuẩn hóa, truy xuất lô sản xuất, quản lý tồn kho real-time</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section-title">🔑 5 Điểm FPT có thể áp dụng ngay cho VIT</h2>
+    <div class="card-grid">
+      <div class="info-card">
+        <h3>1️⃣ Cấu trúc Class phân loại</h3>
+        <p>Mô hình 2-level: Class mã (001) + Class lô (023) cho từng nhóm vật tư — có thể áp dụng nguyên bản cho gạch men: NVL thô, NVL thành phẩm (bột men), BTP, thành phẩm, phế phẩm.</p>
+      </div>
+      <div class="info-card">
+        <h3>2️⃣ Quy tắc Batch tự động</h3>
+        <p>Sinh mã batch theo công thức (Năm+Tuần+STT) giúp tự động hóa nhập kho, không cần nhập tay. VIT có thể áp dụng cho từng mẻ nung, lô sản xuất.</p>
+      </div>
+      <div class="info-card">
+        <h3>3️⃣ Đặc tính kiểm soát chất lượng</h3>
+        <p>Hệ thống 56 đặc tính bao phủ toàn bộ vòng đời sản phẩm: từ chất lượng NVL đầu vào → kiểm soát giữa kỳ → phân loại thành phẩm đầu ra.</p>
+      </div>
+      <div class="info-card">
+        <h3>4️⃣ Giá trị đặc tính tạo sẵn</h3>
+        <p>~2.000 giá trị được định nghĩa sẵn (drop-down) giúp chuẩn hóa dữ liệu nhập, tránh sai lệch. VIT cần dùng cho danh mục chất lượng, màu men, kích thước.</p>
+      </div>
+      <div class="info-card">
+        <h3>5️⃣ Quản lý phụ phẩm & tận thu</h3>
+        <p>Casla đã thiết kế class riêng cho đá dư/phế phẩm — VIT hoàn toàn có thể áp dụng để quản lý gạch lỗi, phế phẩm nung, tối ưu hóa tỷ lệ tái chế.</p>
+      </div>
+    </div>
+    
+    <div style="margin-top: 24px; padding: 20px; background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-radius: 12px; border: 1px solid #bfdbfe;">
+      <p style="font-size: 14px; line-height: 1.6; color: #1e293b; text-align: center;">
+        <strong>💬 Kết luận:</strong> Casla Quartz là <strong>minh chứng sống</strong> cho năng lực của FPT IS trong việc 
+        thiết kế và triển khai hệ thống quản lý mã vật tư trên SAP S/4HANA cho doanh nghiệp sản xuất vật liệu xây dựng. 
+        Kinh nghiệm từ bài toán quản lý slab đá thạch anh → hoàn toàn chuyển giao được cho quản lý gạch ốp lát tại VIT, 
+        với cùng cấu trúc phân loại, batch tracking và kiểm soát chất lượng.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 7: TEAM CREDENTIAL ===================== -->
+<div class="slide">
+  <div class="slide-header">
+    <h1>✅ Tại sao FPT IS?</h1>
+    <div class="subtitle">Năng lực triển khai SAP S/4HANA cho ngành sản xuất vật liệu xây dựng</div>
+  </div>
+  <div class="slide-body">
+    <div class="kpi-row">
+      <div class="kpi-box blue">
+        <div class="kpi-val">49.000+</div>
+        <div class="kpi-label">Vật tư đã phân loại</div>
+      </div>
+      <div class="kpi-box purple">
+        <div class="kpi-val">8</div>
+        <div class="kpi-label">Nhóm vật tư phức tạp</div>
+      </div>
+      <div class="kpi-box green">
+        <div class="kpi-val">Full lifecycle</div>
+        <div class="kpi-label">NVL → SX → TP → Phế phẩm</div>
+      </div>
+      <div class="kpi-box amber">
+        <div class="kpi-val">Cloud</div>
+        <div class="kpi-label">SAP S/4HANA Public Cloud</div>
+      </div>
+    </div>
+    
+    <p class="section-desc" style="text-align: center; margin-top: 16px;">
+      <strong>FPT IS đã thiết kế thành công hệ thống quản lý mã vật tư cho Casla Quartz</strong> — 
+      một doanh nghiệp sản xuất đá thạch anh nhân tạo với quy trình tương đồng ngành gạch ốp lát. 
+      Kinh nghiệm này là nền tảng vững chắc để triển khai thành công cho Viglacera Tiên Sơn 
+      trên SAP S/4HANA, dù là Public Cloud hay Private Cloud Edition.
+    </p>
+  </div>
+  <div class="slide-footer">
+    <span>FPT IS - BCIS | SAP S/4HANA Implementation</span>
+    <span>Casla Quartz Reference · Confidential</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Enter key to login
+  document.getElementById('password').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleLogin();
+  });
+  document.getElementById('username').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('password').focus();
+  });
+});
+
+function handleLogin() {
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value;
+  const err = document.getElementById('loginError');
+
+  if (user === 'thangvm' && pass === 'thangdeptrai') {
+    document.getElementById('loginOverlay').classList.add('hidden');
+    err.style.display = 'none';
+  } else {
+    err.style.display = 'block';
+    document.getElementById('password').value = '';
+    document.getElementById('password').focus();
+  }
+}
+</script>
+</body>
+</html>
