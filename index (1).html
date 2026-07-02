@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo Đặc thù Ngành Kinh doanh Vàng Bạc Đá Quý Việt Nam | BCIS FPT IS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0d0d0d;
+  --bg-panel: #1a1a1a;
+  --bg-card: #222222;
+  --bg-elevated: #2a2a2a;
+  --gold: #c9a44b;
+  --gold-light: #e0c87a;
+  --gold-bright: #f5d57a;
+  --gold-pale: #fdf0d1;
+  --text-primary: #e6e3dd;
+  --text-secondary: #a8a49b;
+  --text-muted: #6b6560;
+  --border-subtle: #2e2e2e;
+  --border-gold: rgba(201, 164, 75, 0.25);
+  --accent-warm: #c4793b;
+  --accent-deep: #8b5e3c;
+  --shadow-gold: 0 0 40px rgba(201, 164, 75, 0.06);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --font-display: 'Playfair Display', 'Times New Roman', serif;
+  --font-body: 'EB Garamond', Georgia, serif;
+  --font-mono: 'DM Sans', 'Helvetica Neue', sans-serif;
+  --max-width: 860px;
+  --max-width-wide: 1000px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain texture overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
+
+/* ─── TOP BAR ─── */
+.top-bar {
+  background: #111;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 8px 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-align: center;
+}
+.top-bar span { color: var(--gold); font-weight: 500; }
+
+/* ─── HEADER ─── */
+.header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 14px 0;
+  transition: all 0.3s ease;
+}
+.header-inner {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.header-logo {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.header-logo span { color: var(--text-secondary); font-weight: 400; font-size: 0.9rem; }
+.header-nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.header-nav a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.25s;
+  white-space: nowrap;
+}
+.header-nav a:hover { color: var(--gold-light); }
+
+/* ─── HERO ─── */
+.hero {
+  padding: 100px 28px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(201,164,75,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-category {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--text-primary);
+  max-width: 800px;
+  margin: 0 auto 12px;
+}
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero-subtitle {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+.hero-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+}
+.hero-meta span { display: flex; align-items: center; gap: 6px; }
+.hero-divider {
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 40px auto 0;
+}
+
+/* ─── CONTENT WRAPPER ─── */
+.content-wrapper {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  padding: 0 28px 80px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ─── SIDEBAR TOC ─── */
+.sidebar {
+  position: sticky; top: 100px;
+  padding: 28px 20px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+.sidebar-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.sidebar a {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: color 0.25s, padding-left 0.25s;
+  line-height: 1.4;
+}
+.sidebar a:last-child { border-bottom: none; }
+.sidebar a:hover, .sidebar a.active {
+  color: var(--gold-light);
+  padding-left: 6px;
+}
+
+/* ─── MAIN CONTENT ─── */
+.main-content { min-width: 0; }
+
+.chapter {
+  margin-bottom: 64px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.7s ease forwards;
+}
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter-number {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.chapter h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.chapter h2::after {
+  content: '';
+  display: block;
+  width: 48px; height: 2px;
+  background: var(--gold);
+  margin-top: 16px;
+}
+.chapter h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin: 32px 0 12px;
+}
+.chapter h4 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin: 24px 0 10px;
+}
+.chapter p {
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+}
+.chapter strong { color: var(--gold-pale); font-weight: 600; }
+.chapter em { color: var(--text-primary); font-style: italic; }
+.chapter ul, .chapter ol {
+  margin: 12px 0 18px 24px;
+  color: var(--text-secondary);
+}
+.chapter li { margin-bottom: 8px; }
+.chapter li strong { color: var(--text-primary); }
+.chapter a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-gold);
+  transition: border-color 0.25s, color 0.25s;
+}
+.chapter a:hover { border-color: var(--gold); color: var(--gold-light); }
+
+/* ─── BLOCKQUOTE ─── */
+blockquote.insight {
+  margin: 32px 0;
+  padding: 24px 28px;
+  background: var(--bg-card);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+/* ─── TABLES ─── */
+.table-wrap {
+  margin: 28px 0;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+thead { background: linear-gradient(135deg, #1a1a1a, #222); }
+thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+  border-bottom: 2px solid var(--border-gold);
+}
+tbody td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+tbody tr { transition: background 0.2s; }
+tbody tr:hover { background: rgba(201,164,75,0.04); }
+tbody tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+tbody tr:nth-child(even):hover { background: rgba(201,164,75,0.05); }
+
+/* ─── FORMULA BLOCK ─── */
+.formula-block {
+  margin: 20px 0;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--gold-pale);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+/* ─── MERMAID ─── */
+.mermaid-wrap {
+  margin: 32px 0;
+  padding: 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  overflow-x: auto;
+}
+.mermaid-wrap .mermaid { display: flex; justify-content: center; }
+
+/* ─── STATS GRID ─── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.1;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* ─── CHAPTER DIVIDER ─── */
+.chapter-divider {
+  text-align: center;
+  margin: 48px 0 32px;
+  color: var(--gold);
+  font-size: 1.5rem;
+  opacity: 0.4;
+  letter-spacing: 0.3em;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-panel);
+  padding: 48px 28px 32px;
+  margin-top: 40px;
+}
+.footer-inner { max-width: var(--max-width-wide); margin: 0 auto; }
+.footer h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.footer-source-group { margin-bottom: 20px; }
+.footer-source-group h4 {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.footer-source-group a {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+.footer-source-group a:hover { color: var(--gold-light); }
+.footer-bottom {
+  text-align: center;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ─── DEERFLOW BADGE ─── */
+.deerflow-badge {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 200;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  background: rgba(26,26,26,0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 6px 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.deerflow-badge:hover {
+  color: var(--gold);
+  border-color: var(--border-gold);
+  box-shadow: 0 0 16px rgba(201,164,75,0.08);
+}
+
+/* ─── BACK TO TOP ─── */
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 200;
+  width: 36px; height: 36px;
+  background: rgba(26,26,26,0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { color: var(--gold); border-color: var(--border-gold); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .sidebar {
+    position: static;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 16px;
+  }
+  .sidebar-title { width: 100%; margin-bottom: 8px; }
+  .sidebar a {
+    font-size: 0.68rem;
+    padding: 4px 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+  }
+  .sidebar a:hover, .sidebar a.active { padding-left: 10px; background: rgba(201,164,75,0.1); }
+  .header-nav { gap: 12px; }
+  .header-nav a { font-size: 0.65rem; }
+  .hero h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .hero { padding: 60px 16px 40px; }
+  .content-wrapper { padding: 0 16px 40px; }
+  .chapter h2 { font-size: 1.5rem; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .header-nav { display: none; }
+}
+
+/* ─── PRINT ─── */
+@media print {
+  body { background: #fff; color: #000; }
+  .sidebar, .header, .top-bar, .deerflow-badge, .back-to-top { display: none; }
+  .content-wrapper { display: block; }
+  .chapter { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span>◆</span> Báo cáo chuyên sâu &nbsp;·&nbsp; Ngành Kinh doanh Vàng Bạc Đá Quý &nbsp;·&nbsp; Tháng 7/2026 <span>◆</span>
+</div>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="header-logo">BCIS <span>/ Báo cáo Ngành</span></a>
+    <nav class="header-nav">
+      <a href="#chuong-1">Thị trường</a>
+      <a href="#chuong-3">Pháp lý</a>
+      <a href="#chuong-4">Thuế</a>
+      <a href="#chuong-5">Chuỗi cung ứng</a>
+      <a href="#chuong-6">Kế toán</a>
+      <a href="#chuong-7">Rủi ro</a>
+      <a href="#chuong-8">CNTT</a>
+      <a href="#chuong-9">Xu hướng</a>
+      <a href="#chuong-10">SAP</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-category">Báo cáo Chuyên đề</div>
+  <h1>Đặc thù Ngành <em>Kinh doanh</em> Vàng Bạc Đá Quý Việt Nam</h1>
+  <p class="hero-subtitle">Phục vụ chuẩn bị tiếp cận khách hàng Bảo Tín Mạnh Hải</p>
+  <div class="hero-meta">
+    <span>📋 Richard – BCIS / FPT IS</span>
+    <span>📅 02/07/2026</span>
+    <span>📖 10 Chương</span>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<div class="content-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Mục lục</div>
+    <a href="#chuong-1">1. Tổng quan thị trường</a>
+    <a href="#chuong-2">2. Cấu trúc thị trường</a>
+    <a href="#chuong-3">3. Khung pháp lý</a>
+    <a href="#chuong-4">4. Đặc thù về thuế</a>
+    <a href="#chuong-5">5. Chuỗi cung ứng</a>
+    <a href="#chuong-6">6. Đặc thù kế toán</a>
+    <a href="#chuong-7">7. Quản trị rủi ro giá vàng</a>
+    <a href="#chuong-8">8. CNTT trong ngành vàng</a>
+    <a href="#chuong-9">9. Xu hướng ngành</a>
+    <a href="#chuong-10">10. Hàm ý cho SAP S/4HANA</a>
+    <a href="#phu-luc">Phụ lục & Nguồn</a>
+  </aside>
+
+  <main class="main-content">
+
+<!-- CHAPTER 1 -->
+<article class="chapter" id="chuong-1" style="animation-delay: 0.1s">
+  <div class="chapter-number">Chương 1</div>
+  <h2>TỔNG QUAN THỊ TRƯỜNG VÀNG BẠC ĐÁ QUÝ VIỆT NAM</h2>
+
+  <h3>1.1. Quy mô và tăng trưởng</h3>
+  <p>Thị trường vàng bạc đá quý Việt Nam là một trong những thị trường năng động nhất khu vực Đông Nam Á. Theo các báo cáo ngành, tổng giá trị thị trường trang sức toàn cầu dự kiến mở rộng từ <strong>379,6 tỷ USD năm 2025 lên 843,75 tỷ USD năm 2034</strong> <a href="https://www.forinsightsconsultancy.com/vi/b%C3%A1o-c%C3%A1o/th%E1%BB%8B-tr%C6%B0%E1%BB%9Dng-trang-s%E1%BB%A9c" target="_blank">[citation]</a>. Trong đó, Việt Nam chiếm một vị thế đặc biệt do văn hóa tích trữ vàng lâu đời và nhu cầu trang sức ngày càng cao.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">843,75</div>
+      <div class="stat-label">Tỷ USD – Thị trường trang sức toàn cầu 2034</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">191M+</div>
+      <div class="stat-label">VNĐ/lượng – Giá vàng đỉnh 2026</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">Top 3</div>
+      <div class="stat-label">Đông Nam Á – Tiêu thụ vàng miếng</div>
+    </div>
+  </div>
+
+  <p><strong>Các con số đáng chú ý tại Việt Nam:</strong></p>
+  <ul>
+    <li><strong>Thị trường vàng miếng:</strong> Việt Nam là một trong những quốc gia tiêu thụ vàng miếng lớn nhất Đông Nam Á. Mỗi năm, nhu cầu vàng miếng trong nước ước tính lên tới hàng chục tấn. Giá vàng trong nước giữa năm 2026 có thời điểm vượt 191 triệu đồng/lượng <a href="https://baotintuc.vn/thi-truong-tien-te/siet-quan-ly-mua-ban-vang-nhung-rui-ro-phap-ly-nguoi-dan-can-biet-20260131120538152.htm" target="_blank">[citation]</a>.</li>
+    <li><strong>Thị trường vàng trang sức:</strong> Đây là mảng có biên lợi nhuận cao hơn, gắn liền với yếu tố thiết kế, thương hiệu và chế tác tinh xảo. Người Việt Nam ngày càng ưa chuộng trang sức có thiết kế cá nhân hóa, chất lượng chuẩn quốc tế.</li>
+    <li><strong>Đặc điểm văn hóa:</strong> Vàng không chỉ là hàng hóa mà còn là tài sản tích trữ, công cụ bảo toàn giá trị, quà tặng truyền thống trong các dịp cưới hỏi, lễ Tết. Điều này tạo ra nhu cầu kép: vừa mua sắm trang sức, vừa đầu tư/giao dịch vàng miếng.</li>
+  </ul>
+
+  <h3>1.2. Cấu trúc tiêu dùng</h3>
+  <p>Nhu cầu vàng tại Việt Nam chia thành ba phân khúc chính:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Phân khúc</th><th>Đặc điểm</th><th>Biên lợi nhuận</th><th>Yêu cầu ERP</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Vàng miếng (24K)</strong></td><td>Giao dịch theo giá niêm yết, tính theo chỉ/lượng, tốc độ quay vòng nhanh</td><td>Thấp (chênh lệch mua-bán ~1–3%)</td><td>Định giá real-time, quản lý tồn kho theo giá vốn biến động</td></tr>
+        <tr><td><strong>Trang sức vàng 18K–24K</strong></td><td>Thiết kế + chế tác, giá trị thương hiệu</td><td>Trung bình – Cao</td><td>Quản lý BOM chế tác, costing, định mức NVL, quản lý mẫu mã</td></tr>
+        <tr><td><strong>Trang sức cao cấp & đá quý</strong></td><td>Kim cương, đá quý, thiết kế độc quyền</td><td>Cao nhất</td><td>Serial number tracking, giấy chứng nhận GIA, quản lý hàng ký gửi</td></tr>
+      </tbody>
+    </table>
+  </div>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 2 -->
+<article class="chapter" id="chuong-2" style="animation-delay: 0.2s">
+  <div class="chapter-number">Chương 2</div>
+  <h2>CẤU TRÚC THỊ TRƯỜNG VÀ CÁC DOANH NGHIỆP CHỦ CHỐT</h2>
+
+  <h3>2.1. Bức tranh cạnh tranh</h3>
+  <p>Thị trường vàng bạc đá quý Việt Nam hiện tại được định hình bởi các doanh nghiệp lớn:</p>
+  <p><strong>Nhóm dẫn đầu (Tier 1):</strong></p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Doanh nghiệp</th><th>Doanh thu 2025 (ước)</th><th>Số cửa hàng</th><th>Vị thế</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>PNJ</strong></td><td>~35.000 tỷ VND</td><td>400+</td><td>Dẫn đầu thị trường, niêm yết HOSE từ 2009, lợi thế sản xuất quy mô lớn</td></tr>
+        <tr><td><strong>DOJI</strong></td><td>~30.000 tỷ VND</td><td>100+</td><td>Tập đoàn lớn phía Bắc, đa dạng hóa sang bất động sản, tài chính</td></tr>
+        <tr><td><strong>SJC</strong></td><td>~25.000 tỷ VND</td><td>50+</td><td>Thương hiệu vàng miếng quốc gia, nắm giữ gần như độc quyền sản xuất vàng miếng SJC</td></tr>
+        <tr><td><strong>Bảo Tín Mạnh Hải</strong></td><td>28.000 → 74.000 tỷ (2026 KH)</td><td>12 → 80 (2026 KH)</td><td>Tăng trưởng đột phá, IPO Q4/2026, tham vọng chuỗi bán lẻ vàng 24K lớn nhất Việt Nam</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>Nhóm đang trỗi dậy (Tier 2):</strong> Bảo Tín Minh Châu, Phú Quý, Mi Hồng, và các thương hiệu địa phương khác.</p>
+
+  <h3>2.2. Hồ sơ Bảo Tín Mạnh Hải (BTMH)</h3>
+  <p>BTMH là trường hợp đặc biệt đáng chú ý trong ngành với tốc độ tăng trưởng bùng nổ:</p>
+
+  <blockquote class="insight">
+    Từ tiệm vàng gia đình sau 34 năm trở thành "Thương hiệu quốc dân" – mục tiêu doanh thu 74.000 tỷ VND và IPO HOSE Q4/2026.
+  </blockquote>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">34</div>
+      <div class="stat-label">Năm hình thành & phát triển</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">+165%</div>
+      <div class="stat-label">Tăng trưởng doanh thu YoY 2026</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">68+</div>
+      <div class="stat-label">Cửa hàng mới trong năm 2026</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">IPO</div>
+      <div class="stat-label">Niêm yết HOSE Q4/2026</div>
+    </div>
+  </div>
+
+  <ul>
+    <li><strong>Lịch sử:</strong> 34 năm hình thành và phát triển, khởi nguồn từ tiệm vàng gia đình <a href="https://plo.vn/bao-tin-manh-hai-khai-truong-cua-hang-dinh-chuan-lon-nhat-tai-tphcm-post897471.html" target="_blank">[citation]</a></li>
+    <li><strong>Định vị:</strong> "Thương hiệu quốc dân", "Điểm đến của vàng 24K"</li>
+    <li><strong>CEO:</strong> Bà Nguyễn Thị Hồng – thành viên HĐQT, nguyên CEO Miniso Vietnam, nguyên Phó TGĐ Vincommerce <a href="https://baotinmanhhai.vn/vi/ve-chung-toi" target="_blank">[citation]</a></li>
+    <li><strong>Kế hoạch 2026:</strong> Doanh thu 74.000 tỷ VND (+165% YoY), lợi nhuận 1.574 tỷ (+103%), ROE > 110% <a href="https://cafef.vn/bao-tin-manh-hai-tang-toc-mo-cua-hang-dat-muc-tieu-doanh-thu-74000-ty-dong-trong-nam-2026-188260325113154607.chn" target="_blank">[citation]</a></li>
+    <li><strong>Cấp phép vàng miếng:</strong> Đã nộp hồ sơ xin cấp phép sản xuất vàng miếng, nằm trong 11 hồ sơ đang chờ NHNN phê duyệt</li>
+    <li><strong>Năng lực tài chính:</strong> Tốc độ tăng trưởng doanh thu với hiệu suất 700% so với 2024 <a href="https://baotinmanhhai.vn/vi/cau-chuyen-dau-tu" target="_blank">[citation]</a></li>
+  </ul>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 3 -->
+<article class="chapter" id="chuong-3" style="animation-delay: 0.3s">
+  <div class="chapter-number">Chương 3</div>
+  <h2>KHUNG PHÁP LÝ VÀ QUY ĐỊNH ĐẶC THÙ</h2>
+  <p>Ngành kinh doanh vàng bạc đá quý chịu sự quản lý chặt chẽ của Nhà nước, đặc biệt là Ngân hàng Nhà nước (NHNN). Đây là yếu tố tạo ra sự khác biệt lớn so với các ngành bán lẻ khác.</p>
+
+  <h3>3.1. Nghị định 24/2012/NĐ-CP – Văn bản nền tảng</h3>
+  <p>Nghị định 24 quy định về quản lý hoạt động kinh doanh vàng, trong đó có các điểm quan trọng:</p>
+  <ul>
+    <li><strong>Nhà nước độc quyền sản xuất vàng miếng:</strong> Chỉ NHNN được phép tổ chức sản xuất vàng miếng. Các doanh nghiệp muốn sản xuất phải được NHNN cấp phép.</li>
+    <li><strong>Giấy phép đủ điều kiện:</strong> Doanh nghiệp kinh doanh vàng miếng phải đáp ứng các điều kiện về vốn, cơ sở vật chất, nhân sự.</li>
+    <li><strong>Hóa đơn điện tử bắt buộc:</strong> Từ 2024–2025, các tiệm vàng bắt buộc phải xuất hóa đơn điện tử sau mỗi lần bán, có kết nối với cơ quan thuế <a href="https://thoibaotaichinhvietnam.vn/ap-dung-hoa-don-dien-tu-giup-minh-bach-thi-truong-vang-151955.html" target="_blank">[citation]</a>.</li>
+  </ul>
+
+  <h3>3.2. Tác động đến ERP</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Quy định</th><th>Yêu cầu hệ thống</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Giấy phép kinh doanh vàng miếng</td><td>Phân tách rõ ràng giữa vàng miếng và trang sức trong sổ sách, quản lý riêng biệt</td></tr>
+        <tr><td>Hóa đơn điện tử bắt buộc</td><td>Tích hợp e-Invoice real-time, API kết nối cơ quan thuế</td></tr>
+        <tr><td>Báo cáo NHNN</td><td>Cần báo cáo định kỳ về số lượng, giá trị giao dịch vàng miếng</td></tr>
+        <tr><td>Quy định phòng chống rửa tiền (AML)</td><td>KYC khách hàng, ghi nhận giao dịch giá trị lớn, báo cáo giao dịch đáng ngờ</td></tr>
+      </tbody>
+    </table>
+  </div>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 4 -->
+<article class="chapter" id="chuong-4" style="animation-delay: 0.4s">
+  <div class="chapter-number">Chương 4</div>
+  <h2>ĐẶC THÙ VỀ THUẾ TRONG KINH DOANH VÀNG</h2>
+  <p>Đây là một trong những đặc thù <strong>phức tạp nhất</strong> của ngành vàng, tạo ra yêu cầu đặc biệt cho hệ thống ERP.</p>
+
+  <h3>4.1. Thuế GTGT – Phương pháp tính trực tiếp</h3>
+  <p>Từ 01/07/2025, cơ sở kinh doanh mua, bán, chế tác vàng <strong>phải nộp thuế GTGT theo phương pháp tính trực tiếp</strong> <a href="https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/tu-0172025-co-so-kinh-doanh-hoat-dong-mua-ban-che-tac-vang-phai-nop-thue-gtgt-theo-phuong-phap-nao-205521.html" target="_blank">[citation]</a>.</p>
+
+  <div class="formula-block">Thuế GTGT phải nộp = GTGT của vàng × Thuế suất 10%
+
+Trong đó:
+GTGT của vàng = Giá bán ra − Giá mua vào tương ứng</div>
+
+  <p><strong>Hàm ý cho ERP:</strong></p>
+  <ul>
+    <li>KHÔNG áp dụng cơ chế khấu trừ thuế GTGT đầu vào/đầu ra thông thường</li>
+    <li>Phải theo dõi giá mua vào của từng lô/phiếu để tính GTGT chính xác</li>
+    <li>Không được khấu trừ thuế GTGT đầu vào của chi phí liên quan – hạch toán thẳng vào chi phí</li>
+    <li>Cần tách bạch rõ ràng giữa doanh thu vàng (tính trực tiếp) và doanh thu dịch vụ/SP khác (tính khấu trừ)</li>
+  </ul>
+
+  <h3>4.2. Bảng tổng hợp chính sách thuế</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Loại hình kinh doanh</th><th>Thuế suất GTGT</th><th>Phương pháp</th><th>Ghi chú</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Vàng miếng, vàng nguyên liệu</td><td>0% (không chịu thuế)</td><td>Trực tiếp</td><td>Giao dịch tài chính</td></tr>
+        <tr><td>Vàng trang sức, mỹ nghệ</td><td>10%</td><td>Trực tiếp</td><td>Tính trên GTGT</td></tr>
+        <tr><td>Dịch vụ chế tác, sửa chữa</td><td>10%</td><td>Khấu trừ</td><td>Nếu DN đăng ký PP khấu trừ</td></tr>
+        <tr><td>Đá quý, kim cương</td><td>10%</td><td>Khấu trừ hoặc trực tiếp</td><td>Tùy đối tượng</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.3. Hạch toán kế toán</h3>
+  <p>Các tài khoản kế toán đặc thù <a href="https://sme.misa.vn/220808/quy-trinh-ke-toan-cong-ty-vang-bac-da-quy" target="_blank">[citation]</a>:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>TK</th><th>Mô tả</th></tr></thead>
+      <tbody>
+        <tr><td><strong>TK 156</strong></td><td>Vàng bạc, đá quý – Hàng tồn kho</td></tr>
+        <tr><td><strong>TK 511</strong></td><td>Doanh thu bán vàng</td></tr>
+        <tr><td><strong>TK 632</strong></td><td>Chênh lệch đánh giá lại vàng bạc, đá quý</td></tr>
+        <tr><td><strong>TK 722</strong></td><td>Thu về kinh doanh vàng – Thu nhập tài chính</td></tr>
+        <tr><td><strong>TK 822</strong></td><td>Chi về kinh doanh vàng – Chi phí tài chính</td></tr>
+      </tbody>
+    </table>
+  </div>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 5 -->
+<article class="chapter" id="chuong-5" style="animation-delay: 0.5s">
+  <div class="chapter-number">Chương 5</div>
+  <h2>CHUỖI CUNG ỨNG NGÀNH VÀNG – TỪ NGUYÊN LIỆU ĐẾN TAY NGƯỜI TIÊU DÙNG</h2>
+  <p>Chuỗi cung ứng ngành vàng có những đặc thù riêng biệt, phức tạp hơn nhiều so với bán lẻ thông thường.</p>
+
+  <h3>5.1. Sơ đồ chuỗi cung ứng</h3>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+flowchart LR
+    A["🌍 Khai thác / Nhập khẩu Vàng nguyên liệu"] --> B["🏭 Nhà máy Chế tác / Gia công"]
+    B --> C["📦 Kho trung tâm / Tổng kho"]
+    C --> D["🏬 Cửa hàng bán lẻ"]
+    D --> E["👤 Khách hàng"]
+    E -.->|"Thu mua lại"| D
+    D -.->|"Hàng thu hồi"| C
+    C -.->|"Nấu lại / Tái chế"| B
+    style A fill:#c9a44b,color:#0d0d0d,stroke:#e0c87a
+    style B fill:#b8942e,color:#0d0d0d,stroke:#d4b44a
+    style C fill:#8b7530,color:#f5f0e0,stroke:#b8942e
+    style D fill:#6b5c2a,color:#f5f0e0,stroke:#8b7530
+    style E fill:#4a3f1a,color:#f5f0e0,stroke:#6b5c2a
+    </div>
+  </div>
+
+  <h3>5.2. Đặc điểm từng khâu</h3>
+
+  <h4>a) Nguồn cung nguyên liệu</h4>
+  <ul>
+    <li>Việt Nam chủ yếu nhập khẩu vàng nguyên liệu qua các kênh chính thức do NHNN quản lý</li>
+    <li>Các doanh nghiệp lớn (PNJ, DOJI, SJC) được cấp hạn ngạch nhập khẩu</li>
+    <li>Giá vàng nguyên liệu biến động theo giá thế giới (xấp xỉ giá vàng quốc tế ± chênh lệch)</li>
+  </ul>
+
+  <h4>b) Sản xuất – Chế tác</h4>
+  <p>PNJ hiện là nhà sản xuất trang sức quy mô công nghiệp lớn nhất Việt Nam qua PNJP, kết hợp kỹ nghệ truyền thống và công nghệ hiện đại <a href="https://export.pnj.com.vn" target="_blank">[citation]</a>. Các công ty khác thường sử dụng mô hình:</p>
+  <ul>
+    <li>Tự chế tác (in-house workshop)</li>
+    <li>Đặt gia công từ các xưởng làng nghề (Làng nghề vàng Định Công, Châu Khê...)</li>
+    <li>Nhập khẩu thành phẩm từ Ý, Thổ Nhĩ Kỳ, Hong Kong, Thái Lan</li>
+  </ul>
+
+  <p><strong>Yêu cầu ERP cho khâu sản xuất:</strong> Quản lý BOM chế tác (định mức vàng, hao hụt, phụ liệu, đá) • Quản lý hao hụt nấu/cán/kéo • Costing theo lô (batch) • Truy xuất nguồn gốc nguyên liệu.</p>
+
+  <h4>c) Phân phối – Bán lẻ</h4>
+  <ul>
+    <li>Mô hình chủ yếu: cửa hàng flagship + chuỗi chi nhánh</li>
+    <li>Hàng hóa phân phối theo nguyên tắc "đẩy + kéo" – hàng mới đẩy về cửa hàng, hàng tồn lâu kéo về kho</li>
+    <li>Mua bán thu hồi (trade-in): Khách có thể bán lại vàng cho cửa hàng với giá chiết khấu</li>
+  </ul>
+
+  <h4>d) Tái chế (Reverse Logistics)</h4>
+  <blockquote class="insight">
+    Một đặc thù quan trọng: Vàng 24K cũ được thu mua → nấu lại thành nguyên liệu → chế tác sản phẩm mới. Trang sức cũ → tháo đá, nấu vàng → tái sử dụng. ERP phải quản lý cả forward và reverse logistics, hao hụt nấu, phân bổ chi phí tái chế.
+  </blockquote>
+
+  <h3>5.3. So sánh với bán lẻ thông thường</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Tiêu chí</th><th>Bán lẻ thông thường</th><th>Bán lẻ vàng bạc</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Giá vốn</td><td>Cố định theo lô nhập</td><td>Biến động theo giá vàng thế giới hàng ngày</td></tr>
+        <tr><td>Đơn vị tính</td><td>Cái, hộp, thùng</td><td>Chỉ, lượng, gram, carat</td></tr>
+        <tr><td>Tồn kho</td><td>Số lượng</td><td>Số lượng + Trọng lượng + Quy đổi 24K</td></tr>
+        <tr><td>Reverse logistics</td><td>Hoàn trả, đổi trả</td><td>Thu mua lại, nấu tái chế, trade-in</td></tr>
+        <tr><td>Định giá</td><td>Theo bảng giá cố định</td><td>Real-time theo giá vàng + tiền công</td></tr>
+        <tr><td>Serial number</td><td>Thường chỉ áp dụng điện tử</td><td>Áp dụng cho cả trang sức cao cấp, vàng miếng</td></tr>
+      </tbody>
+    </table>
+  </div>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 6 -->
+<article class="chapter" id="chuong-6" style="animation-delay: 0.6s">
+  <div class="chapter-number">Chương 6</div>
+  <h2>ĐẶC THÙ KẾ TOÁN DOANH NGHIỆP VÀNG BẠC ĐÁ QUÝ</h2>
+
+  <h3>6.1. Các nghiệp vụ kế toán đặc thù</h3>
+
+  <h4>a) Đánh giá lại hàng tồn kho theo giá vàng</h4>
+  <p>Hàng tồn kho vàng bạc, đá quý <strong>phải được đánh giá lại</strong> vào cuối kỳ kế toán theo giá thị trường tại thời điểm lập báo cáo. Chênh lệch đánh giá lại được hạch toán vào thu nhập hoặc chi phí tài chính <a href="https://ketoananpha.vn/ke-toan-tien-te-vang-bac-da-quy.html" target="_blank">[citation]</a>.</p>
+
+  <div class="formula-block">Đánh giá lại cuối kỳ:
+  ─ Nếu giá vàng TĂNG → Hạch toán lãi (Có TK 722)
+  ─ Nếu giá vàng GIẢM → Hạch toán lỗ (Nợ TK 822)
+  ─ Ghi tăng/giảm tương ứng trên TK 156</div>
+
+  <h4>b) Kế toán gia công, chế tác</h4>
+  <ul>
+    <li>Khi xuất vàng nguyên liệu đi gia công: Theo dõi riêng từng lô, từng đơn vị nhận gia công</li>
+    <li>Khi nhận lại thành phẩm: Cộng chi phí gia công + hao hụt + phụ liệu vào giá thành</li>
+    <li>Hao hụt trong giới hạn định mức → tính vào giá thành; ngoài định mức → xử lý trách nhiệm</li>
+  </ul>
+
+  <h4>c) Kế toán hàng ký gửi (consignment)</h4>
+  <ul>
+    <li>Một số mặt hàng trang sức cao cấp được gửi bán ký gửi</li>
+    <li>Chỉ ghi nhận doanh thu khi thực bán, hoa hồng cho bên nhận ký gửi</li>
+    <li>Quản lý tách bạch hàng của DN và hàng ký gửi trong hệ thống</li>
+  </ul>
+
+  <h4>d) Kế toán giao dịch ngoại tệ</h4>
+  <ul>
+    <li>Giao dịch vàng quốc tế thường được định giá bằng USD</li>
+    <li>Chênh lệch tỷ giá khi thanh toán phải được ghi nhận</li>
+    <li>Đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ cuối kỳ</li>
+  </ul>
+
+  <h3>6.2. Yêu cầu đối với hệ thống ERP</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Nghiệp vụ</th><th>Module SAP</th><th>Mức độ tùy biến</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Đánh giá lại tồn kho theo giá vàng</td><td>FI (Material Ledger)</td><td>Cao – Cần mapping giá vàng real-time vào costing run</td></tr>
+        <tr><td>Hạch toán VAT trực tiếp</td><td>FI (Tax Procedure)</td><td>Rất cao – Cần custom tax procedure TAXVND</td></tr>
+        <tr><td>Costing theo lô (batch)</td><td>CO-PC (Actual Costing)</td><td>Trung bình – Tận dụng ML actual costing</td></tr>
+        <tr><td>Quản lý hao hụt chế tác</td><td>PP-PI (BOM)</td><td>Cao – BOM phải có wastage rates biến động</td></tr>
+        <tr><td>Hàng ký gửi</td><td>SD (Consignment)</td><td>Thấp – SAP hỗ trợ sẵn consignment process</td></tr>
+        <tr><td>Đa đơn vị tính</td><td>MM (UoM)</td><td>Trung bình – Cấu hình UoM + conversion</td></tr>
+      </tbody>
+    </table>
+  </div>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 7 -->
+<article class="chapter" id="chuong-7" style="animation-delay: 0.7s">
+  <div class="chapter-number">Chương 7</div>
+  <h2>QUẢN TRỊ RỦI RO GIÁ VÀNG VÀ BIẾN ĐỘNG THỊ TRƯỜNG</h2>
+
+  <h3>7.1. Bản chất rủi ro</h3>
+  <p>Doanh nghiệp kinh doanh vàng đối mặt với rủi ro giá vàng ở cả ba vị thế:</p>
+  <ul>
+    <li><strong>Vị thế tồn kho dương (long):</strong> Giá vàng giảm → lỗ đánh giá lại hàng tồn kho</li>
+    <li><strong>Vị thế cam kết bán chưa có hàng (short):</strong> Giá vàng tăng → phải mua vào với giá cao hơn cam kết</li>
+    <li><strong>Vị thế ròng:</strong> Tổng hợp long – short, quyết định mức độ rủi ro thực tế của doanh nghiệp</li>
+  </ul>
+
+  <h3>7.2. Chiến lược phòng ngừa rủi ro</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Chiến lược</th><th>Mô tả</th><th>Yêu cầu ERP</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Hedging qua tài khoản vàng</td><td>Duy trì tài khoản vàng tại NH để bù trừ biến động</td><td>Quản lý tài khoản vàng, định giá real-time</td></tr>
+        <tr><td>Quay vòng tồn kho nhanh</td><td>Giảm thời gian giữ hàng, bán nhanh để giảm rủi ro</td><td>Phân tích vòng quay tồn kho, ABC analysis cho vàng</td></tr>
+        <tr><td>Giá bán gắn với giá mua</td><td>Bán vàng miếng: giá bán = giá mua tại thời điểm + chênh lệch</td><td>Dynamic pricing engine gắn với gold API</td></tr>
+        <tr><td>Hợp đồng kỳ hạn</td><td>Khóa giá mua/bán trước cho các lô hàng lớn</td><td>Quản lý hợp đồng kỳ hạn (commodity forward)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>7.3. Tác động của giá vàng đến báo cáo tài chính</h3>
+  <ul>
+    <li>Biến động giá vàng 1% có thể gây chênh lệch hàng tỷ đồng trên tồn kho lớn</li>
+    <li>Với BTMH (mục tiêu doanh thu 74.000 tỷ), chỉ một biến động nhỏ cũng tạo ra tác động lớn đến lợi nhuận</li>
+    <li>Nhà đầu tư (đặc biệt khi IPO) sẽ quan tâm đến khả năng quản trị rủi ro giá vàng của doanh nghiệp</li>
+  </ul>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 8 -->
+<article class="chapter" id="chuong-8" style="animation-delay: 0.8s">
+  <div class="chapter-number">Chương 8</div>
+  <h2>CÔNG NGHỆ THÔNG TIN TRONG NGÀNH VÀNG – HIỆN TRẠNG VÀ KHOẢNG TRỐNG</h2>
+
+  <h3>8.1. Hiện trạng chung</h3>
+  <p>Hầu hết các doanh nghiệp vàng Việt Nam đang sử dụng các hệ thống cơ bản:</p>
+  <ul>
+    <li>Phần mềm kế toán nội bộ hoặc POS-ERP cơ bản (như iERP mà BTMH đã đầu tư)</li>
+    <li>Dự án Data Warehouse/BI đang được triển khai độc lập</li>
+    <li>Thiếu đồng bộ giữa POS tại cửa hàng và hệ thống quản lý trung tâm</li>
+    <li>Xử lý thủ công hoặc bán thủ công các nghiệp vụ đặc thù (đánh giá lại tồn kho, tính thuế trực tiếp)</li>
+  </ul>
+
+  <h3>8.2. Các khoảng trống CNTT điển hình</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Khoảng trống</th><th>Hiện trạng</th><th>Tác động</th><th>Giải pháp SAP</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Tích hợp POS – ERP</strong></td><td>POS hoạt động độc lập, không real-time sync</td><td>Chậm cập nhật tồn kho, sai lệch số liệu</td><td>SAP CAR + POS integration</td></tr>
+        <tr><td><strong>CRM & Loyalty</strong></td><td>Không có hệ thống CRM chính thức</td><td>Không có dữ liệu khách hàng, không cá nhân hóa</td><td>SAP Sales/Service Cloud hoặc Emarsys</td></tr>
+        <tr><td><strong>BI/DW</strong></td><td>DW/BI riêng biệt, thiếu tích hợp</td><td>Dữ liệu không đồng bộ, báo cáo chậm</td><td>SAP BW/4HANA hoặc Datasphere</td></tr>
+        <tr><td><strong>Đánh giá lại tồn kho</strong></td><td>Thủ công qua Excel</td><td>Chậm, dễ sai sót, không kịp biến động</td><td>SAP Material Ledger + Actual Costing</td></tr>
+        <tr><td><strong>Tính thuế trực tiếp</strong></td><td>Thủ công, track từng lô trong file riêng</td><td>Dễ sai, không truy vết được khi audit</td><td>Custom Tax Procedure TAXVND</td></tr>
+        <tr><td><strong>Quản lý hàng thu hồi</strong></td><td>Ghi sổ tay, nhập thủ công</td><td>Không theo dõi được vòng đời sản phẩm</td><td>Returns + Custom enhancement</td></tr>
+        <tr><td><strong>Omnichannel</strong></td><td>Chưa có nền tảng đồng bộ</td><td>Trải nghiệm KH không liền mạch</td><td>SAP Commerce Cloud + CAR</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>8.3. Case study: PNJ x SAP S/4HANA</h3>
+  <p>PNJ là doanh nghiệp vàng đầu tiên và duy nhất tại Việt Nam triển khai SAP S/4HANA, do <strong>CMC</strong> thực hiện. Đây là case study quan trọng:</p>
+  <ul>
+    <li><strong>Điểm mạnh:</strong> PNJ đã chứng minh SAP có thể áp dụng cho ngành vàng, tạo reference vững chắc</li>
+    <li><strong>Rủi ro cạnh tranh cho FPT IS:</strong> CMC có thể tận dụng kinh nghiệm PNJ để tiếp cận BTMH</li>
+    <li><strong>Lợi thế khác biệt của FPT IS:</strong> Kinh nghiệm triển khai SAP đa ngành quy mô lớn, đội ngũ chuyên sâu, năng lực quản lý dự án phức tạp, và đặc biệt – cam kết bảo mật tuyệt đối thông tin giữa các khách hàng cạnh tranh</li>
+  </ul>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 9 -->
+<article class="chapter" id="chuong-9" style="animation-delay: 0.9s">
+  <div class="chapter-number">Chương 9</div>
+  <h2>XU HƯỚNG NGÀNH VÀ TÁC ĐỘNG ĐẾN ERP</h2>
+
+  <h3>9.1. Xu hướng 1: Lab-Grown Diamond (Kim cương nhân tạo)</h3>
+  <p>Thị trường kim cương nuôi cấy (LGD) đang tăng trưởng nhanh chóng, với giá thành sản xuất ngày càng giảm và sự chấp nhận của người tiêu dùng tăng dần.</p>
+  <blockquote class="insight">
+    Hàm ý ERP: Cần quản lý được dòng sản phẩm LGD song song với kim cương tự nhiên, với phương pháp định giá và chứng nhận hoàn toàn khác nhau. Hệ thống phải phân biệt được diamond type, grading (IGI cho LGD vs GIA cho tự nhiên) và hành vi giá riêng biệt.
+  </blockquote>
+
+  <h3>9.2. Xu hướng 2: Omnichannel và Digital Transformation</h3>
+  <p>Người tiêu dùng trẻ ngày càng mua sắm trang sức trực tuyến, nhưng vẫn muốn trải nghiệm thực tế tại cửa hàng. Mô hình BOPIS (Buy Online Pick-up In Store) và BORIS (Buy Online Return In Store) bắt đầu xuất hiện.</p>
+  <blockquote class="insight">
+    Hàm ý ERP: Cần kiến trúc omnichannel cho phép đồng bộ tồn kho real-time qua tất cả kênh bán (website, app, store), quản lý giá vàng biến động theo từng kênh, và tích hợp CRM để có single view of customer.
+  </blockquote>
+
+  <h3>9.3. Xu hướng 3: Cá nhân hóa và thiết kế theo yêu cầu</h3>
+  <p>Khách hàng VIP và giới trẻ ngày càng ưa chuộng trang sức thiết kế riêng (bespoke). Điều này đòi hỏi quy trình sản xuất linh hoạt MTO/ETO hơn là MTS.</p>
+  <blockquote class="insight">
+    Hàm ý ERP: Cần hỗ trợ quy trình Make-to-Order (MTO) và Engineer-to-Order (ETO) trong sản xuất, với khả năng tạo BOM động theo thiết kế, quản lý variant configuration cho sản phẩm bespoke, và tích hợp CAD/CAM nếu cần.
+  </blockquote>
+
+  <h3>9.4. Xu hướng 4: Tính bền vững và ESG</h3>
+  <p>Nguồn gốc đạo đức của vàng và kim cương ngày càng được quan tâm. Người tiêu dùng muốn biết sản phẩm họ mua có nguồn gốc từ khai thác bền vững, không tài trợ xung đột.</p>
+  <blockquote class="insight">
+    Hàm ý ERP: Cần khả năng truy xuất nguồn gốc (traceability) từ nguyên liệu đến thành phẩm, hỗ trợ báo cáo ESG, và quản lý chứng chỉ nguồn gốc (conflict-free diamond certificate, Fairtrade gold).
+  </blockquote>
+
+  <h3>9.5. Xu hướng 5: Tăng trưởng theo chiều ngang (Scale-up nhanh)</h3>
+  <p>BTMH là ví dụ điển hình với kế hoạch mở rộng từ 12 lên 80 cửa hàng chỉ trong một năm. Việc scale-up nhanh đặt ra thách thức lớn về quản trị và hệ thống.</p>
+  <blockquote class="insight">
+    Hàm ý ERP: Hệ thống phải hỗ trợ mở rộng cửa hàng kiểu plug-and-play, tự động hóa quy trình vận hành chuẩn (SOP) giữa các cửa hàng, quản lý tập trung giá vàng và chính sách bán hàng, và khả năng mở rộng linh hoạt về mặt hạ tầng (cloud-native).
+  </blockquote>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- CHAPTER 10 -->
+<article class="chapter" id="chuong-10" style="animation-delay: 1s">
+  <div class="chapter-number">Chương 10</div>
+  <h2>HÀM Ý CHO GIẢI PHÁP SAP S/4HANA</h2>
+
+  <h3>10.1. Module mapping: Đặc thù ngành → Module SAP</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Đặc thù ngành</th><th>Module SAP</th><th>Mức độ phù hợp</th><th>Ghi chú</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Định giá vàng real-time + đa đơn vị tính</td><td>MM (Material Master, UoM) + FI</td><td>Cao</td><td>Cần custom gold price API integration</td></tr>
+        <tr><td>2</td><td>Đánh giá lại tồn kho cuối kỳ</td><td>FI (Material Ledger) + CO-PC</td><td>Cao</td><td>Tận dụng Actual Costing với ML</td></tr>
+        <tr><td>3</td><td>Thuế GTGT trực tiếp</td><td>FI (Tax Procedure TAXVND)</td><td>Rất cao</td><td>Cần custom tax procedure riêng</td></tr>
+        <tr><td>4</td><td>BOM chế tác + hao hụt</td><td>PP-PI (BOM, Routing)</td><td>Cao</td><td>Wastage rates biến động theo batch</td></tr>
+        <tr><td>5</td><td>Consignment (ký gửi)</td><td>SD (Consignment)</td><td>Thấp</td><td>SAP hỗ trợ sẵn consignment process</td></tr>
+        <tr><td>6</td><td>POS Integration</td><td>SAP CAR</td><td>Cao</td><td>POSDM, POS Integration</td></tr>
+        <tr><td>7</td><td>Omnichannel</td><td>SAP Commerce Cloud</td><td>Cao</td><td>Kết hợp với CAR</td></tr>
+        <tr><td>8</td><td>CRM & Loyalty</td><td>SAP Sales/Service Cloud</td><td>Trung bình</td><td>Có thể dùng Emarsys cho loyalty</td></tr>
+        <tr><td>9</td><td>BI / Analytics</td><td>SAP BW/4HANA hoặc Datasphere</td><td>Cao</td><td>Tùy chiến lược on-prem/cloud</td></tr>
+        <tr><td>10</td><td>Reverse Logistics</td><td>MM Returns + Custom</td><td>Trung bình</td><td>Cần enhancement cho nấu tái chế</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>10.2. Kiến trúc giải pháp đề xuất</h3>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+flowchart TB
+    subgraph B1["Front Office / Customer"]
+        L1["🛒 SAP Commerce Cloud<br/>Web & App"]
+        L2["🏬 Omnichannel POS<br/>SAP CAR / POSDM"]
+        L3["👥 CRM & Loyalty<br/>SAP Sales Cloud"]
+    end
+    subgraph B2["Core ERP – S/4HANA Private Cloud"]
+        L4["💎 Material Master + Gold API<br/>Định giá real-time"]
+        L5["📊 General Ledger / AP / AR<br/>+ Tax Procedure (VAT trực tiếp)"]
+        L6["⚙️ PP-PI: BOM & Sản xuất<br/>+ Wastage rates"]
+        L7["📦 MM: Tồn kho & Logistics<br/>+ Reverse logistics"]
+        L8["💰 CO-PC: Actual Costing<br/>+ Đánh giá lại cuối kỳ"]
+    end
+    subgraph B3["Analytics & Data"]
+        L9["📈 BW/4HANA<br/>Báo cáo quản trị"]
+        L10["🔍 SAP Analytics Cloud<br/>Dashboard real-time"]
+    end
+    B1 <--> B2
+    B2 -->|"Data Integration"| B3
+    L4 <--> L5
+    L4 <--> L7
+    L6 <--> L7
+    L5 <--> L8
+    L7 <--> L8
+    style B1 fill:#2a2a1a,stroke:#8b7530,color:#f5f0e0
+    style B2 fill:#1a1a0d,stroke:#c9a44b,color:#f5f0e0
+    style B3 fill:#25251a,stroke:#6b5c2a,color:#f5f0e0
+    </div>
+    <p style="margin-top:14px;font-size:0.72rem;color:var(--text-muted);">
+      Kiến trúc tham khảo SAP S/4HANA cho Doanh nghiệp Kinh doanh Vàng – Đề xuất Private Cloud (RISE with SAP)
+    </p>
+  </div>
+
+  <h3>10.3. Các điểm cần lưu ý đặc biệt khi triển khai SAP cho ngành vàng</h3>
+
+  <h4>a) Về thuế (Critical Path)</h4>
+  <ul>
+    <li>Custom Tax Procedure TAXVND để xử lý VAT trực tiếp là <strong>yêu cầu bắt buộc</strong></li>
+    <li>Cần test kỹ với các scenario: bán lẻ & vàng miếng (tính trực tiếp); bán dịch vụ chế tác (tính khấu trừ); bán hàng hỗn hợp (có cả vàng và SP khác trên cùng hóa đơn)</li>
+    <li>Phối hợp chặt chẽ với kế toán trưởng và kiểm toán của BTMH</li>
+  </ul>
+
+  <h4>b) Về giá vàng (Real-time Integration)</h4>
+  <ul>
+    <li>Cần xây dựng API integration với nguồn giá vàng đáng tin cậy (SJC, Kitco, LBMA)</li>
+    <li>Real-time update vào Material Master với tần suất phù hợp (khuyến nghị: 5 phút/lần trong giờ giao dịch)</li>
+    <li>Phân biệt các loại giá: giá vàng nguyên liệu, giá vàng miếng SJC, giá vàng trang sức (bao gồm tiền công)</li>
+  </ul>
+
+  <h4>c) Về mở rộng nhanh (Scalability)</h4>
+  <ul>
+    <li>Hạ tầng Private Cloud (RISE with SAP) phù hợp với chiến lược mở rộng của BTMH</li>
+    <li>Thiết kế template cửa hàng chuẩn, có thể nhân bản nhanh khi mở store mới</li>
+    <li>Tích hợp sẵn các kịch bản mở rộng sang thị trường mới (miền Trung, miền Nam)</li>
+  </ul>
+
+  <h4>d) Về bảo mật (Confidentiality)</h4>
+  <ul>
+    <li>Đây là <strong>lợi thế cạnh tranh số 1</strong> của FPT IS khi đối đầu CMC</li>
+    <li>FPT IS cần cam kết bằng văn bản: không một dữ liệu nào của PNJ (khách hàng của đối thủ) được tiếp cận bởi đội triển khai BTMH</li>
+    <li>Data isolation tuyệt đối giữa các khách hàng cạnh tranh trong ngành vàng</li>
+  </ul>
+</article>
+
+<div class="chapter-divider">◆ ◆ ◆</div>
+
+<!-- PHỤ LỤC -->
+<article class="chapter" id="phu-luc" style="animation-delay: 1.05s">
+  <div class="chapter-number">Phụ lục</div>
+  <h2>TÓM TẮT CÁC ĐẶC THÙ CHÍNH CỦA NGÀNH</h2>
+  <p>Bảng tổng hợp dưới đây tóm tắt các đặc thù chính của ngành kinh doanh vàng bạc đá quý – những điểm khác biệt cốt lõi giữa doanh nghiệp vàng và doanh nghiệp bán lẻ thông thường, cùng với yêu cầu tương ứng đối với hệ thống ERP.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>STT</th><th>Đặc thù</th><th>Chi tiết</th><th>Yêu cầu ERP</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Phương pháp tính thuế GTGT trực tiếp trên GTGT</td><td>Không khấu trừ VAT đầu vào, tính 10% VAT trên (giá bán − giá mua)</td><td>Custom tax procedure, track giá mua từng lô</td></tr>
+        <tr><td>2</td><td>Giá vốn biến động liên tục theo giá vàng</td><td>Không cố định như bán lẻ thông thường, biến động từng ngày, từng giờ</td><td>Gold price API real-time integration</td></tr>
+        <tr><td>3</td><td>Đánh giá lại hàng tồn kho mỗi kỳ</td><td>Chênh lệch đánh giá lại → ghi nhận vào tài chính</td><td>Material Ledger Actual Costing</td></tr>
+        <tr><td>4</td><td>Đa đơn vị tính</td><td>Giao dịch theo chỉ, lượng, gram, carat; phải quy đổi 24K</td><td>Multiple UoM, parallel unit</td></tr>
+        <tr><td>5</td><td>Quy trình chế tác với hao hụt</td><td>BOM linh hoạt, hao hụt nấu/kéo/cán, định mức</td><td>PP-PI flexible BOM</td></tr>
+        <tr><td>6</td><td>Mua – Bán thu hồi (trade-in)</td><td>Khách bán lại vàng, đổi vàng cũ lấy mới</td><td>Reverse logistics process</td></tr>
+        <tr><td>7</td><td>Quản lý hàng ký gửi</td><td>Trang sức cao cấp gửi bán</td><td>Consignment stock management</td></tr>
+        <tr><td>8</td><td>Tích hợp hóa đơn điện tử bắt buộc</td><td>Mỗi giao dịch bán hàng phải xuất e-invoice real-time</td><td>e-Invoice API integration</td></tr>
+        <tr><td>9</td><td>Giao dịch giá trị lớn – AML</td><td>Báo cáo giao dịch trên ngưỡng cho NHNN</td><td>AML compliance reports</td></tr>
+        <tr><td>10</td><td>Hạ tầng mở rộng nhanh</td><td>Mở store mới liên tục, cần template</td><td>Cloud-native scalable architecture</td></tr>
+      </tbody>
+    </table>
+  </div>
+</article>
+
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <h3>Nguồn tham khảo</h3>
+    <div class="footer-source-group">
+      <h4>Nguồn chính</h4>
+      <a href="https://cafef.vn/bao-tin-manh-hai-tang-toc-mo-cua-hang-dat-muc-tieu-doanh-thu-74000-ty-dong-trong-nam-2026-188260325113154607.chn" target="_blank">CafeF – BTMH tăng tốc mở cửa hàng, mục tiêu 74.000 tỷ đồng năm 2026</a>
+      <a href="https://plo.vn/bao-tin-manh-hai-khai-truong-cua-hang-dinh-chuan-lon-nhat-tai-tphcm-post897471.html" target="_blank">Báo Pháp Luật – BTMH khai trương cửa hàng lớn nhất TP.HCM</a>
+      <a href="https://baotinmanhhai.vn/vi/ve-chung-toi" target="_blank">BTMH – Về chúng tôi</a>
+      <a href="https://baotinmanhhai.vn/vi/cau-chuyen-dau-tu" target="_blank">BTMH – Câu chuyện đầu tư</a>
+    </div>
+    <div class="footer-source-group">
+      <h4>Nguồn về thị trường</h4>
+      <a href="https://www.forinsightsconsultancy.com/vi/b%C3%A1o-c%C3%A1o/th%E1%BB%8B-tr%C6%B0%E1%BB%9Dng-trang-s%E1%BB%A9c" target="_blank">For Insights Consultancy – Báo cáo thị trường trang sức toàn cầu 2025–2034</a>
+      <a href="https://baotintuc.vn/thi-truong-tien-te/siet-quan-ly-mua-ban-vang-nhung-rui-ro-phap-ly-nguoi-dan-can-biet-20260131120538152.htm" target="_blank">Báo Tin Tức – Siết quản lý mua bán vàng, rủi ro pháp lý 2026</a>
+    </div>
+    <div class="footer-source-group">
+      <h4>Nguồn về thuế và pháp lý</h4>
+      <a href="https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/tu-0172025-co-so-kinh-doanh-hoat-dong-mua-ban-che-tac-vang-phai-nop-thue-gtgt-theo-phuong-phap-nao-205521.html" target="_blank">Thư viện Pháp luật – Thuế GTGT vàng từ 01/07/2025</a>
+      <a href="https://thoibaotaichinhvietnam.vn/ap-dung-hoa-don-dien-tu-giup-minh-bach-thi-truong-vang-151955.html" target="_blank">Thời báo Tài chính – HĐĐT minh bạch thị trường vàng</a>
+      <a href="https://sme.misa.vn/220808/quy-trinh-ke-toan-cong-ty-vang-bac-da-quy" target="_blank">MISA – Quy trình kế toán công ty vàng bạc đá quý</a>
+      <a href="https://ketoananpha.vn/ke-toan-tien-te-vang-bac-da-quy.html" target="_blank">Kế toán Anpha – Kế toán tiền tệ vàng bạc đá quý</a>
+    </div>
+    <div class="footer-source-group">
+      <h4>Nguồn về SAP và Retail</h4>
+      <a href="https://export.pnj.com.vn" target="_blank">PNJ Export – Năng lực sản xuất trang sức quy mô công nghiệp</a>
+      <a href="https://www.sap.com/industries/retail.html" target="_blank">SAP – Retail Industry Solutions</a>
+    </div>
+    <div class="footer-bottom">
+      Báo cáo nội bộ · BCIS – FPT IS · Tháng 7/2026 · Phục vụ tiếp cận Bảo Tín Mạnh Hải
+    </div>
+  </div>
+</footer>
+
+<!-- DEERFLOW BADGE -->
+<a href="https://deerflow.tech" target="_blank" class="deerflow-badge" title="Created By Deerflow">✦ Deerflow</a>
+
+<!-- BACK TO TOP -->
+<a href="#" class="back-to-top" id="backToTop" title="Lên đầu trang">↑</a>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+(function() {
+  // ── MERMAID ──
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#c9a44b',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#8b7530',
+      lineColor: '#6b5c2a',
+      secondaryColor: '#2a2a1a',
+      tertiaryColor: '#1a1a0d',
+      background: '#0a0a0a',
+      mainBkg: '#111',
+      nodeBorder: '#8b7530',
+      clusterBkg: '#111',
+      clusterBorder: '#3d3d20',
+      titleColor: '#c9a44b',
+      edgeLabelBackground: '#1a1a1a',
+      fontSize: '14px'
+    }
+  });
+
+  // ── SCROLLSPY + BACK TO TOP ──
+  const sidebar = document.getElementById('sidebar');
+  const links = sidebar ? sidebar.querySelectorAll('a') : [];
+  const backBtn = document.getElementById('backToTop');
+  const chapters = document.querySelectorAll('.chapter[id]');
+
+  function onScroll() {
+    let current = '';
+    chapters.forEach(function(ch) {
+      const top = ch.getBoundingClientRect().top;
+      if (top < 160) current = ch.id;
+    });
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+    if (backBtn) backBtn.classList.toggle('visible', window.scrollY > 600);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── INTERSECTION OBSERVER (fade-in) ──
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.chapter').forEach(function(ch) {
+    observer.observe(ch);
+  });
+
+  // initial call
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
