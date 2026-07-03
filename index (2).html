@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo Phân tích Giải pháp ERP Prime Group – Tư vấn VIT</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #000000;
+  --surface: #1a1a1a;
+  --surface2: #242424;
+  --surface3: #2d2d2d;
+  --text: #f5f5f7;
+  --text2: #a1a1a6;
+  --text3: #6e6e73;
+  --accent: #0071e3;
+  --accent2: #2997ff;
+  --accent3: #40c8ff;
+  --green: #30d158;
+  --orange: #ff9f0a;
+  --red: #ff453a;
+  --purple: #bf5af2;
+  --pink: #ff375f;
+  --teal: #64d2ff;
+  --yellow: #ffd60a;
+  --gradient1: linear-gradient(135deg, #0071e3 0%, #40c8ff 100%);
+  --gradient2: linear-gradient(135deg, #bf5af2 0%, #ff375f 100%);
+  --gradient3: linear-gradient(135deg, #30d158 0%, #64d2ff 100%);
+  --gradient4: linear-gradient(135deg, #ff9f0a 0%, #ff375f 100%);
+  --gradient5: linear-gradient(135deg, #0071e3 0%, #bf5af2 100%);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --shadow: 0 20px 60px rgba(0,0,0,0.5);
+  --shadow-sm: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Background ambient */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(0,113,227,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 60%, rgba(191,90,242,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 80%, rgba(64,200,255,0.04) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0 2rem;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+}
+
+.nav-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-badge {
+  font-size: 0.75rem;
+  color: var(--accent2);
+  background: rgba(0,113,227,0.15);
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: 140px 2rem 100px;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: rgba(0,113,227,0.12);
+  padding: 6px 18px;
+  border-radius: 100px;
+  margin-bottom: 28px;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  background: var(--gradient1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero h2 {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 500;
+  color: var(--text2);
+  margin-bottom: 24px;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-meta span {
+  font-size: 0.85rem;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-meta .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent2);
+  display: inline-block;
+}
+
+/* Sections */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 48px;
+}
+
+.section-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--text2);
+  font-weight: 400;
+  max-width: 650px;
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  padding: 36px;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.card-accent {
+  border-left: 3px solid var(--accent2);
+}
+
+.card-gradient {
+  background: linear-gradient(135deg, rgba(0,113,227,0.1) 0%, rgba(64,200,255,0.05) 100%);
+  border: 1px solid rgba(0,113,227,0.2);
+}
+
+.card-purple {
+  background: linear-gradient(135deg, rgba(191,90,242,0.08) 0%, rgba(255,55,95,0.04) 100%);
+  border: 1px solid rgba(191,90,242,0.15);
+}
+
+.card-green {
+  background: linear-gradient(135deg, rgba(48,209,88,0.08) 0%, rgba(100,210,255,0.04) 100%);
+  border: 1px solid rgba(48,209,88,0.15);
+}
+
+/* Tables */
+.table-wrap {
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  min-width: 700px;
+}
+
+thead {
+  background: rgba(255,255,255,0.04);
+}
+
+th {
+  text-align: left;
+  padding: 14px 18px;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text2);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
+}
+
+td {
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* Code / Mono */
+code, .mono {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 0.82em;
+  background: rgba(255,255,255,0.06);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+pre {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  background: var(--surface2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  margin: 20px 0;
+}
+
+/* Tabs / Pills */
+.pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+.pill {
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(255,255,255,0.06);
+  color: var(--text2);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.pill-blue { background: rgba(0,113,227,0.15); color: var(--accent2); border-color: rgba(0,113,227,0.2); }
+.pill-green { background: rgba(48,209,88,0.15); color: var(--green); border-color: rgba(48,209,88,0.2); }
+.pill-red { background: rgba(255,69,58,0.15); color: var(--red); border-color: rgba(255,69,58,0.2); }
+.pill-orange { background: rgba(255,159,10,0.15); color: var(--orange); border-color: rgba(255,159,10,0.2); }
+.pill-purple { background: rgba(191,90,242,0.15); color: var(--purple); border-color: rgba(191,90,242,0.2); }
+
+/* Stat cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: var(--gradient1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+.stat-number.purple { background: var(--gradient2); -webkit-background-clip: text; background-clip: text; }
+.stat-number.green { background: var(--gradient3); -webkit-background-clip: text; background-clip: text; }
+.stat-number.orange { background: var(--gradient4); -webkit-background-clip: text; background-clip: text; }
+
+/* Comparison grid */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1px;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+.compare-grid > div {
+  background: var(--surface);
+  padding: 16px;
+  font-size: 0.85rem;
+}
+
+.compare-grid .header {
+  background: rgba(255,255,255,0.06);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent2);
+}
+
+.compare-grid-5 { grid-template-columns: 1.2fr 1fr 1fr 1fr 0.8fr; }
+
+/* BOM tree */
+.bom-tree {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 2;
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow-x: auto;
+}
+
+.bom-tree .level0 { color: var(--accent2); font-weight: 700; }
+.bom-tree .level1 { color: var(--purple); }
+.bom-tree .level2 { color: var(--text2); }
+.bom-tree .qty { color: var(--text3); font-size: 0.82rem; }
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: 24px;
+  margin: 24px 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent2), var(--purple), var(--accent3));
+  border-radius: 1px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 32px;
+  padding-left: 24px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -29px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  background: var(--accent2);
+  border-radius: 50%;
+  border: 3px solid var(--bg);
+}
+
+.timeline-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.timeline-desc {
+  color: var(--text2);
+  font-size: 0.88rem;
+}
+
+/* Process flow boxes */
+.flow-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-xs);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 4px;
+}
+
+.flow-arrow {
+  color: var(--accent2);
+  font-size: 1.2rem;
+}
+
+/* Mermaid container */
+.mermaid-wrap {
+  background: rgba(255,255,255,0.02);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  margin: 24px 0;
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow-x: auto;
+}
+
+.mermaid-wrap .mermaid { display: flex; justify-content: center; }
+
+/* Quote / Callout */
+.callout {
+  border-left: 3px solid var(--accent2);
+  padding: 16px 24px;
+  margin: 20px 0;
+  background: rgba(0,113,227,0.06);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+}
+
+.callout-green { border-left-color: var(--green); background: rgba(48,209,88,0.06); }
+.callout-red { border-left-color: var(--red); background: rgba(255,69,58,0.06); }
+.callout-purple { border-left-color: var(--purple); background: rgba(191,90,242,0.06); }
+
+/* Highlight box */
+.highlight-box {
+  background: var(--gradient5);
+  padding: 2px;
+  border-radius: var(--radius);
+  margin: 24px 0;
+}
+
+.highlight-box-inner {
+  background: var(--bg);
+  border-radius: calc(var(--radius) - 2px);
+  padding: 32px;
+}
+
+/* Big quote */
+.big-quote {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  padding: 40px;
+  text-align: center;
+  background: var(--gradient1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Speaking code visual */
+.code-visual {
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin: 24px 0;
+}
+
+.code-segment {
+  display: inline-block;
+  padding: 12px 20px;
+  margin: 0 2px;
+  border-radius: var(--radius-xs);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+}
+
+.code-seg-1 { background: rgba(0,113,227,0.2); color: var(--accent2); }
+.code-seg-2 { background: rgba(191,90,242,0.2); color: var(--purple); }
+.code-seg-3 { background: rgba(48,209,88,0.2); color: var(--green); }
+.code-seg-4 { background: rgba(255,159,10,0.2); color: var(--orange); }
+.code-seg-5 { background: rgba(255,55,95,0.2); color: var(--pink); }
+.code-seg-6 { background: rgba(100,210,255,0.2); color: var(--teal); }
+
+.code-dash { color: var(--text3); font-size: 1.5rem; }
+
+.code-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 0.82rem;
+}
+
+.code-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* Grid layouts */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* Footer */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 60px 2rem 40px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+footer p {
+  color: var(--text3);
+  font-size: 0.82rem;
+  margin-bottom: 8px;
+}
+
+.deerflow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 100px;
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+}
+
+.deerflow-badge:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: var(--text);
+}
+
+.deerflow-badge .star { color: var(--accent2); }
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tags */
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.tag-green { background: rgba(48,209,88,0.2); color: var(--green); }
+.tag-yellow { background: rgba(255,213,10,0.2); color: var(--yellow); }
+.tag-red { background: rgba(255,69,58,0.2); color: var(--red); }
+
+/* Severity stars */
+.severity { color: var(--orange); letter-spacing: 2px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section { padding: 48px 1.2rem; }
+  .hero { padding: 100px 1.2rem 60px; }
+  .card { padding: 24px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .compare-grid, .compare-grid-5 { display: block; }
+  .compare-grid > div, .compare-grid-5 > div { display: block; padding: 10px 14px; }
+  .code-visual { padding: 20px; }
+  .code-segment { font-size: 1rem; padding: 8px 12px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<script>
+mermaid.initialize({ 
+  startOnLoad: true, 
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#0071e3',
+    primaryTextColor: '#f5f5f7',
+    primaryBorderColor: '#0071e3',
+    lineColor: '#a1a1a6',
+    secondaryColor: '#1a1a1a',
+    tertiaryColor: '#242424',
+    fontFamily: 'Inter'
+  }
+});
+</script>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-title">BÁO CÁO PHÂN TÍCH ERP PRIME GROUP → TƯ VẤN VIT</span>
+    <span class="nav-badge">v3.0 · 03/07/2026</span>
+  </div>
+</nav>
+
+<header class="hero reveal">
+  <div class="hero-label">Tài liệu tham khảo tư vấn</div>
+  <h1>Phân tích Giải pháp ERP<br>Prime Group</h1>
+  <h2>Tư vấn VIT – Viglacera Tiên Sơn chuyển đổi sang SAP S/4HANA Public Cloud</h2>
+  <div class="hero-meta">
+    <span><span class="dot"></span> Vivi</span>
+    <span>📅 03/07/2026</span>
+    <span>📦 v3.0 Nâng cao</span>
+    <span>👤 Anh Thắng Vũ – Presales Consultant, BCIS - FPT IS</span>
+  </div>
+</header>
+
+<!-- ====== SECTION 1 ====== -->
+<section class="section reveal" id="s1">
+  <div class="section-header">
+    <div class="section-number">Section 1</div>
+    <div class="section-title">Tổng quan bộ tài liệu Prime Group</div>
+    <div class="section-subtitle">Phân tích toàn diện 14 file tài liệu quy trình nghiệp vụ FPT IS đã xây dựng cho Prime Group (Oracle E-Business Suite R12)</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-number">14</div><div class="stat-label">File tài liệu</div></div>
+    <div class="stat-card"><div class="stat-number purple">68</div><div class="stat-label">Mã quy trình</div></div>
+    <div class="stat-card"><div class="stat-number green">9</div><div class="stat-label">Module chính</div></div>
+    <div class="stat-card"><div class="stat-number orange">28%</div><div class="stat-label">AR chiếm tỷ trọng</div></div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">1.1. Số lượng & Phạm vi</h3>
+  <p style="color:var(--text2);margin-bottom:24px;">Bộ tài liệu bao gồm <strong>14 file</strong> do FPT IS xây dựng cho Prime Group trong dự án triển khai Oracle E-Business Suite R12, gồm 2 nhóm:</p>
+
+  <h4 style="font-size:1.05rem;font-weight:600;margin:20px 0 12px;color:var(--accent2);">Nhóm 1 – QTNV (Quy trình nghiệp vụ chính – 11 file)</h4>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>STT</th><th>File</th><th>Module</th><th>Nội dung chính</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>PG12_TP_GL v1.2_print.doc</td><td>GL – General Ledger</td><td>Sổ cái tổng hợp, phân bổ, bút toán định kỳ</td></tr>
+      <tr><td>2</td><td>PG12_TP_AP v1.1.doc</td><td>AP – Accounts Payable</td><td>Mua hàng, công nợ phải trả, thanh toán</td></tr>
+      <tr><td>3</td><td>PG12_TP_AR v1.1.doc</td><td>AR – Accounts Receivable</td><td>Bán hàng, công nợ phải thu</td></tr>
+      <tr><td>4</td><td>PG12_TP_FA v1.2_print.doc</td><td>FA – Fixed Assets</td><td>Quản lý tài sản cố định, khấu hao</td></tr>
+      <tr><td>5</td><td>PG12_TP_INV_ v1.1.doc</td><td>INV – Inventory</td><td>Quản lý kho, nhập xuất tồn</td></tr>
+      <tr><td>6</td><td>PG12_TP_MFG_ v1.3.doc</td><td>MFG – Manufacturing</td><td>Sản xuất (gốm sứ)</td></tr>
+      <tr><td>7</td><td>PG12_TP_MFG_TX_v1.0.doc</td><td>MFG mở rộng</td><td>Công thức, LSX, mã hóa sản phẩm</td></tr>
+      <tr><td>8</td><td>PG12_TP_OM v1.4.doc</td><td>OM – Order Management</td><td>Quản lý đơn hàng bán, ký gửi</td></tr>
+      <tr><td>9</td><td>PG12_TP_PO v1.1.doc</td><td>PO – Purchasing</td><td>Mua hàng (bản gốc)</td></tr>
+      <tr><td>10</td><td>PG12_TP_PO v1.3_Final.doc</td><td>PO – Purchasing</td><td>Mua hàng (phiên bản hoàn thiện)</td></tr>
+      <tr><td>11</td><td>PG12_TP_HTTT_v1.1.doc</td><td>HTTT – System</td><td>Phân quyền hệ thống</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="font-size:1.05rem;font-weight:600;margin:24px 0 12px;color:var(--purple);">Nhóm 2 – QTNV Bổ sung (3 file)</h4>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>STT</th><th>File</th><th>Module</th><th>Nội dung chính</th></tr></thead>
+    <tbody>
+      <tr><td>12</td><td>PG_QTNV_PR_PO2019.doc</td><td>PO/PR mở rộng</td><td>Mua hàng qua công ty Thương Mại (2019)</td></tr>
+      <tr><td>13</td><td>PG_URD_BanHang_TM1-V0.9.4.docx</td><td>AR – Bán hàng TM1</td><td>Bán hàng qua kênh TM1 – 16 bước tự động</td></tr>
+      <tr><td>14</td><td>PG_URD_FP_INT_PICS2 - V0.4.doc</td><td>PICS/Integration</td><td>Tích hợp sản xuất, mã hóa NVL/TP, error handling</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">1.2. Tổng số quy trình nghiệp vụ</h3>
+  <p style="color:var(--text2);margin-bottom:16px;">Qua phân tích trích xuất từ toàn bộ 14 file, đã xác định được <strong>68 mã quy trình</strong> (process codes) trải đều trên 9 module chính:</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Module</th><th style="text-align:center">Số process codes</th><th style="text-align:center">Tỷ trọng</th><th>Phạm vi nghiệp vụ</th></tr></thead>
+    <tbody>
+      <tr><td><strong>AR</strong> (Phải thu)</td><td style="text-align:center"><span class="pill pill-blue">19</span></td><td style="text-align:center">28%</td><td>Bán hàng đa kênh, công nợ, intercompany</td></tr>
+      <tr><td><strong>AP</strong> (Phải trả)</td><td style="text-align:center"><span class="pill pill-purple">11</span></td><td style="text-align:center">16%</td><td>Mua hàng, hóa đơn, thanh toán, netting</td></tr>
+      <tr><td><strong>PO</strong> (Mua hàng)</td><td style="text-align:center"><span class="pill pill-orange">8+</span></td><td style="text-align:center">12%</td><td>PR, RFQ, BPA, Standard/Project PO</td></tr>
+      <tr><td><strong>MFG</strong> (Sản xuất)</td><td style="text-align:center"><span class="pill pill-red">7+</span></td><td style="text-align:center">10%</td><td>LSX, WIP, BTP, công thức men/màu</td></tr>
+      <tr><td><strong>INV</strong> (Kho)</td><td style="text-align:center">6</td><td style="text-align:center">9%</td><td>Nhập/xuất/chuyển kho, kiểm kê</td></tr>
+      <tr><td><strong>GL</strong> (Sổ cái)</td><td style="text-align:center">5</td><td style="text-align:center">7%</td><td>Mở sổ, bút toán, định kỳ, đóng sổ</td></tr>
+      <tr><td><strong>FA</strong> (Tài sản)</td><td style="text-align:center">5</td><td style="text-align:center">7%</td><td>Vốn hóa, khấu hao, điều chỉnh</td></tr>
+      <tr><td><strong>OM</strong> (Đơn hàng)</td><td style="text-align:center">5</td><td style="text-align:center">7%</td><td>Đơn hàng bán, giao hàng, ký gửi</td></tr>
+      <tr><td><strong>HTTT</strong> (Hệ thống)</td><td style="text-align:center">2</td><td style="text-align:center">3%</td><td>Phân quyền, cấu hình</td></tr>
+      <tr style="background:rgba(255,255,255,0.03);font-weight:700;"><td><strong>TỔNG</strong></td><td style="text-align:center"><strong>~68</strong></td><td style="text-align:center"><strong>100%</strong></td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">1.3. Phân bổ quy trình theo chuyên ngành</h3>
+
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+pie title Phân bổ quy trình Prime Group theo Module
+    "AR - Bán hàng" : 19
+    "AP - Mua hàng" : 11
+    "PO - Mua hàng" : 8
+    "MFG - Sản xuất" : 7
+    "INV - Kho" : 6
+    "GL - Sổ cái" : 5
+    "FA - Tài sản" : 5
+    "OM - Đơn hàng" : 5
+    "HTTT - Hệ thống" : 2
+    </div>
+  </div>
+
+  <div style="margin:20px 0;font-size:0.92rem;">
+    <p style="font-weight:700;margin-bottom:8px;">📊 Nhận xét:</p>
+    <p style="color:var(--text2);margin-bottom:6px;">• <strong>AR chiếm 28%</strong> – phản ánh mô hình bán hàng đa kênh phức tạp của Prime Group (nội địa, xuất khẩu, ký gửi, TM1)</p>
+    <p style="color:var(--text2);margin-bottom:6px;">• <strong>AP+PO = 19 quy trình (28%)</strong> – phản ánh mô hình mua hàng tập trung qua TM1 với intercompany</p>
+    <p style="color:var(--text2);">• <strong>MFG = 7 quy trình</strong> – chỉ ở mức cơ bản cho Oracle EBS WIP Discrete, với VIT sẽ cần mở rộng đáng kể</p>
+  </div>
+</section>
+
+<!-- ====== SECTION 2 ====== -->
+<section class="section reveal" id="s2">
+  <div class="section-header">
+    <div class="section-number">Section 2</div>
+    <div class="section-title">Danh mục quy trình theo Module</div>
+    <div class="section-subtitle">Phân tích chi tiết từng module, mapping Oracle EBS → SAP S/4HANA Public Cloud</div>
+  </div>
+
+  <!-- 2.1 GL -->
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 12px;letter-spacing:-0.02em;">2.1. GL – SỔ CÁI TỔNG HỢP (General Ledger)</h3>
+  <p style="color:var(--text2);font-size:0.85rem;margin-bottom:16px;">Oracle EBS Navigation: <code>GL > Journals > Enter</code>, <code>GL > Journals > Define > Recurring</code>, <code>GL > Journals > Define > Allocation</code></p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Mã quy trình</th><th>Tên dự kiến</th><th>Ý nghĩa</th><th>Tần suất</th></tr></thead>
+    <tbody>
+      <tr><td><code>NV.GL.01</code></td><td>Mở sổ kỳ kế toán</td><td>Thiết lập kỳ kế toán, mở sổ đầu kỳ</td><td>Đầu kỳ</td></tr>
+      <tr><td><code>NV.GL.02</code></td><td>Nhập bút toán thủ công</td><td>Hạch toán các nghiệp vụ không tự động</td><td>Hàng ngày</td></tr>
+      <tr><td><code>NV.GL.03</code></td><td>Bút toán định kỳ</td><td>Phân bổ chi phí, khấu hao định kỳ</td><td>Cuối tháng</td></tr>
+      <tr><td><code>NV.GL.12</code></td><td>Đóng sổ cuối kỳ</td><td>Khóa sổ, kết chuyển lãi lỗ</td><td>Cuối kỳ</td></tr>
+      <tr><td><code>GL.03</code></td><td>Bút toán đảo ngược</td><td>Reversal journals</td><td>Định kỳ</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="card card-accent" style="margin-top:20px;">
+    <p style="font-weight:700;margin-bottom:8px;color:var(--accent2);">→ Mapping SAP S/4HANA:</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:4px;">• <code>NV.GL.01</code> → Manage Closing Cockpit (tự động hóa)</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:4px;">• <code>NV.GL.02</code> → General Journal Entry (Fiori app)</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:4px;">• <code>NV.GL.03</code> → Recurring Journal Entry / Accrual Engine</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:4px;">• <code>NV.GL.12</code> → Closing Cockpit Tasks (workflow-based)</p>
+    <p style="color:var(--text2);font-size:0.9rem;">• <code>GL.03</code> → Reverse Journal Entry (tự động)</p>
+  </div>
+
+  <!-- 2.2 AP -->
+  <h3 style="font-size:1.3rem;font-weight:700;margin:48px 0 12px;letter-spacing:-0.02em;">2.2. AP – CÔNG NỢ PHẢI TRẢ (Accounts Payable)</h3>
+  <p style="color:var(--text2);font-size:0.85rem;margin-bottom:16px;">Oracle EBS Navigation: <code>AP > Supplier > Entry</code>, <code>AP > Invoice > Entry</code>, <code>AP > Payments > Entry</code>, <code>AP > Payments > Netting</code></p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Mã quy trình</th><th>Tên tiếng Việt</th><th>Mô tả</th><th>Loại nghiệp vụ</th></tr></thead>
+    <tbody>
+      <tr><td><code>NV.AP.13 / AP.05</code></td><td>Thanh toán công nợ phải trả</td><td>Xử lý hóa đơn → tạo thanh toán → bút toán. 2-way/3-way match, prepayment, netting</td><td>Tổng hợp</td></tr>
+      <tr><td><code>AP.03</code></td><td>Nhập hóa đơn mua hàng</td><td>Invoice entry từ NCC, kiểm tra trùng lặp</td><td>Hàng hóa</td></tr>
+      <tr><td><code>AP.04</code></td><td>Nhập hóa đơn mua dịch vụ</td><td>Service invoice (có thể liên quan FA)</td><td>Dịch vụ</td></tr>
+      <tr><td><code>AP.06</code></td><td>Hóa đơn thuế (Tax Only)</td><td>Hóa đơn chỉ có thuế, không có hàng hóa</td><td>Thuế</td></tr>
+      <tr><td><code>AP.07</code></td><td>Hóa đơn chiết khấu</td><td>Debit/Credit memo từ NCC</td><td>Điều chỉnh</td></tr>
+      <tr><td><code>AP.08</code></td><td>Ứng trước cho NCC</td><td>Prepayment processing, apply/unapply</td><td>Ứng trước</td></tr>
+      <tr><td><code>AP.09</code></td><td>Netting công nợ</td><td>Bù trừ công nợ phải thu – phải trả</td><td>Bù trừ</td></tr>
+      <tr><td><code>NV.AP.16</code></td><td>Báo cáo Netting</td><td>View Netting Report</td><td>Báo cáo</td></tr>
+      <tr><td><code>NV.PTP.05</code></td><td>Procure-to-Pay tổng</td><td>End-to-end mua hàng đến thanh toán</td><td>Tổng hợp</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="card card-purple" style="margin-top:20px;">
+    <p style="font-weight:700;margin-bottom:12px;color:var(--purple);">Chi tiết quy trình AP.05 – Thanh toán:</p>
+    <div class="table-wrap">
+    <table style="min-width:600px;">
+      <thead><tr><th style="text-align:center">Bước</th><th>Thao tác</th><th>Oracle Navigation</th></tr></thead>
+      <tbody>
+        <tr><td style="text-align:center">1</td><td>Nhận hóa đơn từ NCC → Kiểm tra NCC</td><td><code>AP > Supplier > Inquiry</code></td></tr>
+        <tr><td style="text-align:center">2</td><td>Nhập hóa đơn vào batch</td><td><code>AP > Invoice > Entry > Invoice Batchs</code></td></tr>
+        <tr><td style="text-align:center">3</td><td>Match với PO hoặc Receipt (2-way/3-way)</td><td>Xác nhận quantity, price</td></tr>
+        <tr><td style="text-align:center">4</td><td>Validate hóa đơn, sửa lỗi nếu có</td><td><code>Actions > Validate</code></td></tr>
+        <tr><td style="text-align:center">5</td><td>Tạo bút toán Create Accounting</td><td>Nợ: TK chi phí / Có: TK 3311x0</td></tr>
+        <tr><td style="text-align:center">6</td><td>Tạo thanh toán</td><td><code>AP > Payments > Entry</code></td></tr>
+        <tr><td colspan="3" style="color:var(--orange);font-weight:600;">Đặc biệt: Trả trước (Prepayment), Tax Only Invoice, Netting, TK trung gian PO-AP Matching</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- 2.3 AR -->
+  <h3 style="font-size:1.3rem;font-weight:700;margin:48px 0 12px;letter-spacing:-0.02em;">2.3. AR – CÔNG NỢ PHẢI THU (Accounts Receivable)</h3>
+  <p style="color:var(--text2);margin-bottom:16px;"><strong style="color:var(--pink);">Module lớn nhất: 19 quy trình (28%)</strong>, phản ánh mô hình bán hàng đa kênh phức tạp.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Mã quy trình</th><th>Tên</th><th>Kênh bán hàng</th></tr></thead>
+    <tbody>
+      <tr><td><code>NV.AR.08</code></td><td>Nhập hóa đơn bán hàng</td><td>Chung</td></tr>
+      <tr><td><code>NV.AR.09</code></td><td>Bán hàng nội địa</td><td><span class="tag tag-green">Nội địa</span></td></tr>
+      <tr><td><code>NV.AR.10</code></td><td>Bán hàng xuất khẩu</td><td><span class="tag tag-green">Xuất khẩu</span></td></tr>
+      <tr><td><code>NV.AR.11</code></td><td>Bán hàng ký gửi</td><td><span class="tag tag-yellow">Ký gửi</span></td></tr>
+      <tr><td><code>NV.AR.12</code></td><td>Bán hàng qua TM1 (nội bộ)</td><td><span class="tag tag-red">Intercompany</span></td></tr>
+      <tr><td><code>NV.AR.13</code></td><td>Thu tiền khách hàng</td><td>Cash receipt</td></tr>
+      <tr><td><code>NV.AR.18</code></td><td>Bù trừ công nợ (netting)</td><td>Bù trừ</td></tr>
+      <tr><td><code>NV.AR.28</code></td><td>Điều chỉnh hóa đơn (Debit/Credit Memo)</td><td>Điều chỉnh</td></tr>
+      <tr><td><code>NV.AR.29</code></td><td>Xử lý hàng bán trả lại</td><td>Trả lại</td></tr>
+      <tr><td><code>NV.AR.30</code></td><td>Chiết khấu thanh toán</td><td>Discount</td></tr>
+      <tr><td><code>NV.AR.31</code></td><td>Dự phòng nợ xấu</td><td>Compliance</td></tr>
+      <tr><td><code>NV.AR.34</code></td><td>Nhắc nợ tự động (Auto Dunning)</td><td>Quản lý nợ</td></tr>
+      <tr><td><code>NV.AR.40</code></td><td>Báo cáo công nợ (Aging Report)</td><td>Báo cáo</td></tr>
+      <tr><td><code>NV.AR.45</code></td><td>Đối soát công nợ</td><td>Đối soát</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="card card-accent" style="margin-top:20px;">
+    <p style="font-weight:700;margin-bottom:8px;color:var(--accent2);">→ Mapping SAP S/4HANA:</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:4px;">• <code>AP.05</code> → Supplier Invoice + Payment Run (F110 tự động)</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:4px;">• <code>AP.09</code> → ICMR (Intercompany Matching & Reconciliation)</p>
+    <p style="color:var(--text2);font-size:0.9rem;">• <code>NV.PTP.05</code> → Procurement process flows chuẩn của SAP</p>
+  </div>
+
+  <!-- 2.4 TM1 -->
+  <h3 style="font-size:1.3rem;font-weight:700;margin:48px 0 12px;letter-spacing:-0.02em;">2.4. Quy trình Bán hàng TM1</h3>
+  <p style="color:var(--text2);margin-bottom:16px;">Đây là quy trình <strong>intercompany bán hàng</strong> quan trọng nhất của Prime Group, gồm <strong>16 bước</strong>, trích xuất từ <code>BanHang_TM1.docx</code>:</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th style="text-align:center">Bước</th><th>Sự kiện</th><th style="text-align:center">Kiểu</th><th>Mô tả</th></tr></thead>
+    <tbody>
+      <tr><td style="text-align:center">01</td><td>Tạo đơn hàng (SO)</td><td style="text-align:center"><span class="pill">Thủ công</span></td><td>Phòng BH TM1 tạo SO cho khách hàng</td></tr>
+      <tr><td style="text-align:center">02</td><td>Thay đổi đơn hàng</td><td style="text-align:center"><span class="pill">Thủ công</span></td><td>Kiểm tra, điều chỉnh SO</td></tr>
+      <tr><td style="text-align:center">03</td><td>In hóa đơn</td><td style="text-align:center"><span class="pill">Thủ công</span></td><td>In hóa đơn + phiếu xuất kho</td></tr>
+      <tr><td style="text-align:center">04</td><td>Quản lý đơn hàng và xử lý</td><td style="text-align:center"><span class="pill pill-blue">Hệ thống</span></td><td>Màn hình dashboard theo dõi trạng thái đơn hàng</td></tr>
+      <tr><td style="text-align:center">05</td><td>Tự động tạo PO nội bộ</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Hệ thống sinh PO với mã vật tư, số lượng giống SO</td></tr>
+      <tr><td style="text-align:center">06</td><td>Tự động nhập kho theo PO</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Sinh Receive về kho theo PO</td></tr>
+      <tr><td style="text-align:center">07</td><td>Tự động giữ hàng và book</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Book đơn hàng, giữ hàng</td></tr>
+      <tr><td style="text-align:center">08</td><td>Tự động xuất hàng khỏi kho</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Xuất kho TM1 theo SO</td></tr>
+      <tr><td style="text-align:center">09</td><td>Tự động tạo hóa đơn AR</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Autoinvoice → ghi nhận công nợ phải thu</td></tr>
+      <tr><td style="text-align:center">10</td><td>Tự động tạo Invoice AP</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Payable Autoinvoice → ghi nhận phải trả nhà máy</td></tr>
+      <tr><td style="text-align:center">11</td><td>Tự động tạo SO nội bộ Nhà máy</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>SO nội bộ từ Nhà máy → TM1</td></tr>
+      <tr><td style="text-align:center">12</td><td>Nhập thông tin hóa đơn</td><td style="text-align:center"><span class="pill">Thủ công</span></td><td>Nhập số HĐ, số lô, ngày HĐ</td></tr>
+      <tr><td style="text-align:center">13</td><td>Tự động book SO và giữ hàng</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Book SO + kiểm tra tồn kho</td></tr>
+      <tr><td style="text-align:center">14</td><td>Nhận kho thành phẩm</td><td style="text-align:center"><span class="pill pill-blue">Hệ thống</span></td><td>Nếu không đủ hàng → chờ nhập kho</td></tr>
+      <tr><td style="text-align:center">15</td><td>Tự động xuất hàng</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Xuất kho Nhà máy</td></tr>
+      <tr><td style="text-align:center">16</td><td>Tự động tạo hóa đơn AR</td><td style="text-align:center"><span class="pill pill-green">Tự động</span></td><td>Ghi nhận công nợ nhà máy → TM1</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="card card-gradient" style="margin-top:20px;">
+    <p style="font-weight:700;margin-bottom:12px;">Mô hình chứng từ Intercompany TM1:</p>
+    <pre style="margin:0;background:transparent;border:none;padding:0;">1 Prime Trade SO (bán cho KH)
+   ↓
+1 Prime Trade Internal PO (mua từ Nhà máy)
+   ↓
+1 Subsidiary Internal SO (bán cho TM1)
+   ↓
+Prime Trade PO Receipts (nhập kho TM1)
+Subsidiary SO Issues (xuất kho Nhà máy)
+Prime Trade SO Issues (xuất kho TM1 bán KH)</pre>
+  </div>
+
+  <div class="card card-purple" style="margin-top:16px;">
+    <p style="font-weight:700;margin-bottom:8px;">Cơ chế giá bán nội bộ – Prime Group chọn Option 1:</p>
+    <p style="color:var(--text2);font-size:0.9rem;">• <strong>Option 1:</strong> % giảm giá từ giá bán TM1 (5%, 10%...) — <span style="color:var(--green);">đơn giản, tiết kiệm công sức ✅</span></p>
+    <p style="color:var(--text2);font-size:0.9rem;">• <strong>Option 2:</strong> Bảng giá nội bộ cố định cho từng Item, Grade</p>
+  </div>
+
+  <div class="callout" style="margin-top:16px;">
+    <p><strong>Bài học cho VIT:</strong> Nếu VIT có cấu trúc Công ty Mẹ + nhiều Nhà máy hạch toán độc lập, mô hình này có thể tham khảo rút gọn với SAP Intercompany STO.</p>
+  </div>
+</section>
+
+<!-- ====== SECTION 3 ====== -->
+<section class="section reveal" id="s3">
+  <div class="section-header">
+    <div class="section-number">Section 3</div>
+    <div class="section-title">Phân tích kiến trúc Oracle EBS Prime Group</div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:12px;">3.1. Mô hình đa pháp nhân (Multi-Org)</h3>
+      <pre style="font-size:0.82rem;">Prime Group (Tập đoàn)
+├── Công ty Thương Mại 1 (TM1)
+│   ← trung tâm mua/bán nội bộ
+├── Công ty Thành Viên A (TV-A)
+│   ← Nhà máy sản xuất
+├── Công ty Thành Viên B (TV-B)
+│   ← Nhà máy sản xuất
+└── Công ty Thành Viên C (TV-C)
+    ← Nhà máy sản xuất</pre>
+      <div style="margin-top:12px;font-size:0.88rem;color:var(--text2);">
+        <p>• <strong>TM1</strong> đóng vai trò trung gian: Mua hàng từ NCC bên ngoài → Bán lại cho các công ty thành viên</p>
+        <p>• <strong>Intercompany</strong>: SO (TM1) ↔ PO (TV), kèm Auto-invoice</p>
+        <p>• <strong>Chuyển kho nội bộ</strong>: Direct Org Transfer, Inter-org Transfer</p>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:12px;">3.2. Cấu trúc Organization/Sub-inventory</h3>
+      <pre style="font-size:0.82rem;">Org (Operating Unit)
+├── Sub-inventory K06
+│   (Men, Xương, Engobe, Bao bì)
+├── Sub-inventory K08
+│   (Thành phẩm – đầu ra)
+└── Sub-inventory Kxx (khác)</pre>
+
+      <h3 style="font-size:1.15rem;font-weight:700;margin:20px 0 12px;">3.3. Mã hóa tài khoản kế toán</h3>
+      <p style="font-size:0.85rem;color:var(--text2);">Accounting Flexfield 8 segment:</p>
+      <pre style="font-size:0.78rem;">xxx-xx-xxxxxxx-xx-xxx-xx-xxx-xx</pre>
+      <p style="font-size:0.85rem;color:var(--text2);margin-top:8px;">Tài khoản đặc thù:</p>
+      <p style="font-size:0.82rem;color:var(--text2);">• <code>TK 3311x0</code>: Phải trả NCC<br>• <code>TK 331200</code>: Phải trả NCC variant<br>• <code>TK 333300</code>: Thuế GTGT<br>• <code>TK 333121</code>: Thuế GTGT hàng nhập khẩu<br>• <code>TK trung gian PO-AP</code>: Matching</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">3.4. Đặc thù Oracle EBS đã triển khai</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Đặc điểm</th><th>Chi tiết</th><th>Hệ quả với SAP</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Form-based UI</strong></td><td>Oracle Forms, menu: <code>Module > Function > Sub-function</code></td><td>→ Fiori: web-based, role-based</td></tr>
+      <tr><td><strong>Responsibility</strong></td><td>Phân quyền theo Org + Sub, default K06/K08</td><td>→ SAP Role + Authorization Group</td></tr>
+      <tr><td><strong>Batch Processing</strong></td><td>Invoice Batch, Payment Batch, Transfer Batch</td><td>→ SAP real-time, ít batch hơn</td></tr>
+      <tr><td><strong>Concurrent Programs</strong></td><td>Create Accounting, Auto-invoice, Check Budget</td><td>→ Application Jobs (Fiori)</td></tr>
+      <tr><td><strong>Document Sequencing</strong></td><td>Theo Legal Entity + Module</td><td>→ Document types + Number ranges</td></tr>
+      <tr><td><strong>Intercompany</strong></td><td>SO-PO matching, Auto-invoice, Netting</td><td>→ STO + ICMR</td></tr>
+      <tr><td><strong>Manufacturing</strong></td><td>WIP discrete, BTP accounting</td><td>→ PP/DS + Routing + BOM</td></tr>
+      <tr><td><strong>Costing</strong></td><td>Average Costing (INV > Costs > Average)</td><td>→ Moving Average / Standard Cost</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+<!-- ====== SECTION 4 ====== -->
+<section class="section reveal" id="s4">
+  <div class="section-header">
+    <div class="section-number">Section 4</div>
+    <div class="section-title">So sánh Oracle EBS vs SAP S/4HANA Public Cloud</div>
+    <div class="section-subtitle">Phân tích khác biệt kiến trúc và mapping quy trình chi tiết cho VIT</div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:20px;letter-spacing:-0.02em;">4.1. Khác biệt kiến trúc cơ bản</h3>
+
+  <div class="compare-grid compare-grid-5">
+    <div class="header">Khía cạnh</div><div class="header">Oracle EBS (Prime Group)</div><div class="header">SAP S/4HANA (VIT)</div><div class="header">Impact</div>
+    <div><strong>Nền tảng</strong></div><div>On-premise, Form-based</div><div>Cloud-native, Fiori UI</div><div><span class="tag tag-red">🔴 Thay đổi UX lớn</span></div>
+    <div><strong>Tổ chức</strong></div><div>Multi-Org + Sub-inventory</div><div>Company Code + Plant + SLoc</div><div><span class="tag tag-yellow">🟡 Khái niệm khác</span></div>
+    <div><strong>Phân quyền</strong></div><div>Responsibility (Org/Sub)</div><div>Fiori Role + Auth Group</div><div><span class="tag tag-yellow">🟡 Cần thiết kế lại</span></div>
+    <div><strong>Mã hóa</strong></div><div>Segment Accounting Flexfield</div><div>Chart of Accounts (Operating COA)</div><div><span class="tag tag-red">🔴 Thiết kế lại COA</span></div>
+    <div><strong>Sản xuất</strong></div><div>WIP Discrete + Formula</div><div>PP/DS + Material BOM + Routing</div><div><span class="tag tag-green">🟢 Chi tiết hơn</span></div>
+    <div><strong>Mua hàng</strong></div><div>RFQ → BPA → Std PO</div><div>PR → Purchase Order</div><div><span class="tag tag-green">🟢 Đơn giản hơn</span></div>
+    <div><strong>Kho</strong></div><div>INV (Sub-inventory Transfer)</div><div>IM / EWM</div><div><span class="tag tag-green">🟢 Tương tự</span></div>
+    <div><strong>Định khoản</strong></div><div>Concurrent Create Accounting</div><div>Real-time Universal Journal (ACDOCA)</div><div><span class="tag tag-green">🟢 Tốt hơn</span></div>
+    <div><strong>Báo cáo</strong></div><div>FSG/BI Publisher</div><div>Embedded Analytics + SAC</div><div><span class="tag tag-green">🟢 Tốt hơn</span></div>
+    <div><strong>Intercompany</strong></div><div>SO-PO + Auto-invoice</div><div>STO + ICMR</div><div><span class="tag tag-green">🟢 Tự động hơn</span></div>
+    <div><strong>Best Practices</strong></div><div>Tự xây dựng toàn bộ</div><div>SAP Best Practices cho Building Materials</div><div><span class="tag tag-green">🟢 Lợi thế lớn</span></div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:48px 0 16px;letter-spacing:-0.02em;">4.2. Mapping quy trình: Oracle EBS → SAP S/4HANA</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Oracle EBS Process</th><th>SAP S/4HANA Equivalent</th><th>Scope Item (BP)</th><th style="text-align:center">Độ khó</th></tr></thead>
+    <tbody>
+      <tr><td>NV.GL.01 Mở sổ kỳ KT</td><td>Manage Closing Cockpit</td><td>J58</td><td style="text-align:center"><span class="tag tag-green">🟢</span></td></tr>
+      <tr><td>NV.GL.02 Bút toán thủ công</td><td>Post General Journal Entries</td><td>J58</td><td style="text-align:center"><span class="tag tag-green">🟢</span></td></tr>
+      <tr><td>NV.GL.03 Bút toán định kỳ</td><td>Recurring Journal Entry</td><td>J58</td><td style="text-align:center"><span class="tag tag-green">🟢</span></td></tr>
+      <tr><td>NV.GL.12 Đóng sổ cuối kỳ</td><td>Closing Cockpit Tasks</td><td>J58</td><td style="text-align:center"><span class="tag tag-green">🟢</span></td></tr>
+      <tr><td>NV.AP.13 Thanh toán CN</td><td>Supplier Invoice → Payment Run (F110)</td><td>J60</td><td style="text-align:center"><span class="tag tag-yellow">🟡</span></td></tr>
+      <tr><td>AP.09 Netting CN</td><td>ICMR</td><td>1SG</td><td style="text-align:center"><span class="tag tag-yellow">🟡</span></td></tr>
+      <tr><td>NV.AR.08-45 Bán hàng đa kênh</td><td>Sales Order → Billing → Payment</td><td>BD9, BDB</td><td style="text-align:center"><span class="tag tag-yellow">🟡</span></td></tr>
+      <tr><td>NV.AR.11 Bán ký gửi</td><td>Consignment Process (SD)</td><td>BDR</td><td style="text-align:center"><span class="tag tag-yellow">🟡</span></td></tr>
+      <tr><td>NV.AR.12 Bán TM1</td><td>Intercompany Sales (STO)</td><td>5HP</td><td style="text-align:center"><span class="tag tag-red">🔴</span></td></tr>
+      <tr><td>FA.05 Khấu hao</td><td>Depreciation Run (FI-AA)</td><td>J62</td><td style="text-align:center"><span class="tag tag-green">🟢</span></td></tr>
+      <tr><td>INV.05-08 Quản lý kho</td><td>Goods Receipt/Issue (IM)</td><td>BMC</td><td style="text-align:center"><span class="tag tag-green">🟢</span></td></tr>
+      <tr><td>MFG.03 Lệnh sản xuất</td><td>Production Order (PP)</td><td>BJ2</td><td style="text-align:center"><span class="tag tag-red">🔴</span></td></tr>
+      <tr><td>MFG.06-09 WIP</td><td>Production Confirmation</td><td>BJ2</td><td style="text-align:center"><span class="tag tag-red">🔴</span></td></tr>
+      <tr><td>PO.01 Mua hàng</td><td>Purchase Order (MM)</td><td>J45, BME</td><td style="text-align:center"><span class="tag tag-yellow">🟡</span></td></tr>
+      <tr><td>PO.01a Mua qua TM1</td><td>Intercompany STO</td><td>5HP</td><td style="text-align:center"><span class="tag tag-red">🔴</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:48px 0 16px;letter-spacing:-0.02em;">4.3. Lợi thế của SAP S/4HANA cho VIT</h3>
+  <div class="grid-2">
+    <div class="card card-accent">
+      <p style="font-weight:700;color:var(--accent2);">Universal Journal</p>
+      <p style="font-size:0.9rem;color:var(--text2);">Mọi giao dịch tự động ghi ACDOCA real-time → Xóa bỏ "Create Accounting" batch</p>
+    </div>
+    <div class="card card-purple">
+      <p style="font-weight:700;color:var(--purple);">Embedded Analytics</p>
+      <p style="font-size:0.9rem;color:var(--text2);">Báo cáo giá thành, công nợ real-time → Không chờ batch, quyết định nhanh</p>
+    </div>
+    <div class="card card-green">
+      <p style="font-weight:700;color:var(--green);">Fiori UX</p>
+      <p style="font-size:0.9rem;color:var(--text2);">Web-based, responsive, role-based → Không cần cài Oracle Forms client</p>
+    </div>
+    <div class="card card-accent">
+      <p style="font-weight:700;color:var(--accent2);">Best Practices</p>
+      <p style="font-size:0.9rem;color:var(--text2);">Process flows chuẩn cho Building Materials → Khởi đầu nhanh, scope rõ ràng</p>
+    </div>
+    <div class="card card-purple">
+      <p style="font-weight:700;color:var(--purple);">MRP tích hợp</p>
+      <p style="font-size:0.9rem;color:var(--text2);">PP, MM, SD dùng chung data → Không cần module ASCP riêng</p>
+    </div>
+    <div class="card card-green">
+      <p style="font-weight:700;color:var(--green);">ICMR</p>
+      <p style="font-size:0.9rem;color:var(--text2);">Intercompany Matching & Reconciliation → Tự động đối soát nội bộ</p>
+    </div>
+    <div class="card card-accent">
+      <p style="font-weight:700;color:var(--accent2);">Public Cloud</p>
+      <p style="font-size:0.9rem;color:var(--text2);">Không quản trị hạ tầng → Tiết kiệm chi phí vận hành IT</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:48px 0 16px;letter-spacing:-0.02em;">4.4. Lưu ý khi migrate từ tư duy Oracle EBS sang SAP</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Oracle EBS Concept</th><th>SAP Equivalent</th><th style="text-align:center">Cần training</th><th>Rủi ro</th></tr></thead>
+    <tbody>
+      <tr><td>Responsibility</td><td>Role + Authorization Group</td><td style="text-align:center"><span class="tag tag-red">⚠️ Cao</span></td><td>Phân quyền sai → user không làm được việc</td></tr>
+      <tr><td>Accounting Flexfield</td><td>Chart of Accounts + Extension Ledger</td><td style="text-align:center"><span class="tag tag-red">⚠️ Cao</span></td><td>Thiết kế COA sai → ảnh hưởng toàn bộ</td></tr>
+      <tr><td>Sub-inventory</td><td>Storage Location + Warehouse</td><td style="text-align:center"><span class="tag tag-green">✅ Thấp</span></td><td></td></tr>
+      <tr><td>Concurrent Program</td><td>Application Job / Batch Job</td><td style="text-align:center"><span class="tag tag-green">✅ Thấp</span></td><td></td></tr>
+      <tr><td>MOAC (Multi-Org Access)</td><td>Cross-Company Code</td><td style="text-align:center"><span class="tag tag-yellow">⚠️ Trung bình</span></td><td></td></tr>
+      <tr><td>Forms Personalization</td><td>Fiori Custom Fields</td><td style="text-align:center"><span class="tag tag-red">⚠️ Cao</span></td><td></td></tr>
+      <tr><td>Batch Import</td><td>LTMC / Migration Cockpit</td><td style="text-align:center"><span class="tag tag-green">✅ Thấp</span></td><td></td></tr>
+      <tr><td>WIP Discrete</td><td>Production Order (PP)</td><td style="text-align:center"><span class="tag tag-red">⚠️ Cao</span></td><td>Ngành sản xuất phức tạp</td></tr>
+      <tr><td>Auto-invoice (Intercompany)</td><td>STO + Output Management</td><td style="text-align:center"><span class="tag tag-red">⚠️ Cao</span></td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ====== SECTION 5 ====== -->
+<section class="section reveal" id="s5">
+  <div class="section-header">
+    <div class="section-number">Section 5</div>
+    <div class="section-title">Bối cảnh & Đặc thù VIT – Viglacera Tiên Sơn</div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:20px;letter-spacing:-0.02em;">5.1. Hồ sơ doanh nghiệp</h3>
+  <div class="card card-gradient">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Tên đầy đủ</p><p style="font-weight:600;">Công ty Cổ phần Viglacera Tiên Sơn</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Mã chứng khoán</p><p style="font-weight:600;">VTI (HOSE)</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Tập đoàn mẹ</p><p style="font-weight:600;">Viglacera Corporation</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Ngành</p><p style="font-weight:600;">Sản xuất Gạch ốp lát (Ceramic & Porcelain Tiles)</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Số nhà máy</p><p style="font-weight:600;font-size:1.5rem;background:var(--gradient1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">7</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Quy mô nhân sự</p><p style="font-weight:600;">~1,200 nhân viên</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Doanh thu</p><p style="font-weight:600;">500 tỷ – 1,000 tỷ VND/năm</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">ERP mục tiêu</p><p style="font-weight:600;color:var(--accent2);">SAP S/4HANA Public Cloud</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Trạng thái</p><p style="font-weight:600;">Đã Demo 29/06/2026 – BOD đánh giá cao</p></div>
+      <div><p style="font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Mục tiêu</p><p style="font-weight:600;color:var(--green);">Ký HĐ trước 15/07/2026</p></div>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">5.2. Chuỗi giá trị sản xuất gạch ốp lát</h3>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+flowchart LR
+    A["🔹 Nguyên liệu thô"] --> B["🔸 Nghiền & Phối liệu"]
+    B --> C["🔸 Sấy phun - Tạo bột"]
+    C --> D["🔸 Ép tạo hình"]
+    D --> E["🔸 Sấy - Nung lần 1"]
+    E --> F["🔹 BTP Xương Biscuit"]
+    F --> G["🔸 Tráng men lót Engobe"]
+    G --> H["🔸 Tráng men phủ Cover Glaze"]
+    H --> I["🔸 In màu / In kỹ thuật số"]
+    I --> J["🔸 Nung lần 2"]
+    J --> K["🔸 Phân loại - Grade"]
+    K --> L["🔸 Đóng gói"]
+    L --> M["🔹 Thành phẩm"]
+    </div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">5.3. Đặc thù sản xuất gạch ốp lát vs gốm sứ Prime Group</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Khía cạnh</th><th>Prime Group (Gốm sứ)</th><th>VIT (Gạch ốp lát)</th><th style="text-align:center">Độ phức tạp</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Sản phẩm</strong></td><td>Gốm sứ mỹ nghệ, đa dạng</td><td>Gạch ốp lát, sản xuất hàng loạt</td><td style="text-align:center"><span class="tag tag-yellow">🟡</span></td></tr>
+      <tr><td><strong>Công nghệ</strong></td><td>Lò nung thủ công/bán tự động</td><td>Dây chuyền tự động, lò nung liên tục</td><td style="text-align:center"><span class="tag tag-red">🔴 VIT phức tạp hơn</span></td></tr>
+      <tr><td><strong>Men/Màu</strong></td><td>Đa dạng, thay đổi theo mẫu</td><td>Hệ thống hóa theo dòng sản phẩm</td><td style="text-align:center"><span class="tag tag-green">🟢 VIT hệ thống hơn</span></td></tr>
+      <tr><td><strong>Kích thước</strong></td><td>Đa dạng</td><td>Cố định theo chuẩn (30x30, 40x40, 60x60...)</td><td style="text-align:center"><span class="tag tag-yellow">🟡</span></td></tr>
+      <tr><td><strong>Grade</strong></td><td>Có phân loại</td><td>A, B, C, phế phẩm</td><td style="text-align:center"><span class="tag tag-yellow">🟡</span></td></tr>
+      <tr><td><strong>Đóng gói</strong></td><td>Theo mẫu riêng</td><td>Theo m²/hộp, pallet</td><td style="text-align:center"><span class="tag tag-green">🟢</span></td></tr>
+      <tr><td><strong>Quy mô</strong></td><td>~3 nhà máy</td><td>7 nhà máy</td><td style="text-align:center"><span class="tag tag-red">🔴 VIT lớn hơn</span></td></tr>
+      <tr><td><strong>Tự động hóa</strong></td><td>Trung bình</td><td>SCADA, tự động hóa cao</td><td style="text-align:center"><span class="tag tag-red">🔴 VIT cao hơn</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">5.4. Pain Points đã xác nhận của VIT</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Code</th><th>Category</th><th>Pain Point</th><th style="text-align:center">Severity</th></tr></thead>
+    <tbody>
+      <tr><td><code>PP-FIN-001</code></td><td><span class="tag tag-red">Financial</span></td><td>Không kiểm soát chi phí sản xuất đa nhà máy</td><td style="text-align:center"><span class="severity">★★★★★</span> 5/5</td></tr>
+      <tr><td><code>PP-COM-001</code></td><td><span class="tag tag-red">Compliance</span></td><td>Báo cáo tài chính hợp nhất chậm (10-15 ngày)</td><td style="text-align:center"><span class="severity">★★★★★</span> 5/5</td></tr>
+      <tr><td><code>PP-OPR-001</code></td><td><span class="tag tag-orange">Operational</span></td><td>Quản lý tồn kho phân tán giữa 7 nhà máy</td><td style="text-align:center"><span class="severity">★★★★</span>☆ 4/5</td></tr>
+      <tr><td><code>PP-OPR-002</code></td><td><span class="tag tag-orange">Operational</span></td><td>Hoạch định sản xuất thiếu chính xác (Excel)</td><td style="text-align:center"><span class="severity">★★★★</span>☆ 4/5</td></tr>
+      <tr><td><code>PP-SCM-001</code></td><td><span class="tag tag-orange">Supply Chain</span></td><td>Chuỗi cung ứng kém hiệu quả</td><td style="text-align:center"><span class="severity">★★★★</span>☆ 4/5</td></tr>
+      <tr><td><code>PP-TEC-001</code></td><td><span class="tag tag-yellow">Technology</span></td><td>Hệ thống CNTT lạc hậu, nhiều phần mềm rời rạc</td><td style="text-align:center"><span class="severity">★★★</span>☆☆ 3/5</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+<!-- ====== SECTION 6 ====== -->
+<section class="section reveal" id="s6">
+  <div class="section-header">
+    <div class="section-number">Section 6</div>
+    <div class="section-title">Giải pháp xây dựng Bộ Mã Vật Tư cho Gạch Ốp Lát</div>
+    <div class="section-subtitle">Session chuyên sâu: Thiết kế Material Master cho VIT trên SAP S/4HANA Public Cloud</div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:16px;letter-spacing:-0.02em;">6.1. Bài học từ hệ thống mã hóa Prime Group</h3>
+  <div class="card card-accent">
+    <p style="font-weight:600;margin-bottom:8px;">Cấu trúc phát hiện:</p>
+    <p style="color:var(--text2);font-size:0.9rem;">Prime Group sử dụng mô hình phân cấp mã hóa dựa trên Accounting Category của Oracle EBS:</p>
+    <pre>Recipe/Công thức → Formula/Công thức chi tiết → Item Code (có Accounting Category)</pre>
+    <div class="table-wrap" style="margin-top:12px;">
+    <table>
+      <thead><tr><th>Loại vật tư</th><th>Tab form Oracle</th><th>Trường mã</th><th>Ghi chú</th></tr></thead>
+      <tbody>
+        <tr><td>Men lót (Engobe)</td><td>Men lót / Engobe</td><td>Mã Men / Item code</td><td>Vật tư đầu vào</td></tr>
+        <tr><td>Men phủ (Cover Glaze)</td><td>Men phủ</td><td>Mã Men / Item code</td><td>Vật tư đầu vào</td></tr>
+        <tr><td>Men bóng (Glossy Glaze)</td><td>Men bóng / Glossy</td><td>Mã Men / Item code</td><td>Vật tư đầu vào</td></tr>
+        <tr><td>Màu in lưu (Printing Colour)</td><td>Màu in lưu</td><td>Mã Màu / Item code</td><td>Vật tư đầu vào</td></tr>
+        <tr><td>Bao bì (Box/Packaging)</td><td>Bao bì / Box</td><td>Mã bao bì / Box code</td><td>Vật tư đầu vào</td></tr>
+        <tr><td>BTP Xương (Biscuit/Body)</td><td>BTP Xương</td><td><code>Accounting Category 154974</code></td><td>Bán thành phẩm</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card card-purple" style="margin-top:16px;">
+    <p style="font-weight:700;color:var(--orange);margin-bottom:8px;">⚠️ Hạn chế của cách mã hóa Prime Group:</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:4px;">• Mã hóa theo Accounting Category (tài khoản kế toán) → không phản ánh thuộc tính sản phẩm</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:4px;">• Không có cấu trúc phân cấp rõ ràng (nhóm sản phẩm → dòng sản phẩm → mã item)</p>
+    <p style="color:var(--text2);font-size:0.9rem;">• Khó scale khi mở rộng danh mục sản phẩm</p>
+  </div>
+
+  <!-- 6.2 -->
+  <h3 style="font-size:1.3rem;font-weight:700;margin:48px 0 16px;letter-spacing:-0.02em;">6.2. Đề xuất kiến trúc Material Master cho VIT</h3>
+
+  <h4 style="font-size:1.1rem;font-weight:600;margin:28px 0 12px;color:var(--accent2);">6.2.1. Nguyên tắc thiết kế</h4>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Nguyên tắc</th><th>Mô tả</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Phân cấp 4 tầng</strong></td><td>Material Group → Material Type → Product Hierarchy → Material Code</td></tr>
+      <tr><td><strong>Speaking Code</strong></td><td>Mã phản ánh thuộc tính: loại gạch, kích thước, bề mặt, màu sắc, grade</td></tr>
+      <tr><td><strong>Tương thích SAP</strong></td><td>Material Type quyết định Valuation Class, Account Determination</td></tr>
+      <tr><td><strong>Mở rộng được</strong></td><td>Cấu trúc đủ linh hoạt để thêm dòng sản phẩm mới</td></tr>
+      <tr><td><strong>18 ký tự tối đa</strong></td><td>Tuân thủ giới hạn MATNR của SAP</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="font-size:1.1rem;font-weight:600;margin:28px 0 12px;color:var(--accent2);">6.2.2. Material Type cho ngành gạch ốp lát</h4>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th style="text-align:center">Material Type</th><th>Mô tả</th><th style="text-align:center">Valuation Class</th><th style="text-align:center">Acc Cat Ref</th><th>Ví dụ</th></tr></thead>
+    <tbody>
+      <tr><td style="text-align:center"><span class="pill pill-blue">ROH</span></td><td>Nguyên liệu thô (Raw Material)</td><td style="text-align:center">3000</td><td style="text-align:center">0001</td><td>Đất sét, cao lanh, feldspar</td></tr>
+      <tr><td style="text-align:center"><span class="pill pill-purple">HAWA</span></td><td>Vật tư thương mại (Trading Goods)</td><td style="text-align:center">3100</td><td style="text-align:center">0002</td><td>Men mua ngoài, màu in</td></tr>
+      <tr><td style="text-align:center"><span class="pill pill-orange">HALB</span></td><td>Bán thành phẩm (Semi-Finished)</td><td style="text-align:center">7900</td><td style="text-align:center">0007</td><td>BTP Xương (biscuit), BTP Men</td></tr>
+      <tr><td style="text-align:center"><span class="pill pill-green">FERT</span></td><td>Thành phẩm (Finished Goods)</td><td style="text-align:center">7920</td><td style="text-align:center">0009</td><td>Gạch ốp lát hoàn thiện</td></tr>
+      <tr><td style="text-align:center"><span class="pill">VERP</span></td><td>Bao bì (Packaging)</td><td style="text-align:center">3200</td><td style="text-align:center">0004</td><td>Thùng carton, pallet, màng co</td></tr>
+      <tr><td style="text-align:center"><span class="pill">DIEN</span></td><td>Dịch vụ (Service)</td><td style="text-align:center">3300</td><td style="text-align:center">0005</td><td>Gia công men, vận chuyển</td></tr>
+      <tr><td style="text-align:center"><span class="pill">LEIH</span></td><td>Tài sản cho thuê (Returnable Packaging)</td><td style="text-align:center">3400</td><td style="text-align:center">0006</td><td>Pallet luân chuyển</td></tr>
+      <tr><td style="text-align:center"><span class="pill">UNBW</span></td><td>Hàng không giá trị (Non-Valuated)</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td>Mẫu trưng bày, catalogue</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4 style="font-size:1.1rem;font-weight:600;margin:28px 0 12px;color:var(--accent2);">6.2.3. Cấu trúc mã vật tư đề xuất — Speaking Code 18 ký tự</h4>
+
+  <div class="highlight-box">
+    <div class="highlight-box-inner">
+      <p style="font-weight:700;margin-bottom:8px;font-size:0.9rem;color:var(--accent2);">Mô hình 1: Speaking Code 18 ký tự (Khuyến nghị cho VIT)</p>
+      <div class="code-visual" style="background:var(--bg);">
+        <span class="code-segment code-seg-1">GG</span>
+        <span class="code-dash">-</span>
+        <span class="code-segment code-seg-2">LLL</span>
+        <span class="code-dash">-</span>
+        <span class="code-segment code-seg-3">SSS</span>
+        <span class="code-dash">-</span>
+        <span class="code-segment code-seg-4">BB</span>
+        <span class="code-dash">-</span>
+        <span class="code-segment code-seg-5">MMMMM</span>
+        <span class="code-dash">-</span>
+        <span class="code-segment code-seg-6">CC</span>
+      </div>
+
+      <div class="code-legend" style="margin-top:16px;">
+        <div class="code-legend-item"><span class="code-legend-dot" style="background:var(--accent2);"></span> <strong>GG</strong> — Nhóm SP (2)</div>
+        <div class="code-legend-item"><span class="code-legend-dot" style="background:var(--purple);"></span> <strong>LLL</strong> — Kích thước dài (3)</div>
+        <div class="code-legend-item"><span class="code-legend-dot" style="background:var(--green);"></span> <strong>SSS</strong> — Bề mặt (3)</div>
+        <div class="code-legend-item"><span class="code-legend-dot" style="background:var(--orange);"></span> <strong>BB</strong> — Loại xương (2)</div>
+        <div class="code-legend-item"><span class="code-legend-dot" style="background:var(--pink);"></span> <strong>MMMMM</strong> — Số thứ tự (5)</div>
+        <div class="code-legend-item"><span class="code-legend-dot" style="background:var(--teal);"></span> <strong>CC</strong> — Màu sắc (2)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:24px;">
+    <div>
+      <p style="font-weight:700;margin-bottom:8px;font-size:0.9rem;">GG – Nhóm sản phẩm:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mã</th><th>Nhóm sản phẩm</th></tr></thead>
+        <tbody>
+          <tr><td><code>CT</code></td><td>Ceramic Tile</td></tr>
+          <tr><td><code>PT</code></td><td>Porcelain Tile</td></tr>
+          <tr><td><code>GT</code></td><td>Granite Tile</td></tr>
+          <tr><td><code>MT</code></td><td>Mosaic Tile</td></tr>
+          <tr><td><code>BT</code></td><td>Border Tile (viền/len)</td></tr>
+          <tr><td><code>SP</code></td><td>Special Piece</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-weight:700;margin:16px 0 8px;font-size:0.9rem;">LLL – Kích thước dài:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mã</th><th>Kích thước (mm)</th></tr></thead>
+        <tbody>
+          <tr><td><code>300</code></td><td>300×300</td></tr>
+          <tr><td><code>400</code></td><td>400×400</td></tr>
+          <tr><td><code>500</code></td><td>500×500</td></tr>
+          <tr><td><code>606</code></td><td>600×600</td></tr>
+          <tr><td><code>860</code></td><td>800×800</td></tr>
+          <tr><td><code>990</code></td><td>900×900</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <p style="font-weight:700;margin-bottom:8px;font-size:0.9rem;">SSS – Bề mặt:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mã</th><th>Bề mặt</th></tr></thead>
+        <tbody>
+          <tr><td><code>GLS</code></td><td>Glossy (bóng)</td></tr>
+          <tr><td><code>MAT</code></td><td>Matt (mờ)</td></tr>
+          <tr><td><code>STR</code></td><td>Structured (sần)</td></tr>
+          <tr><td><code>POL</code></td><td>Polished (bóng kiếng)</td></tr>
+          <tr><td><code>RUS</code></td><td>Rustic (giả cổ)</td></tr>
+          <tr><td><code>LAO</code></td><td>Lappato (bán bóng)</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-weight:700;margin:16px 0 8px;font-size:0.9rem;">BB – Loại xương:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mã</th><th>Loại xương</th></tr></thead>
+        <tbody>
+          <tr><td><code>WH</code></td><td>White Body (trắng)</td></tr>
+          <tr><td><code>RE</code></td><td>Red Body (đỏ)</td></tr>
+          <tr><td><code>GB</code></td><td>Granite Body</td></tr>
+          <tr><td><code>FB</code></td><td>Full Body (đồng chất)</td></tr>
+          <tr><td><code>DB</code></td><td>Double Layer (kép)</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-weight:700;margin:16px 0 8px;font-size:0.9rem;">CC – Màu sắc:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mã</th><th>Nhóm màu</th></tr></thead>
+        <tbody>
+          <tr><td><code>WH</code></td><td>White</td></tr>
+          <tr><td><code>BE</code></td><td>Beige</td></tr>
+          <tr><td><code>GY</code></td><td>Grey</td></tr>
+          <tr><td><code>BN</code></td><td>Brown</td></tr>
+          <tr><td><code>BL</code></td><td>Black</td></tr>
+          <tr><td><code>CR</code></td><td>Cream</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="card card-gradient" style="margin-top:24px;">
+    <p style="font-weight:700;margin-bottom:12px;">Ví dụ mã vật tư hoàn chỉnh:</p>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);padding:13px 18px;border-radius:10px;">
+        <code style="font-size:1.05rem;font-weight:700;">PT-606-GLS-WH-00001-WH</code>
+        <span style="color:var(--text2);font-size:0.85rem;">→ Porcelain Tile, 600×600, Glossy, White Body, #00001, White</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);padding:13px 18px;border-radius:10px;">
+        <code style="font-size:1.05rem;font-weight:700;">CT-400-MAT-RE-00128-BE</code>
+        <span style="color:var(--text2);font-size:0.85rem;">→ Ceramic Tile, 400×400, Matt, Red Body, #00128, Beige</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);padding:13px 18px;border-radius:10px;">
+        <code style="font-size:1.05rem;font-weight:700;">GT-860-POL-GB-00003-GY</code>
+        <span style="color:var(--text2);font-size:0.85rem;">→ Granite Tile, 800×800, Polished, Granite Body, #00003, Grey</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6.2.4 -->
+  <h4 style="font-size:1.1rem;font-weight:600;margin:40px 0 16px;color:var(--accent2);">6.2.4. Phân cấp nguyên liệu – BTP – Thành phẩm</h4>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+flowchart TD
+    subgraph ROH["ROH - Nguyên liệu thô"]
+        A1["Đất sét (ROH-CLAY-...)"]
+        A2["Cao lanh (ROH-KAOL-...)"]
+        A3["Feldspar (ROH-FELD-...)"]
+        A4["Cát/Silica (ROH-SILI-...)"]
+    end
+    subgraph HAWA["HAWA - Vật tư mua ngoài"]
+        B1["Men lót (HAWA-ENGO-...)"]
+        B2["Men phủ (HAWA-COVE-...)"]
+        B3["Men bóng (HAWA-GLOS-...)"]
+        B4["Màu in (HAWA-PCOL-...)"]
+        B5["Bao bì (VERP-BOX-...)"]
+    end
+    subgraph HALB["HALB - Bán thành phẩm"]
+        C1["Bột xương (HALB-BODY-...)"]
+        C2["BTP Xương mộc (HALB-BISC-...)"]
+        C3["BTP Tráng men (HALB-ENGO-...)"]
+        C4["BTP In màu (HALB-PRNT-...)"]
+    end
+    subgraph FERT["FERT - Thành phẩm"]
+        D1["Gạch men bóng"]
+        D2["Gạch men mờ"]
+        D3["Gạch granite"]
+    end
+    A1 & A2 & A3 & A4 --> C1
+    C1 --> C2
+    B1 & B2 & B3 --> C3
+    C3 --> C4
+    B4 --> C4
+    C4 --> D1 & D2 & D3
+    B5 --> D1 & D2 & D3
+    </div>
+  </div>
+</section>
+  <!-- 6.3 BOM -->
+  <h3 style="font-size:1.3rem;font-weight:700;margin:48px 0 16px;letter-spacing:-0.02em;">6.3. Cấu trúc BOM (Bill of Materials) cho sản xuất gạch</h3>
+
+  <h4 style="font-size:1.05rem;font-weight:600;margin:24px 0 12px;">6.3.1. BOM đa cấp cho 1 viên gạch Porcelain 600×600</h4>
+  <div class="bom-tree">
+<span class="level0">Level 0: FERT PT-606-GLS-WH-00001-WH</span> (Gạch Porcelain 600×600 bóng)
+│
+├── <span class="level1">Level 1: HALB-BISC-WH-0001</span> (BTP Xương mộc 600×600)
+│   ├── <span class="level2">ROH-CLAY-WH-0001</span> (Đất sét trắng) <span class="qty">............... 0.85 kg</span>
+│   ├── <span class="level2">ROH-KAOL-WH-0001</span> (Cao lanh) <span class="qty">................... 0.30 kg</span>
+│   ├── <span class="level2">ROH-FELD-WH-0001</span> (Feldspar) <span class="qty">................... 0.45 kg</span>
+│   └── <span class="level2">ROH-SILI-WH-0001</span> (Cát Silica) <span class="qty">................. 0.15 kg</span>
+│
+├── <span class="level1">Level 1: HALB-ENGO-WH-0001</span> (Men lót trắng)
+│   ├── <span class="level2">HAWA-ENGO-TRANS-01</span> (Frit men lót) <span class="qty">.............. 0.12 kg</span>
+│   ├── <span class="level2">ROH-ZIRC-WH-0001</span> (Zircon Silicate) <span class="qty">............. 0.03 kg</span>
+│   └── <span class="level2">ROH-KAOL-WH-0002</span> (Cao lanh men) <span class="qty">............... 0.02 kg</span>
+│
+├── <span class="level1">Level 1: HALB-PRNT-WH-0001</span> (Màu in trắng)
+│   ├── <span class="level2">HAWA-PCOL-WH-0001</span> (Mực in kỹ thuật số) <span class="qty">......... 0.01 kg</span>
+│   └── <span class="level2">HAWA-GLOS-TRANS-01</span> (Men bóng phủ) <span class="qty">.............. 0.08 kg</span>
+│
+└── <span class="level1">Level 1: VERP-BOX-606-0001</span> (Thùng carton 600×600)
+    ├── <span class="level2">VERP-BOX-606</span> (Thùng carton) <span class="qty">..................... 1 cái</span>
+    └── <span class="level2">VERP-PALL-WOOD</span> (Pallet gỗ) <span class="qty">...................... 1/40 cái</span>
+  </div>
+
+  <h4 style="font-size:1.05rem;font-weight:600;margin:24px 0 12px;">6.3.2. BOM thay thế (Alternative BOM)</h4>
+  <div class="card card-accent">
+    <p style="font-size:0.9rem;color:var(--text2);">VIT cần cấu hình <strong>Alternative BOM</strong> cho cùng một thành phẩm nhưng dùng nguyên liệu khác:</p>
+    <pre style="margin-top:8px;background:transparent;border:none;padding:0;">FERT PT-606-GLS-WH-00001-WH:
+  BOM 01 (Chính):  Dùng men NCC A
+  BOM 02 (Thay thế): Dùng men NCC B (giá thấp hơn)
+  BOM 03 (Thay thế): Dùng men NCC C (xuất khẩu, tiêu chuẩn cao)</pre>
+  </div>
+
+  <h4 style="font-size:1.05rem;font-weight:600;margin:24px 0 12px;">6.3.3. Recipe / Formula trong SAP</h4>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Cấu trúc</th><th>Oracle EBS Prime Group</th><th>SAP S/4HANA VIT</th></tr></thead>
+    <tbody>
+      <tr><td>Công thức tổng</td><td>Recipe</td><td>Master Recipe / BOM</td></tr>
+      <tr><td>Công thức men</td><td>Formula (tab Men)</td><td>BOM Component với HAWA</td></tr>
+      <tr><td>Công thức xương</td><td>Formula (tab Xương)</td><td>BOM Component với ROH</td></tr>
+      <tr><td>Định mức tiêu hao</td><td>Trong Formula</td><td>BOM Component Quantity</td></tr>
+      <tr><td>Đơn vị tính</td><td>m², kg</td><td>Base Unit of Measure + Conversion</td></tr>
+      <tr><td>Tỷ lệ hao hụt</td><td>Không rõ</td><td>Component Scrap %</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">6.4. Valuation Class mapping</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th style="text-align:center">Material Type</th><th style="text-align:center">Valuation Class</th><th>G/L Account determination</th><th>Áp dụng</th></tr></thead>
+    <tbody>
+      <tr><td style="text-align:center"><span class="pill pill-blue">ROH</span></td><td style="text-align:center">3000</td><td>Raw materials</td><td>Đất sét, cao lanh</td></tr>
+      <tr><td style="text-align:center"><span class="pill pill-purple">HAWA</span></td><td style="text-align:center">3100</td><td>Trading goods</td><td>Men, màu in mua ngoài</td></tr>
+      <tr><td style="text-align:center"><span class="pill">VERP</span></td><td style="text-align:center">3200</td><td>Packaging</td><td>Thùng carton, pallet</td></tr>
+      <tr><td style="text-align:center"><span class="pill">DIEN</span></td><td style="text-align:center">3300</td><td>Services</td><td>Gia công</td></tr>
+      <tr><td style="text-align:center"><span class="pill">LEIH</span></td><td style="text-align:center">3400</td><td>Returnable packaging</td><td>Pallet luân chuyển</td></tr>
+      <tr><td style="text-align:center"><span class="pill pill-orange">HALB</span></td><td style="text-align:center">7900</td><td>Semi-finished goods</td><td>BTP Xương, BTP Men</td></tr>
+      <tr><td style="text-align:center"><span class="pill pill-green">FERT</span></td><td style="text-align:center">7920</td><td>Finished goods</td><td>Thành phẩm gạch</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">6.5. Material Group hierarchy</h3>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+graph TD
+    ROOT["VIT Material Master"]
+    ROOT --> MG1["MG-01: Nguyên liệu SX"]
+    ROOT --> MG2["MG-02: Vật tư phụ/Men/Màu"]
+    ROOT --> MG3["MG-03: Bán thành phẩm"]
+    ROOT --> MG4["MG-04: Thành phẩm"]
+    ROOT --> MG5["MG-05: Bao bì đóng gói"]
+
+    MG1 --> MG1A["01-01: Đất sét & Cao lanh"]
+    MG1 --> MG1B["01-02: Feldspar & Phụ gia"]
+    MG1 --> MG1C["01-03: Cát & Silica"]
+
+    MG2 --> MG2A["02-01: Men lót (Engobe)"]
+    MG2 --> MG2B["02-02: Men phủ (Cover Glaze)"]
+    MG2 --> MG2C["02-03: Men bóng (Glossy)"]
+    MG2 --> MG2D["02-04: Màu in (Printing Colour)"]
+
+    MG3 --> MG3A["03-01: Bột ép"]
+    MG3 --> MG3B["03-02: BTP Xương biscuit"]
+    MG3 --> MG3C["03-03: BTP Tráng men"]
+
+    MG4 --> MG4A["04-01: Gạch lát nền Ceramic"]
+    MG4 --> MG4B["04-02: Gạch lát nền Porcelain"]
+    MG4 --> MG4C["04-03: Gạch lát nền Granite"]
+    MG4 --> MG4D["04-04: Gạch ốp tường"]
+    MG4 --> MG4E["04-05: Gạch trang trí/Viền"]
+
+    MG5 --> MG5A["05-01: Thùng carton"]
+    MG5 --> MG5B["05-02: Pallet"]
+    MG5 --> MG5C["05-03: Màng co/Đai nẹp"]
+    </div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">6.6. Lộ trình triển khai Material Master</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Giai đoạn</th><th>Nội dung</th><th style="text-align:center">Thời lượng</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill pill-blue">1. Chuẩn bị</span></td><td>Khảo sát toàn bộ danh mục hiện tại (Excel, MISA, Fast...)</td><td style="text-align:center">2 tuần</td></tr>
+      <tr><td><span class="pill pill-purple">2. Thiết kế</span></td><td>Định nghĩa Material Type, Group, Number Range, Classification</td><td style="text-align:center">1 tuần</td></tr>
+      <tr><td><span class="pill pill-orange">3. Chuẩn hóa</span></td><td>Cleanse data trùng lặp, ánh xạ mã cũ → mã mới</td><td style="text-align:center">2 tuần</td></tr>
+      <tr><td><span class="pill pill-green">4. Tạo Master</span></td><td>Upload Material Master qua LTMC / Migration Cockpit</td><td style="text-align:center">1 tuần</td></tr>
+      <tr><td><span class="pill pill-red">5. BOM & Routing</span></td><td>Thiết lập BOM, Routing, Production Version cho từng sản phẩm</td><td style="text-align:center">3 tuần</td></tr>
+      <tr><td><span class="pill">6. Kiểm thử</span></td><td>End-to-end test từ mua NVL → sản xuất → bán TP</td><td style="text-align:center">2 tuần</td></tr>
+      <tr style="background:rgba(255,255,255,0.04);font-weight:700;"><td>Tổng</td><td></td><td style="text-align:center"><span style="font-size:1.2rem;color:var(--accent2);">~11 tuần</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ====== SECTION 7 ====== -->
+<section class="section reveal" id="s7">
+  <div class="section-header">
+    <div class="section-number">Section 7</div>
+    <div class="section-title">Tư vấn bổ sung cho VIT</div>
+    <div class="section-subtitle">Mở rộng quy trình từ baseline 68 của Prime Group → ~85-100 quy trình cho VIT</div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:16px;letter-spacing:-0.02em;">7.1. Mở rộng quy trình SẢN XUẤT</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Quy trình bổ sung</th><th>Lý do</th><th>Module SAP</th><th>Scope Item (BP)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Quản lý công thức (Recipe Management)</strong></td><td>VIT có hàng trăm công thức men, tỷ lệ phối liệu khác nhau</td><td>PP-PI</td><td>BJ2, BJ4</td></tr>
+      <tr><td><strong>MRP (Hoạch định nhu cầu)</strong></td><td>Lập kế hoạch NVL dựa trên đơn hàng và dự báo</td><td>PP-MRP</td><td>1I2</td></tr>
+      <tr><td><strong>Kiểm tra chất lượng (QM)</strong></td><td>Kiểm tra men, xương, thành phẩm theo tiêu chuẩn TCVN</td><td>QM</td><td>2QJ</td></tr>
+      <tr><td><strong>Bảo trì thiết bị (PM)</strong></td><td>Lò nung, máy ép, máy nghiền — TSCĐ quan trọng</td><td>PM</td><td>BH1, BH2</td></tr>
+      <tr><td><strong>Đồng phẩm/Phụ phẩm</strong></td><td>Sản phẩm lỗi, hàng không đạt — tái chế vào xương</td><td>PP/CO</td><td>BJ2</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">7.2. Mở rộng quy trình BÁN HÀNG</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Quy trình</th><th>Lý do</th><th>Scope Item (BP)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Bán hàng xuất khẩu</strong></td><td>VIT có thị trường xuất khẩu</td><td>BDB, 2XJ</td></tr>
+      <tr><td><strong>Bán hàng dự án (Project Sales)</strong></td><td>Bán cho công trình xây dựng lớn</td><td>1A2</td></tr>
+      <tr><td><strong>Chiết khấu theo sản lượng</strong></td><td>Volume-based discount</td><td>BD9</td></tr>
+      <tr><td><strong>Quản lý hợp đồng khung</strong></td><td>Sales Contract/Outline Agreement</td><td>BDA</td></tr>
+      <tr><td><strong>Consignment</strong></td><td>Ký gửi tại đại lý (nếu có)</td><td>BDR</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">7.3. Mở rộng quy trình MUA HÀNG</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Quy trình</th><th>Lý do</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Mua nguyên liệu khoáng sản</strong></td><td>Đất sét, cao lanh, feldspar — đặc thù khai khoáng, kiểm tra độ ẩm, chất lượng</td></tr>
+      <tr><td><strong>Quản lý nhà cung cấp chiến lược</strong></td><td>Nguồn nguyên liệu khan hiếm, cần Sourcing + Đánh giá NCC</td></tr>
+      <tr><td><strong>Hợp đồng mua dài hạn</strong></td><td>Giá nguyên liệu biến động theo mùa, cần locking giá</td></tr>
+      <tr><td><strong>Subcontracting</strong></td><td>Gia công men, in màu bên ngoài (nếu có)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">7.4. Mở rộng quy trình TÀI CHÍNH</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Quy trình</th><th>Lý do</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Kế toán giá thành theo lô (Batch Costing)</strong></td><td>Mỗi lò nung có chi phí khác nhau (nhiên liệu, hao hụt)</td></tr>
+      <tr><td><strong>Kế toán chi phí môi trường</strong></td><td>Khí thải lò nung, xử lý nước thải men</td></tr>
+      <tr><td><strong>Quản lý ngân sách CAPEX</strong></td><td>Đầu tư lò nung mới, dây chuyền mới</td></tr>
+      <tr><td><strong>Công cụ vay & quản lý nợ vay</strong></td><td>VIT là công ty niêm yết, cần quản lý vay ngân hàng</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">7.5. Quy trình TÍCH HỢP & HỆ THỐNG</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Nội dung</th><th>Mô tả</th><th style="text-align:center">Độ ưu tiên</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Tích hợp SCADA/Lò nung</strong></td><td>Tự động ghi nhận sản lượng, nhiệt độ, tiêu hao gas</td><td style="text-align:center"><span class="tag tag-red">🔴 Cao</span></td></tr>
+      <tr><td><strong>Tích hợp cân điện tử</strong></td><td>Cân nguyên liệu đầu vào tự động → GR tự động</td><td style="text-align:center"><span class="tag tag-yellow">🟡 Trung bình</span></td></tr>
+      <tr><td><strong>Mobile app cho kho</strong></td><td>Nhập/xuất kho bằng thiết bị di động (Fiori Mobile)</td><td style="text-align:center"><span class="tag tag-yellow">🟡 Trung bình</span></td></tr>
+      <tr><td><strong>Báo cáo quản trị real-time</strong></td><td>Dashboard sản xuất, tồn kho, giá thành</td><td style="text-align:center"><span class="tag tag-red">🔴 Cao</span></td></tr>
+      <tr><td><strong>EDI với NCC lớn</strong></td><td>Tự động gửi PO, nhận invoice từ NCC men/màu</td><td style="text-align:center"><span class="tag tag-green">🟢 Thấp</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">7.6. So sánh phạm vi quy trình: Prime Group → VIT</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Module</th><th style="text-align:center">Prime Group (Oracle EBS)</th><th style="text-align:center">VIT (SAP S/4HANA)</th><th style="text-align:center">Delta</th></tr></thead>
+    <tbody>
+      <tr><td><strong>FI-GL</strong></td><td style="text-align:center">5</td><td style="text-align:center">5-7</td><td style="text-align:center">+0-2</td></tr>
+      <tr><td><strong>FI-AP</strong></td><td style="text-align:center">11</td><td style="text-align:center">8-10</td><td style="text-align:center">-1-3</td></tr>
+      <tr><td><strong>FI-AR</strong></td><td style="text-align:center">19</td><td style="text-align:center">10-12</td><td style="text-align:center">-7-9</td></tr>
+      <tr><td><strong>FI-AA</strong></td><td style="text-align:center">5</td><td style="text-align:center">5</td><td style="text-align:center">0</td></tr>
+      <tr><td><strong>CO</strong></td><td style="text-align:center">(trong MFG)</td><td style="text-align:center">5-8</td><td style="text-align:center"><span class="tag tag-green">🆕</span></td></tr>
+      <tr><td><strong>MM-IM</strong></td><td style="text-align:center">6</td><td style="text-align:center">6-8</td><td style="text-align:center">+0-2</td></tr>
+      <tr><td><strong>MM-PUR</strong></td><td style="text-align:center">8+</td><td style="text-align:center">8-10</td><td style="text-align:center">+0-2</td></tr>
+      <tr><td><strong>PP</strong></td><td style="text-align:center">7</td><td style="text-align:center">10-15</td><td style="text-align:center"><span style="color:var(--accent2);font-weight:700;">+3-8</span></td></tr>
+      <tr><td><strong>SD</strong></td><td style="text-align:center">5</td><td style="text-align:center">5-7</td><td style="text-align:center">+0-2</td></tr>
+      <tr><td><strong>QM</strong></td><td style="text-align:center">❌</td><td style="text-align:center">5-8</td><td style="text-align:center"><span class="tag tag-green">🆕</span></td></tr>
+      <tr><td><strong>PM</strong></td><td style="text-align:center">❌</td><td style="text-align:center">5-7</td><td style="text-align:center"><span class="tag tag-green">🆕</span></td></tr>
+      <tr style="background:rgba(0,113,227,0.08);font-weight:700;"><td><strong>TỔNG</strong></td><td style="text-align:center"><strong>~68</strong></td><td style="text-align:center"><strong>~85-100</strong></td><td style="text-align:center"><strong style="color:var(--accent2);">+17-32</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+<!-- ====== SECTION 8 ====== -->
+<section class="section reveal" id="s8">
+  <div class="section-header">
+    <div class="section-number">Section 8</div>
+    <div class="section-title">Kết luận & Đề xuất Chiến lược</div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:16px;letter-spacing:-0.02em;">8.1. 5 bài học cốt lõi từ Prime Group</h3>
+  <div class="grid-2">
+    <div class="card card-accent">
+      <div style="font-size:2rem;font-weight:900;color:var(--accent2);line-height:1;">01</div>
+      <p style="font-weight:700;margin-top:4px;">Tài liệu chi tiết từng bước</p>
+      <p style="font-size:0.88rem;color:var(--text2);">Prime Group có mô tả rất chi tiết từng thao tác: nhấn nút gì, chọn mục nào, lỗi gì có thể xảy ra — đây là tiêu chuẩn vàng cho tài liệu đào tạo VIT</p>
+    </div>
+    <div class="card card-purple">
+      <div style="font-size:2rem;font-weight:900;color:var(--purple);line-height:1;">02</div>
+      <p style="font-weight:700;margin-top:4px;">Mã hóa vật tư đặc thù</p>
+      <p style="font-size:0.88rem;color:var(--text2);">Cần thiết kế Material Code thông minh cho gạch ốp lát (Speaking Code) thay vì dùng Accounting Category như Prime Group</p>
+    </div>
+    <div class="card card-green">
+      <div style="font-size:2rem;font-weight:900;color:var(--green);line-height:1;">03</div>
+      <p style="font-weight:700;margin-top:4px;">Intercompany STO</p>
+      <p style="font-size:0.88rem;color:var(--text2);">Mô hình TM1 (Công ty TM → Nhà máy) là bài học tốt cho cấu trúc VIT nếu có nhiều pháp nhân hạch toán độc lập</p>
+    </div>
+    <div class="card card-accent">
+      <div style="font-size:2rem;font-weight:900;color:var(--accent2);line-height:1;">04</div>
+      <p style="font-weight:700;margin-top:4px;">Error Handling Batch</p>
+      <p style="font-size:0.88rem;color:var(--text2);">Prime Group xây dựng rất nhiều quy trình xử lý lỗi batch — VIT sẽ được hưởng lợi từ SAP real-time, không cần patterns này</p>
+    </div>
+    <div class="card card-purple" style="grid-column:1/-1;">
+      <div style="font-size:2rem;font-weight:900;color:var(--purple);line-height:1;">05</div>
+      <p style="font-weight:700;margin-top:4px;">Baseline 68 quy trình làm nền tảng</p>
+      <p style="font-size:0.88rem;color:var(--text2);">Đây là baseline tham khảo chuẩn + thêm PP, QM, PM cho VIT → scope dự kiến ~85-100 quy trình</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">8.2. Lưu ý triển khai cho VIT</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th style="text-align:center">#</th><th>Lưu ý</th><th>Nguy cơ nếu bỏ qua</th></tr></thead>
+    <tbody>
+      <tr><td style="text-align:center">1</td><td><strong>Không copy-paste Oracle → SAP</strong> — mỗi hệ thống có triết lý khác nhau</td><td>Thiết kế giải pháp sai, người dùng không chấp nhận</td></tr>
+      <tr><td style="text-align:center">2</td><td><strong>Tận dụng SAP Best Practices</strong> cho Building Materials → rút ngắn thời gian thiết kế</td><td>Tự thiết kế từ đầu → chậm, tốn kém</td></tr>
+      <tr><td style="text-align:center">3</td><td><strong>Training Fiori sớm</strong> — đây là thay đổi UX lớn nhất</td><td>User không làm quen → giảm hiệu quả</td></tr>
+      <tr><td style="text-align:center">4</td><td><strong>Data Migration kỹ lưỡng</strong> — COA, Material Master, Vendor/Customer là nền móng</td><td>Dữ liệu sai → hệ thống hoạt động không đúng</td></tr>
+      <tr><td style="text-align:center">5</td><td><strong>Material Code là nền móng</strong> — không làm vội, cần workshop với Production & Warehouse</td><td>Mã hóa sai → phải làm lại toàn bộ</td></tr>
+      <tr><td style="text-align:center">6</td><td><strong>POC sản xuất trước</strong> — thử nghiệm 1 dòng sản phẩm với 1 nhà máy pilot</td><td>Triển khai 7 nhà máy cùng lúc → rủi ro cao</td></tr>
+      <tr><td style="text-align:center">7</td><td><strong>SCADA integration qua BTP</strong> — không build custom code trực tiếp trên Core</td><td>Custom code → phá vỡ upgrade, mất tính Public Cloud</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">8.3. Scope Phase 1 dự kiến cho VIT (~62 quy trình)</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Module</th><th>Số quy trình</th><th>Nội dung chính</th></tr></thead>
+    <tbody>
+      <tr><td><strong>FI-GL</strong></td><td>5</td><td>Closing Cockpit, Journal Entry, Recurring, Consolidation</td></tr>
+      <tr><td><strong>FI-AP</strong></td><td>8</td><td>Supplier Invoice, Payment Run, Prepayment, Netting, ICMR</td></tr>
+      <tr><td><strong>FI-AR</strong></td><td>10</td><td>Sales Billing, Customer Payment, Dunning, Aging Report</td></tr>
+      <tr><td><strong>FI-AA</strong></td><td>5</td><td>Asset Acquisition, Depreciation, Transfer, Retire, CAPEX</td></tr>
+      <tr><td><strong>CO</strong></td><td>5</td><td>Cost Center, Internal Order, Product Costing, Profit Center, Batch Costing</td></tr>
+      <tr><td><strong>MM-IM</strong></td><td>6</td><td>Goods Receipt, Goods Issue, Transfer, Physical Inventory, Scrap, Subcontracting</td></tr>
+      <tr><td><strong>MM-PUR</strong></td><td>8</td><td>Purchase Requisition, RFQ, Purchase Order, Outline Agreement, Contract, Release Strategy</td></tr>
+      <tr><td><strong>SD</strong></td><td>5</td><td>Sales Order, Delivery, Billing, Credit Memo, Consignment</td></tr>
+      <tr><td><strong>PP</strong></td><td>10</td><td>BOM, Routing, Production Order, Confirmation, MRP, Recipe, Alternative BOM</td></tr>
+      <tr style="background:rgba(0,113,227,0.08);font-weight:700;"><td><strong>TỔNG Phase 1</strong></td><td><strong>62</strong></td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="font-size:1.3rem;font-weight:700;margin:40px 0 16px;letter-spacing:-0.02em;">8.4. Timeline triển khai đề xuất</h3>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+gantt
+    title Lộ trình triển khai SAP S/4HANA cho VIT
+    dateFormat  YYYY-MM-DD
+    section Chuẩn bị
+    Khảo sát & phân tích          :t1, 2026-08-01, 20d
+    section Cấu hình Core
+    FI/CO (Financial + Controlling)  :t2, after t1, 30d
+    MM/SD (Materials + Sales)     :t3, after t1, 30d
+    section Material Master
+    Thiết kế mã + chuẩn hóa       :t4, after t2, 14d
+    Upload + BOM + Routing        :t5, after t4, 28d
+    section Sản xuất
+    PP/BOM/Routing + POC pilot   :t6, after t3, 42d
+    section Tích hợp
+    SCADA Integration (BTP)      :t7, after t6, 28d
+    section Kiểm thử
+    UAT toàn hệ thống            :t8, after t7, 28d
+    section Go-Live
+    Data Migration & Cutover     :t9, after t8, 14d
+    Go-Live                      :milestone, after t9, 0d
+    </div>
+  </div>
+
+  <!-- Strategy box -->
+  <div class="highlight-box" style="margin-top:40px;">
+    <div class="highlight-box-inner">
+      <p style="font-weight:700;font-size:1.2rem;margin-bottom:12px;color:var(--text);">Chiến lược bán hàng với VIT</p>
+      <div class="grid-2" style="margin-top:16px;">
+        <div>
+          <p style="color:var(--accent2);font-weight:600;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em;">Lợi thế của FPT IS</p>
+          <p style="color:var(--text2);font-size:0.9rem;margin-top:8px;">• <strong>Prime Group Reference</strong> — kinh nghiệm triển khai ERP cho tập đoàn sản xuất vật liệu xây dựng với quy mô lớn hơn VIT</p>
+          <p style="color:var(--text2);font-size:0.9rem;">• <strong>Material Code thiết kế riêng</strong> — Speaking Code cho gạch ốp lát do chuyên gia FPT IS thiết kế, không phải generic</p>
+          <p style="color:var(--text2);font-size:0.9rem;">• <strong>SAP Best Practices</strong> — tận dụng scope items chuẩn cho Building Materials → rút ngắn thời gian</p>
+        </div>
+        <div>
+          <p style="color:var(--purple);font-weight:600;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em;">Lợi thế so với Citek</p>
+          <p style="color:var(--text2);font-size:0.9rem;margin-top:8px;">• <strong>Public Cloud speed</strong> — triển khai nhanh hơn Private Cloud/On-premise</p>
+          <p style="color:var(--text2);font-size:0.9rem;">• <strong>Multi-plant kinh nghiệm</strong> — FPT IS có kinh nghiệm triển khai đa nhà máy từ Prime Group</p>
+          <p style="color:var(--text2);font-size:0.9rem;">• <strong>Reference khách hàng</strong> — FPT IS có thể dẫn khách tham quan Prime Group</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final CTA -->
+  <div class="card card-gradient" style="margin-top:32px;text-align:center;padding:48px;">
+    <p style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent2);font-weight:700;margin-bottom:8px;">Mục tiêu tiếp theo</p>
+    <p style="font-size:1.8rem;font-weight:900;letter-spacing:-0.03em;background:var(--gradient1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Ký hợp đồng trước 15/07/2026</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+      <span class="pill pill-blue">✅ Demo BOD 29/06 ✓</span>
+      <span class="pill pill-purple">📋 Scope Phase 1 (~62 QTr)</span>
+      <span class="pill pill-green">🔄 Đàm phán hợp đồng</span>
+      <span class="pill pill-orange">🎯 Target: 15/07</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Báo cáo Phân tích Giải pháp ERP Prime Group — Phiên bản v3.0 Nâng cao</p>
+  <p>Tài liệu tham khảo cho tư vấn VIT – Viglacera Tiên Sơn chuyển đổi sang SAP S/4HANA Public Cloud</p>
+  <p style="margin-top:8px;font-size:0.78rem;color:var(--text3);">Nguồn: 14 file tài liệu Oracle EBS R12 Prime Group • 68 process codes • 9 modules</p>
+  <a href="https://deerflow.tech" target="_blank" class="deerflow-badge">
+    <span class="star">✦</span> Created By DeerFlow
+  </a>
+</footer>
+
+<script>
+// Scroll reveal animation
+(function() {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Handle mermaid dark theme override
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.mermaid').forEach(el => {
+      el.setAttribute('data-theme', 'dark');
+    });
+  });
+})();
+
+// Smooth active nav
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 100) {
+    nav.style.background = 'rgba(0,0,0,0.85)';
+  } else {
+    nav.style.background = 'rgba(0,0,0,0.8)';
+  }
+});
+</script>
+</body>
+</html>
