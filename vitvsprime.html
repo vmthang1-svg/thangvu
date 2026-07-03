@@ -110,6 +110,154 @@ nav {
   font-weight: 600;
 }
 
+/* Sidebar Navigation */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 260px;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  border-right: 1px solid rgba(255,255,255,0.07);
+  z-index: 100;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 100px 0 40px 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+
+.sidebar-header {
+  padding: 0 24px 20px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-header-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent2);
+  margin-bottom: 4px;
+}
+
+.sidebar-header-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text2);
+  line-height: 1.4;
+}
+
+.sidebar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 12px;
+}
+
+.sidebar-item {
+  margin: 2px 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text2);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.sidebar-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(255,255,255,0.06);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text3);
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+}
+
+.sidebar-link:hover .sidebar-num {
+  background: rgba(0,113,227,0.15);
+  color: var(--accent2);
+}
+
+.sidebar-link.active {
+  background: rgba(0,113,227,0.1);
+  color: var(--text);
+}
+
+.sidebar-link.active .sidebar-num {
+  background: var(--accent2);
+  color: #fff;
+}
+
+/* Sidebar toggle (mobile) */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+/* Main content shift for sidebar */
+.with-sidebar {
+  margin-left: 260px;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .sidebar-toggle {
+    display: flex;
+  }
+  .with-sidebar {
+    margin-left: 0;
+  }
+}
+
 /* Hero */
 .hero {
   position: relative;
@@ -713,6 +861,31 @@ mermaid.initialize({
     <span class="nav-badge">v3.0 · 03/07/2026</span>
   </div>
 </nav>
+
+<!-- Sidebar Toggle (Mobile) -->
+<button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Menu">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="4" x2="15" y2="4"/><line x1="3" y1="9" x2="15" y2="9"/><line x1="3" y1="14" x2="15" y2="14"/></svg>
+</button>
+
+<!-- Left Sidebar Navigation -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-header-label">Nội dung</div>
+    <div class="sidebar-header-title">Phân tích ERP Prime Group → VIT</div>
+  </div>
+  <ul class="sidebar-list">
+    <li class="sidebar-item"><a href="#s1" class="sidebar-link" data-section="s1"><span class="sidebar-num">1</span>Tổng quan Prime Group</a></li>
+    <li class="sidebar-item"><a href="#s2" class="sidebar-link" data-section="s2"><span class="sidebar-num">2</span>Danh mục quy trình</a></li>
+    <li class="sidebar-item"><a href="#s3" class="sidebar-link" data-section="s3"><span class="sidebar-num">3</span>Kiến trúc Oracle EBS</a></li>
+    <li class="sidebar-item"><a href="#s4" class="sidebar-link" data-section="s4"><span class="sidebar-num">4</span>So sánh Oracle vs SAP</a></li>
+    <li class="sidebar-item"><a href="#s5" class="sidebar-link" data-section="s5"><span class="sidebar-num">5</span>Bối cảnh VIT</a></li>
+    <li class="sidebar-item"><a href="#s6" class="sidebar-link" data-section="s6"><span class="sidebar-num">6</span>Material Master</a></li>
+    <li class="sidebar-item"><a href="#s7" class="sidebar-link" data-section="s7"><span class="sidebar-num">7</span>Tư vấn mở rộng</a></li>
+    <li class="sidebar-item"><a href="#s8" class="sidebar-link" data-section="s8"><span class="sidebar-num">8</span>Kết luận & Chiến lược</a></li>
+  </ul>
+</aside>
+
+<main class="with-sidebar">
 
 <header class="hero reveal">
   <div class="hero-label">Tài liệu tham khảo tư vấn</div>
@@ -1791,6 +1964,8 @@ gantt
   </a>
 </footer>
 
+</main>
+
 <script>
 // Scroll reveal animation
 (function() {
@@ -1821,6 +1996,38 @@ window.addEventListener('scroll', () => {
   } else {
     nav.style.background = 'rgba(0,0,0,0.8)';
   }
+
+  // Scroll spy for sidebar
+  const links = document.querySelectorAll('.sidebar-link');
+  const sections = [];
+  links.forEach(link => {
+    const id = link.getAttribute('data-section');
+    const target = document.getElementById(id);
+    if (target) sections.push({ link, target });
+  });
+
+  const scrollPos = window.scrollY + window.innerHeight / 3;
+  let current = null;
+  sections.forEach(({ link, target }) => {
+    if (target.offsetTop <= scrollPos) current = link;
+  });
+
+  links.forEach(l => l.classList.remove('active'));
+  if (current) current.classList.add('active');
+});
+
+// Sidebar smooth scroll (close on mobile after click)
+document.querySelectorAll('.sidebar-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.getElementById(this.getAttribute('data-section'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+    // Close sidebar on mobile
+    const sidebar = document.getElementById('sidebar');
+    if (window.innerWidth <= 900) sidebar.classList.remove('open');
+  });
 });
 </script>
 </body>
