@@ -5,6 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BOM Phân Cấp - Gạch KT 600600 (13.600600.09635) | Prime Group</title>
 <style>
+/* ===== LOGIN SCREEN ===== */
+.login-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: #0a0e17;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+.login-overlay.hidden { opacity: 0; pointer-events: none; }
+.login-card {
+  background: linear-gradient(135deg, #1a1f2e 0%, #141824 100%);
+  border: 1px solid #2a3040;
+  border-radius: 16px;
+  padding: 48px 40px 40px;
+  width: 380px;
+  max-width: 90vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  text-align: center;
+}
+.login-card .logo { font-size: 3rem; margin-bottom: 8px; }
+.login-card h2 { color: #fff; font-size: 1.4rem; margin-bottom: 4px; }
+.login-card .sub { color: #6b7d99; font-size: 0.85rem; margin-bottom: 28px; }
+.login-card .field-group { text-align: left; margin-bottom: 16px; }
+.login-card .field-group label { color: #8b9cc0; font-size: 0.78rem; display: block; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.login-card .field-group input {
+  width: 100%; padding: 12px 14px;
+  background: #0a0e17; border: 1px solid #2a3040; border-radius: 8px;
+  color: #e0e0e0; font-size: 0.95rem; outline: none;
+  transition: border-color 0.2s;
+}
+.login-card .field-group input:focus { border-color: #5b9bd5; }
+.login-card .field-group input::placeholder { color: #4a5568; }
+.login-btn {
+  width: 100%; padding: 12px;
+  background: linear-gradient(135deg, #1e3a5f, #2a5070);
+  border: 1px solid #3a6080; border-radius: 8px;
+  color: #fff; font-size: 1rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  margin-top: 8px;
+}
+.login-btn:hover { background: linear-gradient(135deg, #2a5070, #3a6080); }
+.login-error { color: #ff6b6b; font-size: 0.82rem; margin-top: 12px; display: none; }
+.login-error.show { display: block; }
+/* ===== END LOGIN SCREEN ===== */
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0e17; color: #e0e0e0; min-height: 100vh; }
 .header { background: linear-gradient(135deg, #1a1f2e 0%, #141824 100%); padding: 32px 40px; border-bottom: 1px solid #2a3040; }
@@ -96,6 +141,28 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0e17; colo
 </style>
 </head>
 <body>
+
+<!-- ===== LOGIN OVERLAY ===== -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="logo">🔐</div>
+    <h2>Prime Group BOM</h2>
+    <div class="sub">Vui lòng đăng nhập để xem cấu trúc sản phẩm</div>
+    <form onsubmit="return doLogin(event)">
+      <div class="field-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Nhập tên đăng nhập" value="bcis" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Nhập mật khẩu" autocomplete="off">
+      </div>
+      <button type="submit" class="login-btn">Đăng nhập</button>
+      <div class="login-error" id="loginError">❌ Sai tên đăng nhập hoặc mật khẩu!</div>
+    </form>
+  </div>
+</div>
+<!-- ===== END LOGIN OVERLAY ===== -->
 
 <div class="header">
   <h1>🏭 Cấu Trúc BOM — Gạch Thành Phẩm</h1>
@@ -408,6 +475,26 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0e17; colo
 </div>
 
 <script>
+// ===== LOGIN =====
+function doLogin(e) {
+  e.preventDefault();
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value.trim();
+  if (user === 'bcis' && pass === 'bcis') {
+    document.getElementById('loginOverlay').classList.add('hidden');
+    document.getElementById('loginError').classList.remove('show');
+    return false;
+  } else {
+    document.getElementById('loginError').classList.add('show');
+    return false;
+  }
+}
+// Auto-focus password field on load
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(() => document.getElementById('password').focus(), 300);
+});
+
+// ===== BOM TREE =====
 function toggleBranch(btn) {
   const branch = btn.parentElement.nextElementSibling;
   if (branch && branch.classList.contains('branch')) {
