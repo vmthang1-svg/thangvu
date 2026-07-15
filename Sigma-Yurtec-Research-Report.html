@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sigma Engineering JSC — Hồ Sơ Khách Hàng & Phân Tích Cơ Hội</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #000;
+  --bg-section: #1d1d1f;
+  --text: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --accent: #0071e3;
+  --accent-light: #2997ff;
+  --gradient-1: linear-gradient(135deg, #0a1628 0%, #0d2137 30%, #0a1a2f 70%, #091428 100%);
+  --gradient-2: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+  --gradient-3: linear-gradient(135deg, #0071e3 0%, #42a1ff 100%);
+  --card-bg: #1c1c1e;
+  --card-border: rgba(255,255,255,0.08);
+  --glass: rgba(28,28,30,0.85);
+}
+
+/* ---- LOGIN SCREEN ---- */
+#login-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--gradient-1);
+}
+.login-card {
+  width: 400px; max-width: 90vw;
+  background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px; padding: 48px 40px;
+  backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+  text-align: center;
+}
+.login-icon {
+  width: 64px; height: 64px; margin: 0 auto 24px;
+  background: var(--gradient-3); border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 800; color: #fff;
+}
+.login-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.login-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; color: var(--text-secondary); margin-bottom: 32px;
+}
+.login-field {
+  width: 100%; margin-bottom: 14px;
+}
+.login-field input {
+  width: 100%; padding: 14px 18px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px; color: #fff; font-size: 15px; font-family: 'Inter', sans-serif;
+  outline: none; transition: border 0.2s;
+}
+.login-field input:focus { border-color: var(--accent); }
+.login-field input::placeholder { color: #636366; }
+.login-btn {
+  width: 100%; padding: 14px; margin-top: 8px;
+  background: var(--gradient-3); border: none; border-radius: 12px;
+  color: #fff; font-size: 16px; font-weight: 600; cursor: pointer;
+  font-family: 'Inter', sans-serif; transition: opacity 0.2s;
+}
+.login-btn:hover { opacity: 0.9; }
+.login-error {
+  color: #ff453a; font-size: 13px; margin-top: 10px; display: none;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ---- MAIN CONTENT (hidden initially) ---- */
+#main-content { display: none; font-family: 'Inter', sans-serif; color: var(--text); background: var(--bg); }
+
+/* Hero Section */
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: var(--gradient-1); position: relative; overflow: hidden;
+  padding: 120px 60px; text-align: center;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; right: -30%; width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(0,113,227,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-content { position: relative; z-index: 1; max-width: 900px; }
+.hero-badge {
+  display: inline-block; padding: 6px 18px; background: rgba(0,113,227,0.2);
+  border: 1px solid rgba(0,113,227,0.3); border-radius: 100px;
+  font-size: 13px; font-weight: 600; color: var(--accent-light);
+  text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px;
+}
+.hero h1 {
+  font-size: clamp(36px, 6vw, 72px); font-weight: 800;
+  line-height: 1.1; letter-spacing: -2px; margin-bottom: 24px;
+  background: linear-gradient(180deg, #fff 0%, #a1a1a6 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-meta {
+  display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+  font-size: 15px; color: var(--text-secondary);
+}
+.hero-meta span { display: flex; align-items: center; gap: 6px; }
+.hero-divider { width: 60px; height: 1px; background: rgba(255,255,255,0.2); margin: 32px auto; }
+
+/* Section */
+.section {
+  padding: 100px 60px; max-width: 1100px; margin: 0 auto;
+}
+.section-dark { background: #0a0a0c; }
+.section-label {
+  font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--accent-light); margin-bottom: 12px;
+}
+.section-title {
+  font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: -1px;
+  margin-bottom: 16px; color: #fff;
+}
+.section-subtitle {
+  font-size: 17px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 48px;
+}
+
+/* Cards */
+.card-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px; margin-top: 40px;
+}
+.card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 20px; padding: 32px; transition: transform 0.2s, border-color 0.2s;
+}
+.card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+.card-icon { font-size: 32px; margin-bottom: 16px; }
+.card h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+.card p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+
+/* Info Table */
+.info-table {
+  width: 100%; border-collapse: collapse; margin: 30px 0;
+  border-radius: 20px; overflow: hidden; border: 1px solid var(--card-border);
+}
+.info-table td {
+  padding: 16px 24px; font-size: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.info-table td:first-child {
+  background: rgba(255,255,255,0.03); font-weight: 600; color: var(--text-secondary);
+  width: 220px; white-space: nowrap;
+}
+.info-table td:last-child { color: #fff; }
+.info-table tr:last-child td { border-bottom: none; }
+
+/* Highlight Box */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(0,113,227,0.12), rgba(41,151,255,0.06));
+  border: 1px solid rgba(0,113,227,0.2); border-radius: 20px; padding: 32px;
+  margin: 30px 0;
+}
+.highlight-box h4 {
+  font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 10px;
+}
+.highlight-box p, .highlight-box li {
+  font-size: 15px; color: var(--text-secondary); line-height: 1.7;
+}
+
+/* Timeline */
+.timeline { margin: 30px 0; }
+.timeline-item {
+  display: flex; gap: 20px; align-items: flex-start; padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.timeline-year {
+  font-size: 14px; font-weight: 800; color: var(--accent-light); min-width: 100px; padding-top: 2px;
+}
+.timeline-text { font-size: 15px; color: var(--text); line-height: 1.6; }
+
+/* Pain Point Table */
+.pp-table {
+  width: 100%; margin: 24px 0; border-collapse: collapse;
+}
+.pp-table th {
+  text-align: left; padding: 12px 20px; font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.pp-table td {
+  padding: 14px 20px; font-size: 14.5px; line-height: 1.6;
+  border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text);
+}
+.pp-table tr:last-child td { border-bottom: none; }
+.pp-table td:first-child { font-weight: 600; color: #fff; }
+
+/* Project Table */
+.project-table {
+  width: 100%; border-collapse: collapse; margin: 30px 0;
+  border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden;
+}
+.project-table th {
+  text-align: left; padding: 14px 24px; font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light);
+  background: rgba(255,255,255,0.03);
+}
+.project-table td {
+  padding: 14px 24px; font-size: 14.5px; color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.project-table tr:last-child td { border-bottom: none; }
+.project-table .highlight { font-weight: 700; color: #fff; }
+
+/* Quote */
+.quote-box {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 20px; padding: 40px 48px; margin: 40px 0; position: relative;
+  text-align: center;
+}
+.quote-box::before {
+  content: '"'; position: absolute; top: 20px; left: 30px;
+  font-size: 72px; color: var(--accent); opacity: 0.3; line-height: 1;
+  font-family: Georgia, serif;
+}
+.quote-box p {
+  font-size: 20px; font-weight: 600; line-height: 1.5; color: #fff; font-style: italic;
+}
+
+/* Architecture Diagram */
+.arch-diagram {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 20px; padding: 48px; margin: 40px 0; text-align: center;
+}
+.arch-box {
+  display: inline-block; border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 16px; padding: 24px 40px; margin: 0 8px;
+  font-weight: 700; font-size: 14px; color: #fff; background: rgba(255,255,255,0.03);
+}
+.arch-box.accent {
+  border-color: var(--accent); background: rgba(0,113,227,0.1); color: var(--accent-light);
+}
+.arch-arrow { font-size: 24px; margin: 12px 0; color: var(--text-secondary); }
+
+/* Org Chart */
+.org-chart { text-align: center; margin: 40px 0; }
+.org-node {
+  display: inline-block; padding: 16px 32px; border-radius: 12px;
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  font-weight: 600; font-size: 14px; color: #fff; margin: 6px;
+}
+.org-node.primary { border-color: var(--accent); background: rgba(0,113,227,0.1); }
+.org-arrow { font-size: 20px; color: var(--text-secondary); margin: 4px 0; }
+
+/* Sources */
+.sources-list { margin: 30px 0; }
+.sources-list a {
+  display: block; padding: 10px 0; color: var(--accent-light); text-decoration: none;
+  font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: color 0.2s;
+}
+.sources-list a:hover { color: #fff; }
+.source-category {
+  font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text-secondary); margin: 24px 0 12px;
+}
+
+/* Footer */
+.footer {
+  text-align: center; padding: 60px; color: var(--text-secondary); font-size: 13px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Number Stat */
+.stats-row {
+  display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin: 40px 0;
+}
+.stat-item {
+  text-align: center; padding: 32px; min-width: 160px;
+  background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px;
+}
+.stat-num { font-size: 40px; font-weight: 900; color: #fff; letter-spacing: -1px; }
+.stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 6px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Step / Phase */
+.phase-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 30px 0;
+}
+.phase-card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 20px; padding: 32px; position: relative; overflow: hidden;
+}
+.phase-num {
+  font-size: 60px; font-weight: 900; color: rgba(255,255,255,0.04); position: absolute;
+  top: 10px; right: 20px; line-height: 1;
+}
+.phase-card h4 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 12px; position: relative; z-index: 1; }
+.phase-card p, .phase-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; position: relative; z-index: 1; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section { padding: 60px 24px; }
+  .hero { padding: 80px 24px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .info-table td { display: block; width: 100%; }
+  .info-table td:first-child { width: 100%; }
+}
+
+/* Divider between sections */
+.section-divider {
+  height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  max-width: 1100px; margin: 0 auto;
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Nav dots */
+.nav-dots {
+  position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 10px; z-index: 100;
+}
+.nav-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2);
+  cursor: pointer; transition: all 0.3s;
+}
+.nav-dot.active { background: var(--accent-light); transform: scale(1.5); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-icon">Σ</div>
+    <div class="login-title">Sigma Engineering</div>
+    <div class="login-sub">Hồ sơ Khách hàng · Nội bộ · BCIS / FPT IS</div>
+    <div class="login-field"><input type="text" id="username" placeholder="Tên đăng nhập" autocomplete="off"></div>
+    <div class="login-field"><input type="password" id="password" placeholder="Mật khẩu" onkeypress="if(event.key==='Enter')doLogin()"></div>
+    <button class="login-btn" onclick="doLogin()">Đăng nhập</button>
+    <div class="login-error" id="login-error">Sai tên đăng nhập hoặc mật khẩu</div>
+  </div>
+</div>
+
+<script>
+function doLogin() {
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+  if (u === 'bcis' && p === 'bcis') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  } else {
+    const err = document.getElementById('login-error');
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 2000);
+  }
+}
+</script>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">BÁO CÁO · NỘI BỘ</div>
+    <h1>Sigma Engineering JSC</h1>
+    <p style="font-size:22px;color:var(--text-secondary);margin-bottom:30px;line-height:1.5;">Hồ sơ Khách hàng &amp; Phân tích Cơ hội<br>Giải pháp SAP cho Quản lý Tiến độ Thi công &amp; Kế toán</p>
+    <div class="hero-meta">
+      <span>📅 15/07/2026</span>
+      <span>👤 Richard Vu · SAP Presales · BCIS / FPT IS</span>
+      <span>🤝 FPT Japan</span>
+    </div>
+    <div class="hero-divider"></div>
+    <p style="font-size:14px;color:var(--text-secondary);">Công ty con 100% của Yurtec Corporation (Nhật Bản) · Top 3 Nhà thầu M&amp;E nội địa</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 1: TỔNG QUAN -->
+<section class="section">
+  <div class="section-label">Phần 1</div>
+  <div class="section-title">Tổng quan Sigma Engineering JSC</div>
+
+  <div class="stats-row">
+    <div class="stat-item"><div class="stat-num">2005</div><div class="stat-label">Năm thành lập</div></div>
+    <div class="stat-item"><div class="stat-num">250<span style="font-size:20px"> tỷ</span></div><div class="stat-label">Vốn điều lệ</div></div>
+    <div class="stat-item"><div class="stat-num">~1,000</div><div class="stat-label">Nhân sự</div></div>
+    <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">Dự án</div></div>
+    <div class="stat-item"><div class="stat-num">354<span style="font-size:16px;font-weight:500"> th</span></div><div class="stat-label">Xếp hạng VNR500</div></div>
+  </div>
+
+  <table class="info-table">
+    <tr><td>Tên đầy đủ</td><td>Công ty Cổ phần Kỹ thuật Sigma (Sigma Engineering JSC)</td></tr>
+    <tr><td>Mã số thuế</td><td>0101600518</td></tr>
+    <tr><td>Năm thành lập</td><td>11/01/2005</td></tr>
+    <tr><td>Trụ sở chính</td><td>Tầng 27, Tòa A, HUDTOWER, 37 Lê Văn Lương, P. Nhân Chính, Q. Thanh Xuân, Hà Nội</td></tr>
+    <tr><td>Người đại diện</td><td>Ông Nguyễn Quang Ngọc — Chủ tịch HĐQT kiêm Tổng Giám đốc</td></tr>
+    <tr><td>Vốn điều lệ</td><td>250 tỷ VND (đã tăng từ 160 tỷ năm 2021)</td></tr>
+    <tr><td>Số lượng nhân sự</td><td>~1,000 người</td></tr>
+    <tr><td>Doanh thu (2019)</td><td>1,860 tỷ VND (~84 triệu USD)</td></tr>
+    <tr><td>Xếp hạng VNR500</td><td>Hạng 354 (Bảng xếp hạng 500 doanh nghiệp lớn nhất Việt Nam)</td></tr>
+    <tr><td>Chứng nhận</td><td>ISO 9001:2015 (Quản lý chất lượng), ISO 45000:2018 (An toàn &amp; Sức khỏe nghề nghiệp)</td></tr>
+    <tr><td>Website</td><td><a href="https://sigma.net.vn/vi" style="color:var(--accent-light);text-decoration:none;">sigma.net.vn</a></td></tr>
+  </table>
+
+  <div class="section-subtitle" style="margin-bottom:12px;"><strong>Lịch sử phát triển</strong></div>
+  <div class="timeline">
+    <div class="timeline-item"><div class="timeline-year">2005</div><div class="timeline-text">Thành lập với định hướng trở thành nhà thầu Cơ Điện (M&amp;E) chuyên nghiệp</div></div>
+    <div class="timeline-item"><div class="timeline-year">2005–2020</div><div class="timeline-text">Tăng trưởng mạnh mẽ, hoàn thành 100+ dự án, khẳng định vị thế Top 3 nhà thầu M&amp;E nội địa</div></div>
+    <div class="timeline-item"><div class="timeline-year">02/2021</div><div class="timeline-text">Yurtec Corporation (Nhật Bản) mua lại 100% cổ phần, chính thức hoàn tất tháng 4/2021</div></div>
+    <div class="timeline-item"><div class="timeline-year">2021–2025</div><div class="timeline-text">Mở rộng sang lĩnh vực năng lượng tái tạo (điện gió), tăng vốn điều lệ lên 250 tỷ</div></div>
+    <div class="timeline-item"><div class="timeline-year">2026</div><div class="timeline-text">Kỷ niệm 20+ năm thành lập, 200+ dự án đã hoàn thành</div></div>
+  </div>
+
+  <div class="section-subtitle" style="margin-bottom:12px;"><strong>Lĩnh vực hoạt động chính</strong></div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h3>Hệ thống Điện</h3>
+      <p>Điện trung/hạ thế, chiếu sáng, chống sét, tủ điện</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌡️</div>
+      <h3>HVAC</h3>
+      <p>Điều hòa không khí, thông gió, hút khói</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💧</div>
+      <h3>Cấp thoát nước</h3>
+      <p>Cấp nước sinh hoạt, thoát nước, xử lý nước thải</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧯</div>
+      <h3>PCCC</h3>
+      <p>Báo cháy, chữa cháy tự động, chữa cháy vách tường</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌬️</div>
+      <h3>Năng lượng tái tạo</h3>
+      <p>Thi công hạ tầng điện gió</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>Bảo trì</h3>
+      <p>Bảo trì phòng ngừa và phục hồi thiết bị cơ điện</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 2: YURTEC -->
+<section class="section section-dark">
+  <div class="section-label">Phần 2</div>
+  <div class="section-title">Mối quan hệ với Yurtec Corporation</div>
+  <div class="section-subtitle">Công ty mẹ Nhật Bản — TYO: 1934</div>
+
+  <table class="info-table">
+    <tr><td>Tên đầy đủ</td><td>Yurtec Corporation (株式会社ユアテック) — 82 năm lịch sử</td></tr>
+    <tr><td>Trụ sở chính</td><td>Sendai, Miyagi, Nhật Bản</td></tr>
+    <tr><td>Mã chứng khoán</td><td>TYO: 1934 · ~2,498 JPY (05/2026)</td></tr>
+    <tr><td>Doanh thu FY2025</td><td>~243 tỷ JPY (~1.65 tỷ USD)</td></tr>
+    <tr><td>Lợi nhuận hoạt động</td><td>~13.5 tỷ JPY</td></tr>
+    <tr><td>Nhân sự</td><td>5,841 người (toàn tập đoàn)</td></tr>
+    <tr><td>Lĩnh vực chính</td><td>Xây lắp điện (35%), Phân phối điện (28%), HVAC (11%), Truyền tải điện (8%), Xây dựng dân dụng (7%), Viễn thông (6%), Nhà máy điện (5%)</td></tr>
+  </table>
+
+  <div style="margin-top:40px;">
+    <div class="section-subtitle" style="margin-bottom:12px;"><strong>Thương vụ M&A — Tháng 2/2021</strong></div>
+  </div>
+  <div class="highlight-box">
+    <h4>Yurtec mua lại 100% cổ phần Sigma Engineering JSC</h4>
+    <p>Ngày 08/02/2021, Yurtec công bố mua lại toàn bộ cổ phần từ 3 cổ đông cá nhân, biến Sigma thành công ty con thuộc sở hữu toàn bộ (完全子会社). Thương vụ hoàn tất tháng 4/2021.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>🇻🇳 Mở rộng tại Việt Nam</h3>
+      <p>Sigma bổ sung năng lực tiếp cận thị trường nội địa Việt Nam, kết hợp với Yurtec Vietnam (thành lập 2011).</p>
+    </div>
+    <div class="card">
+      <h3>🤝 Synergy</h3>
+      <p>Kết hợp năng lực thi công Sigma + kinh nghiệm và quan hệ khách hàng Nhật của Yurtec Vietnam.</p>
+    </div>
+    <div class="card">
+      <h3>🌱 Năng lượng tái tạo</h3>
+      <p>Sigma có kinh nghiệm thi công điện gió — phù hợp xu hướng mở rộng năng lượng tái tạo của Yurtec.</p>
+    </div>
+    <div class="card">
+      <h3>📜 Lịch sử hợp tác</h3>
+      <p>Hai bên từng hợp tác thành công trong dự án Nhiệt điện Thái Bình trước khi M&A.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;">
+    <div class="section-subtitle" style="margin-bottom:12px;"><strong>Chiến lược trung hạn Yurtec (2024–2028)</strong></div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-item"><div class="stat-num">270<span style="font-size:16px"> tỷ ¥</span></div><div class="stat-label">Doanh thu FY2028</div></div>
+    <div class="stat-item"><div class="stat-num">6.7%</div><div class="stat-label">Tỷ suất LN hoạt động</div></div>
+    <div class="stat-item"><div class="stat-num">8.0%</div><div class="stat-label">ROE</div></div>
+    <div class="stat-item"><div class="stat-num">300<span style="font-size:16px"> tỷ ¥</span></div><div class="stat-label">Đầu tư 5 năm</div></div>
+  </div>
+
+  <div class="highlight-box">
+    <h4>⚡ Hàm ý cho quyết định mua ERP</h4>
+    <ul style="padding-left:20px;">
+      <li>Quyết định đầu tư lớn nhiều khả năng cần phê duyệt từ Yurtec Japan</li>
+      <li>Yurtec có thể yêu cầu chuẩn hóa hệ thống theo chuẩn tập đoàn</li>
+      <li>Sigma cần báo cáo tài chính theo chuẩn Nhật (J-GAAP)</li>
+      <li>FPT Japan là cầu nối lý tưởng — làm việc bằng tiếng Nhật, am hiểu văn hóa doanh nghiệp Nhật</li>
+    </ul>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 3: NĂNG LỰC -->
+<section class="section">
+  <div class="section-label">Phần 3</div>
+  <div class="section-title">Năng lực Kinh doanh &amp; Dự án Tiêu biểu</div>
+  <div class="section-subtitle">Top 3 nhà thầu Cơ Điện nội địa · 200+ dự án toàn quốc</div>
+
+  <div class="highlight-box">
+    <h4>Vị thế &amp; Năng lực cốt lõi</h4>
+    <ul style="padding-left:20px;">
+      <li>Đối tác chiến lược với các nhà cung cấp thiết bị quốc tế: Wilo (Đức) — bơm công nghiệp</li>
+      <li>Hệ thống tủ điều khiển lập trình tiêu chuẩn quốc tế</li>
+      <li>Năng lực thi công đồng thời nhiều dự án quy mô lớn trên khắp Việt Nam</li>
+    </ul>
+  </div>
+
+  <table class="project-table">
+    <tr><th>Dự án</th><th>Loại hình</th><th>Vai trò</th></tr>
+    <tr><td class="highlight">Park Royal Hotel Complex</td><td>Hỗn hợp: Khách sạn 5★, Văn phòng, Thương mại</td><td>Tổng thầu M&amp;E</td></tr>
+    <tr><td class="highlight">Sunshine Sky City</td><td>Chung cư cao tầng + Thương mại dịch vụ</td><td>Tổng thầu M&amp;E</td></tr>
+    <tr><td class="highlight">Goldmark City</td><td>Căn hộ cao cấp + Văn phòng + TTTM</td><td>Tổng thầu M&amp;E</td></tr>
+    <tr><td class="highlight">Fairmont Hotel Complex</td><td>Khách sạn cao cấp + Thương mại + Văn phòng</td><td>Tổng thầu M&amp;E</td></tr>
+    <tr><td class="highlight">Sunshine Crystal River</td><td>Khu đô thị ven sông</td><td>Tổng thầu M&amp;E</td></tr>
+    <tr><td class="highlight">FPT Tower</td><td>Tòa nhà văn phòng công nghệ</td><td>Tổng thầu M&amp;E</td></tr>
+    <tr><td class="highlight">Thang Long Industrial Park</td><td>Khu công nghiệp (Vĩnh Phúc)</td><td>Tổng thầu M&amp;E</td></tr>
+    <tr><td class="highlight">Nhiệt điện Thái Bình</td><td>Nhà máy nhiệt điện</td><td>Hợp tác với Yurtec</td></tr>
+    <tr><td class="highlight">Dự án Điện gió</td><td>Năng lượng tái tạo (nhiều dự án)</td><td>Tổng thầu hạ tầng</td></tr>
+  </table>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 4: PAIN POINTS -->
+<section class="section section-dark">
+  <div class="section-label">Phần 4</div>
+  <div class="section-title">Phân tích Nhu cầu &amp; Pain Points</div>
+  <div class="section-subtitle">Nhu cầu đã xác nhận: Quản lý Tiến độ Thi công &amp; Quản lý Kế toán</div>
+
+  <div style="margin-top:30px;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">A. Quản lý Tiến độ Thi công</div>
+    <table class="pp-table">
+      <tr><th>Pain Point</th><th style="width:65%;">Mô tả</th></tr>
+      <tr><td>Thi công đồng thời nhiều dự án</td><td>Hàng chục công trường cùng lúc trên toàn quốc — cần hệ thống tập trung để theo dõi tiến độ tổng thể</td></tr>
+      <tr><td>Phối hợp đa bên</td><td>Chủ đầu tư, Tư vấn giám sát, Nhà thầu phụ, Nhà cung cấp vật tư — cần minh bạch tiến độ với tất cả các bên</td></tr>
+      <tr><td>Quản lý nhà thầu phụ</td><td>Phần lớn khối lượng thi công giao cho subcontractor — cần theo dõi tiến độ, chất lượng, thanh toán</td></tr>
+      <tr><td>Quản lý vật tư &amp; thiết bị</td><td>Thiết bị cơ điện có lead time dài — nếu không đồng bộ với tiến độ sẽ gây chậm trễ</td></tr>
+      <tr><td>Báo cáo cho Yurtec</td><td>Công ty mẹ Nhật cần báo cáo tiến độ định kỳ bằng tiếng Nhật/Anh</td></tr>
+    </table>
+  </div>
+
+  <div style="margin-top:40px;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">B. Quản lý Kế toán</div>
+    <table class="pp-table">
+      <tr><th>Pain Point</th><th style="width:65%;">Mô tả</th></tr>
+      <tr><td>Kế toán theo dự án</td><td>Mỗi dự án là một profit center riêng — hạch toán doanh thu, chi phí, lợi nhuận từng dự án</td></tr>
+      <tr><td>Doanh thu theo tiến độ (POC)</td><td>Ghi nhận doanh thu theo % hoàn thành — yêu cầu tích hợp chặt chẽ tiến độ với sổ sách kế toán</td></tr>
+      <tr><td>Quản lý thanh toán giai đoạn</td><td>Hợp đồng M&amp;E có nhiều milestone thanh toán — theo dõi hóa đơn theo từng đợt nghiệm thu</td></tr>
+      <tr><td>Quyết toán nhà thầu phụ</td><td>Hàng trăm subcontractor, mỗi bên có điều khoản riêng — kiểm soát công nợ phải trả chính xác</td></tr>
+      <tr><td>Báo cáo hợp nhất (Consolidation)</td><td>J-GAAP compliance, multi-currency (VND/JPY/USD) cho Yurtec hợp nhất</td></tr>
+      <tr><td>Quản lý chi phí vật tư</td><td>Vật tư chiếm tỷ trọng lớn trong giá vốn — kiểm soát mua sắm, tồn kho, hao hụt</td></tr>
+    </table>
+  </div>
+
+  <div style="margin-top:40px;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">🎯 Drivers — Tại sao Sigma cần ERP ngay bây giờ?</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h3>Quy mô vượt ngưỡng</h3>
+        <p>1,000 nhân sự, 200+ dự án — Excel &amp; phần mềm rời rạc không còn đáp ứng được</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <h3>Yêu cầu từ Yurtec</h3>
+        <p>Minh bạch, chuẩn hóa, báo cáo đúng hạn theo chuẩn Nhật</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚔️</div>
+        <h3>Áp lực cạnh tranh</h3>
+        <p>Ricons, Unicons, Searefico, Duy Tan đang đầu tư mạnh vào chuyển đổi số</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚠️</div>
+        <h3>Quản trị rủi ro</h3>
+        <p>Dự án càng lớn, rủi ro chậm tiến độ/vượt ngân sách càng cao — cần cảnh báo sớm</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 5: TỔ CHỨC -->
+<section class="section">
+  <div class="section-label">Phần 5</div>
+  <div class="section-title">Cấu trúc Tổ chức &amp; Quy trình Ra quyết định</div>
+
+  <div class="highlight-box">
+    <h4>Lãnh đạo chủ chốt</h4>
+    <p><strong>Ông Nguyễn Quang Ngọc</strong> — Chủ tịch HĐQT kiêm Tổng Giám đốc (CEO), người sáng lập, lãnh đạo Sigma từ 2005 đến nay.</p>
+    <p style="margin-top:8px;"><strong>Ban Giám đốc các Khối:</strong> Quản lý dự án, Kỹ thuật, Kinh doanh, Tài chính — Kế toán</p>
+  </div>
+
+  <div style="margin-top:40px;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">Mô hình ra quyết định dự kiến</div>
+  </div>
+
+  <div class="org-chart">
+    <div class="org-node primary">Sigma BOD<br><span style="font-weight:400;font-size:13px;">CEO Nguyễn Quang Ngọc</span></div>
+    <div class="org-arrow">↓</div>
+    <div class="org-node">Yurtec Vietnam<br><span style="font-weight:400;font-size:13px;">công ty mẹ trung gian</span></div>
+    <div class="org-arrow">↓</div>
+    <div class="org-node">Yurtec HQ Sendai, Japan<br><span style="font-weight:400;font-size:13px;">phê duyệt đầu tư lớn</span></div>
+  </div>
+
+  <div class="card-grid" style="margin-top:30px;">
+    <div class="card">
+      <h3>🔧 Quyết định kỹ thuật</h3>
+      <p>Sigma BOD + Phòng IT/Kế toán — lựa chọn giải pháp &amp; nhà cung cấp</p>
+    </div>
+    <div class="card">
+      <h3>💰 Phê duyệt ngân sách</h3>
+      <p>Nếu giá trị lớn, gần như chắc chắn cần Yurtec HQ phê duyệt</p>
+    </div>
+    <div class="card">
+      <h3>👥 Người ảnh hưởng</h3>
+      <p>CFO/Trưởng phòng Kế toán · Giám đốc Dự án · CIO/IT Manager</p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:30px;">
+    <h4>💡 Lưu ý chiến lược</h4>
+    <ul style="padding-left:20px;">
+      <li>FPT Japan đóng vai trò cầu nối với Yurtec HQ — trình bày giải pháp bằng tiếng Nhật, am hiểu chuẩn mực kế toán Nhật (J-GAAP)</li>
+      <li>Cần "người sponsor" bên trong Sigma — lý tưởng là CEO Nguyễn Quang Ngọc hoặc CFO</li>
+    </ul>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 6: SAP MAPPING -->
+<section class="section section-dark">
+  <div class="section-label">Phần 6</div>
+  <div class="section-title">Mapping Giải pháp SAP &amp; Gợi ý Tiếp cận</div>
+
+  <div style="margin:30px 0;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">Nhu cầu → Module SAP</div>
+    <table class="pp-table">
+      <tr><th>Nhu cầu Sigma</th><th>Module SAP</th><th>Mô tả</th></tr>
+      <tr><td>Quản lý tiến độ thi công</td><td><strong>SAP PS</strong> + SAP PPM</td><td>WBS, Network, Milestone, theo dõi tiến độ thực tế vs kế hoạch, quản lý resource</td></tr>
+      <tr><td>Quản lý kế toán dự án</td><td><strong>SAP FI-CO</strong> + SAP PS</td><td>Project cost controlling, POC revenue recognition, progress billing, profitability analysis</td></tr>
+      <tr><td>Quản lý mua sắm &amp; vật tư</td><td><strong>SAP MM</strong></td><td>Mua sắm thiết bị, hợp đồng khung, inventory công trường</td></tr>
+      <tr><td>Quản lý nhà thầu phụ</td><td><strong>SAP MM</strong> (Sub) + SAP FI-AP</td><td>Hợp đồng phụ, khối lượng hoàn thành, thanh toán theo đợt</td></tr>
+      <tr><td>Báo cáo tài chính Nhật</td><td><strong>SAP FI</strong> (Parallel Ledger)</td><td>Hạch toán song song VAS + J-GAAP, multi-currency</td></tr>
+      <tr><td>Tích hợp Yurtec</td><td><strong>SAP BTP</strong></td><td>Đồng bộ dữ liệu với ERP của Yurtec, consolidation</td></tr>
+      <tr><td>Báo cáo quản trị</td><td><strong>SAP Analytics Cloud</strong></td><td>Dashboard tiến độ, cash flow, lợi nhuận dự án real-time</td></tr>
+    </table>
+  </div>
+
+  <div class="arch-diagram">
+    <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:24px;">Kiến trúc Giải pháp Đề xuất</div>
+    <div class="arch-box" style="font-size:17px;padding:20px 48px;display:block;margin:0 auto 16px;max-width:400px;">SAP S/4HANA Cloud Private</div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:16px 0;">
+      <div class="arch-box accent">SAP PS<br><span style="font-weight:400;font-size:12px;">Tiến độ</span></div>
+      <div class="arch-box accent">SAP FI<br><span style="font-weight:400;font-size:12px;">Kế toán</span></div>
+      <div class="arch-box accent">SAP MM<br><span style="font-weight:400;font-size:12px;">Mua sắm &amp; Vật tư</span></div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-box" style="border-color:rgba(41,151,255,0.4);background:rgba(41,151,255,0.06);">SAP BTP — Tích hợp Yurtec</div>
+  </div>
+
+  <div style="margin-top:40px;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">🏆 Lợi thế cạnh tranh của SAP</div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🏗️ SAP PS chuyên biệt</h3>
+        <p>Module chuyên biệt cho Construction/EPC — có sẵn best practice cho quản lý dự án xây dựng</p>
+      </div>
+      <div class="card">
+        <h3>🔗 Tích hợp toàn diện</h3>
+        <p>PS-MM-FI-CO trên một nền tảng — tiến độ → mua sắm → kế toán đồng bộ real-time</p>
+      </div>
+      <div class="card">
+        <h3>🌐 Multi-currency &amp; Parallel Ledger</h3>
+        <p>Đáp ứng yêu cầu báo cáo VAS + J-GAAP cùng lúc</p>
+      </div>
+      <div class="card">
+        <h3>🚀 Khả năng mở rộng</h3>
+        <p>Khi Yurtec muốn ERP chung toàn tập đoàn, Sigma đã sẵn sàng</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">🥊 Phân tích Cạnh tranh</div>
+    <table class="pp-table">
+      <tr><th>Đối thủ</th><th>Điểm mạnh</th><th>Điểm yếu</th></tr>
+      <tr><td><strong>Microsoft Dynamics 365</strong></td><td>Dễ triển khai, quen thuộc</td><td>Module PS yếu hơn SAP, không chuyên sâu cho Construction</td></tr>
+      <tr><td><strong>Oracle ERP Cloud</strong></td><td>Mạnh về tài chính</td><td>Ít phổ biến trong M&amp;E Việt Nam</td></tr>
+      <tr><td><strong>Phần mềm Việt</strong></td><td>Giá rẻ, hỗ trợ nhanh</td><td>Không đáp ứng quy mô 1,000 nhân sự + tích hợp Nhật</td></tr>
+      <tr><td><strong>Giải pháp nội bộ</strong></td><td>Tùy chỉnh cao</td><td>Rủi ro bảo trì, không có lộ trình nâng cấp</td></tr>
+    </table>
+  </div>
+
+  <div style="margin-top:40px;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">🗺️ Gợi ý Chiến lược Tiếp cận</div>
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-num">01</div>
+        <h4>Discovery</h4>
+        <ul style="padding-left:18px;">
+          <li>Lắng nghe — hiểu quy trình hiện tại</li>
+          <li>Xác định quy mô: số dự án đồng thời, số sub, khối lượng giao dịch</li>
+          <li>Tìm hiểu hệ thống hiện tại của Sigma</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">02</div>
+        <h4>Demo có trọng tâm</h4>
+        <ul style="padding-left:18px;">
+          <li>SAP PS: WBS dự án cao ốc, tiến độ, procurement</li>
+          <li>Kế toán dự án: POC, progress billing</li>
+          <li>FPT Japan đồng hành — demo tiếng Nhật</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">03</div>
+        <h4>Proposal</h4>
+        <ul style="padding-left:18px;">
+          <li>Phạm vi: SAP S/4HANA (PS + FI-CO + MM) + BTP</li>
+          <li>FPT IS triển khai + FPT Japan cầu nối</li>
+          <li>Timeline &amp; Budget sau Discovery</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 7: FPT JAPAN -->
+<section class="section">
+  <div class="section-label">Phần 7</div>
+  <div class="section-title">Chiến lược Kết hợp với FPT Japan</div>
+
+  <table class="pp-table" style="margin:30px 0;">
+    <tr><th>Vai trò FPT Japan</th><th>Mô tả</th></tr>
+    <tr><td><strong>🌏 Cầu nối ngôn ngữ &amp; văn hóa</strong></td><td>Làm việc trực tiếp với Yurtec HQ bằng tiếng Nhật, am hiểu văn hóa kinh doanh Nhật (nemawashi, ringi)</td></tr>
+    <tr><td><strong>📊 Tư vấn chuẩn mực Nhật</strong></td><td>Am hiểu J-GAAP, quy định kế toán Nhật cho công ty con ở nước ngoài</td></tr>
+    <tr><td><strong>🤝 One FPT</strong></td><td>FPT IS (SAP VN) + FPT Japan (cầu nối HQ) — lợi thế không đối thủ nào có</td></tr>
+    <tr><td><strong>🛠️ AMS</strong></td><td>Hỗ trợ sau triển khai bằng tiếng Nhật cho Sigma + Yurtec</td></tr>
+  </table>
+
+  <div style="margin:40px 0;">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;">Phân công dự kiến</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <h3>FPT IS (BCIS)</h3>
+        <p>Giải pháp SAP, demo kỹ thuật, triển khai chính</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🇯🇵</div>
+        <h3>FPT Japan</h3>
+        <p>Làm việc với Yurtec, tài liệu tiếng Nhật, tư vấn compliance</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Richard Vu</h3>
+        <p>Account lead, điều phối FPT IS &amp; FPT Japan, xây dựng quan hệ với Sigma BOD</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    <p>FPT là đối tác duy nhất có thể triển khai SAP cho Sigma tại Việt Nam, đồng thời kết nối trực tiếp với Yurtec Japan thông qua FPT Japan — đảm bảo giải pháp vừa đáp ứng đặc thù thi công M&amp;E Việt Nam, vừa tuân thủ chuẩn mực báo cáo và quản trị của tập đoàn Nhật.</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SECTION 8: SOURCES -->
+<section class="section section-dark">
+  <div class="section-label">Phần 8</div>
+  <div class="section-title">Phụ lục: Nguồn Tham khảo</div>
+
+  <div class="source-category">📄 Primary Sources</div>
+  <div class="sources-list">
+    <a href="https://www.yurtec.co.jp/pdf/r210208.pdf" target="_blank">Yurtec Corporation — News Release: Sigma株式取得 (完全子会社化)</a>
+    <a href="https://sigma.net.vn/vi" target="_blank">Sigma Engineering JSC — Website chính thức</a>
+    <a href="https://www.yurtec.co.jp/english/ir/pdf/events-presentations/ireventspresentations.pdf" target="_blank">Yurtec Corporation — IR Presentations (Báo cáo tài chính &amp; chiến lược)</a>
+    <a href="https://www.yurtec.co.jp/english/ir/pdf/other/management_plan(2024-2028).pdf" target="_blank">Yurtec Corporation — Medium-Term Management Plan (2024-2028)</a>
+    <a href="https://vnr500.vn/Thong-tin-doanh-nghiep/CONG-TY-CP-KY-THUAT-SIGMA-Chart--4759-2024.html" target="_blank">VNR500 — Xếp hạng Sigma Engineering JSC (Hạng 354)</a>
+  </div>
+
+  <div class="source-category">🏭 Industry &amp; Competitor Context</div>
+  <div class="sources-list">
+    <a href="https://beltandroad.hktdc.com/en/node/84074" target="_blank">Belt and Road HK — Sigma Engineering JSC Profile (MEPF Contractor)</a>
+    <a href="https://wilovn.com/cong-ty-co-phan-ky-thuat-sigma" target="_blank">Wilo Vietnam — Đối tác chiến lược của Sigma</a>
+    <a href="https://sigma.net.vn/en/life-at-sigma-engineering/sigma-year-end-party-2025-20-years-built-by-sigma-people.html" target="_blank">Sigma Year End Party 2025 — 20 Years Built by Sigma People</a>
+  </div>
+
+  <div class="source-category">🔧 SAP &amp; Technical References</div>
+  <div class="sources-list">
+    <a href="https://www.sap-ps.net/single-post/how-sap-ps-is-used-in-construction-engineering-projects" target="_blank">How SAP PS is Used in Construction and Engineering Projects</a>
+    <a href="https://www.yurtec.co.jp/english" target="_blank">Yurtec Corporation — English Portal</a>
+  </div>
+
+  <div style="margin-top:48px;padding:24px;border:1px solid var(--card-border);border-radius:20px;font-size:14px;color:var(--text-secondary);line-height:1.8;">
+    Báo cáo này được biên soạn dựa trên thông tin công khai từ website chính thức của Sigma, Yurtec Corporation, và các nguồn tin ngành xây dựng/ERP. Một số phân tích về pain points và chiến lược tiếp cận dựa trên kinh nghiệm triển khai SAP cho doanh nghiệp xây dựng tại Việt Nam.
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>© 2026 BCIS / FPT IS · Sigma Engineering JSC — Hồ sơ Khách hàng · Ngày soạn: 15/07/2026</p>
+  <p style="margin-top:6px;">Người phụ trách: Richard Vu (Thắng Vũ) · SAP Presales Consultant</p>
+</footer>
+
+</div><!-- END MAIN CONTENT -->
+
+</body>
+</html>
