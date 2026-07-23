@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Sunrise – SAP Solution Architecture</title>
+
+  <!-- Apple-keynote-like minimal aesthetic -->
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.08);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.72);
+      --muted2: rgba(255,255,255,0.58);
+      --line: rgba(255,255,255,0.12);
+      --accent: #6ee7ff;
+      --accent2: #a78bfa;
+      --good: #34d399;
+      --warn: #fbbf24;
+      --bad: #fb7185;
+      --radius: 18px;
+      --shadow: 0 20px 60px rgba(0,0,0,0.55);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(110,231,255,0.18), transparent 55%),
+        radial-gradient(900px 700px at 80% 0%, rgba(167,139,250,0.16), transparent 52%),
+        radial-gradient(800px 600px at 60% 90%, rgba(52,211,153,0.10), transparent 55%),
+        var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Display", "SF Pro Text", Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .wrap {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 20px 18px 60px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      height: calc(100vh - 36px);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .sb-head {
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+    }
+    .brand {
+      font-weight: 650;
+      letter-spacing: 0.2px;
+      font-size: 15px;
+    }
+    .subtitle {
+      margin-top: 6px;
+      color: var(--muted2);
+      font-size: 12.5px;
+    }
+    .sb-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(110,231,255,0.15);
+    }
+    .sb-body {
+      padding: 12px 10px 16px;
+      overflow: auto;
+      height: calc(100% - 118px);
+    }
+    .toc-title {
+      padding: 10px 10px 6px;
+      font-size: 12px;
+      color: var(--muted2);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+    .toc a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 13.5px;
+      border: 1px solid transparent;
+    }
+    .toc a:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border-color: rgba(255,255,255,0.09);
+    }
+    .toc a.active {
+      background: rgba(110,231,255,0.10);
+      border-color: rgba(110,231,255,0.22);
+      color: var(--text);
+    }
+
+    /* Content */
+    .content {
+      min-width: 0;
+    }
+    .hero {
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px 26px 22px;
+    }
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .kicker .pill {
+      padding: 6px 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .06em;
+    }
+    h1 {
+      margin: 14px 0 8px;
+      font-size: 34px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .meta {
+      color: var(--muted2);
+      font-size: 13.5px;
+    }
+    .grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      padding: 16px 16px 14px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .card p {
+      margin: 0;
+      color: var(--text);
+      font-size: 14.5px;
+    }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-12 { grid-column: span 12; }
+
+    /* Markdown content styling */
+    .md {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.18);
+      border-radius: var(--radius);
+      padding: 10px 0;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .section {
+      padding: 22px 26px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .section:first-child { border-top: none; }
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+    .section h3 {
+      margin: 18px 0 8px;
+      font-size: 17px;
+      color: var(--text);
+    }
+    .section p {
+      margin: 10px 0;
+      color: var(--muted);
+      font-size: 15.5px;
+    }
+    .section ul, .section ol {
+      margin: 10px 0 10px 20px;
+      color: var(--muted);
+      font-size: 15.5px;
+    }
+    .section li { margin: 6px 0; }
+    code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.10);
+      font-size: 0.92em;
+    }
+    pre {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 14px 14px;
+      overflow: auto;
+      color: rgba(255,255,255,0.86);
+    }
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+    blockquote {
+      margin: 14px 0;
+      padding: 10px 14px;
+      border-left: 3px solid rgba(110,231,255,0.55);
+      background: rgba(110,231,255,0.06);
+      border-radius: 12px;
+      color: var(--muted);
+    }
+    hr {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      margin: 18px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    th, td {
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      vertical-align: top;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    th {
+      text-align: left;
+      color: rgba(255,255,255,0.82);
+      background: rgba(255,255,255,0.06);
+      font-weight: 600;
+    }
+
+    /* Mermaid container */
+    .mermaid {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 12px;
+      overflow: auto;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 16px;
+      color: var(--muted2);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 10px 0 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .wrap { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .sb-body { height: auto; max-height: 340px; }
+      h1 { font-size: 28px; }
+    }
+  </style>
+
+  <!-- Markdown + Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <aside class="sidebar">
+      <div class="sb-head">
+        <div class="brand">Sunrise / Vietnam Grocery</div>
+        <div class="subtitle">SAP Solution Architecture • Apple Keynote-style HTML</div>
+        <div class="sb-actions">
+          <div class="chip"><span class="dot"></span> One-page deck</div>
+          <a class="chip" href="#top">Top</a>
+        </div>
+      </div>
+      <div class="sb-body">
+        <div class="toc-title">Mục lục</div>
+        <nav id="toc" class="toc"></nav>
+      </div>
+    </aside>
+
+    <main class="content" id="top">
+      <section class="hero">
+        <div class="kicker">
+          <span class="pill">Confidential</span>
+          <span>ERP Solution Architecture & Proposal</span>
+        </div>
+        <h1>KIẾN TRÚC GIẢI PHÁP SAP CHO SUNRISE FOODSTUFF / VIETNAM GROCERY</h1>
+        <div class="meta">Nguồn: <code>Sunrise_SAP_Solution_Architecture.md</code> • Render: Markdown + Mermaid • Phong cách: Keynote tối giản</div>
+
+        <div class="grid">
+          <div class="card span-4">
+            <h3>Mục tiêu</h3>
+            <p>Hiển thị đầy đủ nội dung tài liệu, điều hướng theo mục, và render flowchart/orgchart rõ nét bằng Mermaid (SVG).</p>
+          </div>
+          <div class="card span-4">
+            <h3>Hình minh hoạ</h3>
+            <p>Các sơ đồ trong file (Mermaid) được render thành SVG nên sắc nét khi zoom/in ấn.</p>
+          </div>
+          <div class="card span-4">
+            <h3>Triển khai</h3>
+            <p>Chỉ cần mở <code>index.html</code>. Nếu trình duyệt chặn CDN, chạy qua server tĩnh (VD: <code>python -m http.server</code>).</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="md" id="doc">
+        <div id="docRoot"></div>
+      </section>
+
+      <div class="footer">© 2026 – Generated HTML site</div>
+    </main>
+  </div>
+
+<script>
+  // --- Mermaid theme tuned for dark keynote-like look ---
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: "dark",
+    securityLevel: "loose",
+    flowchart: { curve: "basis" },
+    themeVariables: {
+      darkMode: true,
+      background: "transparent",
+      primaryColor: "rgba(255,255,255,0.06)",
+      primaryBorderColor: "rgba(255,255,255,0.18)",
+      primaryTextColor: "rgba(255,255,255,0.92)",
+      lineColor: "rgba(255,255,255,0.32)",
+      secondaryColor: "rgba(110,231,255,0.10)",
+      tertiaryColor: "rgba(167,139,250,0.10)",
+      fontFamily: "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial",
+      edgeLabelBackground: "rgba(0,0,0,0.35)"
+    }
+  });
+
+  // --- Markdown source inlined to keep the site self-contained ---
+  const mdSource = "# KI\u1ebeN TR\u00daC GI\u1ea2I PH\u00c1P SAP CHO SUNRISE FOODSTUFF / VIETNAM GROCERY\n\n## ERP Solution Architecture & Proposal\n\n**T\u00e0i li\u1ec7u d\u00e0nh cho:** Sunrise Foodstuff JSC / Vietnam Grocery JSC  \n**Ng\u01b0\u1eddi chu\u1ea9n b\u1ecb:** Richard Vu (Th\u1eafng V\u0169) \u2013 SAP Presales Consultant, BCIS - FPT IS  \n**Ng\u00e0y:** 23/07/2026  \n**Ph\u00e2n lo\u1ea1i:** Confidential \u2013 For Evaluation Purposes Only\n\n---\n\n## M\u1ee4C L\u1ee4C\n\n1. [Hi\u1ec3u v\u1ec1 b\u00e0i to\u00e1n c\u1ee7a Sunrise](#1-hi\u1ec3u-v\u1ec1-b\u00e0i-to\u00e1n-c\u1ee7a-sunrise)\n2. [Tri\u1ebft l\u00fd ki\u1ebfn tr\u00fac: SAP as the Core, BTP as the Extension Layer](#2-tri\u1ebft-l\u00fd-ki\u1ebfn-tr\u00fac)\n3. [Ki\u1ebfn tr\u00fac t\u1ed5ng th\u1ec3](#3-ki\u1ebfn-tr\u00fac-t\u1ed5ng-th\u1ec3)\n4. [17 Module \u2014 Mapping chi ti\u1ebft SAP vs Custom](#4-17-module--mapping-chi-ti\u1ebft-sap-vs-custom)\n5. [N\u0103m d\u00f2ng ch\u1ea3y \u2014 C\u00e1ch SAP ki\u1ec3m so\u00e1t \u0111\u1ed3ng th\u1eddi](#5-n\u0103m-d\u00f2ng-ch\u1ea3y--c\u00e1ch-sap-ki\u1ec3m-so\u00e1t-\u0111\u1ed3ng-th\u1eddi)\n6. [Multi-Company & Multi-Currency Architecture](#6-multi-company--multi-currency-architecture)\n7. [28 Tr\u1ea1ng th\u00e1i \u0111\u01a1n h\u00e0ng \u2014 Workflow Engine](#7-28-tr\u1ea1ng-th\u00e1i-\u0111\u01a1n-h\u00e0ng--workflow-engine)\n8. [Ph\u00e2n quy\u1ec1n b\u1ea3o m\u1eadt chu\u1ed7i cung \u1ee9ng](#8-ph\u00e2n-quy\u1ec1n-b\u1ea3o-m\u1eadt-chu\u1ed7i-cung-\u1ee9ng)\n9. [C\u1ea3nh b\u00e1o t\u1ef1 \u0111\u1ed9ng & Dashboard CEO](#9-c\u1ea3nh-b\u00e1o-t\u1ef1-\u0111\u1ed9ng--dashboard-ceo)\n10. [T\u00edch h\u1ee3p h\u1ec7 sinh th\u00e1i](#10-t\u00edch-h\u1ee3p-h\u1ec7-sinh-th\u00e1i)\n11. [\u0110\u1ed1i chi\u1ebfu v\u1edbi ti\u00eau ch\u00ed nghi\u1ec7m thu](#11-\u0111\u1ed1i-chi\u1ebfu-v\u1edbi-ti\u00eau-ch\u00ed-nghi\u1ec7m-thu)\n12. [SAP vs. Odoo \u2014 Ph\u00e2n t\u00edch kh\u00e1c bi\u1ec7t](#12-sap-vs-odoo--ph\u00e2n-t\u00edch-kh\u00e1c-bi\u1ec7t)\n13. [L\u1ed9 tr\u00ecnh tri\u1ec3n khai \u0111\u1ec1 xu\u1ea5t](#13-l\u1ed9-tr\u00ecnh-tri\u1ec3n-khai-\u0111\u1ec1-xu\u1ea5t)\n14. [Investment Framework](#14-investment-framework)\n15. [Social Proof \u2014 Doanh nghi\u1ec7p c\u00f9ng ng\u00e0nh \u0111\u00e3 ch\u1ecdn SAP](#15-social-proof--doanh-nghi\u1ec7p-c\u00f9ng-ng\u00e0nh-\u0111\u00e3-ch\u1ecdn-sap)\n\n---\n\n## 1. Hi\u1ec3u v\u1ec1 b\u00e0i to\u00e1n c\u1ee7a Sunrise\n\nSunrise Foodstuff JSC v\u00e0 Vietnam Grocery JSC v\u1eadn h\u00e0nh m\u1ed9t m\u00f4 h\u00ecnh kinh doanh \u0111\u1eb7c th\u00f9: **Made-to-Order / Buy-to-Export v\u1edbi 95%+ doanh thu t\u1eeb xu\u1ea5t kh\u1ea9u, t\u1ed3n kho si\u00eau th\u1ea5p (~1%)**. \u0110\u00e2y l\u00e0 m\u00f4 h\u00ecnh \u0111\u00f2i h\u1ecfi h\u1ec7 th\u1ed1ng ERP kh\u00f4ng ch\u1ec9 ghi nh\u1eadn giao d\u1ecbch m\u00e0 ph\u1ea3i tr\u1edf th\u00e0nh **h\u1ec7 \u0111i\u1ec1u h\u00e0nh doanh nghi\u1ec7p xu\u1ea5t kh\u1ea9u**.\n\nBlueprint 15 trang c\u1ee7a Sunrise l\u00e0 m\u1ed9t \u0111\u1ea7u b\u00e0i nghi\u1ec7p v\u1ee5 (Business Requirement Specification) xu\u1ea5t s\u1eafc. N\u00f3 th\u1ec3 hi\u1ec7n t\u01b0 duy thi\u1ebft k\u1ebf h\u1ec7 th\u1ed1ng r\u1ea5t tr\u01b0\u1edfng th\u00e0nh: ERP ph\u1ea3i ki\u1ec3m so\u00e1t \u0111\u1ed3ng th\u1eddi **5 d\u00f2ng ch\u1ea3y** \u2013 Kh\u00e1ch h\u00e0ng, H\u00e0ng h\u00f3a, Ch\u1ee9ng t\u1eeb, D\u00f2ng ti\u1ec1n, v\u00e0 Tr\u00e1ch nhi\u1ec7m \u2013 tr\u00ean **2 ph\u00e1p nh\u00e2n**, qua **3 ph\u01b0\u01a1ng th\u1ee9c thanh to\u00e1n** (TT, LC, CAD), **3 \u0111i\u1ec1u ki\u1ec7n Incoterms** (FOB, CNF, CIF), v\u1edbi **28 tr\u1ea1ng th\u00e1i \u0111\u01a1n h\u00e0ng chu\u1ea9n h\u00f3a** v\u00e0 **7 ti\u00eau ch\u00ed nghi\u1ec7m thu c\u1ee5 th\u1ec3**.\n\nV\u1edbi t\u01b0 c\u00e1ch SAP Gold Partner v\u00e0 \u0111\u01a1n v\u1ecb \u0111\u00e3 tri\u1ec3n khai th\u00e0nh c\u00f4ng ERP cho c\u00e1c doanh nghi\u1ec7p xu\u1ea5t kh\u1ea9u g\u1ea1o, n\u00f4ng s\u1ea3n, th\u1ef1c ph\u1ea9m t\u1ea1i Vi\u1ec7t Nam, FPT IS nh\u1eadn th\u1ea5y \u0111\u00e2y l\u00e0 b\u00e0i to\u00e1n ho\u00e0n to\u00e0n n\u1eb1m trong sweet spot c\u1ee7a n\u1ec1n t\u1ea3ng SAP.\n\n---\n\n## 2. Tri\u1ebft l\u00fd ki\u1ebfn tr\u00fac: SAP as the Core, BTP as the Extension Layer\n\nCh\u00fang t\u00f4i \u0111\u1ec1 xu\u1ea5t ki\u1ebfn tr\u00fac **Core + Extension**:\n\n```\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502                  SAP S/4HANA (Core ERP)                       \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u2502\n\u2502  \u2502  FI \u2502 \u2502 CO  \u2502 \u2502 SD  \u2502 \u2502 MM  \u2502 \u2502 EWM  \u2502 \u2502 TM  \u2502 \u2502 DMS  \u2502 \u2502\n\u2502  \u2502 AR  \u2502 \u2502 PA  \u2502 \u2502 SO  \u2502 \u2502 PO  \u2502 \u2502  WM  \u2502 \u2502 Ship\u2502 \u2502 Docs \u2502 \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2502\n\u2502                                                               \u2502\n\u2502              Universal Journal (Single Source of Truth)       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                              \u2502\n                              \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502              SAP BTP (Business Technology Platform)           \u2502\n\u2502                       Extension & Innovation                  \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502   PAKD   \u2502 \u2502  Export   \u2502 \u2502 LC/CAD   \u2502 \u2502   Alert &    \u2502  \u2502\n\u2502  \u2502  Engine  \u2502 \u2502 Doc Engine\u2502 \u2502 Tracker  \u2502 \u2502  Dashboard   \u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502 Artwork  \u2502 \u2502 Container \u2502 \u2502 Workflow \u2502 \u2502  Analytics   \u2502  \u2502\n\u2502  \u2502  Control \u2502 \u2502  Tracking \u2502 \u2502  Engine  \u2502 \u2502   (SAC)      \u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                              \u2502\n                              \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502                    Integration Layer                          \u2502\n\u2502  Email \u2502 Cloud Storage \u2502 E-Signature \u2502 Bank Gateway \u2502 GS1   \u2502\n\u2502  Shipping API \u2502 E-Invoice \u2502 HR System \u2502 CRM \u2502 BI Tools       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n```\n\n**Nguy\u00ean t\u1eafc thi\u1ebft k\u1ebf:**\n\n| Nguy\u00ean t\u1eafc | M\u00f4 t\u1ea3 |\n|---|---|\n| **Core stays clean** | SAP S/4HANA x\u1eed l\u00fd c\u00e1c quy tr\u00ecnh chu\u1ea9n: T\u00e0i ch\u00ednh, B\u00e1n h\u00e0ng, Mua h\u00e0ng, Kho, V\u1eadn t\u1ea3i. Kh\u00f4ng custom v\u00e0o core. |\n| **Extensions on BTP** | C\u00e1c module \u0111\u1eb7c th\u00f9 ng\u00e0nh xu\u1ea5t kh\u1ea9u (PAKD, Export Docs, LC/CAD) \u0111\u01b0\u1ee3c ph\u00e1t tri\u1ec3n tr\u00ean SAP BTP, t\u00edch h\u1ee3p back v\u00e0o S/4HANA qua standard APIs. |\n| **Side-by-side** | BTP apps ch\u1ea1y song song, truy c\u1eadp d\u1eef li\u1ec7u S/4HANA real-time m\u00e0 kh\u00f4ng \u1ea3nh h\u01b0\u1edfng hi\u1ec7u n\u0103ng core. |\n| **Cloud-native** | To\u00e0n b\u1ed9 extension tr\u00ean BTP s\u1eed d\u1ee5ng Fiori UI, d\u1ec5 n\u00e2ng c\u1ea5p, d\u1ec5 m\u1edf r\u1ed9ng khi Sunrise th\u00eam ph\u00e1p nh\u00e2n ho\u1eb7c th\u1ecb tr\u01b0\u1eddng m\u1edbi. |\n\n---\n\n## 3. Ki\u1ebfn tr\u00fac t\u1ed5ng th\u1ec3\n\n```mermaid\ngraph TB\n    subgraph \"SAP S/4HANA Cloud \u2014 Core ERP\"\n        FI[\"FI \u2014 Financial Accounting<br/>\u25b6 AR/AP/GL/Bank/Asset\"]\n        CO[\"CO \u2014 Controlling<br/>\u25b6 Cost Center/Profit Center/PA\"]\n        SD[\"SD \u2014 Sales & Distribution<br/>\u25b6 Quotation/SO/PI/SC/Pricing\"]\n        MM[\"MM \u2014 Materials Management<br/>\u25b6 Supplier/PO/Goods Receipt/Invoice\"]\n        EWM[\"EWM \u2014 Warehouse Management<br/>\u25b6 Loading/Stuffing/Inventory\"]\n        TM[\"TM \u2014 Transportation Mgmt<br/>\u25b6 Booking/Container/Shipment\"]\n        DMS[\"DMS \u2014 Document Management<br/>\u25b6 Files/Version/Approval/Certificates\"]\n    end\n\n    subgraph \"SAP BTP \u2014 Extensions\"\n        PAKD[\"PAKD Engine<br/>Costing/Approval/LNR/Margin\"]\n        EXDOC[\"Export Doc Engine<br/>SI/BL/CI/PL/CO/Phyto/Fumi\"]\n        LCD[\"LC/CAD Tracker<br/>Bank Presentation/Discrepancy\"]\n        ALERT[\"Alert Center<br/>5 Warning Groups\"]\n        DASH[\"CEO Dashboard<br/>7 Dashboards\"]\n        ART[\"Artwork/Label Control<br/>Approval Workflow\"]\n    end\n\n    subgraph \"Integration\"\n        EMAIL[\"Email/Outlook\"]\n        STOR[\"Cloud Storage<br/>SharePoint/Google Drive\"]\n        SIGN[\"E-Signature\"]\n        BANK[\"Bank Gateway<br/>TT/LC/CAD\"]\n        SHIP[\"Shipping API<br/>Vessel Tracking\"]\n        GS1[\"GS1/Barcode\"]\n        EINV[\"E-Invoice<br/>FPT.eInvoice\"]\n    end\n\n    SD --> PAKD\n    PAKD --> SD\n    MM --> PAKD\n    PAKD --> FI\n\n    SD --> EXDOC\n    TM --> EXDOC\n    EXDOC --> DMS\n\n    FI --> LCD\n    SD --> LCD\n    EXDOC --> LCD\n\n    FI --> ALERT\n    TM --> ALERT\n    SD --> ALERT\n\n    FI --> DASH\n    SD --> DASH\n    MM --> DASH\n    TM --> DASH\n\n    DMS --> ART\n```\n\n---\n\n## 4. 17 Module \u2014 Mapping chi ti\u1ebft SAP vs Custom\n\n### 4.1 Module 1: CRM & Lead Management\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Qu\u1ea3n l\u00fd inquiry, lead, customer history | **SAP Sales Cloud** (CRM) ho\u1eb7c **SAP S/4HANA Customer Management** | SAP Standard |\n| L\u1ecbch s\u1eed mua h\u00e0ng, c\u00f4ng n\u1ee3, claim, th\u1ecb tr\u01b0\u1eddng, ti\u1ec1m n\u0103ng repeat order | S/4HANA SD + FI-AR: to\u00e0n b\u1ed9 l\u1ecbch s\u1eed giao d\u1ecbch v\u00e0 c\u00f4ng n\u1ee3 g\u1eafn li\u1ec1n Customer Master | SAP Standard |\n| Marketing campaign, fair leads, catalogue tracking | SAP Sales Cloud (Marketing module) ho\u1eb7c BTP Marketing Extension | SAP Standard / Extension |\n| Chuy\u1ec3n \u0111\u1ed5i Lead \u2192 Customer \u2192 Opportunity \u2192 PI/SC | Standard CRM-to-SD integration | SAP Standard |\n\n**Gi\u1ea3i quy\u1ebft c\u1ee5 th\u1ec3:** To\u00e0n b\u1ed9 h\u00e0nh tr\u00ecnh kh\u00e1ch h\u00e0ng \u2013 t\u1eeb khi l\u00e0 lead marketing, qua inquiry, quotation, PI/SC, \u0111\u01a1n h\u00e0ng, giao h\u00e0ng, ch\u1ee9ng t\u1eeb, c\u00f4ng n\u1ee3, claim \u2013 \u0111\u01b0\u1ee3c l\u01b0u th\u00e0nh m\u1ed9t Customer 360\u00b0 View. Khi m\u1ed9t sale ngh\u1ec9 vi\u1ec7c, d\u1eef li\u1ec7u kh\u00f4ng m\u1ea5t.\n\n---\n\n### 4.2 Module 2: Product Master & Price Library\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| SKU master: Rice (ST25, Jasmine, Japonica...) + FMCG (beverage, canned, confectionery...) | **SAP S/4HANA Material Master** v\u1edbi Material Type, Product Hierarchy, Classification | SAP Standard |\n| \u0110\u1eb7c t\u00ednh s\u1ea3n ph\u1ea9m: grade, origin, packing, shelf-life, certificate list, barcode/EAN | Material Classification + Characteristics trong S/4HANA | SAP Standard |\n| Price library: gi\u00e1 \u0111\u1ea7u v\u00e0o t\u1eebng supplier, gi\u00e1 b\u00e1n t\u1eebng th\u1ecb tr\u01b0\u1eddng, validity date | **SAP SD Pricing** (Condition Technique): condition records theo customer, product, market, validity | SAP Standard |\n| C\u1ea3nh b\u00e1o gi\u00e1 h\u1ebft h\u1ea1n validity | SAP SD Pricing + BTP Alert | Standard + Extension |\n\n**Gi\u1ea3i quy\u1ebft c\u1ee5 th\u1ec3:** Material Master c\u1ee7a SAP qu\u1ea3n l\u00fd m\u1ecdi thu\u1ed9c t\u00ednh s\u1ea3n ph\u1ea9m: t\u1eeb th\u00f4ng s\u1ed1 k\u1ef9 thu\u1eadt (grade, broken %, moisture \u2013 cho g\u1ea1o), packing spec (carton size, GW/NW, CBM), shelf-life, barcode/EAN, cho \u0111\u1ebfn certificate list. Gi\u00e1 \u0111\u1ea7u v\u00e0o v\u00e0 gi\u00e1 b\u00e1n \u0111\u01b0\u1ee3c qu\u1ea3n l\u00fd trong c\u00f9ng h\u1ec7 th\u1ed1ng v\u1edbi validity date, khi h\u1ebft h\u1ea1n t\u1ef1 \u0111\u1ed9ng c\u1ea3nh b\u00e1o.\n\n---\n\n### 4.3 Module 3: Supplier Management\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Supplier master, l\u1ecbch s\u1eed giao d\u1ecbch, rating | **SAP S/4HANA Supplier Master (Business Partner)** | SAP Standard |\n| Ph\u00e2n quy\u1ec1n \u1ea9n supplier v\u1edbi sale | SAP Authorization: ch\u1ec9 Account/Procurement/CEO xem full supplier; Sale ch\u1ec9 th\u1ea5y supplier code ho\u1eb7c \u1ea9n | SAP Standard (Authorization) |\n| Supplier documents & certificates | SAP DMS g\u1eafn v\u1edbi Supplier Master | SAP Standard |\n| Supplier delivery performance, quality rating | SAP MM Evaluation + custom KPIs tr\u00ean BTP | Standard + Extension |\n\n**Gi\u1ea3i quy\u1ebft c\u1ee5 th\u1ec3:** Authorization framework c\u1ee7a SAP cho ph\u00e9p ph\u00e2n quy\u1ec1n \u0111\u1ebfn t\u1eebng field. Sale c\u00f3 th\u1ec3 xem gi\u00e1 \u0111\u1ea7u v\u00e0o \u0111\u00e3 duy\u1ec7t nh\u01b0ng KH\u00d4NG th\u1ea5y t\u00ean supplier th\u1ef1c s\u1ef1 cho m\u1ed9t s\u1ed1 nh\u00f3m h\u00e0ng. Audit log ghi nh\u1eadn m\u1ecdi l\u1ea7n xem/s\u1eeda d\u1eef li\u1ec7u supplier.\n\n---\n\n### 4.4 Module 4: PAKD & Approval \u2014 TR\u00c1I TIM C\u1ee6A H\u1ec6 TH\u1ed0NG\n\n\u0110\u00e2y l\u00e0 module quan tr\u1ecdng nh\u1ea5t v\u00e0 \u0111\u1eb7c th\u00f9 nh\u1ea5t c\u1ee7a Sunrise. Kh\u00f4ng c\u00f3 ERP n\u00e0o c\u00f3 s\u1eb5n module PAKD. Ch\u00fang t\u00f4i \u0111\u1ec1 xu\u1ea5t x\u00e2y d\u1ef1ng **PAKD Engine tr\u00ean SAP BTP**.\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| T\u00ednh gi\u00e1 v\u1ed1n h\u00e0ng b\u00e1n theo supplier, chi ph\u00ed packing, label, logistics... | **PAKD Engine on BTP**: k\u00e9o gi\u00e1 supplier t\u1eeb MM, freight t\u1eeb TM, c\u1ed9ng c\u00e1c cost category v\u00e0o form t\u00ednh PAKD | Custom on BTP |\n| Ph\u00e2n c\u1ea5p duy\u1ec7t PAKD (PAKD t\u1ea1m t\u00ednh \u2192 duy\u1ec7t \u2192 ch\u1ed1t) | BTP Workflow: multi-level approval, phi\u00ean b\u1ea3n PAKD \u0111\u01b0\u1ee3c l\u01b0u. D\u01b0\u1edbi ng\u01b0\u1ee1ng LNR: Sale Manager duy\u1ec7t; L\u1ed7/h\u00f2a v\u1ed1n: CEO duy\u1ec7t | Custom on BTP |\n| Cost categories: Input, Packing, Label, Logistics, Docs, Banking, Risk, Profit | Form PAKD tr\u00ean Fiori, c\u00e1c cost category \u0111\u01b0\u1ee3c c\u1ea5u h\u00ecnh \u0111\u1ed9ng, k\u00e9o t\u1eeb master data ho\u1eb7c nh\u1eadp th\u1ee7 c\u00f4ng | Custom on BTP |\n| PAKD ch\u1ed1t \u2192 t\u1ef1 \u0111\u1ed9ng t\u1ea1o d\u1eef li\u1ec7u cho Accounting, Procurement, Docs | BTP PAKD Engine \u2192 push sang S/4HANA CO-PA (Profitability Analysis) v\u00e0 FI | Custom on BTP |\n| So s\u00e1nh Planned PAKD vs Actual P&L | SAP CO-PA: t\u1ef1 \u0111\u1ed9ng so s\u00e1nh planned cost (t\u1eeb PAKD) vs actual cost (t\u1eeb FI-MM) | SAP Standard |\n\n**Lu\u1ed3ng PAKD ti\u00eau bi\u1ec3u:**\n\n```mermaid\nflowchart LR\n    A[\"Inquiry\"] --> B[\"Ch\u1ecdn supplier<br/>(MM: get price)\"]\n    B --> C[\"Nh\u1eadp cost categories<br/>Input/Packing/Label/Logistics/<br/>Docs/Banking/Risk\"]\n    C --> D[\"PAKD t\u1ea1m t\u00ednh<br/>Auto t\u00ednh LNR, Margin\"]\n    D --> E{\"LNR > 0?\"}\n    E -->|Yes| F[\"Sale Manager Duy\u1ec7t\"]\n    E -->|No/Loss| G[\"CEO Duy\u1ec7t\"]\n    F --> H[\"PAKD Ch\u1ed1t\"]\n    G --> H\n    H --> I[\"Push to:<br/>\u2022 FI: planned P&L<br/>\u2022 SD: base for PI<br/>\u2022 MM: procurement budget<br/>\u2022 EXDOC: doc checklist\"]\n```\n\n---\n\n### 4.5 Module 5: Sales Order / PI / Contract\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Ph\u00e1t h\u00e0nh PI/SC t\u1eeb template th\u1ed1ng nh\u1ea5t | **SAP SD Sales Order** v\u1edbi custom form template (Adobe Forms / Fiori template) | SAP Standard + Custom Form |\n| Ph\u00e2n bi\u1ec7t buyer / importer / payer tr\u00ean 1 \u0111\u01a1n | SAP SD Partner Functions: Sold-to, Ship-to, Bill-to, Payer | SAP Standard |\n| X\u00e1c nh\u1eadn \u0111\u01a1n h\u00e0ng: signed/stamped PI, PO, LC draft/final | Document status trong SD Order + DMS \u0111\u00ednh k\u00e8m file x\u00e1c nh\u1eadn | SAP Standard |\n| Internal Order Release: 2 l\u1edbp th\u00f4ng tin (full + operations) | Custom Fiori app: Internal Order Release form v\u1edbi field-level authorization | Custom on BTP |\n| Auto g\u1eedi Internal Order \u0111\u1ebfn \u0111\u00fang PIC theo ph\u00f2ng ban | BTP Workflow: khi Order Released \u2192 trigger task cho Sale, Procurement, Logistics, Docs, Accounting | Custom on BTP |\n\n---\n\n### 4.6 Module 6: Payment & Credit Control\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| TT/TTR workflow: PI \u2192 deposit \u2192 confirm \u2192 order release \u2192 ETD \u2192 send docs \u2192 balance \u2192 release original | **SAP FI-AR** (Accounts Receivable) + BTP Payment Tracker | Standard + Extension |\n| LC workflow: draft \u2192 review \u2192 amendment \u2192 accepted \u2192 docs under LC \u2192 discrepancy \u2192 bank \u2192 payment | **BTP LC Tracker**: form nh\u1eadp LC terms, deadline, document checklist; check discrepancy; track bank presentation | Custom on BTP |\n| CAD workflow: bank presentation set \u2192 submit \u2192 bank release \u2192 payment | **BTP CAD Tracker** (c\u00f9ng module v\u1edbi LC) | Custom on BTP |\n| Ghi nh\u1eadn: amount expected, received, bank charge, shortfall, date, payer, bank ref, status | SAP FI-AR v\u1edbi custom fields + BTP Payment Reconciliation | Standard + Extension |\n\n**Gi\u1ea3i quy\u1ebft c\u1ee5 th\u1ec3 \u2014 LC Workflow:**\n\nSAP S/4HANA c\u00f3 s\u1eb5n FI-AR \u0111\u1ec3 qu\u1ea3n l\u00fd c\u00f4ng n\u1ee3, nh\u01b0ng **quy tr\u00ecnh LC (Letter of Credit) l\u00e0 \u0111\u1eb7c th\u00f9 c\u1ee7a doanh nghi\u1ec7p xu\u1ea5t kh\u1ea9u v\u00e0 y\u00eau c\u1ea7u module ri\u00eang**. Ch\u00fang t\u00f4i x\u00e2y d\u1ef1ng LC Tracker tr\u00ean BTP:\n\n- Khi LC draft nh\u1eadn \u0111\u01b0\u1ee3c \u2192 nh\u1eadp terms (LC type, applicant, beneficiary, amount, latest shipment date, expiry, presentation period, required docs)\n- T\u1ef1 \u0111\u1ed9ng check deadline: presentation period, LC expiry, latest shipment date \u2192 c\u1ea3nh b\u00e1o n\u1ebfu c\u1eadn deadline\n- Khi chu\u1ea9n b\u1ecb docs d\u01b0\u1edbi LC \u2192 checklist t\u1ef1 \u0111\u1ed9ng generate theo LC terms\n- Discrepancy check: so kh\u1edbp docs th\u1ef1c t\u1ebf v\u1edbi LC requirements \u2192 flag n\u1ebfu sai\n- Track bank presentation: date submitted, bank review result, payment received\n- Incident case n\u1ebfu discrepancy, late presentation, late shipment, payment failure\n\n---\n\n### 4.7 Module 7: Procurement & Supplier PO\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Single SKU: order \u2192 select supplier \u2192 PO \u2192 delivery \u2192 stuffing \u2192 closing | **SAP MM Purchase Order** chu\u1ea9n | SAP Standard |\n| Mixed container: order \u2192 split SKU \u2192 multiple PO \u2192 consolidation \u2192 loading | SAP MM + **Project System (PS)** / WBS Element: gom nhi\u1ec1u PO d\u01b0\u1edbi 1 export order code | SAP Standard |\n| M\u1ed7i PO c\u00f3 delivery schedule, quantity, document status, debt ri\u00eang | SAP MM PO v\u1edbi delivery schedule lines | SAP Standard |\n| C\u1ea3nh b\u00e1o khi 1 supplier delay \u1ea3nh h\u01b0\u1edfng common loading date | BTP Alert: so s\u00e1nh delivery status c\u1ee7a t\u1ea5t c\u1ea3 PO trong c\u00f9ng export order | Custom on BTP |\n\n**Gi\u1ea3i quy\u1ebft c\u1ee5 th\u1ec3:** D\u00f9ng **WBS Element (Project System)** ho\u1eb7c **Network Order** l\u00e0m \"Export Order Code\". T\u1ea5t c\u1ea3 supplier PO \u0111\u01b0\u1ee3c g\u00e1n v\u00e0o c\u00f9ng 1 WBS. Khi b\u1ea5t k\u1ef3 PO n\u00e0o tr\u1ec5, h\u1ec7 th\u1ed1ng alert \u0111\u1ebfn t\u1ea5t c\u1ea3 PIC li\u00ean quan. \u0110\u1ebfn ng\u00e0y loading, h\u1ec7 th\u1ed1ng t\u1ef1 t\u1ed5ng h\u1ee3p: t\u1ed5ng quantity committed vs delivered, c\u00f2n thi\u1ebfu bao nhi\u00eau, supplier n\u00e0o ch\u01b0a giao.\n\n---\n\n### 4.8 Module 8: Packing / Label / Artwork Control\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Specification: product name, ingredients, standards, origin, shelf-life, storage | SAP Material Master Classification | SAP Standard |\n| Packing spec: unit size, carton size, GW/NW, CBM, pallet, loading per container | SAP Material Master + Packaging Specification | SAP Standard |\n| Barcode/EAN: retail unit, carton, item code, country code, GS1 | SAP Material Master + GS1 Integration | SAP Standard + Integration |\n| Artwork/Label Approval: design file, version, approver, date, language, sub-label | **BTP Artwork Control App**: g\u1eafn v\u1edbi Material + Export Order, workflow duy\u1ec7t, version control, file storage trong DMS | Custom on BTP |\n| Kh\u00f4ng \u0111\u01b0\u1ee3c procurement khi artwork ch\u01b0a Approved | BTP Workflow lock: status \"Artwork Approved\" l\u00e0 gate tr\u01b0\u1edbc khi Procurement Release | Custom on BTP |\n\n---\n\n### 4.9 Module 9: Booking & Logistics\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| FOB: buyer books, ghi nh\u1eadn FWD, cut-off, local charges | **SAP TM** (Transportation Management) ho\u1eb7c BTP Logistics Board | Standard ho\u1eb7c Extension |\n| CNF/CIF: seller books, freight cost \u2192 PAKD, bill of lading | SAP TM: Freight Order, Freight Settlement, Cost Distribution | SAP Standard |\n| Shipment timeline: booking \u2192 delivery \u2192 loading \u2192 customs \u2192 CY cut-off \u2192 SI cut-off \u2192 VGM \u2192 ETD \u2192 ETA \u2192 free time | BTP Shipment Timeline: visual timeline + auto alert cho m\u1ed7i milestone | Custom on BTP |\n| C\u1ea3nh b\u00e1o SI cut-off 48h, VGM cut-off 24h, CY cut-off, supplier delivery | BTP Alert Center: t\u00ednh to\u00e1n deadline t\u1eeb cut-off dates v\u00e0 trigger warning | Custom on BTP |\n\n**Gi\u1ea3i quy\u1ebft c\u1ee5 th\u1ec3:** N\u1ebfu ch\u1ecdn SAP S/4HANA Public Cloud, **SAP TM** (Transportation Management) c\u00f3 s\u1eb5n \u0111\u1ec3 qu\u1ea3n l\u00fd Freight Order, booking confirmation, container tracking, freight cost. N\u1ebfu ch\u1ecdn Private Cloud, c\u00f3 th\u1ec3 d\u00f9ng TM ho\u1eb7c BTP custom app t\u00f9y m\u1ee9c \u0111\u1ed9 ph\u1ee9c t\u1ea1p.\n\n---\n\n### 4.10 Module 10: Loading & Warehouse Supervision\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Loading checkpoint: SKU, quantity, labels, date code, goods condition, empty container, stuffing, photos, seal | **SAP EWM** (Extended Warehouse Management) ho\u1eb7c **SAP WM**: packing instruction, loading checklist | SAP Standard |\n| Loading Control Sheet: m\u1ed7i container 1 sheet, li\u00ean k\u1ebft export order | Custom Fiori App \"Loading Control Sheet\" tr\u00ean BTP: form data + \u1ea3nh + digital signature supervisor | Custom on BTP |\n| X\u1eed l\u00fd thi\u1ebfu/th\u1eeba khi loading: mua b\u1ed5 sung ho\u1eb7c tr\u1ea3 supplier | SAP MM: Goods Receipt v\u1edbi over/under delivery tolerance + BTP Exception Handler | Standard + Extension |\n\n---\n\n### 4.11 Module 11: Export Documentation \u2014 MODULE \u0110\u1eb6C TH\u00d9 NH\u1ea4T\n\n\u0110\u00e2y l\u00e0 module **kh\u00f4ng ERP n\u00e0o c\u00f3 s\u1eb5n** v\u00e0 l\u00e0 l\u00fd do ch\u00ednh khi\u1ebfn c\u00e1c gi\u1ea3i ph\u00e1p generic nh\u01b0 Odoo g\u1eb7p kh\u00f3 kh\u0103n. Ch\u00fang t\u00f4i x\u00e2y d\u1ef1ng **Export Documentation Engine tr\u00ean SAP BTP**.\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| SI, VGM submission, BL draft \u2192 final | BTP Export Doc Engine: form nh\u1eadp SI/VGM, l\u01b0u submission records, BL version control | Custom on BTP |\n| CI, PL, CO, Phyto, Fumi, COQ/COA, Insurance | BTP Export Doc Engine: template cho t\u1eebng lo\u1ea1i ch\u1ee9ng t\u1eeb, pull data t\u1eeb SD Order + MM + TM | Custom on BTP |\n| Checklist per Incoterms/Payment term/Product/Market | Rule Engine tr\u00ean BTP: FOB\u2192checklist X, CIF\u2192checklist Y; TT\u2192docs Z, LC\u2192docs W | Custom on BTP |\n| Deadline: docs ho\u00e0n thi\u1ec7n trong 7-12 ng\u00e0y sau ETD (r\u00fat ng\u1eafn n\u1ebfu sailing time ng\u1eafn) | BTP Alert: t\u00ednh deadline d\u1ef1a tr\u00ean ETD+ETA+Payment term, warning n\u1ebfu docs ch\u01b0a complete | Custom on BTP |\n| BL amendment fees \u2192 cause, responsible person, evidence, PAKD impact | BTP Incident Case: ghi nh\u1eadn amendment request, cost, responsible department, PAKD adjustment | Custom on BTP |\n\n**Lu\u1ed3ng xu\u1ea5t ch\u1ee9ng t\u1eeb t\u1ef1 \u0111\u1ed9ng:**\n\n```mermaid\nflowchart TD\n    ORDER[\"Export Order Released\"] --> CHECK{\"Incoterms?\"}\n    CHECK -->|FOB| FOB_DOCS[\"CL: CI, PL, BL, CO, Phyto, Fumi, COQ\"]\n    CHECK -->|CIF| CIF_DOCS[\"CL: CI, PL, BL, CO, Phyto, Fumi, COQ, Insurance\"]\n    CHECK -->|CNF| CNF_DOCS[\"CL: CI, PL, BL, CO, Phyto, Fumi, COQ\"]\n\n    FOB_DOCS --> PAY{\"Payment Term?\"}\n    CIF_DOCS --> PAY\n    CNF_DOCS --> PAY\n\n    PAY -->|TT| TT_SET[\"Send copy docs \u2192 Balance \u2192 Original\"]\n    PAY -->|LC| LC_SET[\"Prepare LC set \u2192 Discrepancy check \u2192 Bank\"]\n    PAY -->|CAD| CAD_SET[\"Prepare bank set \u2192 Submit \u2192 Track release\"]\n\n    TT_SET --> DEADLINE[\"Set deadline based on<br/>ETD + ETA + Payment term\"]\n    LC_SET --> DEADLINE\n    CAD_SET --> DEADLINE\n\n    DEADLINE --> ALERT[\"Auto alert if docs<br/>not completed before deadline\"]\n```\n\n---\n\n### 4.12 Module 12: LC/CAD/Bank Presentation\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| LC tracking: type, applicant, beneficiary, amount, currency, latest shipment, expiry, presentation period, required docs, banks | BTP LC Tracker (shared v\u1edbi Module 6) | Custom on BTP |\n| Discrepancy check & risk warning | Rule Engine: so s\u00e1nh actual docs v\u1edbi LC terms \u2192 flag discrepancy + risk level | Custom on BTP |\n| CAD tracking: date sent, bank release date, customer payment date, fund arrival | BTP CAD Tracker | Custom on BTP |\n| Incident case: late presentation, wrong docs, discrepancy, payment failure, late payment | BTP Incident Case Management: cause \u2192 department \u2192 remedy \u2192 financial impact \u2192 PAKD adjustment \u2192 approver \u2192 lessons learned | Custom on BTP |\n\n---\n\n### 4.13 Module 13: Accounting / Costing / P&L\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Input cost recording, supplier payment, buyer debt, revenue, COGS, P&L per order, tax refund, cash flow | **SAP FI-CO**: \u0111\u00e2y l\u00e0 core competency m\u1ea1nh nh\u1ea5t c\u1ee7a SAP | SAP Standard |\n| So s\u00e1nh Planned PAKD vs Actual P&L \u2192 variance analysis | **SAP CO-PA** (Profitability Analysis): t\u1ef1 \u0111\u1ed9ng pull planned cost t\u1eeb PAKD Engine + actual cost t\u1eeb FI/MM \u2192 variance report | SAP Standard |\n| Multi-currency, exchange rate, FX gain/loss | SAP FI: multi-currency t\u1ef1 \u0111\u1ed9ng, t\u1ef7 gi\u00e1 h\u1ea1ch to\u00e1n & \u0111\u00e1nh gi\u00e1 l\u1ea1i | SAP Standard |\n| Tax refund management | SAP FI: Tax on Sales/Purchases, VAT refund tracking | SAP Standard |\n\n**Gi\u1ea3i quy\u1ebft c\u1ee5 th\u1ec3:** \u0110\u00e2y l\u00e0 \u0111i\u1ec3m m\u1ea1nh c\u1ed1t l\u00f5i c\u1ee7a SAP. FI-CO c\u1ee7a SAP S/4HANA s\u1eed d\u1ee5ng **Universal Journal** \u2013 m\u1ed9t b\u1ea3ng duy nh\u1ea5t ch\u1ee9a to\u00e0n b\u1ed9 d\u1eef li\u1ec7u t\u00e0i ch\u00ednh v\u00e0 qu\u1ea3n tr\u1ecb, gi\u00fap P&L per order \u0111\u01b0\u1ee3c t\u00ednh real-time, kh\u00f4ng c\u1ea7n batch processing cu\u1ed1i th\u00e1ng. Khi m\u1ed9t kho\u1ea3n ph\u00e1t sinh m\u1edbi (v\u00ed d\u1ee5: BL amendment fee, demurrage charge, claim b\u1ed3i th\u01b0\u1eddng), k\u1ebf to\u00e1n h\u1ea1ch to\u00e1n v\u00e0 t\u1ef1 \u0111\u1ed9ng flow v\u00e0o P&L c\u1ee7a order \u0111\u00f3.\n\n---\n\n### 4.14 Module 14: Marketing Campaign & Brand Asset\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Campaign management, fair leads, brand assets, sales kit, lead handover to Sales | **SAP Sales Cloud** (Marketing) ho\u1eb7c **SAP Marketing Cloud** (n\u1ebfu d\u00f9ng Public Cloud) | SAP Standard |\n| Revenue by lead source, campaign ROI | SAP Analytics Cloud: revenue attribution | Standard |\n\n---\n\n### 4.15 Module 15: HR/Admin/Legal\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| Employee master, role, permission, asset, KPI | **SAP SuccessFactors** (HR ri\u00eang) ho\u1eb7c t\u00edch h\u1ee3p HR system hi\u1ec7n t\u1ea1i | Separate / Integration |\n| Contract review, compliance, legal approval | SAP DMS + BTP Workflow cho Legal review | Standard + Extension |\n\n**Ghi ch\u00fa:** HR l\u00e0 h\u1ec7 th\u1ed1ng ri\u00eang. SAP SuccessFactors c\u00f3 th\u1ec3 \u0111\u01b0\u1ee3c \u0111\u1ec1 xu\u1ea5t n\u1ebfu Sunrise mu\u1ed1n \u0111\u1ed3ng b\u1ed9 to\u00e0n b\u1ed9 tr\u00ean h\u1ec7 sinh th\u00e1i SAP. Ho\u1eb7c t\u00edch h\u1ee3p v\u1edbi HR system hi\u1ec7n t\u1ea1i qua API.\n\n---\n\n### 4.16 Module 16: Dashboard & Alert Center\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| 7 Dashboards CEO: Sales Pipeline, Shipment Control, Finance, Procurement, Document Control, Marketing, HR | **SAP Analytics Cloud (SAC)** | SAP Standard |\n| 5 nh\u00f3m c\u1ea3nh b\u00e1o t\u1ef1 \u0111\u1ed9ng: Ti\u1ec1n, Ch\u1ee9ng t\u1eeb, Logistics, Ch\u1ea5t l\u01b0\u1ee3ng, D\u1eef li\u1ec7u | **BTP Alert Center**: rule engine + notification (email/app/chat) + escalation | Custom on BTP |\n| C\u1ea3nh b\u00e1o qua email/app/chat | BTP Alert t\u00edch h\u1ee3p Email, Microsoft Teams, Zalo (n\u1ebfu c\u1ea7n) | Custom on BTP |\n\n---\n\n### 4.17 Module 17: Document Management System\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Gi\u1ea3i ph\u00e1p SAP | Lo\u1ea1i |\n|---|---|---|\n| L\u01b0u file theo order: PI, SC, PO, contract, booking, loading photos, docs, bank set, supplier docs | **SAP DMS** (Document Management System) t\u00edch h\u1ee3p v\u1edbi S/4HANA | SAP Standard |\n| Version control, approval, final status | DMS: versioning, status management, digital signature | SAP Standard |\n| Link folder, t\u00ecm ki\u1ebfm theo order/supplier/customer | DMS + SAP Enterprise Search | SAP Standard |\n\n---\n\n## 5. N\u0103m d\u00f2ng ch\u1ea3y \u2014 C\u00e1ch SAP ki\u1ec3m so\u00e1t \u0111\u1ed3ng th\u1eddi\n\nBlueprint c\u1ee7a Sunrise x\u00e1c \u0111\u1ecbnh 5 d\u00f2ng ch\u1ea3y c\u1ea7n ki\u1ec3m so\u00e1t. D\u01b0\u1edbi \u0111\u00e2y l\u00e0 c\u00e1ch SAP mapping:\n\n| D\u00f2ng ch\u1ea3y | Module SAP ch\u1ecbu tr\u00e1ch nhi\u1ec7m | C\u01a1 ch\u1ebf ki\u1ec3m so\u00e1t |\n|---|---|---|\n| **D\u00f2ng kh\u00e1ch h\u00e0ng** | SD + CRM + FI-AR | Customer Master \u2192 Sales Order \u2192 Delivery \u2192 Billing \u2192 Payment \u2192 History \u2192 Claim |\n| **D\u00f2ng h\u00e0ng h\u00f3a** | MM + EWM + TM | Supplier PO \u2192 Goods Receipt \u2192 Inventory \u2192 Picking \u2192 Loading \u2192 Container \u2192 Shipment |\n| **D\u00f2ng ch\u1ee9ng t\u1eeb** | DMS + BTP Export Doc Engine | T\u1ef1 \u0111\u1ed9ng generate checklist theo Incoterms + Payment term; version control; deadline tracking |\n| **D\u00f2ng ti\u1ec1n** | FI + CO + BTP Payment Tracker | Deposit \u2192 LC \u2192 Balance \u2192 Supplier Pay \u2192 Bank Charge \u2192 P&L \u2192 Tax Refund |\n| **D\u00f2ng tr\u00e1ch nhi\u1ec7m** | BTP Workflow + Alert | Task \u2192 PIC \u2192 Deadline \u2192 Approval \u2192 Alert \u2192 Escalation \u2192 Incident \u2192 Corrective Action |\n\n**\u0110i\u1ec3m m\u1ea5u ch\u1ed1t:** V\u1edbi SAP, 5 d\u00f2ng ch\u1ea3y n\u00e0y kh\u00f4ng ph\u1ea3i 5 h\u1ec7 th\u1ed1ng ri\u00eang \u2014 ch\u00fang c\u00f9ng n\u1eb1m trong **m\u1ed9t h\u1ec7 th\u1ed1ng duy nh\u1ea5t**, chia s\u1ebb m\u1ed9t Universal Journal. Khi m\u1ed9t s\u1ef1 ki\u1ec7n x\u1ea3y ra \u1edf d\u00f2ng h\u00e0ng h\u00f3a (v\u00ed d\u1ee5: supplier giao thi\u1ebfu), n\u00f3 t\u1ef1 \u0111\u1ed9ng t\u00e1c \u0111\u1ed9ng \u0111\u1ebfn d\u00f2ng ti\u1ec1n (chi ph\u00ed ph\u00e1t sinh), d\u00f2ng ch\u1ee9ng t\u1eeb (CL thay \u0111\u1ed5i), v\u00e0 d\u00f2ng tr\u00e1ch nhi\u1ec7m (Incident Case \u0111\u01b0\u1ee3c t\u1ea1o).\n\n---\n\n## 6. Multi-Company & Multi-Currency Architecture\n\nSunrise v\u1eadn h\u00e0nh 2 ph\u00e1p nh\u00e2n (Sunrise Foodstuff JSC + Vietnam Grocery JSC) v\u00e0 blueprint y\u00eau c\u1ea7u ERP ph\u1ee5c v\u1ee5 **c\u1ea3 hai ph\u00e1p nh\u00e2n v\u00e0 c\u00e1c ph\u00e1p nh\u00e2n li\u00ean quan kh\u00e1c**.\n\n```mermaid\ngraph TB\n    subgraph \"SAP S/4HANA \u2014 Single Instance, Multi-Company\"\n        COA[\"Chart of Accounts \u2014 Unified\"]\n        subgraph \"Sunrise Foodstuff JSC (CoCode 1000)\"\n            SUN_FI[\"FI-AR/AP/GL\"]\n            SUN_SD[\"SD: Rice Export\"]\n            SUN_MM[\"MM: Rice Procurement\"]\n        end\n        subgraph \"Vietnam Grocery JSC (CoCode 2000)\"\n            VG_FI[\"FI-AR/AP/GL\"]\n            VG_SD[\"SD: FMCG/F&B Export\"]\n            VG_MM[\"MM: FMCG Procurement\"]\n        end\n        subgraph \"Consolidation\"\n            CON_FI[\"Group Consolidation\"]\n            CON_CO[\"Cross-company CO-PA\"]\n        end\n    end\n\n    SUN_FI --- COA\n    VG_FI --- COA\n    SUN_SD --- CON_CO\n    VG_SD --- CON_CO\n```\n\n**Gi\u1ea3i ph\u00e1p c\u1ee7a SAP:**\n\n| Y\u00eau c\u1ea7u | C\u00e1ch SAP \u0111\u00e1p \u1ee9ng |\n|---|---|\n| 2+ ph\u00e1p nh\u00e2n tr\u00ean c\u00f9ng 1 h\u1ec7 th\u1ed1ng | SAP S/4HANA h\u1ed7 tr\u1ee3 multi-company code trong 1 instance. M\u1ed7i company code c\u00f3 s\u1ed5 s\u00e1ch k\u1ebf to\u00e1n ri\u00eang, nh\u01b0ng d\u00f9ng chung Chart of Accounts, Business Partner, Material Master |\n| Inter-company transactions | SAP SD/MM inter-company: t\u1ef1 \u0111\u1ed9ng t\u1ea1o cross-company billing, cross-company purchasing |\n| Consolidated P&L, balance sheet | SAP Group Reporting ho\u1eb7c FI-LC: consolidation cho CEO |\n| Multi-currency: VND, USD, EUR, JPY | SAP FI: m\u1ed7i company code c\u00f3 local currency (VND), transaction currency t\u1ef1 do, t\u1ef1 \u0111\u1ed9ng convert theo t\u1ef7 gi\u00e1 |\n| Authorization separation | M\u1ed7i company code c\u00f3 authorization profile ri\u00eang; user A c\u00f3 th\u1ec3 ch\u1ec9 th\u1ea5y Sunrise, user B ch\u1ec9 th\u1ea5y Vietnam Grocery |\n\n**L\u01b0u \u00fd cho t\u01b0\u01a1ng lai:** N\u1ebfu Sunrise m\u1edf th\u00eam ph\u00e1p nh\u00e2n (v\u00ed d\u1ee5: regional office \u1edf Singapore, trading company \u1edf Hong Kong), ch\u1ec9 c\u1ea7n th\u00eam 1 company code m\u1edbi trong c\u00f9ng SAP instance \u2014 kh\u00f4ng c\u1ea7n tri\u1ec3n khai h\u1ec7 th\u1ed1ng m\u1edbi.\n\n---\n\n## 7. 28 Tr\u1ea1ng th\u00e1i \u0111\u01a1n h\u00e0ng \u2014 Workflow Engine\n\nBlueprint \u0111\u1ecbnh ngh\u0129a 28 tr\u1ea1ng th\u00e1i \u0111\u01a1n h\u00e0ng chu\u1ea9n h\u00f3a. Ch\u00fang t\u00f4i mapping v\u00e0o SAP nh\u01b0 sau:\n\n| # | Tr\u1ea1ng th\u00e1i Blueprint | Module SAP | C\u01a1 ch\u1ebf |\n|---|---|---|---|\n| 01 | Inquiry Received | SD Inquiry | Document type IN |\n| 02 | Quotation Sent | SD Quotation | Document type QT |\n| 03 | PAKD Draft Created | BTP PAKD | Custom status |\n| 04 | PAKD Approved | BTP PAKD | Workflow status |\n| 05 | PI/SC Issued | SD Sales Order | Document type OR |\n| 06 | Waiting Deposit / LC | FI-AR + BTP Payment | Payment status |\n| 07 | Payment Confirmed / LC Accepted | FI-AR + BTP Payment | Payment status |\n| 08 | Internal Order Released | BTP Workflow | Custom status |\n| 09 | Procurement Processing | MM Purchase Order | PO status |\n| 10 | Supplier Confirmed | MM PO | PO confirmation |\n| 11 | Label / Artwork Approved | BTP Artwork Control | Approval status |\n| 12 | Booking Pending | TM / BTP Logistics | Booking status |\n| 13 | Booking Confirmed | TM / BTP Logistics | Booking status |\n| 14 | Goods Ready | MM Goods Receipt | GR status |\n| 15 | Loading Scheduled | EWM / BTP Loading | Schedule status |\n| 16 | Container Stuffed | EWM / BTP Loading | Loading sheet status |\n| 17 | Customs Cleared | BTP Export Docs | Customs status |\n| 18 | On Board / ETD | TM / BTP Logistics | Shipment status |\n| 19 | BL Issued | BTP Export Docs | BL status |\n| 20 | Export Docs Completed | BTP Export Docs | Doc checklist complete |\n| 21 | Docs Sent / Bank Presented | BTP Export Docs | Delivery status |\n| 22 | Balance Pending | FI-AR | Payment status |\n| 23 | Payment Completed | FI-AR | Payment status |\n| 24 | Supplier Payment Completed | FI-AP | Payment status |\n| 25 | P&L Finalized | CO-PA | P&L status |\n| 26 | Closed | Cross-module | System status |\n| 27 | Claim / Dispute | BTP Incident Case | Case status |\n| 28 | Cancelled | Cross-module | System status |\n\n**Ki\u1ebfn tr\u00fac Workflow Engine:** SAP S/4HANA c\u00f3 **SAP Workflow** (built-in) v\u00e0 **SAP Build Process Automation** (tr\u00ean BTP). Ch\u00fang t\u00f4i d\u00f9ng **SAP Build Process Automation** \u0111\u1ec3:\n\n- \u0110\u1ecbnh ngh\u0129a 28 tr\u1ea1ng th\u00e1i th\u00e0nh workflow ch\u00ednh th\u1ee9c\n- M\u1ed7i l\u1ea7n chuy\u1ec3n tr\u1ea1ng th\u00e1i \u2192 t\u1ef1 \u0111\u1ed9ng trigger task cho PIC li\u00ean quan\n- Task c\u00f3 deadline c\u1ee9ng \u2192 qu\u00e1 h\u1ea1n \u2192 escalation cho manager\n- M\u1ecdi transition \u0111\u01b0\u1ee3c audit log\n\n---\n\n## 8. Ph\u00e2n quy\u1ec1n b\u1ea3o m\u1eadt chu\u1ed7i cung \u1ee9ng\n\n\u0110\u00e2y l\u00e0 m\u1ed9t trong nh\u1eefng y\u00eau c\u1ea7u kh\u00f3 nh\u1ea5t c\u1ee7a Sunrise: Sale \u0111\u01b0\u1ee3c xem gi\u00e1 \u0111\u1ea7u v\u00e0o nh\u01b0ng **kh\u00f4ng \u0111\u01b0\u1ee3c bi\u1ebft t\u00ean nh\u00e0 cung c\u1ea5p th\u1ef1c s\u1ef1** cho m\u1ed9t s\u1ed1 nh\u00f3m h\u00e0ng.\n\n| Y\u00eau c\u1ea7u ph\u00e2n quy\u1ec1n | C\u00e1ch SAP \u0111\u00e1p \u1ee9ng |\n|---|---|\n| Sale ch\u1ec9 th\u1ea5y supplier code (kh\u00f4ng t\u00ean) | **SAP Authorization Object**: field-level security tr\u00ean Supplier Master. Field \"Supplier Name\" b\u1ecb \u1ea9n v\u1edbi role \"SALE_EXPORT\". Sale ch\u1ec9 th\u1ea5y \"Supplier Code\". |\n| Procurement/Accounting/CEO th\u1ea5y full supplier info | Authorization role \"PROCUREMENT_MANAGER\", \"ACCOUNTANT\", \"CEO\" c\u00f3 full access |\n| Internal Order c\u00f3 2 l\u1edbp: full layer v\u00e0 operations layer | Custom Fiori app tr\u00ean BTP: khi user role = OPERATIONS \u2192 t\u1ef1 \u0111\u1ed9ng mask c\u00e1c field buyer/importer/supplier name/input price detail |\n| Audit log: ai xem/s\u1eeda d\u1eef li\u1ec7u supplier | SAP Read Access Logging (RAL): log m\u1ecdi l\u1ea7n truy c\u1eadp field nh\u1ea1y c\u1ea3m |\n| Nh\u00e2n vi\u00ean ngh\u1ec9 vi\u1ec7c \u2192 kh\u00f4ng m\u1ea5t d\u1eef li\u1ec7u | T\u1ea5t c\u1ea3 d\u1eef li\u1ec7u thu\u1ed9c v\u1ec1 Customer/Order, kh\u00f4ng thu\u1ed9c v\u1ec1 user. Khi user b\u1ecb deactivate, d\u1eef li\u1ec7u v\u1eabn nguy\u00ean v\u1eb9n |\n\n---\n\n## 9. C\u1ea3nh b\u00e1o t\u1ef1 \u0111\u1ed9ng & Dashboard CEO\n\n### 9.1 C\u1ea3nh b\u00e1o t\u1ef1 \u0111\u1ed9ng \u2014 BTP Alert Center\n\n| Nh\u00f3m | C\u1ea3nh b\u00e1o | Trigger | Module ngu\u1ed3n |\n|---|---|---|---|\n| **Ti\u1ec1n** | Qu\u00e1 h\u1ea1n deposit | Deposit due date < today AND status \u2260 received | FI-AR |\n| | Deposit thi\u1ebfu | Amount received < amount expected | FI-AR |\n| | Balance ch\u01b0a thu tr\u01b0\u1edbc ETA | Balance due AND ETA - today < 5 days AND status \u2260 paid | FI-AR + TM |\n| | LC s\u1eafp h\u1ebft h\u1ea1n | LC expiry - today < 7 days | BTP LC Tracker |\n| | LC presentation deadline c\u00f2n 3 ng\u00e0y | Presentation due - today < 3 days AND status \u2260 presented | BTP LC Tracker |\n| | Supplier payment due | Payment due date < today AND status \u2260 paid | FI-AP |\n| **Ch\u1ee9ng t\u1eeb** | Ch\u01b0a c\u00f3 SI tr\u01b0\u1edbc cut-off | SI cut-off - today < 24h AND SI status \u2260 submitted | BTP Export Docs |\n| | Ch\u01b0a c\u00f3 VGM | VGM cut-off - today < 24h AND VGM status \u2260 submitted | BTP Export Docs |\n| | BL draft ch\u01b0a check | BL draft received AND 24h passed AND status \u2260 checked | BTP Export Docs |\n| | CO/Phyto/Fumi ch\u01b0a ph\u00e1t h\u00e0nh | ETD + 3 days AND certificate status \u2260 issued | BTP Export Docs |\n| | Docs ch\u01b0a g\u1eedi sau ETD | ETD + 7 days AND docs status \u2260 sent | BTP Export Docs |\n| | LC docs c\u00f3 discrepancy | Discrepancy flag = true | BTP LC Tracker |\n| **Logistics** | Supplier ch\u01b0a giao tr\u01b0\u1edbc loading date | Loading date - today < 2 days AND GR status \u2260 complete | MM |\n| | H\u00e0ng thi\u1ebfu khi loading | Loading sheet quantity < PO quantity | EWM / BTP Loading |\n| | Booking roll t\u00e0u | Vessel status = rolled | TM / BTP Logistics |\n| | Nguy c\u01a1 demurrage/detention | ETA passed AND docs not released AND balance not paid | TM + FI-AR |\n| **Ch\u1ea5t l\u01b0\u1ee3ng** | Shelf-life kh\u00f4ng \u0111\u1ea1t | Expiry date < required shelf-life | MM Classification |\n| | Supplier rating th\u1ea5p | Supplier score < threshold | MM Evaluation |\n| **D\u1eef li\u1ec7u** | Gi\u00e1 \u0111\u1ea7u v\u00e0o h\u1ebft validity | Price validity end < today | SD Pricing |\n| | Thi\u1ebfu customer profile | Customer master incomplete | SD |\n| | Task qu\u00e1 h\u1ea1n | Task deadline < today AND status \u2260 complete | BTP Workflow |\n\n### 9.2 Dashboard CEO \u2014 SAP Analytics Cloud\n\n```mermaid\ngraph LR\n    subgraph \"SAP Analytics Cloud \u2014 CEO Dashboard\"\n        D1[\"\ud83d\udcca Sales Pipeline<br/>Leads/Quotes/Orders/Closed\"]\n        D2[\"\ud83d\udea2 Shipment Control<br/>ETD/ETA/Containers/Docs\"]\n        D3[\"\ud83d\udcb0 Finance<br/>AR/AP/P&L/Cash Flow\"]\n        D4[\"\ud83d\udce6 Procurement<br/>Supplier Delivery/Shortage\"]\n        D5[\"\ud83d\udccb Documents<br/>Docs Complete/Pending/LC\"]\n        D6[\"\ud83d\udce2 Marketing<br/>Campaigns/Leads/Revenue\"]\n        D7[\"\ud83d\udc65 HR/Admin<br/>Headcount/KPI/Compliance\"]\n    end\n\n    S4HANA[\"SAP S/4HANA<br/>Universal Journal\"] --> SAC[\"SAP Analytics Cloud<br/>Live Connection\"]\n    BTP_DATA[\"BTP App Data<br/>PAKD/LC/Artwork\"] --> SAC\n    SAC --> D1\n    SAC --> D2\n    SAC --> D3\n    SAC --> D4\n    SAC --> D5\n    SAC --> D6\n    SAC --> D7\n```\n\n---\n\n## 10. T\u00edch h\u1ee3p h\u1ec7 sinh th\u00e1i\n\n| H\u1ec7 th\u1ed1ng c\u1ea7n t\u00edch h\u1ee3p | Gi\u1ea3i ph\u00e1p | C\u00f4ng ngh\u1ec7 |\n|---|---|---|\n| **Email** (Outlook/Gmail) | SAP Email Integration: g\u1eedi PI/SC, docs tr\u1ef1c ti\u1ebfp t\u1eeb h\u1ec7 th\u1ed1ng; forward email inquiry v\u00e0o CRM | SMTP / Microsoft Graph API |\n| **Cloud Storage** (SharePoint/Google Drive) | SAP DMS \u0111\u1ed3ng b\u1ed9 ho\u1eb7c CMIS integration | CMIS / REST API |\n| **E-Signature** (DocuSign, Adobe Sign) | SAP Signavio ho\u1eb7c BTP workflow trigger e-signature khi c\u1ea7n duy\u1ec7t | REST API |\n| **Ng\u00e2n h\u00e0ng** (LC, TT, CAD) | Bank Communication Management (BCM) trong SAP FI ho\u1eb7c SWIFT/custom bank gateway | BCM / SWIFT / REST API |\n| **Shipping Line API** (vessel tracking) | BTP Integration Suite: g\u1ecdi API c\u1ee7a Maersk, MSC, CMA CGM... \u0111\u1ec3 tracking container real-time | REST API |\n| **GS1 / Barcode** | SAP Global Trade Services (GTS) ho\u1eb7c integration v\u1edbi GS1 Vietnam | REST API |\n| **H\u00f3a \u0111\u01a1n \u0111i\u1ec7n t\u1eed** (E-Invoice) | **FPT.eInvoice** \u2014 \u0111\u00e3 t\u00edch h\u1ee3p th\u00e0nh c\u00f4ng v\u1edbi SAP B1 cho Blue Ocean | REST API |\n| **HR System** | SAP SuccessFactors ho\u1eb7c t\u00edch h\u1ee3p HR system hi\u1ec7n t\u1ea1i qua BTP Integration Suite | REST API |\n| **Power BI / BI Tools** | SAP Analytics Cloud c\u00f3 th\u1ec3 xu\u1ea5t d\u1eef li\u1ec7u ra Power BI qua OData | OData |\n\n---\n\n## 11. \u0110\u1ed1i chi\u1ebfu v\u1edbi ti\u00eau ch\u00ed nghi\u1ec7m thu\n\nBlueprint Sunrise \u0111\u1eb7t ra 7 ti\u00eau ch\u00ed nghi\u1ec7m thu r\u1ea5t c\u1ee5 th\u1ec3:\n\n| # | Ti\u00eau ch\u00ed nghi\u1ec7m thu t\u1eeb Sunrise | SAP Solution Mapping | Tr\u1ea1ng th\u00e1i |\n|---|---|---|---|\n| 1 | **M\u1ed9t PI ph\u00e1t h\u00e0nh \u2192 t\u1ef1 t\u1ea1o order case, payment request, procurement request, document checklist, shipment timeline, task** | BTP Workflow: event \"PI Issued\" trigger t\u1ef1 \u0111\u1ed9ng t\u1ea1o Order Case, Payment Request (FI-AR), Procurement Request (MM), Document Checklist (BTP Export Docs), Shipment Timeline (BTP Logistics), Task cho t\u1eebng PIC | \u2705 \u0110\u00e1p \u1ee9ng |\n| 2 | **M\u1ed9t \u0111\u01a1n h\u00e0ng \u2192 nh\u00ecn \u0111\u01b0\u1ee3c ti\u1ec1n, h\u00e0ng, booking, ch\u1ee9ng t\u1eeb, c\u00f4ng n\u1ee3, supplier, P&L, claim tr\u00ean 1 m\u00e0n h\u00ecnh** | Custom Fiori \"Order 360\u00b0 View\" tr\u00ean BTP: pull real-time data t\u1eeb SD, MM, FI, TM, DMS, BTP Extensions v\u00e0o 1 m\u00e0n h\u00ecnh | \u2705 \u0110\u00e1p \u1ee9ng |\n| 3 | **M\u1ed9t b\u1ed9 ch\u1ee9ng t\u1eeb \u2192 version, deadline, ng\u01b0\u1eddi duy\u1ec7t, final status** | BTP Export Doc Engine + SAP DMS: m\u1ed7i doc c\u00f3 version history, approval workflow, deadline tracking, final lock | \u2705 \u0110\u00e1p \u1ee9ng |\n| 4 | **M\u1ed9t kho\u1ea3n ph\u00e1t sinh \u2192 quay l\u1ea1i PAKD/P&L** | SAP CO-PA: m\u1ecdi actual cost posting (FI/MM) t\u1ef1 \u0111\u1ed9ng c\u1eadp nh\u1eadt v\u00e0o CO-PA \u2192 so s\u00e1nh v\u1edbi Planned PAKD | \u2705 \u0110\u00e1p \u1ee9ng |\n| 5 | **M\u1ed9t task qu\u00e1 h\u1ea1n \u2192 c\u1ea3nh b\u00e1o + escalation** | BTP Alert Center: m\u1ed7i task c\u00f3 deadline, qu\u00e1 h\u1ea1n \u2192 alert PIC + escalation \u0111\u1ebfn manager qua email/app/chat | \u2705 \u0110\u00e1p \u1ee9ng |\n| 6 | **M\u1ed9t kh\u00e1ch h\u00e0ng \u2192 l\u1ecbch s\u1eed mua h\u00e0ng, ch\u1ee9ng t\u1eeb, c\u00f4ng n\u1ee3, claim, th\u1ecb tr\u01b0\u1eddng** | SAP Customer 360\u00b0: Customer Master \u2192 all SD documents \u2192 all FI postings \u2192 all claims (BTP Incident) \u2192 market/region | \u2705 \u0110\u00e1p \u1ee9ng |\n| 7 | **Nh\u00e2n vi\u00ean ngh\u1ec9 vi\u1ec7c \u2192 kh\u00f4ng m\u1ea5t d\u1eef li\u1ec7u** | To\u00e0n b\u1ed9 d\u1eef li\u1ec7u thu\u1ed9c v\u1ec1 Business Objects (Customer, Order, Supplier), kh\u00f4ng thu\u1ed9c v\u1ec1 User. User ch\u1ec9 l\u00e0 actor trong workflow. | \u2705 \u0110\u00e1p \u1ee9ng |\n\n---\n\n## 12. SAP vs. Odoo \u2014 Ph\u00e2n t\u00edch kh\u00e1c bi\u1ec7t\n\nD\u1ef1a tr\u00ean blueprint c\u1ee7a Sunrise, \u0111\u00e2y l\u00e0 b\u1ea3ng so s\u00e1nh chi ti\u1ebft nh\u1eefng \u0111i\u1ec3m SAP v\u01b0\u1ee3t tr\u1ed9i:\n\n| Y\u00eau c\u1ea7u c\u1ee7a Sunrise | Odoo | SAP S/4HANA + BTP |\n|---|---|---|\n| **PAKD Engine** (costing, LNR, margin, multi-level approval) | \u274c Kh\u00f4ng c\u00f3 s\u1eb5n. Ph\u1ea3i custom to\u00e0n b\u1ed9 t\u1eeb \u0111\u1ea7u b\u1eb1ng Odoo Studio ho\u1eb7c Python. R\u1ee7i ro cao v\u1ec1 logic v\u00e0 b\u1ea3o tr\u00ec. | \u2705 BTP PAKD Engine: x\u00e2y d\u1ef1ng tr\u00ean n\u1ec1n t\u1ea3ng low-code BTP, t\u00edch h\u1ee3p real-time v\u1edbi SD/MM/FI qua standard APIs |\n| **LC/CAD/Bank Presentation** (LC tracker, discrepancy check, deadline, bank set) | \u274c Ho\u00e0n to\u00e0n kh\u00f4ng c\u00f3. Ph\u1ea3i x\u00e2y d\u1ef1ng nh\u01b0 m\u1ed9t app ri\u00eang b\u00ean ngo\u00e0i Odoo ho\u1eb7c custom module Python | \u2705 BTP LC/CAD Tracker: x\u00e2y d\u1ef1ng ri\u00eang tr\u00ean BTP, k\u1ebft n\u1ed1i FI-AR, c\u00f3 rule engine check discrepancy, deadline tracking |\n| **Export Documentation** (SI, VGM, BL, CI, PL, CO, Phyto, Fumi...) | \u274c Template ch\u1ec9 c\u00f3 Invoice c\u01a1 b\u1ea3n. Checklist theo Incoterms/Payment term ph\u1ea3i custom n\u1eb7ng. | \u2705 BTP Export Doc Engine: template \u0111\u1ed9ng theo Incoterms \u00d7 Payment term \u00d7 Product, version control, deadline management |\n| **Ph\u00e2n quy\u1ec1n \u1ea9n supplier v\u1edbi sale** | \u26a0\ufe0f C\u00f3 role-based access nh\u01b0ng field-level security (\u1ea9n 1 field c\u1ee5 th\u1ec3) kh\u00f3 v\u00e0 d\u1ec5 b\u1ecb bypass | \u2705 SAP Authorization: field-level security \u0111\u00e3 \u0111\u01b0\u1ee3c ch\u1ee9ng minh qua h\u00e0ng ngh\u00ecn enterprise deployment. Audit log (RAL) ghi nh\u1eadn m\u1ecdi truy c\u1eadp |\n| **28 tr\u1ea1ng th\u00e1i \u0111\u01a1n h\u00e0ng + workflow automation** | \u26a0\ufe0f Odoo c\u00f3 tr\u1ea1ng th\u00e1i nh\u01b0ng workflow engine kh\u00f4ng m\u1ea1nh b\u1eb1ng SAP. Custom escalation c\u1ea7n code Python. | \u2705 SAP Build Process Automation: low-code workflow v\u1edbi decision tree, parallel task, deadline, escalation |\n| **Multi-company (2+ ph\u00e1p nh\u00e2n, multi-currency)** | \u26a0\ufe0f Odoo h\u1ed7 tr\u1ee3 multi-company nh\u01b0ng consolidation, inter-company, currency revaluation y\u1ebfu h\u01a1n SAP | \u2705 SAP S/4HANA: multi-company l\u00e0 DNA. Inter-company automation, group consolidation, currency revaluation chu\u1ea9n IFRS |\n| **FI-CO** (P&L per order, cost accounting, tax refund) | \u26a0\ufe0f Odoo Accounting \u0111\u1ee7 cho SME nh\u01b0ng Profitability Analysis (CO-PA) per order kh\u00f4ng c\u00f3 s\u1eb5n | \u2705 SAP CO-PA: profitability analysis per order, per customer, per market, per product \u2014 real-time |\n| **C\u1ea3nh b\u00e1o t\u1ef1 \u0111\u1ed9ng 5 nh\u00f3m** | \u26a0\ufe0f Odoo c\u00f3 automated actions nh\u01b0ng rule engine gi\u1edbi h\u1ea1n, kh\u00f4ng c\u00f3 c\u1ea3nh b\u00e1o cross-module | \u2705 BTP Alert Center: rule engine cross-module, trigger t\u1eeb b\u1ea5t k\u1ef3 data source n\u00e0o, notification \u0111a k\u00eanh |\n| **Dashboard CEO** (7 dashboards) | \u26a0\ufe0f Odoo dashboard c\u01a1 b\u1ea3n, kh\u00f4ng c\u00f3 predictive analytics | \u2705 SAP Analytics Cloud: 7 dashboards v\u1edbi live connection, predictive insights, KPI scorecard |\n| **Scalability** (th\u00eam ph\u00e1p nh\u00e2n, th\u00eam th\u1ecb tr\u01b0\u1eddng, volume t\u0103ng) | \u26a0\ufe0f Khi custom nhi\u1ec1u, Odoo kh\u00f3 n\u00e2ng c\u1ea5p version m\u1edbi. Performance gi\u1ea3m khi data l\u1edbn. | \u2705 SAP S/4HANA: ki\u1ebfn tr\u00fac clean core, extension tr\u00ean BTP side-by-side, n\u00e2ng c\u1ea5p version kh\u00f4ng \u1ea3nh h\u01b0\u1edfng custom |\n| **Ecosystem** (ng\u00e2n h\u00e0ng, e-invoice, GS1, shipping line API) | \u26a0\ufe0f T\u00edch h\u1ee3p qua API nh\u01b0ng c\u1ea7n custom connector cho t\u1eebng \u0111\u1ed1i t\u00e1c | \u2705 SAP BTP Integration Suite: 2000+ pre-built connectors, API management, event-driven integration |\n\n---\n\n## 13. L\u1ed9 tr\u00ecnh tri\u1ec3n khai \u0111\u1ec1 xu\u1ea5t\n\nD\u1ef1a tr\u00ean blueprint 7 phase c\u1ee7a Sunrise, ch\u00fang t\u00f4i \u0111\u1ec1 xu\u1ea5t l\u1ed9 tr\u00ecnh \u0111\u00e3 \u0111i\u1ec1u ch\u1ec9nh ph\u00f9 h\u1ee3p v\u1edbi th\u1ef1c t\u1ebf tri\u1ec3n khai SAP:\n\n| Phase | Th\u1eddi l\u01b0\u1ee3ng | M\u1ee5c ti\u00eau ch\u00ednh | \u0110\u1ea7u ra |\n|---|---|---|---|\n| **1. Discover** | 3-4 tu\u1ea7n | Ph\u1ecfng v\u1ea5n t\u1eebng ph\u00f2ng ban, validate blueprint, map AS-IS \u2192 TO-BE | Business Blueprint (BBP), Fit-Gap Analysis |\n| **2. Master Data Cleanse** | 4-6 tu\u1ea7n | L\u00e0m s\u1ea1ch Customer, Supplier, SKU, Price Library, Certificate List | Master Data Template, Migration Strategy |\n| **3. Core Build: FI-CO-SD-MM** | 8-12 tu\u1ea7n | C\u1ea5u h\u00ecnh SAP S/4HANA Core: FI, CO, SD, MM, DMS | Configured System (Dev) |\n| **4. Extension Build: BTP** | 8-12 tu\u1ea7n | X\u00e2y d\u1ef1ng PAKD Engine, Export Doc Engine, LC/CAD Tracker, Alert Center, Dashboard (song song v\u1edbi Phase 3) | BTP Apps deployed |\n| **5. Integration** | 4-6 tu\u1ea7n | T\u00edch h\u1ee3p BTP Apps \u2194 S/4HANA Core, t\u00edch h\u1ee3p b\u00ean th\u1ee9 3 (email, bank, e-invoice, shipping line) | Integration tested |\n| **6. UAT** | 4-8 tu\u1ea7n | Ch\u1ea1y th\u1eed \u0111\u01a1n h\u00e0ng th\u1eadt: Rice FOB TT, FMCG CIF LC, mixed container | UAT sign-off |\n| **7. Training** | 3-4 tu\u1ea7n | \u0110\u00e0o t\u1ea1o theo ph\u00f2ng ban, vi\u1ebft SOP, ph\u00e2n quy\u1ec1n | User manual, SOP, training records |\n| **8. Go-live & Hypercare** | 2-3 th\u00e1ng | Ch\u1ea1y th\u1eadt, h\u1ed7 tr\u1ee3 l\u1ed7i, kh\u00f3a quy tr\u00ecnh, \u0111i\u1ec1u ch\u1ec9nh dashboard | ERP v\u1eadn h\u00e0nh ch\u00ednh th\u1ee9c |\n\n**T\u1ed5ng th\u1eddi gian \u01b0\u1edbc t\u00ednh: 6-9 th\u00e1ng** (c\u00f3 th\u1ec3 song song h\u00f3a Phase 3 v\u00e0 4).\n\n---\n\n## 14. Investment Framework\n\n**C\u00e1c l\u1ef1a ch\u1ecdn gi\u1ea3i ph\u00e1p SAP:**\n\n| Option | M\u00f4 t\u1ea3 | Ph\u00f9 h\u1ee3p khi |\n|---|---|---|\n| **A: SAP S/4HANA Public Cloud** | Multi-tenant cloud, subscription theo user/n\u0103m. Core: FI, CO, SD, MM, TM, EWM. Extensions: BTP. | Ng\u00e2n s\u00e1ch v\u1eadn h\u00e0nh (OPEX), mu\u1ed1n nhanh, kh\u00f4ng mu\u1ed1n qu\u1ea3n tr\u1ecb h\u1ea1 t\u1ea7ng. Ph\u00f9 h\u1ee3p quy m\u00f4 Sunrise hi\u1ec7n t\u1ea1i. |\n| **B: SAP S/4HANA Private Cloud (RISE)** | Single-tenant cloud, subscription theo user/n\u0103m. Cho ph\u00e9p custom s\u00e2u h\u01a1n Public Cloud. | C\u1ea7n custom nhi\u1ec1u h\u01a1n m\u1ee9c Public Cloud cho ph\u00e9p, ho\u1eb7c c\u1ea7n ki\u1ec3m so\u00e1t h\u1ea1 t\u1ea7ng. Chi ph\u00ed cao h\u01a1n Option A. |\n| **C: SAP Business One (SAP B1)** | ERP cho SME, on-premise ho\u1eb7c cloud. FI, SD, MM c\u01a1 b\u1ea3n. | Ng\u00e2n s\u00e1ch th\u1ea5p h\u01a1n, quy m\u00f4 nh\u1ecf h\u01a1n. Nh\u01b0ng LC/CAD, Export Docs v\u1eabn c\u1ea7n custom/add-on. |\n\n**Khuy\u1ebfn ngh\u1ecb c\u1ee7a FPT IS: Option A (SAP S/4HANA Public Cloud + BTP)**\n\nL\u00fd do:\n- \u2705 \u0110\u00e3 c\u00f3 case study th\u1ef1c t\u1ebf: **Nafoods Group (HOSE: NAF)** \u2014 doanh nghi\u1ec7p n\u00f4ng nghi\u1ec7p th\u1ef1c ph\u1ea9m xu\u1ea5t kh\u1ea9u \u2014 k\u00fd SAP S/4HANA Public Cloud v\u1edbi FPT th\u00e1ng 01/2026\n- \u2705 Public Cloud c\u00f3 s\u1eb5n FI, CO, SD, MM, TM, EWM \u2014 \u0111\u00e1p \u1ee9ng 11/17 module ngay\n- \u2705 BTP x\u1eed l\u00fd 6 module \u0111\u1eb7c th\u00f9 (PAKD, Export Docs, LC/CAD, Artwork, Alert, Dashboard) \u2014 clean core, d\u1ec5 n\u00e2ng c\u1ea5p\n- \u2705 OPEX model: subscription theo n\u0103m, d\u1ec5 d\u1ef1 to\u00e1n ng\u00e2n s\u00e1ch\n- \u2705 Kh\u00f4ng c\u1ea7n \u0111\u1ea7u t\u01b0 h\u1ea1 t\u1ea7ng server, b\u1ea3o tr\u00ec h\u1ec7 th\u1ed1ng\n- \u2705 N\u1ebfu sau n\u00e0y Sunrise m\u1edf r\u1ed9ng l\u1edbn h\u01a1n, c\u00f3 th\u1ec3 upgrade l\u00ean Private Cloud (RISE)\n\n---\n\n## 15. Social Proof \u2014 Doanh nghi\u1ec7p c\u00f9ng ng\u00e0nh \u0111\u00e3 ch\u1ecdn SAP\n\n| # | Doanh nghi\u1ec7p | Ng\u00e0nh | Gi\u1ea3i ph\u00e1p SAP | \u0110\u1ed1i t\u00e1c | Tr\u1ea1ng th\u00e1i |\n|---|---|---|---|---|---|\n| 1 | **Blue Ocean (Lotus Group)** | Xu\u1ea5t kh\u1ea9u g\u1ea1o | SAP B1 + SAP FARM | **FPT IS** \u2705 | \u0110\u00e3 v\u1eadn h\u00e0nh |\n| 2 | **Nafoods Group (HOSE: NAF)** | N\u00f4ng nghi\u1ec7p, th\u1ef1c ph\u1ea9m XK | SAP S/4HANA Public Cloud | **FPT** \u2705 | \u0110ang tri\u1ec3n khai (01/2026) |\n| 3 | **L\u1ed9c Tr\u1eddi Group (UPCoM: LTG)** | L\u00faa g\u1ea1o, n\u00f4ng nghi\u1ec7p | SAP S/4HANA (11 modules) | Citek | \u0110\u00e3 v\u1eadn h\u00e0nh (03/2021) |\n| 4 | **G\u1ea1o A An** | G\u1ea1o cao c\u1ea5p | SAP S/4HANA Cloud | Citek | \u0110\u00e3 v\u1eadn h\u00e0nh |\n\n> **\u2605 2/4 doanh nghi\u1ec7p** l\u00e0 doanh nghi\u1ec7p **xu\u1ea5t kh\u1ea9u g\u1ea1o tr\u1ef1c ti\u1ebfp** \u2014 c\u00f9ng ng\u00e0nh v\u1edbi Sunrise Foodstuff.  \n> **\u2605 2/4 doanh nghi\u1ec7p** ch\u1ecdn **FPT IS l\u00e0m \u0111\u1ed1i t\u00e1c tri\u1ec3n khai** \u2014 FPT l\u00e0 SAP Gold Partner h\u00e0ng \u0111\u1ea7u Vi\u1ec7t Nam.  \n> **\u2605 Nafoods Group** \u2014 case study **n\u00f3ng nh\u1ea5t** (01/2026) \u2014 ch\u1ecdn \u0111\u00fang SAP S/4HANA Public Cloud + FPT, m\u00f4 h\u00ecnh gi\u1ed1ng h\u1ec7t \u0111\u1ec1 xu\u1ea5t cho Sunrise.\n\n---\n\n## L\u1eddi k\u1ebft\n\nSunrise Foodstuff \u0111\u00e3 c\u00f3 m\u1ed9t blueprint xu\u1ea5t s\u1eafc \u2014 t\u00e0i li\u1ec7u n\u00e0y l\u00e0 m\u01a1 \u01b0\u1edbc c\u1ee7a b\u1ea5t k\u1ef3 \u0111\u1ed1i t\u00e1c tri\u1ec3n khai ERP n\u00e0o v\u00ec n\u00f3 lo\u1ea1i b\u1ecf s\u1ef1 m\u01a1 h\u1ed3 ngay t\u1eeb \u0111\u1ea7u. SAP S/4HANA Public Cloud + BTP l\u00e0 ki\u1ebfn tr\u00fac gi\u1ea3i ph\u00e1p **\u0111\u00e1p \u1ee9ng to\u00e0n b\u1ed9 7 ti\u00eau ch\u00ed nghi\u1ec7m thu, 17 module y\u00eau c\u1ea7u, ki\u1ec3m so\u00e1t \u0111\u1ed3ng th\u1eddi 5 d\u00f2ng ch\u1ea3y, v\u00e0 s\u1eb5n s\u00e0ng cho s\u1ef1 m\u1edf r\u1ed9ng trong t\u01b0\u01a1ng lai**.\n\nCh\u00fang t\u00f4i mong mu\u1ed1n \u0111\u01b0\u1ee3c b\u01b0\u1edbc v\u00e0o **Phase 1: Discover** \u2014 d\u00e0nh 3-4 tu\u1ea7n \u0111\u1ec3 ph\u1ecfng v\u1ea5n t\u1eebng ph\u00f2ng ban, validate blueprint, v\u00e0 x\u00e2y d\u1ef1ng Business Blueprint chi ti\u1ebft. T\u1eeb \u0111\u00f3, ch\u00fang t\u00f4i s\u1ebd \u0111\u01b0a ra estimate ch\u00ednh x\u00e1c v\u1ec1 timeline v\u00e0 investment, c\u00f9ng b\u1ea3n demo POC cho module quan tr\u1ecdng nh\u1ea5t: PAKD Engine v\u00e0 Export Documentation Engine.\n\n> **\"ERP kh\u00f4ng ch\u1ec9 l\u00e0 c\u00f4ng c\u1ee5 ghi nh\u1eadn giao d\u1ecbch. N\u00f3 ph\u1ea3i l\u00e0 h\u1ec7 \u0111i\u1ec1u h\u00e0nh c\u1ee7a doanh nghi\u1ec7p xu\u1ea5t kh\u1ea9u.\"** \u2014 tr\u00edch t\u1eeb ERP Blueprint c\u1ee7a Sunrise Foodstuff.\n\n---\n\n**Richard Vu (Th\u1eafng V\u0169)**  \nSAP Presales Consultant  \nBCIS \u2013 FPT Information System  \n\ud83d\udce7 thangvd1@fpt.com  \n\ud83c\udfe2 FPT Tower, 10 Ph\u1ea1m V\u0103n B\u1ea1ch, C\u1ea7u Gi\u1ea5y, H\u00e0 N\u1ed9i\n";
+
+  // Build HTML from markdown
+  const html = marked.parse(mdSource, {
+    mangle: false,
+    headerIds: true
+  });
+
+  // Wrap each H2 as a "section" for keynote-like rhythm
+  const root = document.getElementById("docRoot");
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+
+  // Create sections: split by H2
+  const nodes = Array.from(tmp.childNodes);
+  let current = document.createElement("div");
+  current.className = "section";
+  root.appendChild(current);
+
+  function slugify(text) {
+    return text.toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  }
+
+  const toc = document.getElementById("toc");
+  let sectionCount = 0;
+
+  nodes.forEach(n => {
+    if (n.nodeType === 1 && n.tagName === "H2") {
+      // start a new section
+      current = document.createElement("div");
+      current.className = "section";
+
+      // Ensure ID exists and is stable
+      const title = n.textContent.trim();
+      const id = n.id || slugify(title) || ("sec-" + (++sectionCount));
+      n.id = id;
+
+      // TOC entry
+      const a = document.createElement("a");
+      a.href = "#" + id;
+      a.textContent = title;
+      toc.appendChild(a);
+
+      current.appendChild(n);
+      root.appendChild(current);
+    } else {
+      current.appendChild(n);
+    }
+  });
+
+  // Render mermaid blocks after inserted
+  // marked renders ```mermaid``` as <pre><code class="language-mermaid">...</code></pre>
+  const mermaidCodes = root.querySelectorAll('pre > code.language-mermaid');
+  mermaidCodes.forEach((code, i) => {
+    const pre = code.parentElement;
+    const container = document.createElement("div");
+    container.className = "mermaid";
+    container.textContent = code.textContent;
+    pre.replaceWith(container);
+  });
+
+  // Run mermaid to convert to SVG
+  mermaid.run({ querySelector: ".mermaid" });
+
+  // Scrollspy for active TOC
+  const tocLinks = Array.from(toc.querySelectorAll("a"));
+  const headings = tocLinks.map(a => document.getElementById(a.getAttribute("href").slice(1))).filter(Boolean);
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove("active"));
+        const link = toc.querySelector('a[href="#' + e.target.id + '"]');
+        if (link) link.classList.add("active");
+      }
+    });
+  }, { rootMargin: "-30% 0px -65% 0px", threshold: 0.01 });
+
+  headings.forEach(h => obs.observe(h));
+</script>
+</body>
+</html>
