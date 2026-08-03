@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Bay Tech — Lộ trình Đầu tư CNTT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #000000;
+  --surface: #111111;
+  --surface2: #1a1a1a;
+  --text: #f5f5f7;
+  --text-muted: #86868b;
+  --accent: #0071e3;
+  --accent2: #5ac8fa;
+  --gold: #ffd60a;
+  --green: #30d158;
+  --orange: #ff9f0a;
+  --red: #ff453a;
+  --purple: #bf5af2;
+  --cyan: #64d2ff;
+  --gradient-1: linear-gradient(135deg, #0071e3 0%, #5ac8fa 100%);
+  --gradient-2: linear-gradient(135deg, #30d158 0%, #00c7be 100%);
+  --gradient-3: linear-gradient(135deg, #ff9f0a 0%, #ff375f 100%);
+  --gradient-4: linear-gradient(135deg, #bf5af2 0%, #5e5ce6 100%);
+  --gradient-5: linear-gradient(135deg, #64d2ff 0%, #007aff 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-snap-type:y mandatory}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+section{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 60px;scroll-snap-align:start;position:relative;overflow:hidden}
+
+/* Typography */
+h1{font-family:'DM Serif Display',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:400;line-height:1.1;letter-spacing:-0.01em}
+h2{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;line-height:1.2;letter-spacing:-0.01em}
+h3{font-size:clamp(1.2rem,2vw,1.5rem);font-weight:600;letter-spacing:-0.01em}
+p,li{font-size:1.05rem;line-height:1.7;color:var(--text-muted)}
+.subtitle{font-size:0.85rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent2);font-weight:600}
+
+/* Hero */
+.hero{text-align:center}.hero .badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;background:var(--gold);margin-bottom:24px}.hero h1{margin-bottom:20px}.hero .meta{font-size:0.95rem;color:var(--text-muted)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(0,113,227,0.15),transparent),radial-gradient(ellipse 60% 50% at 80% 80%,rgba(90,200,250,0.08),transparent);pointer-events:none;z-index:0}
+
+/* Overview */
+.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;width:100%}.overview-card{background:var(--surface);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:28px 24px;transition:all 0.3s ease;position:relative;overflow:hidden}.overview-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.15);box-shadow:0 20px 50px rgba(0,0,0,0.4)}.overview-card .num{font-family:'DM Serif Display',serif;font-size:2.2rem;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.overview-card .label{font-size:0.85rem;color:var(--text-muted);margin-top:8px}
+
+/* Timeline */
+.timeline-hero{text-align:center;margin-bottom:60px}.phase-strip{display:flex;gap:12px;max-width:1200px;width:100%;flex-wrap:wrap;justify-content:center}.phase-card{flex:1;min-width:200px;max-width:240px;background:var(--surface2);border-radius:24px;padding:32px 24px;border:1px solid rgba(255,255,255,0.05);transition:all 0.4s ease;position:relative}.phase-card:hover{transform:translateY(-8px)}.phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0}.phase-card.p0::before{background:var(--gradient-1)}.phase-card.p1::before{background:var(--gradient-2)}.phase-card.p2::before{background:var(--gradient-3)}.phase-card.p3::before{background:var(--gradient-4)}.phase-card.p4::before{background:var(--gradient-5)}.phase-card .phase-tag{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:8px}.phase-card .phase-title{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:6px}.phase-card .phase-time{font-size:0.85rem;color:var(--text-muted)}.phase-card .phase-budget{font-size:0.9rem;font-weight:600;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08)}.phase-card .phase-users{font-size:0.8rem;color:var(--text-muted);margin-top:4px}
+
+/* Detail Section */
+.detail-section{max-width:1100px;width:100%}.detail-section h2{margin-bottom:12px}.detail-section .phase-badge{display:inline-block;padding:4px 14px;border-radius:12px;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px}.detail-section .context{font-size:0.95rem;color:var(--text-muted);margin-bottom:32px;padding:16px 20px;background:var(--surface);border-radius:12px;border-left:3px solid var(--accent)}
+
+/* Table */
+.it-table{width:100%;border-collapse:separate;border-spacing:0 6px}.it-table thead th{text-align:left;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);padding:8px 16px;font-weight:600}.it-table tbody td{padding:14px 16px;background:var(--surface);font-size:0.9rem;border-top:1px solid rgba(255,255,255,0.04)}.it-table tbody tr td:first-child{border-radius:10px 0 0 10px}.it-table tbody tr td:last-child{border-radius:0 10px 10px 0}.it-table .cost{font-weight:600;color:var(--accent2)}
+
+/* Budget Bar */
+.budget-section{max-width:1000px;width:100%}.budget-bars{display:flex;flex-direction:column;gap:12px}.budget-row{display:flex;align-items:center;gap:16px}.budget-row .b-label{min-width:160px;font-size:0.85rem;font-weight:500}.budget-row .b-bar-wrap{flex:1;height:32px;background:var(--surface);border-radius:16px;overflow:hidden;position:relative}.budget-row .b-bar{height:100%;border-radius:16px;transition:width 1.5s ease}.budget-row .b-val{min-width:120px;font-size:0.85rem;font-weight:600;text-align:right}
+
+/* Principles */
+.principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1100px;width:100%}.principle-card{background:var(--surface);border-radius:20px;padding:28px;border:1px solid rgba(255,255,255,0.06)}.principle-card .p-num{font-family:'DM Serif Display',serif;font-size:2rem;opacity:0.3;margin-bottom:8px}.principle-card .p-title{font-weight:700;font-size:1.1rem;margin-bottom:8px}.principle-card .p-desc{font-size:0.9rem;color:var(--text-muted);line-height:1.6}
+
+/* Procurement Timeline */
+.procurement-table{width:100%;max-width:1000px;border-collapse:separate;border-spacing:0 4px}.procurement-table th{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);padding:8px 12px;text-align:left}.procurement-table td{padding:12px;background:var(--surface);font-size:0.88rem}.procurement-table td:first-child{font-weight:600;color:var(--accent2)}.procurement-table tr td:first-child{border-radius:8px 0 0 8px}.procurement-table tr td:last-child{border-radius:0 8px 8px 0}
+
+/* Milestones */
+.milestone-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;width:100%}.milestone-card{background:var(--surface);border-radius:20px;padding:24px;border:1px solid rgba(255,255,255,0.06)}.milestone-card .m-time{font-size:0.8rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}.milestone-card .m-decision{font-weight:600;font-size:1.05rem;margin-bottom:6px}.milestone-card .m-risk{font-size:0.85rem;color:var(--red)}
+
+/* Content Wrapper */
+.content-left{text-align:left;width:100%;max-width:1100px}
+
+/* Footer */
+.deerflow-badge{position:fixed;bottom:24px;right:24px;z-index:1000}.deerflow-badge a{display:flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;text-decoration:none;font-size:0.75rem;color:var(--text-muted);transition:all 0.3s;backdrop-filter:blur(20px)}.deerflow-badge a:hover{background:rgba(255,255,255,0.12);color:var(--text);border-color:rgba(255,255,255,0.2)}
+
+.total-banner{text-align:center;margin-top:40px;padding:20px 32px;background:linear-gradient(135deg,rgba(0,113,227,0.15),rgba(90,200,250,0.1));border-radius:16px;border:1px solid rgba(90,200,250,0.2)}.total-banner .total-num{font-family:'DM Serif Display',serif;font-size:2.5rem;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.total-banner .total-label{font-size:0.9rem;color:var(--text-muted)}
+
+.cta-box{text-align:center;margin-top:50px;padding:32px;background:var(--surface);border-radius:24px;border:1px solid rgba(255,255,255,0.08)}.cta-box p{font-size:0.95rem;color:var(--text-muted);max-width:700px;margin:12px auto 0}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:fadeInUp 0.8s ease forwards}.delay-1{animation-delay:0.1s}.delay-2{animation-delay:0.2s}.delay-3{animation-delay:0.3s}.delay-4{animation-delay:0.4s}.delay-5{animation-delay:0.5s}
+
+/* Responsive */
+@media(max-width:768px){section{padding:60px 20px}.overview-grid{grid-template-columns:1fr}.phase-strip{gap:8px}.phase-card{min-width:140px;padding:20px 16px}.milestone-grid{grid-template-columns:1fr}.it-table{font-size:0.8rem}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div style="position:relative;z-index:1">
+    <div class="badge animate-in">Dự án 5.700 tỷ đồng</div>
+    <h1 class="animate-in delay-1">Lộ trình Đầu tư<br>Công nghệ Thông tin</h1>
+    <p class="meta animate-in delay-2">KCN Công nghệ cao Green Bay Tech — 434,97 ha<br>Uông Bí & Yên Tử, Quảng Ninh</p>
+    <p class="meta animate-in delay-3" style="margin-top:12px;font-size:0.8rem;color:var(--accent2)">QĐ chủ trương: 30/06/2026 &nbsp;|&nbsp; Chủ đầu tư: VL Investment Vina</p>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section>
+  <div class="content-left animate-in">
+    <p class="subtitle">Tổng quan</p>
+    <h2 style="margin-bottom:36px">9 Mảng Công Việc Chủ Đầu Tư</h2>
+    <div class="overview-grid">
+      <div class="overview-card"><div class="num">①</div><div class="label"><strong>Thành lập Tổ chức</strong><br>Pháp nhân, trụ sở, nhân sự, vốn</div></div>
+      <div class="overview-card"><div class="num">②</div><div class="label"><strong>Quy hoạch & Thiết kế</strong><br>QH 1/500, thiết kế hạ tầng, EIA</div></div>
+      <div class="overview-card"><div class="num">③</div><div class="label"><strong>Pháp lý & Thủ tục</strong><br>Đất đai, GPXD, thẩm duyệt</div></div>
+      <div class="overview-card"><div class="num">④</div><div class="label"><strong>Giải phóng Mặt bằng</strong><br>Đo đạc, kiểm đếm, đền bù</div></div>
+      <div class="overview-card"><div class="num">⑤</div><div class="label"><strong>Tài chính & Vốn</strong><br>Huy động, giải ngân, dòng tiền</div></div>
+      <div class="overview-card"><div class="num">⑥</div><div class="label"><strong>Mua sắm & Đấu thầu</strong><br>Lựa chọn nhà thầu, giám sát</div></div>
+      <div class="overview-card"><div class="num">⑦</div><div class="label"><strong>Thi công Xây dựng</strong><br>San lấp, đường, điện, nước, XLNT</div></div>
+      <div class="overview-card"><div class="num">⑧</div><div class="label"><strong>Kinh doanh & Marketing</strong><br>Thu hút nhà đầu tư thứ cấp</div></div>
+      <div class="overview-card"><div class="num">⑨</div><div class="label"><strong>Chuẩn bị Vận hành</strong><br>Bộ máy, quy trình, hệ thống</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE OVERVIEW -->
+<section>
+  <div style="max-width:1200px;width:100%">
+    <div class="timeline-hero">
+      <p class="subtitle">Timeline</p>
+      <h2 style="margin-bottom:8px">5 Giai đoạn — 60 Tháng</h2>
+      <p style="font-size:0.9rem;color:var(--text-muted)">Từ Khởi động đến Vận hành Khai thác</p>
+    </div>
+    <div class="phase-strip">
+      <div class="phase-card p0"><div class="phase-tag" style="color:#5ac8fa">GĐ 0</div><div class="phase-title">Khởi động</div><div class="phase-time">0–3 tháng<br>Q3–Q4/2026</div><div class="phase-budget">~0.3–0.5 tỷ</div><div class="phase-users">20–30 users</div></div>
+      <div class="phase-card p1"><div class="phase-tag" style="color:#30d158">GĐ 1</div><div class="phase-title">Chuẩn bị Đầu tư</div><div class="phase-time">3–15 tháng<br>Q4/2026–Q3/2027</div><div class="phase-budget">~3–5 tỷ</div><div class="phase-users">80–120 users</div></div>
+      <div class="phase-card p2"><div class="phase-tag" style="color:#ff9f0a">GĐ 2 ⭐</div><div class="phase-title">GPMB & Thiết kế</div><div class="phase-time">6–24 tháng<br>Q1/2027–Q2/2028</div><div class="phase-budget">~12–18 tỷ</div><div class="phase-users">120–200 users</div></div>
+      <div class="phase-card p3"><div class="phase-tag" style="color:#bf5af2">GĐ 3</div><div class="phase-title">Thi công Hạ tầng</div><div class="phase-time">15–42 tháng<br>Q4/2027–Q2/2030</div><div class="phase-budget">~15–25 tỷ</div><div class="phase-users">150–250 users</div></div>
+      <div class="phase-card p4"><div class="phase-tag" style="color:#64d2ff">GĐ 4</div><div class="phase-title">Vận hành Khai thác</div><div class="phase-time">36+ tháng<br>2029 trở đi</div><div class="phase-budget">~10–20 tỷ</div><div class="phase-users">200–500+ users</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GĐ 0 -->
+<section>
+  <div class="detail-section">
+    <span class="phase-badge" style="background:rgba(90,200,250,0.15);color:#5ac8fa">Giai đoạn 0</span>
+    <h2>Khởi động</h2>
+    <div class="context">Vừa nhận QĐ chủ trương 30/06. Chưa có gì ngoài tờ giấy phép.</div>
+    <h3 style="margin-bottom:16px">🖥️ Đầu tư CNTT</h3>
+    <table class="it-table">
+      <thead><tr><th>Thời điểm</th><th>Hệ thống</th><th>Mục đích</th><th>Chi phí</th></tr></thead>
+      <tbody>
+        <tr><td>Tháng 0–1</td><td>Internet + Mạng LAN (FPT Telecom)</td><td>Làm việc, email, liên lạc 2 văn phòng</td><td class="cost">~50–100M</td></tr>
+        <tr><td>Tháng 0–1</td><td>Microsoft 365 Business (20–30 users)</td><td>Email, Teams, SharePoint</td><td class="cost">~60–80M/năm</td></tr>
+        <tr><td>Tháng 0–1</td><td>MISA SME / Fast Accounting</td><td>Hạch toán ban đầu, kê khai thuế</td><td class="cost">~30–50M</td></tr>
+        <tr><td>Tháng 0–1</td><td>Website công ty</td><td>Landing page giới thiệu dự án</td><td class="cost">~50–100M</td></tr>
+        <tr><td>Tháng 1–2</td><td>HR cơ bản (FPT HRM Cloud)</td><td>Quản lý 20–30 nhân sự ban đầu</td><td class="cost">~30–50M/năm</td></tr>
+        <tr><td>Tháng 2–3</td><td>SharePoint Online (có sẵn M365)</td><td>Lưu văn bản pháp lý, hồ sơ thiết kế</td><td class="cost">Đã gồm M365</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px;font-weight:600;color:var(--green)">📊 Tổng: ~250–400 triệu đồng</p>
+  </div>
+</section>
+
+<!-- GĐ 1 -->
+<section>
+  <div class="detail-section">
+    <span class="phase-badge" style="background:rgba(48,209,88,0.15);color:#30d158">Giai đoạn 1</span>
+    <h2>Chuẩn bị Đầu tư</h2>
+    <div class="context">Đang lập quy hoạch, thiết kế, xin phép. Chưa đụng đến đất. Đội ngũ tăng lên 50–100 người.</div>
+    <table class="it-table">
+      <thead><tr><th>Thời điểm</th><th>Hệ thống</th><th>Mục đích</th><th>Chi phí</th></tr></thead>
+      <tbody>
+        <tr><td>Tháng 3–4</td><td>Hệ thống GIS cơ bản (QGIS)</td><td>Quy hoạch, quản lý ranh giới, GPMB</td><td class="cost">~100–200M</td></tr>
+        <tr><td>Tháng 4–6</td><td>M365 mở rộng lên 100 users</td><td>Đáp ứng đội ngũ tăng, phân quyền</td><td class="cost">~150–200M/năm</td></tr>
+        <tr><td>Tháng 5–6</td><td>Microsoft Project Online / PM tools</td><td>Theo dõi tiến độ tổng thể, milestones</td><td class="cost">~100–200M</td></tr>
+        <tr><td>Tháng 6–8</td><td><strong>Hệ thống Quản lý GPMB</strong></td><td>Hồ sơ hộ dân, đền bù, tiến độ, khiếu nại</td><td class="cost">~500–800M</td></tr>
+        <tr><td>Tháng 6–8</td><td>BIM cơ bản (Autodesk BIM 360)</td><td>Phối hợp thiết kế đa bộ môn</td><td class="cost">~300–500M</td></tr>
+        <tr><td>Tháng 8–10</td><td>Hệ thống Quản lý Hợp đồng</td><td>Theo dõi hợp đồng, cảnh báo gia hạn</td><td class="cost">~200–400M</td></tr>
+        <tr><td>Tháng 10–12</td><td>SAP Sandbox + Thiết kế PS, FI</td><td>Chuẩn bị cho GĐ2: WBS, COA, master data</td><td class="cost">~1–2 tỷ</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px;font-weight:600;color:var(--green)">📊 Tổng: ~3–5 tỷ đồng &nbsp;|&nbsp; ⚠️ <span style="color:var(--orange)">Cuối GĐ1: Quyết định nền tảng ERP</span></p>
+  </div>
+</section>
+
+<!-- GĐ 2 -->
+<section>
+  <div class="detail-section">
+    <span class="phase-badge" style="background:rgba(255,159,10,0.15);color:#ff9f0a">Giai đoạn 2 ⭐</span>
+    <h2>GPMB & Thiết kế Chi tiết</h2>
+    <div class="context">Giai đoạn căng thẳng nhất — GPMB quyết định tiến độ toàn dự án. Dòng tiền bắt đầu chảy mạnh. <strong>Đầu tư CNTT LỚN nhất</strong>.</div>
+    <table class="it-table">
+      <thead><tr><th>Thời điểm</th><th>Hệ thống</th><th>Mục đích</th><th>Chi phí</th></tr></thead>
+      <tbody>
+        <tr><td>Tháng 6–8</td><td><strong>SAP S/4HANA Private Cloud</strong> (RISE)</td><td>Nền tảng ERP toàn doanh nghiệp</td><td class="cost">~8–12 tỷ</td></tr>
+        <tr><td>Tháng 8–12</td><td>SAP FI-CO</td><td>Kế toán, TSCĐ, vốn vay, vốn hóa XDCB</td><td class="cost">Trong gói</td></tr>
+        <tr><td>Tháng 8–14</td><td><strong>SAP PS-PPM</strong> ⭐</td><td>Quản lý dự án 5.700 tỷ: WBS, ngân sách, tiến độ</td><td class="cost">Trọng tâm</td></tr>
+        <tr><td>Tháng 10–16</td><td>SAP MM / Sourcing & Procurement</td><td>PR→PO→nhập kho→thanh toán, đấu thầu</td><td class="cost">Tích hợp PS</td></tr>
+        <tr><td>Tháng 12–18</td><td>Document Control (SAP DMS)</td><td>Bản vẽ, biên bản, nhật ký, hồ sơ hoàn công</td><td class="cost">~500M–1 tỷ</td></tr>
+        <tr><td>Tháng 6–12</td><td>Drone + Ảnh vệ tinh giám sát</td><td>Giám sát tiến độ san lấp, xây dựng</td><td class="cost">~500–800M</td></tr>
+        <tr><td>Tháng 6–12</td><td>Hạ tầng mạng Fiber + WiFi + VPN</td><td>Kết nối HN-QN, 100+ người</td><td class="cost">~300–500M</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px;font-weight:600;color:var(--orange)">📊 Tổng: ~12–18 tỷ đồng &nbsp;|&nbsp; ⚠️ Ký hợp đồng SAP — nếu chậm → không kiểm soát chi phí XD</p>
+  </div>
+</section>
+
+<!-- GĐ 3 -->
+<section>
+  <div class="detail-section">
+    <span class="phase-badge" style="background:rgba(191,90,242,0.15);color:#bf5af2">Giai đoạn 3</span>
+    <h2>Thi công Hạ tầng</h2>
+    <div class="context">Mặt bằng đã có, nhà thầu đã chọn, xây dựng rầm rộ. MOU đầu tiên với khách thuê.</div>
+    <table class="it-table">
+      <thead><tr><th>Thời điểm</th><th>Hệ thống</th><th>Mục đích</th><th>Chi phí</th></tr></thead>
+      <tbody>
+        <tr><td>Tháng 18–24</td><td><strong>SAP RE-FX</strong> ⭐</td><td>Quản lý BĐS, hợp đồng thuê, điều kiện hợp đồng</td><td class="cost">Trọng tâm</td></tr>
+        <tr><td>Tháng 20–26</td><td>SAP SD (Billing) tích hợp RE-FX</td><td>Hợp đồng→billing→hóa đơn→nhắc nợ</td><td class="cost">Tích hợp</td></tr>
+        <tr><td>Tháng 22–28</td><td><strong>SAP EAM</strong> ⭐</td><td>Quản lý tài sản hạ tầng, bảo trì phòng ngừa</td><td class="cost">Trọng tâm</td></tr>
+        <tr><td>Tháng 24–30</td><td>Smart Metering (điện/nước)</td><td>Đọc từ xa, import SAP SD, phát hiện rò rỉ</td><td class="cost">~2–4 tỷ</td></tr>
+        <tr><td>Tháng 24–30</td><td>SCADA giám sát hạ tầng</td><td>Real-time: trạm điện, bơm, XLNT, hồ điều hòa</td><td class="cost">~3–5 tỷ</td></tr>
+        <tr><td>Tháng 26–32</td><td>CCTV + ANPR (nhận diện biển số)</td><td>An ninh 24/7, kiểm soát ra vào</td><td class="cost">~2–4 tỷ</td></tr>
+        <tr><td>Tháng 28–34</td><td>SAP Analytics Cloud</td><td>Dashboard: occupancy, doanh thu, công nợ, KPI</td><td class="cost">~1–3 tỷ</td></tr>
+        <tr><td>Tháng 28–34</td><td>Tenant Self-Service Portal</td><td>Xem hợp đồng, thanh toán, báo sự cố</td><td class="cost">~1–2 tỷ</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px;font-weight:600;color:var(--purple)">📊 Tổng: ~15–25 tỷ đồng</p>
+  </div>
+</section>
+
+<!-- GĐ 4 -->
+<section>
+  <div class="detail-section">
+    <span class="phase-badge" style="background:rgba(100,210,255,0.15);color:#64d2ff">Giai đoạn 4</span>
+    <h2>Vận hành Khai thác</h2>
+    <div class="context">KCN đi vào vận hành ổn định. Có khách thuê, có doanh thu. Chuyển từ "dự án XD" sang "doanh nghiệp KCN chuyên nghiệp".</div>
+    <table class="it-table">
+      <thead><tr><th>Thời điểm</th><th>Hệ thống</th><th>Mục đích</th><th>Chi phí</th></tr></thead>
+      <tbody>
+        <tr><td>Tháng 36–48</td><td>Smart Industrial Park (IoT + AI/ML trên BTP)</td><td>Dự báo occupancy, predictive maintenance, anomaly</td><td class="cost">~3–5 tỷ</td></tr>
+        <tr><td>Tháng 36–48</td><td>ESG & Carbon Tracking (SAP Sustainability)</td><td>CO2, water footprint, báo cáo ESG tự động</td><td class="cost">~1–2 tỷ</td></tr>
+        <tr><td>Tháng 40–52</td><td>Digital Twin KCN (BIM + IoT + GIS)</td><td>Mô hình 3D, real-time trạng thái hạ tầng</td><td class="cost">~2–4 tỷ</td></tr>
+        <tr><td>Tháng 40–52</td><td>5G Private Network (FPT Telecom)</td><td>Mạng riêng cho nhà máy thông minh của khách thuê</td><td class="cost">~5–10 tỷ</td></tr>
+        <tr><td>Liên tục</td><td>Vận hành & nâng cấp hệ thống</td><td>Bảo trì, nâng cấp SAP, tính năng mới</td><td class="cost">~2–3 tỷ/năm</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px;font-weight:600;color:var(--cyan)">📊 Tổng: ~10–20 tỷ đồng</p>
+  </div>
+</section>
+
+<!-- BUDGET SUMMARY -->
+<section>
+  <div class="budget-section">
+    <p class="subtitle">Tổng hợp Ngân sách</p>
+    <h2 style="margin-bottom:40px">Ngân sách CNTT Theo Giai đoạn</h2>
+    <div class="budget-bars">
+      <div class="budget-row"><span class="b-label">GĐ0 · Khởi động</span><div class="b-bar-wrap"><div class="b-bar" style="width:2%;background:var(--gradient-1)"></div></div><span class="b-val">0.3–0.5 tỷ</span></div>
+      <div class="budget-row"><span class="b-label">GĐ1 · Chuẩn bị</span><div class="b-bar-wrap"><div class="b-bar" style="width:15%;background:var(--gradient-2)"></div></div><span class="b-val">3–5 tỷ</span></div>
+      <div class="budget-row"><span class="b-label">GĐ2 · GPMB ⭐</span><div class="b-bar-wrap"><div class="b-bar" style="width:50%;background:var(--gradient-3)"></div></div><span class="b-val">12–18 tỷ</span></div>
+      <div class="budget-row"><span class="b-label">GĐ3 · Thi công</span><div class="b-bar-wrap"><div class="b-bar" style="width:35%;background:var(--gradient-4)"></div></div><span class="b-val">15–25 tỷ</span></div>
+      <div class="budget-row"><span class="b-label">GĐ4 · Vận hành</span><div class="b-bar-wrap"><div class="b-bar" style="width:25%;background:var(--gradient-5)"></div></div><span class="b-val">10–20 tỷ</span></div>
+    </div>
+    <div class="total-banner">
+      <div class="total-num">~40–70 tỷ đồng</div>
+      <div class="total-label">Tổng mức đầu tư CNTT toàn dự án (1–1.2% tổng vốn đầu tư)</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCUREMENT -->
+<section>
+  <div class="content-left">
+    <p class="subtitle">Lịch Mua sắm</p>
+    <h2 style="margin-bottom:32px">24 Hệ thống — Bảng Tổng</h2>
+    <table class="procurement-table">
+      <thead><tr><th>#</th><th>Hệ thống</th><th>Mua khi</th><th>Vận hành từ</th><th>Mục đích chính</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>M365 + Email</td><td>T0–1</td><td>Ngay</td><td>Nền tảng làm việc</td></tr>
+        <tr><td>2</td><td>Kế toán MISA</td><td>T0–1</td><td>Ngay</td><td>Kê khai thuế</td></tr>
+        <tr><td>3</td><td>Website</td><td>T0–1</td><td>Ngay</td><td>Hình ảnh, marketing</td></tr>
+        <tr><td>4</td><td>HR cơ bản</td><td>T1–2</td><td>Ngay</td><td>Quản lý nhân sự</td></tr>
+        <tr><td>5</td><td>GIS</td><td>T3–4</td><td>T4</td><td>Quy hoạch, GPMB</td></tr>
+        <tr><td>10</td><td style="color:var(--accent2);font-weight:700">SAP S/4HANA + FI</td><td>T6–12</td><td>T12</td><td>ERP lõi, tài chính</td></tr>
+        <tr><td>11</td><td style="color:var(--accent2);font-weight:700">SAP PS-PPM</td><td>T8–14</td><td>T14</td><td>Quản lý dự án XD</td></tr>
+        <tr><td>15</td><td style="color:var(--accent2);font-weight:700">SAP RE-FX</td><td>T18–24</td><td>T24</td><td>Quản lý BĐS, cho thuê</td></tr>
+        <tr><td>17</td><td style="color:var(--accent2);font-weight:700">SAP EAM</td><td>T22–28</td><td>T28</td><td>Bảo trì hạ tầng</td></tr>
+        <tr><td>21</td><td>SAP Analytics Cloud</td><td>T28–34</td><td>T34</td><td>Dashboard</td></tr>
+        <tr><td>22</td><td>Tenant Portal</td><td>T28–34</td><td>T34</td><td>Dịch vụ KH</td></tr>
+        <tr><td>23</td><td>ESG Tracking</td><td>T36–48</td><td>T48</td><td>Báo cáo bền vững</td></tr>
+        <tr><td>24</td><td>Digital Twin / 5G</td><td>T40–52</td><td>T52</td><td>KCN thông minh</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section>
+  <div class="content-left">
+    <p class="subtitle">Nguyên tắc</p>
+    <h2 style="margin-bottom:40px">5 Nguyên tắc Vàng<br>Đầu tư CNTT cho KCN</h2>
+    <div class="principles">
+      <div class="principle-card"><div class="p-num">01</div><div class="p-title">Không mua trước khi cần</div><div class="p-desc">Mua đúng lúc, không mua sớm gây lãng phí. Ví dụ: Chưa có khách thuê thì chưa cần SAP RE-FX.</div></div>
+      <div class="principle-card"><div class="p-num">02</div><div class="p-title">Nhưng phải mua đủ sớm</div><div class="p-desc">SAP PS phải chạy TRƯỚC KHI thi công. Hệ thống GPMB phải sẵn sàng TRƯỚC KHI chi trả đền bù.</div></div>
+      <div class="principle-card"><div class="p-num">03</div><div class="p-title">Chọn nền tảng ERP sớm</div><div class="p-desc">Quyết định ERP cuối GĐ1 sẽ chi phối toàn bộ kiến trúc về sau. Đổi ERP giữa chừng là thảm họa.</div></div>
+      <div class="principle-card"><div class="p-num">04</div><div class="p-title">Tích hợp là sống còn</div><div class="p-desc">ERP + SCADA + Smart Metering + CCTV phải nói chuyện được. FPT IS là số ít đối tác làm được trọn gói.</div></div>
+      <div class="principle-card"><div class="p-num">05</div><div class="p-title">Dự phòng ngân sách vận hành</div><div class="p-desc">Không chỉ mua mà còn phải NUÔI hệ thống. SAP license ~17–22%/năm. Nhân sự IT: 5–10 người sau GĐ3.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section>
+  <div class="content-left">
+    <p class="subtitle">Quyết định</p>
+    <h2 style="margin-bottom:40px">Các Mốc Quyết định Quan trọng</h2>
+    <div class="milestone-grid">
+      <div class="milestone-card"><div class="m-time">Cuối GĐ1 (Tháng 10–12)</div><div class="m-decision">Chọn nền tảng ERP (SAP / Microsoft / Oracle)</div><div class="m-risk">⚠ Chi phối toàn bộ chi tiêu CNTT 5–10 năm sau</div></div>
+      <div class="milestone-card"><div class="m-time">GĐ2 (Tháng 6–8)</div><div class="m-decision">Ký hợp đồng SAP, chọn đối tác triển khai</div><div class="m-risk">⚠ Quyết định chất lượng kiểm soát dự án XD 5.700 tỷ</div></div>
+      <div class="milestone-card"><div class="m-time">GĐ3 (Tháng 18–24)</div><div class="m-decision">Triển khai RE-FX + EAM</div><div class="m-risk">⚠ Quyết định hiệu quả vận hành KCN sau này</div></div>
+      <div class="milestone-card"><div class="m-time">GĐ3–GĐ4 (Tháng 30–36)</div><div class="m-decision">Có nên đầu tư Smart IP (5G, Digital Twin, AI)?</div><div class="m-risk">⚠ Tạo khác biệt cạnh tranh hay lãng phí?</div></div>
+    </div>
+
+    <div class="cta-box">
+      <p class="subtitle">Next Step</p>
+      <p>Với tư cách FPT IS, anh Thắng có thể dùng tài liệu này để giải thích cho khách hàng <strong>tại sao phải đầu tư CNTT sớm</strong> (GPMB, PS), cho thấy FPT IS hiểu toàn bộ vòng đời dự án KCN, và định vị mình là <strong>đối tác chiến lược toàn diện</strong> — không chỉ là vendor đơn thuần.</p>
+    </div>
+  </div>
+</section>
+
+<div class="deerflow-badge">
+  <a href="https://deerflow.tech" target="_blank">✦ Created by Deerflow</a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.budget-row .b-bar').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0';
+          setTimeout(() => { bar.style.width = w; }, 100);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.budget-section').forEach(s => observer.observe(s));
+});
+</script>
+</body>
+</html>
