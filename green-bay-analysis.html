@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Bay Tech — Phân tích Toàn diện & Lộ trình Chuyển đổi số</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --surface2: #fafafa;
+  --text: #1d1d1f;
+  --text-muted: #6e6e73;
+  --accent: #0071e3;
+  --accent2: #0066cc;
+  --gold: #b8860b;
+  --green: #248a3d;
+  --orange: #e87700;
+  --red: #d32f2f;
+  --purple: #8944ab;
+  --teal: #007c7c;
+  --card-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  --card-hover-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* Navigation */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(245,245,247,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.06);padding:0 40px;height:56px;display:flex;align-items:center;justify-content:space-between;font-size:0.85rem}
+nav .logo{font-weight:700;color:var(--text);font-size:0.9rem;letter-spacing:-0.01em}
+nav .nav-links{display:flex;gap:24px;list-style:none}
+nav .nav-links a{text-decoration:none;color:var(--text-muted);font-size:0.8rem;transition:color 0.2s}
+nav .nav-links a:hover{color:var(--accent)}
+
+/* Sections */
+.section{padding:100px 60px;max-width:1200px;margin:0 auto}
+.section-hero{padding:160px 60px 100px;text-align:center}
+@media(max-width:768px){.section,.section-hero{padding:80px 20px}nav{padding:0 20px}nav .nav-links{display:none}}
+
+/* Typography */
+h1{font-family:'DM Serif Display',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:400;line-height:1.1;letter-spacing:-0.01em}
+h2{font-family:'DM Serif Display',serif;font-size:clamp(1.7rem,3vw,2.5rem);font-weight:400;line-height:1.2;letter-spacing:-0.01em;margin-bottom:8px}
+h3{font-size:1.2rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:12px}
+p,li{font-size:1rem;line-height:1.75;color:var(--text-muted)}
+.subtitle{font-size:0.8rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);font-weight:600;margin-bottom:8px}
+.section-desc{max-width:640px;margin-bottom:40px}
+
+/* Hero */
+.hero-badge{display:inline-block;padding:6px 18px;border-radius:20px;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--bg);background:var(--accent);margin-bottom:20px}
+.hero-meta{font-size:0.9rem;color:var(--text-muted);margin-top:16px}
+.hero-gradient{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse, rgba(0,113,227,0.08), transparent 70%);pointer-events:none;z-index:-1}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{background:var(--surface);border-radius:20px;padding:32px;box-shadow:var(--card-shadow);transition:all 0.3s ease;border:1px solid rgba(0,0,0,0.04)}
+.card:hover{transform:translateY(-4px);box-shadow:var(--card-hover-shadow)}
+.card .card-icon{font-size:1.8rem;margin-bottom:12px}
+.card .card-title{font-weight:700;font-size:1.1rem;margin-bottom:8px}
+.card .card-desc{font-size:0.9rem;color:var(--text-muted);line-height:1.6}
+
+/* Info Table */
+.info-table{width:100%;border-collapse:separate;border-spacing:0 1px}
+.info-table tr td{padding:14px 20px;font-size:0.92rem}
+.info-table tr td:first-child{font-weight:600;color:var(--text);white-space:nowrap;border-radius:10px 0 0 10px}
+.info-table tr td:last-child{border-radius:0 10px 10px 0}
+.info-table tr:nth-child(odd) td{background:var(--surface2)}
+.info-table tr:nth-child(even) td{background:var(--surface)}
+
+/* Pain Point Table */
+.pp-table{width:100%;border-collapse:separate;border-spacing:0 6px}
+.pp-table th{text-align:left;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);padding:8px 16px;font-weight:600}
+.pp-table td{padding:16px;background:var(--surface);border-radius:0;font-size:0.9rem;line-height:1.6;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
+.pp-table tr td:first-child{font-weight:700;border-radius:10px 0 0 10px}
+.pp-table tr td:last-child{border-radius:0 10px 10px 0}
+.pp-level{display:inline-block;padding:2px 10px;border-radius:10px;font-size:0.75rem;font-weight:700}.pp-high{background:#fde8e8;color:var(--red)}.pp-med{background:#fef3c7;color:var(--orange)}
+
+/* Phase Roadmap */
+.phase-roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.phase-box{background:var(--surface);border-radius:20px;padding:28px 22px;box-shadow:var(--card-shadow);text-align:center;position:relative;overflow:hidden}
+.phase-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.phase-box.p1::before{background:linear-gradient(90deg,#30d158,#00c7be)}
+.phase-box.p2::before{background:linear-gradient(90deg,#ff9f0a,#ff6b35)}
+.phase-box.p3::before{background:linear-gradient(90deg,#0071e3,#5ac8fa)}
+.phase-box.p4::before{background:linear-gradient(90deg,#bf5af2,#5e5ce6)}
+.phase-box .p-tag{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;margin-bottom:8px}
+.phase-box .p-title{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:6px}
+.phase-box .p-info{font-size:0.82rem;color:var(--text-muted)}
+.phase-box .p-budget{font-weight:700;margin-top:10px;font-size:0.95rem}
+@media(max-width:768px){.phase-roadmap{grid-template-columns:repeat(2,1fr)}}
+
+/* Two Column */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+@media(max-width:768px){.two-col{grid-template-columns:1fr}}
+
+/* Competition Grid */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.comp-card{background:var(--surface);border-radius:16px;padding:24px;box-shadow:var(--card-shadow);border-left:3px solid var(--accent)}
+.comp-card .comp-name{font-weight:700;font-size:1.05rem;margin-bottom:8px}
+.comp-card .comp-weak{font-size:0.85rem;color:var(--red);margin-top:6px}
+
+/* Solution Architecture */
+.arch-diagram{background:var(--surface);border-radius:24px;padding:40px;text-align:center;box-shadow:var(--card-shadow);margin:32px 0}
+.arch-layer{display:flex;justify-content:center;gap:20px;margin:16px 0;flex-wrap:wrap}
+.arch-box{background:var(--surface2);border-radius:14px;padding:18px 22px;min-width:140px;font-size:0.85rem;border:1px solid rgba(0,0,0,0.06)}
+.arch-box.highlight{background:rgba(0,113,227,0.06);border-color:rgba(0,113,227,0.2);font-weight:600}
+.arch-connector{font-size:2rem;color:var(--text-muted);margin:12px 0}
+
+/* Steps Grid */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.step-card{background:var(--surface);border-radius:20px;padding:28px;box-shadow:var(--card-shadow)}.step-card .step-num{font-family:'DM Serif Display',serif;font-size:2.4rem;color:var(--accent);opacity:0.3}.step-card .step-title{font-weight:700;margin-bottom:8px}
+
+/* KPI Dashboard */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.kpi-card{background:var(--surface);border-radius:16px;padding:22px 20px;box-shadow:var(--card-shadow);text-align:center}
+.kpi-card .kpi-val{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--accent)}
+.kpi-card .kpi-label{font-size:0.82rem;color:var(--text-muted);margin-top:4px}
+
+/* Value Proposition */
+.vp-box{background:linear-gradient(135deg, rgba(0,113,227,0.06), rgba(90,200,250,0.06));border:1px solid rgba(0,113,227,0.15);border-radius:20px;padding:36px;margin:28px 0;font-size:1.05rem;line-height:1.8;font-style:italic;text-align:center}
+
+/* Quote */
+blockquote{font-size:1.3rem;line-height:1.6;color:var(--text);font-style:italic;padding:28px 36px;background:var(--surface);border-radius:16px;box-shadow:var(--card-shadow);margin:24px 0;position:relative}
+blockquote::before{content:'"';font-family:'DM Serif Display',serif;font-size:4rem;color:var(--accent);opacity:0.2;position:absolute;top:8px;left:18px}
+
+/* Advantages */
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.adv-card{background:var(--surface);border-radius:16px;padding:22px;box-shadow:var(--card-shadow);display:flex;gap:14px;align-items:flex-start}.adv-card .adv-num{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--accent);opacity:0.25;flex-shrink:0}.adv-card .adv-title{font-weight:700;font-size:1rem;margin-bottom:4px}.adv-card .adv-desc{font-size:0.88rem;color:var(--text-muted);line-height:1.6}
+
+/* Footer badge */
+.deerflow-badge{position:fixed;bottom:24px;right:24px;z-index:1000}.deerflow-badge a{display:flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(255,255,255,0.75);backdrop-filter:blur(20px);border:1px solid rgba(0,0,0,0.08);border-radius:22px;text-decoration:none;font-size:0.75rem;color:var(--text-muted);transition:all 0.3s;box-shadow:0 2px 12px rgba(0,0,0,0.06)}.deerflow-badge a:hover{background:rgba(255,255,255,0.95);color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,0.1)}
+
+/* Timeline connector */
+.connector{display:flex;align-items:center;justify-content:center;margin:20px 0;gap:0}.connector .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}.connector .line{flex:1;max-width:60px;height:2px;background:linear-gradient(90deg,var(--accent),rgba(0,113,227,0.2))}
+
+/* Footer */
+.page-footer{text-align:center;padding:60px;border-top:1px solid rgba(0,0,0,0.06);color:var(--text-muted);font-size:0.85rem}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Green Bay Tech</span>
+  <ul class="nav-links">
+    <li><a href="#overview">Tổng quan</a></li>
+    <li><a href="#business">Mô hình</a></li>
+    <li><a href="#pains">Pain Points</a></li>
+    <li><a href="#roadmap">Lộ trình</a></li>
+    <li><a href="#solution">Giải pháp</a></li>
+    <li><a href="#strategy">Chiến lược</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="section-hero" style="position:relative">
+  <div class="hero-gradient"></div>
+  <div class="hero-badge">Cơ hội mới · Giai đoạn Tiếp cận</div>
+  <h1>KCN Công nghệ cao<br>Green Bay Tech</h1>
+  <p class="hero-meta">Phân tích Toàn diện & Lộ trình Chuyển đổi số<br>Dành cho Doanh nghiệp Phát triển & Vận hành Khu Công nghiệp</p>
+  <p style="margin-top:12px;font-size:0.82rem;color:var(--text-muted)">03/08/2026 &nbsp;|&nbsp; FPT IS – BCIS &nbsp;|&nbsp; Presales Consultant: Richard Vu (Thắng Vũ)</p>
+</div>
+
+<!-- OVERVIEW -->
+<div class="section" id="overview">
+  <p class="subtitle">1. Tổng quan Khách hàng</p>
+  <h2>Thông tin Doanh nghiệp & Dự án</h2>
+  <div class="two-col" style="margin-top:32px">
+    <div>
+      <h3>Doanh nghiệp</h3>
+      <table class="info-table">
+        <tr><td>Tên</td><td>CÔNG TY TNHH KCN GREEN BAY TECH</td></tr>
+        <tr><td>Chủ đầu tư</td><td>VL Investment Vina Company Limited</td></tr>
+        <tr><td>Địa chỉ</td><td>Tầng 19, Charmvit Tower, 117 Trần Duy Hưng, Cầu Giấy, Hà Nội</td></tr>
+        <tr><td>Ngành nghề</td><td>Đầu tư, xây dựng & kinh doanh KCN</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Dự án</h3>
+      <table class="info-table">
+        <tr><td>Tổng vốn</td><td><strong>5.700 tỷ đồng</strong> (~225 triệu USD)</td></tr>
+        <tr><td>Quy mô</td><td>434,97 ha</td></tr>
+        <tr><td>Vị trí</td><td>Uông Bí & Yên Tử, TX Quảng Yên, Quảng Ninh</td></tr>
+        <tr><td>QĐ chủ trương</td><td>30/06/2026</td></tr>
+        <tr><td>Định hướng</td><td>KCN Công nghệ cao, ưu tiên chế biến-chế tạo</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:24px;background:var(--surface);border-radius:16px;box-shadow:var(--card-shadow)">
+    <h3 style="color:var(--accent)">📌 Điểm đáng chú ý</h3>
+    <p>VL Investment Vina có văn phòng tại Charmvit Tower. Charmvit Group là tập đoàn <strong>Hàn Quốc</strong> hoạt động mạnh tại Việt Nam. VL Investment có văn phòng tại Seoul — gợi ý dự án có <strong>yếu tố Hàn Quốc</strong>. Có thể tiếp cận theo hướng phục vụ chuỗi cung ứng Samsung/LG tại miền Bắc. <a href="https://www.privateequityinternational.com/institution-profiles/vl-investment.html" target="_blank" style="color:var(--accent);font-size:0.85rem">[citation:PEI]</a></p>
+  </div>
+
+  <h3 style="margin-top:40px">Bối cảnh Quảng Ninh</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">📈</div><div class="card-title">GRDP tăng >13%</div><div class="card-desc">Mục tiêu 2026: GRDP tăng >13%, FDI 2–2,5 tỷ USD, thu ngân sách >100.000 tỷ đồng. 6 tháng đầu 2026 công nghiệp chế biến-chế tạo tăng trưởng 29,54%.</div></div>
+    <div class="card"><div class="card-icon">🏭</div><div class="card-title">27 KCN theo quy hoạch</div><div class="card-desc">11 KCN được cấp chủ trương (~6.300 ha), 8 KCN hạ tầng đã hoạt động. Tỷ lệ lấp đầy trung bình chỉ 43,35%.</div></div>
+    <div class="card"><div class="card-icon">⚔️</div><div class="card-title">Cạnh tranh gay gắt</div><div class="card-desc">5 KCN mới cùng đợt: VSIP Quảng Ninh, Bạch Đằng II, VB Quảng Yên, An Hưng. Tổng diện tích cần GPMB >2.000 ha.</div></div>
+  </div>
+</div>
+
+<!-- BUSINESS MODEL -->
+<div class="section" id="business">
+  <p class="subtitle">2. Mô hình Kinh doanh</p>
+  <h2>Đặc thù Doanh nghiệp KCN</h2>
+
+  <div class="phase-roadmap" style="grid-template-columns:repeat(3,1fr);margin:32px 0">
+    <div class="phase-box p1"><div class="p-tag" style="color:var(--green)">GĐ 1</div><div class="p-title">Chuẩn bị</div><div class="p-info">Xin CTPTĐT · Quy hoạch · Thiết kế · Huy động vốn</div><div class="p-budget" style="color:var(--red)">Chi 100%</div></div>
+    <div class="phase-box p2"><div class="p-tag" style="color:var(--orange)">GĐ 2</div><div class="p-title">Xây dựng</div><div class="p-info">GPMB · San lấp · XD hạ tầng · Điện/nước/VT</div><div class="p-budget" style="color:var(--orange)">CAPEX lớn</div></div>
+    <div class="phase-box p3"><div class="p-tag" style="color:var(--accent)">GĐ 3</div><div class="p-title">Vận hành</div><div class="p-info">Cho thuê đất · Thu phí HT · Bảo trì · Thu hút FDI</div><div class="p-budget" style="color:var(--green)">Doanh thu định kỳ</div></div>
+  </div>
+
+  <div class="card-grid" style="margin-top:32px">
+    <div class="card"><div class="card-title">💰 CAPEX khổng lồ</div><div class="card-desc">Vốn 5.700 tỷ, dòng tiền chi trước - thu sau. Cần quản lý dự án đầu tư chặt chẽ, kiểm soát ngân sách theo từng gói thầu.</div></div>
+    <div class="card"><div class="card-title">⏳ Hoàn vốn dài</div><div class="card-desc">7–15 năm mới hòa vốn. Cần hệ thống tài chính mạnh, quản lý dòng tiền, báo cáo nhà đầu tư.</div></div>
+    <div class="card"><div class="card-title">📋 Đa dòng doanh thu</div><div class="card-desc">Cho thuê đất, phí hạ tầng, phí dịch vụ, tiện ích. Cần quản lý hợp đồng & billing linh hoạt, đa phương thức.</div></div>
+    <div class="card"><div class="card-title">🔧 Tài sản phức tạp</div><div class="card-desc">Hạ tầng điện, nước, xử lý thải, giao thông. Cần EAM/CMMS để bảo trì, theo dõi vòng đời thiết bị.</div></div>
+    <div class="card"><div class="card-title">🤝 Quan hệ đa bên</div><div class="card-desc">Nhà nước, nhà đầu tư thứ cấp, nhà thầu XD, ngân hàng. Cần CRM/PRM quản lý quan hệ.</div></div>
+    <div class="card"><div class="card-title">⚖️ Yêu cầu pháp lý</div><div class="card-desc">Luật Đất đai, Luật Đầu tư, NĐ 35/2022/NĐ-CP. Cần compliance tracking, báo cáo định kỳ.</div></div>
+  </div>
+</div>
+
+<!-- PAIN POINTS -->
+<div class="section" id="pains">
+  <p class="subtitle">4. Phân tích Pain Points</p>
+  <h2>12 Pain Points — 3 Giai đoạn</h2>
+  <p class="section-desc">Dựa trên vòng đời dự án KCN, xác định các điểm đau chính cần giải quyết bằng CNTT.</p>
+
+  <h3 style="color:var(--accent);margin-top:32px">GĐ 1: Chuẩn bị Đầu tư (Hiện tại – 2026)</h3>
+  <table class="pp-table">
+    <thead><tr><th>ID</th><th>Pain Point</th><th>Mức độ</th><th>Mô tả</th></tr></thead>
+    <tbody>
+      <tr><td>PP1</td><td>Quản lý hồ sơ pháp lý phân tán</td><td><span class="pp-level pp-high">🔴 Cao</span></td><td>Hàng trăm tài liệu không có hệ thống tập trung → rủi ro chậm tiến độ, lỡ deadline.</td></tr>
+      <tr><td>PP2</td><td>Lập kế hoạch vốn thiếu công cụ</td><td><span class="pp-level pp-high">🔴 Cao</span></td><td>5.700 tỷ cần giải ngân theo giai đoạn. Excel không đủ sức quản lý.</td></tr>
+      <tr><td>PP3</td><td>Tuyển dụng & tổ chức nhân sự</td><td><span class="pp-level pp-med">🟡 TB</span></td><td>Cần tuyển 100–200 nhân sự trong 12–18 tháng → cần HRIS ngay.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--orange);margin-top:32px">GĐ 2: GPMB & Xây dựng (2026–2028)</h3>
+  <table class="pp-table">
+    <thead><tr><th>ID</th><th>Pain Point</th><th>Mức độ</th><th>Mô tả</th></tr></thead>
+    <tbody>
+      <tr><td>PP4</td><td>Quản lý GPMB & tái định cư</td><td><span class="pp-level pp-high">🔴 Cao</span></td><td>435 ha, hàng trăm hộ dân. Thiếu hệ thống → tranh chấp kéo dài, chậm bàn giao mặt bằng.</td></tr>
+      <tr><td>PP5</td><td>Quản lý dự án XD đa gói thầu</td><td><span class="pp-level pp-high">🔴 Cao</span></td><td>Hàng chục gói thầu: san lấp, đường, điện, nước, XLNT... Cần kiểm soát tiến độ, chi phí, chất lượng.</td></tr>
+      <tr><td>PP6</td><td>Mua sắm & quản lý nhà thầu</td><td><span class="pp-level pp-med">🟡 TB</span></td><td>Hàng trăm nhà thầu → cần đấu thầu minh bạch, đánh giá, quản lý hợp đồng.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--purple);margin-top:32px">GĐ 3: Vận hành Khai thác (2028+)</h3>
+  <table class="pp-table">
+    <thead><tr><th>ID</th><th>Pain Point</th><th>Mức độ</th><th>Mô tả</th></tr></thead>
+    <tbody>
+      <tr><td>PP7</td><td>Quản lý hợp đồng thuê đất</td><td><span class="pp-level pp-high">🔴 Cao</span></td><td>Hàng trăm khách thuê với điều khoản riêng. Quản lý thủ công → thất thu, tranh chấp.</td></tr>
+      <tr><td>PP8</td><td>Billing & thu tiền đa kỳ</td><td><span class="pp-level pp-high">🔴 Cao</span></td><td>Nhiều loại phí, mỗi loại có chu kỳ billing khác nhau.</td></tr>
+      <tr><td>PP9</td><td>Bảo trì hạ tầng & tài sản</td><td><span class="pp-level pp-high">🔴 Cao</span></td><td>Điện, trạm bơm, XLNT, đường... Cần bảo trì phòng ngừa, xử lý sự cố 24/7.</td></tr>
+      <tr><td>PP10</td><td>Vận hành tiện ích (Utility)</td><td><span class="pp-level pp-med">🟡 TB</span></td><td>Giám sát tiêu thụ điện/nước từng lô, ghi chỉ số, tính tiền.</td></tr>
+      <tr><td>PP11</td><td>Quản lý quan hệ nhà đầu tư</td><td><span class="pp-level pp-med">🟡 TB</span></td><td>Portal tự phục vụ là điểm cộng cạnh tranh.</td></tr>
+      <tr><td>PP12</td><td>Báo cáo tài chính hợp nhất</td><td><span class="pp-level pp-high">🔴 Cao</span></td><td>Nhiều pháp nhân, cần hợp nhất, IFRS cho nhà đầu tư Hàn Quốc.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- DIGITAL ROADMAP -->
+<div class="section" id="roadmap">
+  <p class="subtitle">5. Lộ trình Chuyển đổi số</p>
+  <h2>4 Giai đoạn — 5 Năm</h2>
+
+  <div class="phase-roadmap" style="margin-top:32px">
+    <div class="phase-box p1"><div class="p-tag" style="color:var(--green)">GĐ 1 · 2026</div><div class="p-title">Nền móng<br>Hạ tầng CNTT</div><div class="p-info">0–6 tháng</div><div class="p-budget">3–5 tỷ</div></div>
+    <div class="phase-box p2"><div class="p-tag" style="color:var(--orange)">GĐ 2 · 2027-28</div><div class="p-title">Quản lý<br>Dự án XD</div><div class="p-info">6–24 tháng</div><div class="p-budget">15–25 tỷ</div></div>
+    <div class="phase-box p3"><div class="p-tag" style="color:var(--accent)">GĐ 3 · 2028-29</div><div class="p-title">Vận hành<br>ERP toàn diện</div><div class="p-info">24–48 tháng</div><div class="p-budget">30–50 tỷ</div></div>
+    <div class="phase-box p4"><div class="p-tag" style="color:var(--purple)">GĐ 4 · 2030+</div><div class="p-title">KCN<br>Thông minh</div><div class="p-info">48–60 tháng</div><div class="p-budget">15–25 tỷ</div></div>
+  </div>
+
+  <div style="margin-top:40px">
+    <h3 style="color:var(--green)">🟢 GĐ 1: Nền móng Hạ tầng CNTT</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">Data Center / Cloud</div><div class="card-desc">Hybrid: On-premise mini DC + FPT Cloud / AWS / Azure. Ưu tiên FPT Cloud tận dụng hệ sinh thái.</div></div>
+      <div class="card"><div class="card-title">Microsoft 365</div><div class="card-desc">Email @greenbaytech.vn, Teams, SharePoint. Tiêu chuẩn doanh nghiệp.</div></div>
+      <div class="card"><div class="card-title">HR & Kế toán cơ bản</div><div class="card-desc">FPT HRM Cloud / MISA AMIS cho 100–200 nhân sự. MISA SME / Fast Accounting cho sổ sách ban đầu.</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px">
+    <h3 style="color:var(--orange)">🟡 GĐ 2: Quản lý Dự án Đầu tư & Xây dựng</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">⭐ SAP PS-PPM</div><div class="card-desc"><strong>Module trọng tâm.</strong> WBS, network, milestone, budget, progress tracking cho toàn dự án 5.700 tỷ. Tích hợp FI, MM.</div></div>
+      <div class="card"><div class="card-title">SAP FI-CO</div><div class="card-desc">Quản lý ngân sách, cam kết chi, giải ngân, vốn vay, báo cáo dòng tiền dự án.</div></div>
+      <div class="card"><div class="card-title">Hệ thống GPMB</div><div class="card-desc">FPT IS phát triển web app: hồ sơ hộ dân, đền bù, tiến độ chi trả, khiếu nại.</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px">
+    <h3 style="color:var(--accent)">🔵 GĐ 3: Vận hành Cốt lõi — ERP Toàn diện</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">⭐ SAP RE-FX</div><div class="card-desc"><strong>Module trọng tâm.</strong> Quản lý portfolio BĐS, hợp đồng thuê linh hoạt, tự động tính tiền thuê, tạo hóa đơn, theo dõi công nợ.</div></div>
+      <div class="card"><div class="card-title">⭐ SAP EAM</div><div class="card-desc"><strong>Module trọng tâm.</strong> Quản lý tài sản hạ tầng: điện, nước, XLNT, giao thông. Bảo trì phòng ngừa, lệnh sửa chữa.</div></div>
+      <div class="card"><div class="card-title">SAP Analytics Cloud</div><div class="card-desc">Dashboard điều hành: occupancy rate, doanh thu/m², công nợ, KPI. Ra quyết định dựa trên dữ liệu.</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px">
+    <h3 style="color:var(--purple)">🟣 GĐ 4: KCN Thông minh & Đổi mới</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-title">Smart Utility + SCADA</div><div class="card-desc">IoT sensors giám sát điện/nước real-time, cảnh báo rò rỉ, dự báo phụ tải. Tiết kiệm 15–20% năng lượng.</div></div>
+      <div class="card"><div class="card-title">Tenant Portal</div><div class="card-desc">Nhà đầu tư xem hợp đồng, thanh toán online, báo sự cố. Tăng trải nghiệm KH, giảm 50% workload CS.</div></div>
+      <div class="card"><div class="card-title">ESG & Carbon Tracking</div><div class="card-desc">SAP Sustainability: theo dõi CO2, water footprint. Đáp ứng yêu cầu ESG của nhà đầu tư Hàn/Nhật/EU.</div></div>
+      <div class="card"><div class="card-title">5G + Digital Twin</div><div class="card-desc">Mạng 5G riêng cho nhà máy thông minh. Mô hình 3D toàn KCN real-time.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SOLUTION -->
+<div class="section" id="solution">
+  <p class="subtitle">6. Đề xuất Giải pháp</p>
+  <h2>Kiến trúc SAP & FPT IS</h2>
+
+  <div class="arch-diagram">
+    <div class="arch-layer">
+      <div class="arch-box highlight">SAP BTP · Nền tảng Tích hợp</div>
+    </div>
+    <div class="arch-connector">▼</div>
+    <div class="arch-layer">
+      <div class="arch-box highlight">S/4HANA ERP Core</div>
+      <div class="arch-box">SuccessFactors</div>
+      <div class="arch-box">Analytics Cloud</div>
+    </div>
+    <div class="arch-connector">▼</div>
+    <div class="arch-layer">
+      <div class="arch-box">FI-CO</div>
+      <div class="arch-box highlight">RE-FX ★</div>
+      <div class="arch-box highlight">PS-PPM ★</div>
+      <div class="arch-box highlight">EAM ★</div>
+      <div class="arch-box">SD</div>
+      <div class="arch-box">MM</div>
+    </div>
+    <div class="arch-connector">▼</div>
+    <div class="arch-layer">
+      <div class="arch-box">FPT IS Custom Solutions</div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-box">GPMB Portal</div>
+      <div class="arch-box">Tenant Portal</div>
+      <div class="arch-box">Smart IP Dashboard</div>
+      <div class="arch-box">E-Gov Integration</div>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-top:32px">
+    <div class="card" style="border:2px solid rgba(0,113,227,0.2)">
+      <div class="card-title" style="color:var(--accent)">✅ Đề xuất: S/4HANA Private Cloud</div>
+      <div class="card-desc">RISE with SAP — đầy đủ tính năng, khả năng tùy biến cao, kiểm soát dữ liệu. Hỗ trợ PS, RE-FX, EAM đầy đủ. Phù hợp quy mô lớn & nhu cầu đặc thù KCN.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--red)">❌ Không phù hợp: Public Cloud</div>
+      <div class="card-desc">Chi phí thấp nhưng hạn chế tùy biến, không hỗ trợ PS/RE-FX đầy đủ. Thiếu module đặc thù cho doanh nghiệp KCN.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:40px">KPI Đề xuất</h3>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-val">&gt;40%</div><div class="kpi-label">Operating Margin (chuẩn ngành 35–50%)</div></div>
+    <div class="kpi-card"><div class="kpi-val">&lt;90 ngày</div><div class="kpi-label">Cash-to-Cash Cycle</div></div>
+    <div class="kpi-card"><div class="kpi-val">&gt;85%</div><div class="kpi-label">Occupancy Rate (sau 5 năm)</div></div>
+    <div class="kpi-card"><div class="kpi-val">&gt;98%</div><div class="kpi-label">Equipment Availability</div></div>
+    <div class="kpi-card"><div class="kpi-val">&lt;4 giờ</div><div class="kpi-label">MTTR (Mean Time To Repair)</div></div>
+    <div class="kpi-card"><div class="kpi-val">&lt;30 ngày</div><div class="kpi-label">Days Sales Outstanding (DSO)</div></div>
+    <div class="kpi-card"><div class="kpi-val">&lt;5%</div><div class="kpi-label">CAPEX Budget Variance</div></div>
+    <div class="kpi-card"><div class="kpi-val">Benchmark</div><div class="kpi-label">Revenue/m² (thị trường Quảng Ninh)</div></div>
+  </div>
+</div>
+
+<!-- STRATEGY -->
+<div class="section" id="strategy">
+  <p class="subtitle">7. Chiến lược Tiếp cận</p>
+  <h2>Lợi thế Cạnh tranh của FPT IS</h2>
+
+  <div class="adv-grid" style="margin-top:28px">
+    <div class="adv-card"><div class="adv-num">1</div><div><div class="adv-title">Hệ sinh thái FPT toàn diện</div><div class="adv-desc">FPT Telecom (hạ tầng, Cloud) + FPT IS (SAP, SI) + FPT Software (custom dev, IoT) — <strong>một điểm liên hệ, giải quyết tất cả.</strong></div></div></div>
+    <div class="adv-card"><div class="adv-num">2</div><div><div class="adv-title">Kinh nghiệm SAP cho BĐS KCN</div><div class="adv-desc">Đã triển khai SAP cho Becamex IDC, VSIP, Vingroup, BRG, Sunshine Group. Am hiểu đặc thù ngành.</div></div></div>
+    <div class="adv-card"><div class="adv-num">3</div><div><div class="adv-title">SAP RE-FX & PS Expertise</div><div class="adv-desc">SAP Gold Partner, đội ngũ consultant RE-FX, PS được SAP certified — module hiếm, ít đối thủ có.</div></div></div>
+    <div class="adv-card"><div class="adv-num">4</div><div><div class="adv-title">Hiện diện tại Quảng Ninh</div><div class="adv-desc">FPT có văn phòng và cam kết đầu tư mạnh tại Quảng Ninh (Khu Công nghệ số Tuần Châu 136 tỷ).</div></div></div>
+    <div class="adv-card"><div class="adv-num">5</div><div><div class="adv-title">Tư vấn toàn diện Full Lifecycle</div><div class="adv-desc">Từ tư vấn chiến lược → thiết kế kiến trúc → triển khai → vận hành. Đối tác chiến lược, không chỉ vendor.</div></div></div>
+  </div>
+
+  <div class="vp-box">
+    <strong>Định vị Giá trị Cốt lõi:</strong><br>
+    "FPT IS là đối tác duy nhất có thể cung cấp giải pháp CNTT toàn diện cho Green Bay Tech: từ hạ tầng mạng, Data Center, đến hệ thống ERP SAP chuẩn quốc tế — tất cả trong một hệ sinh thái tích hợp."
+  </div>
+
+  <h3 style="margin-top:36px">Góc Tiếp cận Khai thác</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-title">🇰🇷 Angel 1: Đối tác Hàn Quốc</div><div class="card-desc">FPT IS hiểu văn hóa doanh nghiệp Hàn, đã triển khai ERP cho Samsung SDS, LG Display. Đội ngũ tư vấn song ngữ, báo cáo IFRS chuẩn Hàn.</div></div>
+    <div class="card"><div class="card-title">🚀 Angel 2: Lợi thế Người đi đầu</div><div class="card-desc">KCN mới = cơ hội xây dựng nền tảng số đúng chuẩn ngay từ đầu. Không đau đầu với hệ thống cũ, không migration. Lợi thế đối thủ không có.</div></div>
+    <div class="card"><div class="card-title">🔗 Angel 3: Tích hợp Toàn diện</div><div class="card-desc">FPT là đối tác duy nhất làm trọn gói từ hạ tầng đến phần mềm. Không cần 3-4 vendor, không rủi ro tích hợp, không đùn đẩy trách nhiệm.</div></div>
+  </div>
+
+  <h3 style="margin-top:40px">Case Study Tham khảo</h3>
+  <div class="card-grid">
+    <div class="card"><div class="card-title">Becamex IDC</div><div class="card-desc">SAP S/4HANA cho quản lý KCN. Mô hình tương tự, có RE-FX, quản lý cho thuê đất.</div></div>
+    <div class="card"><div class="card-title">VSIP</div><div class="card-desc">SAP ERP cho liên doanh Singapore-Việt Nam. Yêu cầu báo cáo quốc tế.</div></div>
+    <div class="card"><div class="card-title">DEEP C Quảng Ninh</div><div class="card-desc">Hạ tầng CNTT KCN. Cùng địa bàn, cùng phân khúc.</div></div>
+  </div>
+</div>
+
+<!-- COMPETITION -->
+<div class="section">
+  <p class="subtitle">8. Phân tích Cạnh tranh</p>
+  <h2>Đối thủ & Cách FPT IS Phản biện</h2>
+  <div class="comp-grid" style="margin-top:28px">
+    <div class="comp-card"><div class="comp-name">Samsung SDS</div><p style="font-size:0.88rem">Quan hệ Hàn Quốc, có case study KCN</p><p class="comp-weak">Yếu: Giá cao, không linh hoạt, không làm hạ tầng</p><p style="font-size:0.88rem;color:var(--accent)">→ FPT IS: giá hợp lý hơn, hệ sinh thái toàn diện, kinh nghiệm địa phương</p></div>
+    <div class="comp-card"><div class="comp-name">VNPT IT</div><p style="font-size:0.88rem">Mạnh hạ tầng viễn thông, giá rẻ</p><p class="comp-weak">Yếu: Yếu ERP/SAP, không kinh nghiệm KCN</p><p style="font-size:0.88rem;color:var(--accent)">→ ERP là xương sống, không chỉ hạ tầng</p></div>
+    <div class="comp-card"><div class="comp-name">CMC TS</div><p style="font-size:0.88rem">SI khá, giá cạnh tranh</p><p class="comp-weak">Yếu: Không SAP RE-FX/PS, yếu KCN</p><p style="font-size:0.88rem;color:var(--accent)">→ Module đặc thù KCN là lợi thế độc quyền của FPT IS</p></div>
+    <div class="comp-card"><div class="comp-name">Microsoft D365</div><p style="font-size:0.88rem">Giá rẻ hơn SAP, dễ triển khai</p><p class="comp-weak">Yếu: Thiếu RE-FX chuyên sâu, hạn chế mở rộng</p><p style="font-size:0.88rem;color:var(--accent)">→ SAP là chuẩn mực cho doanh nghiệp quy mô lớn, vốn FDI</p></div>
+    <div class="comp-card"><div class="comp-name">Tập đoàn Viettel</div><p style="font-size:0.88rem">Mạnh hạ tầng + Cloud + security</p><p class="comp-weak">Yếu: ERP không phải thế mạnh</p><p style="font-size:0.88rem;color:var(--accent)">→ FPT IS: #1 SAP Partner tại Việt Nam, triển khai trực tiếp</p></div>
+  </div>
+</div>
+
+<!-- NEXT STEPS -->
+<div class="section">
+  <p class="subtitle">9. Kiến nghị</p>
+  <h2>Next Steps</h2>
+  <div class="steps-grid" style="margin-top:28px">
+    <div class="step-card"><div class="step-num">01</div><div class="step-title">Xác nhận đầu mối</div><p style="font-size:0.9rem">Tìm người liên hệ tại Green Bay Tech, có tên, chức danh, SĐT người quyết định.</p></div>
+    <div class="step-card"><div class="step-num">02</div><div class="step-title">Credential Presentation</div><p style="font-size:0.9rem">Slide năng lực FPT IS 15–20 slides, tập trung vào KCN + SAP.</p></div>
+    <div class="step-card"><div class="step-num">03</div><div class="step-title">Nghiên cứu sâu VL Investment</div><p style="font-size:0.9rem">Báo cáo tài chính, lãnh đạo, shareholder structure, decision maker.</p></div>
+    <div class="step-card"><div class="step-num">04</div><div class="step-title">Gửi email chào hàng</div><p style="font-size:0.9rem">Dùng sap-email-assistant, đặt lịch gặp đầu tiên.</p></div>
+    <div class="step-card"><div class="step-num">05</div><div class="step-title">Workshop khảo sát</div><p style="font-size:0.9rem">1–2 ngày với Ban GĐ + các phòng ban tương lai sau meeting đầu tiên.</p></div>
+    <div class="step-card"><div class="step-num">06</div><div class="step-title">Demo SAP S/4HANA</div><p style="font-size:0.9rem">Scenario KCN: quản lý hợp đồng thuê, billing, EAM.</p></div>
+  </div>
+</div>
+
+<footer class="page-footer">
+  <p>📋 Tài liệu phân tích sơ bộ dựa trên thông tin công khai. Sau meeting đầu tiên cần cập nhật và tinh chỉnh.</p>
+  <p style="margin-top:8px">💡 Bước tiếp theo: dùng <strong>sap-email-assistant</strong> để soạn email chào hàng · <strong>sap-rfp-writer</strong> để chuẩn bị proposal · <strong>sap-solution-advisor</strong> để tư vấn chi tiết SAP Edition/module</p>
+</footer>
+
+<div class="deerflow-badge">
+  <a href="https://deerflow.tech" target="_blank">✦ Created by Deerflow</a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.card,.phase-box,.kpi-card,.adv-card,.step-card,.comp-card,.vp-box,.arch-diagram').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'all 0.6s ease';
+    observer.observe(el);
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.card,.phase-box,.kpi-card,.adv-card,.step-card,.comp-card,.vp-box,.arch-diagram').forEach(el => {
+      if (el.style.opacity === '0') {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }
+      }
+    });
+  }, 200);
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+});
+</script>
+</body>
+</html>
