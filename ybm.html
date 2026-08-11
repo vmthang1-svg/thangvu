@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YBM · Báo cáo Phân tích Doanh nghiệp 2026</title>
+<style>
+:root{
+  --bg:#000; --ink:#f5f5f7; --dim:#86868b; --line:rgba(255,255,255,.12);
+  --blue:#0a84ff; --green:#30d158; --orange:#ff9f0a; --red:#ff453a; --purple:#bf5af2; --teal:#40c8e0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue","Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  scroll-snap-type:y proximity; height:100vh; overflow-y:scroll;
+}
+::-webkit-scrollbar{width:0}
+section{
+  min-height:100vh; scroll-snap-align:start;
+  padding:9vh 7vw; display:flex; flex-direction:column; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.28;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:2;width:100%;max-width:1180px;margin:0 auto}
+.eyebrow{font-size:clamp(12px,1.1vw,15px);letter-spacing:.18em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:18px}
+h1{font-size:clamp(44px,7.5vw,104px);line-height:1.02;letter-spacing:-.035em;font-weight:700}
+h2{font-size:clamp(30px,4.4vw,62px);line-height:1.06;letter-spacing:-.03em;font-weight:700;margin-bottom:14px}
+h3{font-size:clamp(19px,1.7vw,25px);font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
+.lead{font-size:clamp(16px,1.45vw,22px);line-height:1.55;color:var(--dim);max-width:62ch;font-weight:400}
+.grad{background:linear-gradient(100deg,#0a84ff,#40c8e0 45%,#30d158);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-warm{background:linear-gradient(100deg,#ff9f0a,#ff453a 60%,#bf5af2);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* reveal */
+.r{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.r.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}.d6{transition-delay:.48s}
+
+/* cards */
+.grid{display:grid;gap:16px;margin-top:34px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:rgba(255,255,255,.055); border:1px solid var(--line);
+  border-radius:20px; padding:24px 26px; backdrop-filter:blur(24px);
+  transition:transform .45s cubic-bezier(.16,1,.3,1),background .45s;
+}
+.card:hover{transform:translateY(-6px);background:rgba(255,255,255,.09)}
+.card .k{font-size:clamp(28px,3.2vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.card .l{font-size:13px;color:var(--dim);margin-top:8px;line-height:1.45}
+.card .s{font-size:13px;font-weight:600;margin-top:6px}
+.up{color:var(--green)}.dn{color:var(--red)}.nt{color:var(--orange)}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;margin-top:26px;font-size:clamp(12px,1.05vw,15px)}
+.tbl th{text-align:left;padding:13px 14px;color:var(--dim);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+.tbl td{padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.tbl tr:hover td{background:rgba(255,255,255,.04)}
+.tbl .hi{color:#fff;font-weight:700}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em}
+.b-blue{background:rgba(10,132,255,.18);color:#5ac8fa}
+.b-green{background:rgba(48,209,88,.18);color:var(--green)}
+.b-orange{background:rgba(255,159,10,.18);color:var(--orange)}
+.b-red{background:rgba(255,69,58,.18);color:#ff6961}
+.b-grey{background:rgba(255,255,255,.1);color:var(--dim)}
+
+ul.list{list-style:none;margin-top:10px}
+ul.list li{position:relative;padding-left:20px;margin-bottom:9px;font-size:clamp(13px,1.15vw,16px);line-height:1.5;color:#d8d8dd}
+ul.list li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.sw-s li::before{background:var(--green)}.sw-w li::before{background:var(--orange)}
+.sw-o li::before{background:var(--blue)}.sw-t li::before{background:var(--red)}
+
+/* bars */
+.bar{margin-bottom:16px}
+.bar .top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px}
+.bar .track{height:9px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden}
+.bar .fill{height:100%;border-radius:99px;width:0;transition:width 1.3s cubic-bezier(.16,1,.3,1)}
+.in .fill{width:var(--w)}
+
+.nav{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:11px}
+.nav a{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);transition:.3s}
+.nav a:hover,.nav a.act{background:#fff;transform:scale(1.5)}
+.foot{position:absolute;bottom:26px;left:7vw;font-size:12px;color:#48484a;letter-spacing:.05em;z-index:2}
+.chev{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);color:var(--dim);font-size:26px;animation:bob 2s infinite;z-index:2}
+@keyframes bob{0%,100%{transform:translate(-50%,0);opacity:.4}50%{transform:translate(-50%,10px);opacity:1}}
+.scroll-x{overflow-x:auto}
+@media(max-width:860px){
+  .g4,.g3,.g2{grid-template-columns:1fr 1fr}
+  section{padding:8vh 6vw}
+  .nav{display:none}
+}
+@media(max-width:560px){.g4,.g3,.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="nav" id="nav"></div>
+
+<!-- 1. TITLE -->
+<section id="s1">
+  <div class="glow" style="width:640px;height:640px;background:#0a84ff;top:-15%;left:-10%"></div>
+  <div class="glow" style="width:520px;height:520px;background:#30d158;bottom:-20%;right:-8%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Báo cáo phân tích doanh nghiệp · 11/08/2026</div>
+    <h1 class="r d1">YBM<br><span class="grad">Đá trắng, tham vọng lớn.</span></h1>
+    <p class="lead r d2" style="margin-top:28px">CTCP Khoáng sản Công nghiệp Yên Bái (HOSE: YBM) — Top 3 quy mô ngành bột đá CaCO₃ Việt Nam, doanh nghiệp duy nhất niêm yết HOSE trong phân khúc này.</p>
+    <div class="grid g4 r d3">
+      <div class="card"><div class="k grad">876<span style="font-size:.45em"> tỷ</span></div><div class="l">Doanh thu 2025</div><div class="s up">▲ 13.6% YoY</div></div>
+      <div class="card"><div class="k grad">27.5<span style="font-size:.45em"> tỷ</span></div><div class="l">LNST 2025</div><div class="s up">▲ 106.7% YoY</div></div>
+      <div class="card"><div class="k">3.1<span style="font-size:.45em">%</span></div><div class="l">Biên LNST</div><div class="s nt">Từ 1.2% (2022)</div></div>
+      <div class="card"><div class="k">~8.5<span style="font-size:.45em">x</span></div><div class="l">P/E 2026F</div><div class="s up">Thấp hơn ngành</div></div>
+    </div>
+  </div>
+  <div class="foot">Nguồn: BCTN YBM 2025 · ĐHĐCĐ 2026 · Cafef · Vietstock · Tinnhanhchungkhoan · Báo Pháp luật</div>
+  <div class="chev">⌄</div>
+</section>
+
+<!-- 2. NGÀNH -->
+<section id="s2">
+  <div class="glow" style="width:560px;height:560px;background:#40c8e0;top:10%;right:-12%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần I · Tổng quan ngành</div>
+    <h2 class="r d1">Thị trường bột đá <span class="grad">CaCO₃</span> Việt Nam</h2>
+    <p class="lead r d2">Trữ lượng đá vôi trắng hàng chục tỷ m³, tập trung tại Yên Bái, Hà Nam, Nghệ An — lợi thế cạnh tranh tự nhiên bậc nhất khu vực.</p>
+    <div class="grid g4 r d3">
+      <div class="card"><div class="k">12<span style="font-size:.4em"> triệu tấn</span></div><div class="l">Sản lượng trong nước 2024</div><div class="s up">Dự kiến +10–15% năm 2025</div></div>
+      <div class="card"><div class="k">500<span style="font-size:.4em"> tr USD</span></div><div class="l">Kim ngạch xuất khẩu 2024</div><div class="s l">Hơn 20 quốc gia</div></div>
+      <div class="card"><div class="k grad">600<span style="font-size:.4em"> tr USD</span></div><div class="l">Dự kiến XK 2025</div><div class="s up">▲ 20% YoY</div></div>
+      <div class="card"><div class="k">~12<span style="font-size:.4em">%/năm</span></div><div class="l">Tăng trưởng bột đá siêu mịn (độ trắng &gt;98%)</div></div>
+    </div>
+    <div class="grid g3 r d4">
+      <div class="card"><h3>Động lực hạ nguồn</h3><ul class="list"><li>Nhựa (PVC, filler masterbatch)</li><li>Sơn, giấy, cao su</li><li>Xây dựng</li></ul></div>
+      <div class="card"><h3>Thị trường mũi nhọn</h3><ul class="list"><li><b>Ấn Độ:</b> nhu cầu filler masterbatch tăng mạnh</li><li><b>Trung Quốc:</b> ổn định cho nhựa &amp; sơn</li><li><b>Châu Á – TBD:</b> khu vực tăng trưởng chính</li></ul></div>
+      <div class="card"><h3>Cấu trúc cạnh tranh</h3><p class="lead" style="font-size:15px">Phân mảnh cao với nhiều doanh nghiệp vừa và nhỏ — cạnh tranh chủ yếu bằng <b style="color:#fff">giá</b> và <b style="color:#fff">chất lượng độ mịn</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. BẢN ĐỒ ĐỐI THỦ -->
+<section id="s3">
+  <div class="glow" style="width:600px;height:600px;background:#bf5af2;bottom:-20%;left:-10%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần I.3 · Bản đồ ngành</div>
+    <h2 class="r d1">Ai đang chia phần chiếc bánh?</h2>
+    <div class="scroll-x r d2">
+    <table class="tbl">
+      <tr><th>Doanh nghiệp</th><th>Công suất (tấn/năm)</th><th>Thị trường XK chính</th><th>Ghi chú</th></tr>
+      <tr><td class="hi">Bảo Lai Group</td><td>336,000</td><td>Trung Quốc, Ấn Độ</td><td><span class="badge b-grey">Tư nhân · Top đầu</span></td></tr>
+      <tr style="background:rgba(10,132,255,.09)"><td class="hi">YBM</td><td>&gt;150,000</td><td>Ấn Độ, Trung Quốc, Hàn Quốc</td><td><span class="badge b-blue">HOSE · Tích hợp dọc</span></td></tr>
+      <tr><td class="hi">Minh Đức</td><td>150,000 – 170,000</td><td>Hàn Quốc, Ấn Độ, Đài Loan</td><td><span class="badge b-grey">TNHH</span></td></tr>
+      <tr><td class="hi">An Phát Yên Bái</td><td>~120,000</td><td>Đa thị trường</td><td><span class="badge b-grey">An Phát Holdings</span></td></tr>
+      <tr><td class="hi">Omya (Thụy Sĩ)</td><td>100,000</td><td>Nội địa Việt Nam</td><td><span class="badge b-grey">Surint Omya · FDI</span></td></tr>
+      <tr><td class="hi">AMC – Khoáng sản Á Châu</td><td>~80,000 – 100,000</td><td>Ấn Độ, Đài Loan</td><td><span class="badge b-orange">HNX · CaCO₃ siêu mịn</span></td></tr>
+      <tr><td class="hi">Amico</td><td>~100,000</td><td>Đa thị trường</td><td><span class="badge b-grey">Mỏ Thanh Liêm, Hà Nam</span></td></tr>
+    </table>
+    </div>
+    <div class="grid g4 r d3" style="margin-top:26px">
+      <div class="card"><div class="s" style="color:var(--purple);font-size:12px;letter-spacing:.1em">DẪN ĐẦU QUY MÔ</div><div class="k" style="font-size:26px;margin-top:8px">Bảo Lai</div><div class="l">336K tấn/năm · Tư nhân</div></div>
+      <div class="card" style="border-color:rgba(10,132,255,.5)"><div class="s" style="color:var(--blue);font-size:12px;letter-spacing:.1em">TOP 3 QUY MÔ</div><div class="k" style="font-size:26px;margin-top:8px">YBM · Minh Đức</div><div class="l">&gt;150K – 170K tấn/năm</div></div>
+      <div class="card"><div class="s" style="color:var(--teal);font-size:12px;letter-spacing:.1em">CHUYÊN BIỆT HÓA</div><div class="k" style="font-size:26px;margin-top:8px">AMC · Omya VN</div><div class="l">~100K tấn · Siêu mịn / chất lượng cao</div></div>
+      <div class="card"><div class="s" style="color:var(--dim);font-size:12px;letter-spacing:.1em">THEO SAU</div><div class="k" style="font-size:26px;margin-top:8px">An Phát YB · Amico</div><div class="l">~100K – 120K tấn/năm</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. HỒ SƠ -->
+<section id="s4">
+  <div class="glow" style="width:520px;height:520px;background:#0a84ff;top:-10%;right:0"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần II.1 · Hồ sơ doanh nghiệp</div>
+    <h2 class="r d1">Từ mỏ đá đến <span class="grad">sàn HOSE</span></h2>
+    <div class="grid g3 r d2">
+      <div class="card"><div class="l">Vốn điều lệ</div><div class="k" style="font-size:32px">321.7 tỷ</div><div class="s nt">Từ 09/02/2026 · phát hành quyền mua 1:1</div></div>
+      <div class="card"><div class="l">Nhà máy</div><div class="k" style="font-size:32px">15 ha</div><div class="s">4 nhà máy · 15 máy nghiền · KCN phía Nam Yên Bái</div></div>
+      <div class="card"><div class="l">Trữ lượng mỏ</div><div class="k" style="font-size:32px">30+ năm</div><div class="s">Mỏ Lục Yên &amp; Mông Sơn, Yên Bái</div></div>
+    </div>
+    <div class="grid g2 r d3">
+      <div class="card">
+        <h3>Thông tin pháp lý</h3>
+        <ul class="list">
+          <li><b>Tên đầy đủ:</b> Công ty Cổ phần Khoáng sản Công nghiệp Yên Bái</li>
+          <li><b>Mã CK:</b> YBM (HOSE)</li>
+          <li><b>Trụ sở:</b> Tòa nhà số 237 Hoàng Quốc Việt, P. Bắc Cường, TP Lào Cai</li>
+          <li><b>Thành lập:</b> 2015 — vốn điều lệ ban đầu 35 tỷ đồng</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>4 dòng sản phẩm chính</h3>
+        <ul class="list">
+          <li><b>Bột đá CaCO₃ siêu mịn</b> (D50 5μm – 45μm) — nhựa, sơn, giấy</li>
+          <li><b>Bột đá tráng phủ acid stearic</b> — filler masterbatch</li>
+          <li><b>Đá hạt CaCO₃</b> — thức ăn chăn nuôi, xây dựng</li>
+          <li><b>Hạt nhựa TaiCal</b> — filler masterbatch compound</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid g3 r d4">
+      <div class="card"><h3 style="color:var(--green)">Tích hợp dọc</h3><p class="lead" style="font-size:14px">Tự chủ đá vôi trắng &gt;98% CaCO₃ từ mỏ riêng → ổn định biên lợi nhuận gộp.</p></div>
+      <div class="card"><h3 style="color:var(--green)">Công nghệ Đức</h3><p class="lead" style="font-size:14px">Máy nghiền Hosokawa Alpine — sản phẩm siêu mịn chất lượng cao.</p></div>
+      <div class="card"><h3 style="color:var(--green)">ISO 9001:2015</h3><p class="lead" style="font-size:14px">Hệ thống quản lý chất lượng được chứng nhận quốc tế.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. TÀI CHÍNH -->
+<section id="s5">
+  <div class="glow" style="width:600px;height:600px;background:#30d158;bottom:-25%;right:-10%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần II.2 · Tình hình tài chính</div>
+    <h2 class="r d1">Lợi nhuận <span class="grad">bứt phá 106.7%</span></h2>
+    <div class="scroll-x r d2">
+    <table class="tbl">
+      <tr><th>Chỉ tiêu</th><th>2022</th><th>2023</th><th>2024</th><th style="color:#fff">2025</th><th style="color:var(--blue)">KH 2026</th></tr>
+      <tr><td>Doanh thu thuần (tỷ đồng)</td><td>~650</td><td>~680</td><td>~771</td><td class="hi">876</td><td class="hi" style="color:#5ac8fa">1,150</td></tr>
+      <tr><td>Tăng trưởng DT</td><td>—</td><td>~5%</td><td>~13%</td><td class="hi up">+13.6%</td><td class="hi up">+31%</td></tr>
+      <tr><td>LNST (tỷ đồng)</td><td>~8</td><td>~10</td><td>~13.3</td><td class="hi">27.5</td><td class="hi" style="color:#5ac8fa">36.16</td></tr>
+      <tr><td>Tăng trưởng LN</td><td>—</td><td>~25%</td><td>~33%</td><td class="hi up">+106.7%</td><td class="hi up">+31%</td></tr>
+      <tr><td>Biên LNST</td><td>~1.2%</td><td>~1.5%</td><td>~1.7%</td><td class="hi">3.1%</td><td class="hi">3.1%</td></tr>
+      <tr><td>% Hoàn thành kế hoạch</td><td>—</td><td>—</td><td>—</td><td colspan="2" class="hi up">106.8% DT · 127.9% LN</td></tr>
+    </table>
+    </div>
+    <div class="grid g4 r d3">
+      <div class="card"><div class="l">Tổng tài sản</div><div class="k" style="font-size:30px">714 tỷ</div><div class="s up">▲ 14.5% YoY</div></div>
+      <div class="card"><div class="l">Nợ phải trả / Tổng TS</div><div class="k" style="font-size:30px">35–40%</div><div class="s up">An toàn</div></div>
+      <div class="card"><div class="l">Nợ vay / VCSH</div><div class="k" style="font-size:30px">&lt;0.5x</div><div class="s up">Đòn bẩy thấp</div></div>
+      <div class="card"><div class="l">ROE · ROA</div><div class="k" style="font-size:30px">15–18%<span style="font-size:.5em;color:var(--dim)"> · 4–5%</span></div><div class="s">Khá tốt với DN sản xuất</div></div>
+    </div>
+    <div class="grid g2 r d4">
+      <div class="card" style="border-color:rgba(48,209,88,.35)">
+        <h3 style="color:var(--green)">✓ Điểm tích cực</h3>
+        <ul class="list sw-s">
+          <li>Nợ vay/VCSH &lt; 0.5x — an toàn tài chính cao</li>
+          <li>ROE 15–18% — khá tốt với doanh nghiệp sản xuất công nghiệp</li>
+          <li>Đã tất toán <b>142.9 tỷ</b> vay ngân hàng (VietinBank 76.6 tỷ + BIDV 66.3 tỷ) sau tăng vốn 2025</li>
+          <li>Biên LNST cải thiện từ ~1.2% → 3.1%: dấu hiệu trưởng thành vận hành</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(255,159,10,.35)">
+        <h3 style="color:var(--orange)">! Điểm lưu ý</h3>
+        <ul class="list sw-w">
+          <li>Biên LNST còn mỏng 3.1% — đặc thù ngành CaCO₃ cạnh tranh giá cao</li>
+          <li>Vốn điều lệ tăng mạnh từ ~179 tỷ → 321.7 tỷ ⇒ <b>EPS bị pha loãng</b></li>
+          <li>Kế hoạch 2026 tham vọng (+31% cả DT &amp; LN) đặt áp lực thực thi</li>
+          <li>CAGR doanh thu 3 năm chỉ ~10–14%/năm</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CHIẾN LƯỢC -->
+<section id="s6">
+  <div class="glow" style="width:560px;height:560px;background:#40c8e0;top:0;left:-12%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần II.3 · Chiến lược 2026</div>
+    <h2 class="r d1">60 / 40 và một <span class="grad">cái tên mới</span></h2>
+    <div class="grid g3 r d2">
+      <div class="card"><div class="k grad" style="font-size:52px">60%</div><div class="l" style="font-size:15px"><b style="color:#fff">Thị phần nội địa</b> — giữ vững khách hàng truyền thống</div></div>
+      <div class="card"><div class="k grad" style="font-size:52px">40%</div><div class="l" style="font-size:15px"><b style="color:#fff">Xuất khẩu</b> — Ấn Độ &amp; Trung Quốc là hai thị trường ưu tiên</div></div>
+      <div class="card"><div class="k" style="font-size:34px">YBM JSC</div><div class="l" style="font-size:15px">Đổi tên: “CTCP Khoáng sản Công nghiệp Yên Bái” → <b style="color:#fff">“CTCP YBM”</b> — giảm gắn kết địa lý, hướng thương hiệu quốc tế</div></div>
+    </div>
+    <div class="card r d3" style="margin-top:22px">
+      <h3>Các sáng kiến cụ thể</h3>
+      <div class="grid g3" style="margin-top:12px">
+        <ul class="list"><li>Tối ưu chi phí sản xuất để cạnh tranh giá</li></ul>
+        <ul class="list"><li>Phát triển sản phẩm giá trị gia tăng: bột đá tráng phủ, hạt nhựa TaiCal</li></ul>
+        <ul class="list"><li>Mở rộng kênh phân phối tại Ấn Độ &amp; Trung Quốc</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. SO SÁNH -->
+<section id="s7">
+  <div class="glow" style="width:600px;height:600px;background:#bf5af2;top:-15%;right:-12%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần III · So sánh cạnh tranh</div>
+    <h2 class="r d1">YBM <span style="color:var(--dim)">vs.</span> đối thủ</h2>
+    <div class="grid g2 r d2" style="margin-top:28px">
+      <div>
+        <h3>YBM vs. AMC (HNX)</h3>
+        <div class="scroll-x">
+        <table class="tbl" style="margin-top:12px">
+          <tr><th>Chỉ tiêu</th><th>YBM 2025</th><th>AMC (KH 2025)</th></tr>
+          <tr><td>Doanh thu</td><td class="hi">876 tỷ</td><td>~177 tỷ</td></tr>
+          <tr><td>LNST</td><td class="hi">27.5 tỷ</td><td>~4.8 tỷ</td></tr>
+          <tr><td>Biên LNST</td><td class="hi">3.1%</td><td>~2.7%</td></tr>
+          <tr><td>Sàn giao dịch</td><td class="hi">HOSE</td><td>HNX</td></tr>
+          <tr><td>P/E 2026F</td><td class="hi up">~8.5x</td><td>~10–12x</td></tr>
+        </table>
+        </div>
+        <p class="lead" style="font-size:14px;margin-top:14px">YBM gấp ~5 lần quy mô, vượt trội lợi nhuận tuyệt đối, nhỉnh hơn nhẹ về biên, lợi thế thanh khoản HOSE và định giá hấp dẫn hơn.</p>
+      </div>
+      <div>
+        <h3>YBM vs. khối tư nhân</h3>
+        <div class="scroll-x">
+        <table class="tbl" style="margin-top:12px">
+          <tr><th>Khía cạnh</th><th>YBM</th><th>Bảo Lai</th><th>Minh Đức</th></tr>
+          <tr><td>Công suất (t/năm)</td><td class="hi">&gt;150,000</td><td>336,000</td><td>150–170K</td></tr>
+          <tr><td>Tích hợp dọc</td><td class="hi up">✓ mỏ riêng</td><td class="up">✓</td><td class="nt">Một phần</td></tr>
+          <tr><td>Hạt nhựa CaCO₃</td><td class="hi up">✓ TaiCal</td><td class="up">✓ filler MB</td><td class="dn">✗</td></tr>
+          <tr><td>Niêm yết</td><td class="hi">HOSE</td><td>Tư nhân</td><td>Tư nhân</td></tr>
+          <tr><td>Công nghệ</td><td class="hi">Hosokawa Alpine (Đức)</td><td>Hiện đại</td><td>Mỹ, Đức, TBN</td></tr>
+          <tr><td>XK sang Ấn Độ</td><td class="hi up">✓</td><td class="up">✓</td><td class="up">✓</td></tr>
+        </table>
+        </div>
+        <p class="lead" style="font-size:14px;margin-top:14px"><b style="color:#fff">Vị thế YBM:</b> Top 3 quy mô ngành CaCO₃ Việt Nam, doanh nghiệp niêm yết duy nhất trên HOSE trong phân khúc — lợi thế từ tích hợp dọc (mỏ → chế biến → xuất khẩu), đa dạng hóa sản phẩm và khả năng tiếp cận vốn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. SWOT -->
+<section id="s8">
+  <div class="glow" style="width:600px;height:600px;background:#ff9f0a;bottom:-25%;left:-10%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần IV.1 · Ma trận SWOT</div>
+    <h2 class="r d1">Bốn góc của <span class="grad-warm">một câu chuyện</span></h2>
+    <div class="grid g2 r d2">
+      <div class="card" style="border-color:rgba(48,209,88,.4)">
+        <h3 style="color:var(--green)">S · Điểm mạnh</h3>
+        <ul class="list sw-s">
+          <li>Tự chủ nguyên liệu — mỏ trữ lượng 30 năm</li>
+          <li>Công nghệ Đức (Hosokawa Alpine)</li>
+          <li>Cấu trúc tài chính lành mạnh (nợ/VCSH &lt;0.5x)</li>
+          <li>Đa dạng sản phẩm: CaCO₃ + TaiCal</li>
+          <li>Niêm yết HOSE → tiếp cận vốn tốt</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(255,159,10,.4)">
+        <h3 style="color:var(--orange)">W · Điểm yếu</h3>
+        <ul class="list sw-w">
+          <li>Biên lợi nhuận mỏng 3.1%</li>
+          <li>Phụ thuộc xuất khẩu (40% DT) → rủi ro tỷ giá</li>
+          <li>Công suất thấp hơn Bảo Lai</li>
+          <li>EPS bị pha loãng sau tăng vốn</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(10,132,255,.4)">
+        <h3 style="color:var(--blue)">O · Cơ hội</h3>
+        <ul class="list sw-o">
+          <li>Nhu cầu Ấn Độ tăng mạnh</li>
+          <li>XK bột đá VN +20%/năm → 600 triệu USD (2025)</li>
+          <li>Xu hướng filler masterbatch tăng trưởng</li>
+          <li>Châu Á – Thái Bình Dương tăng trưởng nhanh</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:rgba(255,69,58,.4)">
+        <h3 style="color:var(--red)">T · Thách thức</h3>
+        <ul class="list sw-t">
+          <li>Cạnh tranh giá gay gắt</li>
+          <li>Căng thẳng Trung Đông → giá dầu ↑ → logistics ↑</li>
+          <li>Khách hàng xu hướng mua ngắn hạn</li>
+          <li>Công suất ngành tiếp tục mở rộng</li>
+          <li>Áp lực tỷ giá, lãi suất trong nước</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. RỦI RO -->
+<section id="s9">
+  <div class="glow" style="width:560px;height:560px;background:#ff453a;top:-10%;right:-10%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần IV.2 · Phân tích rủi ro</div>
+    <h2 class="r d1">Năm rủi ro cần <span class="grad-warm">theo dõi sát</span></h2>
+    <div class="grid g2 r d2">
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">1 · Cạnh tranh giá</h3><span class="badge b-red">CAO</span></div><p class="lead" style="font-size:14px;margin-top:12px">Công suất CaCO₃ tại Việt Nam và các nước XK tiếp tục mở rộng. Khách hàng tối ưu chi phí đầu vào, chuyển sang mua ngắn hạn — áp lực kép: giá bán giảm + chi phí giữ chân khách hàng tăng.</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">2 · Logistics &amp; địa chính trị</h3><span class="badge b-red">CAO</span></div><p class="lead" style="font-size:14px;margin-top:12px">Căng thẳng Trung Đông đẩy giá dầu tăng → cước vận tải biển tăng. Với 40% doanh thu từ xuất khẩu, YBM đặc biệt nhạy cảm với biến động cước quốc tế.</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">3 · Tỷ giá &amp; lãi suất</h3><span class="badge b-orange">TRUNG BÌNH</span></div><p class="lead" style="font-size:14px;margin-top:12px">Doanh thu XK bằng USD, chi phí trong nước bằng VND. Biến động USD/VND ảnh hưởng trực tiếp lợi nhuận; lãi suất neo cao ảnh hưởng chi phí tài chính dù nợ vay đã giảm.</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">4 · Giá nguyên liệu phụ trợ</h3><span class="badge b-orange">TRUNG BÌNH</span></div><p class="lead" style="font-size:14px;margin-top:12px">Giá acid stearic (phụ gia tráng phủ) biến động ảnh hưởng giá vốn hàng bán của dòng bột đá tráng phủ.</p></div>
+      <div class="card" style="grid-column:span 2"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">5 · Chính sách khai thác</h3><span class="badge b-grey">THẤP – TRUNG BÌNH</span></div><p class="lead" style="font-size:14px;margin-top:12px">Thay đổi quy định về thuế tài nguyên và phí bảo vệ môi trường có thể làm tăng chi phí khai thác.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. ĐỊNH GIÁ -->
+<section id="s10">
+  <div class="glow" style="width:600px;height:600px;background:#0a84ff;bottom:-20%;right:-8%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần IV.3 · Định giá so sánh</div>
+    <h2 class="r d1">P/E <span class="grad">8.5x</span> — chiết khấu hay cảnh báo?</h2>
+    <div class="scroll-x r d2">
+    <table class="tbl">
+      <tr><th>Chỉ tiêu</th><th style="color:#fff">YBM</th><th>AMC</th><th>KSV</th><th>BMC</th></tr>
+      <tr><td>Sàn</td><td class="hi">HOSE</td><td>HNX</td><td>—</td><td>—</td></tr>
+      <tr><td>Sản phẩm chính</td><td class="hi">Bột đá CaCO₃</td><td>Bột đá CaCO₃</td><td>Đồng, Thiếc</td><td>Quặng Titan</td></tr>
+      <tr><td>P/E 2026F</td><td class="hi up">~8.5x</td><td>~10–12x</td><td>~10.1x</td><td>~12.2x</td></tr>
+      <tr><td>Vốn hóa (tỷ đồng)</td><td class="hi">~328</td><td>—</td><td>—</td><td>—</td></tr>
+    </table>
+    </div>
+    <p class="lead r d3" style="margin-top:26px">Với P/E forward ~8.5x, YBM đang được định giá thấp hơn mặt bằng chung ngành khoáng sản — phản ánh định kiến của thị trường về <b style="color:#fff">biên lợi nhuận mỏng</b> và <b style="color:#fff">rủi ro cạnh tranh</b> trong ngành CaCO₃.</p>
+  </div>
+</section>
+
+<!-- 11. KỊCH BẢN -->
+<section id="s11">
+  <div class="glow" style="width:560px;height:560px;background:#30d158;top:-12%;left:-10%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần V.1 · Kịch bản 2026–2028</div>
+    <h2 class="r d1">Ba con đường phía trước</h2>
+    <div class="grid g3 r d2">
+      <div class="card" style="border-color:rgba(10,132,255,.45)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><h3 style="margin:0;color:var(--blue)">Cơ sở</h3><span class="k" style="font-size:32px;color:var(--blue)">60%</span></div>
+        <ul class="list"><li>DT tăng 15–20%/năm → ~1,050–1,150 tỷ (2026)</li><li>Biên LNST 3.0–3.5%</li><li>LNST 2026: 32–38 tỷ</li><li>ROE 12–15% (giảm do vốn tăng)</li><li>Giá dầu ổn định, cước vận tải không tăng đột biến</li></ul>
+      </div>
+      <div class="card" style="border-color:rgba(48,209,88,.45)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><h3 style="margin:0;color:var(--green)">Tích cực</h3><span class="k" style="font-size:32px;color:var(--green)">20%</span></div>
+        <ul class="list sw-s"><li>Nhu cầu Ấn Độ bùng nổ, XK tăng mạnh</li><li>DT &gt; 1,200 tỷ (2026)</li><li>Biên LNST cải thiện lên 4% nhờ sản phẩm GTGT</li><li>LNST vượt 45 tỷ</li><li>Giá cổ phiếu hồi phục vùng 12,000–14,000 đồng</li></ul>
+      </div>
+      <div class="card" style="border-color:rgba(255,69,58,.45)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><h3 style="margin:0;color:var(--red)">Tiêu cực</h3><span class="k" style="font-size:32px;color:var(--red)">20%</span></div>
+        <ul class="list sw-t"><li>Cạnh tranh giá khốc liệt hơn dự kiến</li><li>Chi phí logistics tăng mạnh do địa chính trị</li><li>DT chỉ đạt 950–1,000 tỷ (2026)</li><li>Biên LNST giảm về 2.0–2.5%</li><li>LNST dưới 25 tỷ</li></ul>
+      </div>
+    </div>
+    <div class="card r d3" style="margin-top:22px">
+      <h3>5 điểm kích hoạt cần theo dõi (Trigger points)</h3>
+      <div class="grid g3" style="margin-top:10px;gap:8px">
+        <ul class="list"><li><b>Giá dầu thế giới:</b> trên $90/thùng → logistics tăng đáng kể</li><li><b>Chính sách nhập khẩu Ấn Độ:</b> thay đổi thuế/phí bột đá</li></ul>
+        <ul class="list"><li><b>Mở rộng công suất đối thủ:</b> dự án mới của Bảo Lai, AMC, Omya</li><li><b>Kết quả đổi tên:</b> phản ứng thị trường với “YBM JSC”</li></ul>
+        <ul class="list"><li><b>Tiến độ giải ngân vốn tăng thêm:</b> sử dụng 321.7 tỷ vốn điều lệ hiệu quả</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. NHẬN ĐỊNH -->
+<section id="s12">
+  <div class="glow" style="width:640px;height:640px;background:#bf5af2;bottom:-25%;right:-12%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần V.3 · Nhận định tổng quan</div>
+    <h2 class="r d1">Một <span class="grad">“challenger”</span> có tiềm năng</h2>
+    <div class="grid g4 r d2">
+      <div class="card"><h3>Tài nguyên</h3><p class="lead" style="font-size:14px">Mỏ đá trắng trữ lượng 30 năm — rào cản gia nhập tự nhiên.</p></div>
+      <div class="card"><h3>Công nghệ</h3><p class="lead" style="font-size:14px">Máy móc Đức — chất lượng cạnh tranh trên thị trường quốc tế.</p></div>
+      <div class="card"><h3>Tài chính</h3><p class="lead" style="font-size:14px">Nợ thấp, dòng tiền ổn định — nền tảng tăng trưởng bền vững.</p></div>
+      <div class="card"><h3>Quản trị</h3><p class="lead" style="font-size:14px">Minh bạch hóa qua niêm yết HOSE, hướng chuẩn mực quốc tế.</p></div>
+    </div>
+    <p class="lead r d3" style="margin-top:24px">Thách thức lớn nhất nằm ở <b style="color:#fff">bài toán biên lợi nhuận</b> trong một ngành cạnh tranh giá khốc liệt. Việc đổi tên và đẩy mạnh xuất khẩu cho thấy tham vọng vươn ra quốc tế, nhưng con đường phía trước còn nhiều biến số.</p>
+    <div class="grid g2 r d4">
+      <div class="card" style="border-color:rgba(10,132,255,.4)"><h3 style="color:var(--blue)">Đối với nhà đầu tư</h3><p class="lead" style="font-size:15px">P/E ~8.5x đang thấp hơn ngành — cơ hội nếu công ty thực hiện thành công kế hoạch tăng trưởng 2026 và cải thiện biên lợi nhuận. Cần theo dõi sát rủi ro ngắn hạn từ căng thẳng Trung Đông và áp lực cạnh tranh.</p></div>
+      <div class="card" style="border-color:rgba(48,209,88,.4)"><h3 style="color:var(--green)">Đối với đối tác / khách hàng B2B</h3><p class="lead" style="font-size:15px">Nhà cung cấp CaCO₃ đáng tin cậy với lợi thế tự chủ nguyên liệu — phù hợp cho hợp đồng dài hạn trong ngành nhựa, sơn và filler masterbatch.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13. SAP -->
+<section id="s13">
+  <div class="glow" style="width:600px;height:600px;background:#0a84ff;top:-15%;left:-8%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Phần VI · Góc nhìn SAP Presales</div>
+    <h2 class="r d1">Cơ hội <span class="grad">chuyển đổi số</span> cho YBM</h2>
+    <p class="lead r d2">YBM đang ở giai đoạn chuyển mình: tăng vốn, đổi tên, mở rộng xuất khẩu, đa dạng hóa sản phẩm. Ở quy mô DT 876–1,150 tỷ đồng với 4 nhà máy và hoạt động XK đa thị trường, nhu cầu về một hệ thống quản trị tích hợp là rất thực tế.</p>
+    <div class="scroll-x r d3">
+    <table class="tbl">
+      <tr><th>Lĩnh vực</th><th>Điểm đau tiềm năng</th><th>Giải pháp SAP</th></tr>
+      <tr><td class="hi">Quản lý chi phí sản xuất</td><td>4 nhà máy, nhiều dòng sản phẩm → khó tính giá thành chính xác</td><td><span class="badge b-blue">SAP S/4HANA Controlling (CO-PC)</span></td></tr>
+      <tr><td class="hi">Xuất khẩu đa thị trường</td><td>40% DT từ XK, nhiều Incoterm, đa tiền tệ</td><td><span class="badge b-blue">SAP SD + Foreign Trade</span></td></tr>
+      <tr><td class="hi">Quản lý mỏ &amp; khai thác</td><td>Mỏ Lục Yên + Mông Sơn → quản lý trữ lượng, thuế tài nguyên</td><td><span class="badge b-blue">SAP Mining (Industry Solution)</span></td></tr>
+      <tr><td class="hi">Tồn kho &amp; logistics</td><td>Bột đá, đá hạt, hạt nhựa → nhiều SKU, quản lý chất lượng theo lô</td><td><span class="badge b-blue">SAP MM/WM + QM</span></td></tr>
+      <tr><td class="hi">Báo cáo hợp nhất</td><td>Công ty mẹ + chi nhánh → BCTC hợp nhất</td><td><span class="badge b-blue">SAP Group Reporting</span></td></tr>
+      <tr><td class="hi">Quản trị quan hệ KH xuất khẩu</td><td>Khách hàng Ấn Độ, Trung Quốc → CRM đa ngôn ngữ, đa tiền tệ</td><td><span class="badge b-blue">SAP Sales Cloud / C4C</span></td></tr>
+    </table>
+    </div>
+    <div class="grid g3 r d4">
+      <div class="card"><div class="badge b-green">GIAI ĐOẠN 1 · 3–6 THÁNG</div><h3 style="margin-top:12px">Quick Win</h3><p class="lead" style="font-size:14px">SAP S/4HANA Public Cloud: Finance (FI) + Controlling (CO) → minh bạch tài chính, quản trị chi phí.</p></div>
+      <div class="card"><div class="badge b-blue">GIAI ĐOẠN 2 · 6–12 THÁNG</div><h3 style="margin-top:12px">Core Operations</h3><p class="lead" style="font-size:14px">SD + MM + PP → quản lý đơn hàng xuất khẩu, tồn kho, sản xuất.</p></div>
+      <div class="card"><div class="badge b-orange">GIAI ĐOẠN 3 · 12–18 THÁNG</div><h3 style="margin-top:12px">Advanced</h3><p class="lead" style="font-size:14px">QM + Mining Add-on + Analytics Cloud → quản lý chất lượng, khai thác mỏ, BI.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14. NGUỒN -->
+<section id="s14">
+  <div class="glow" style="width:520px;height:520px;background:#40c8e0;bottom:-20%;left:-10%"></div>
+  <div class="wrap">
+    <div class="eyebrow r">Nguồn tham khảo</div>
+    <h2 class="r d1">Dữ liệu &amp; dẫn chứng</h2>
+    <div class="grid g2 r d2">
+      <div class="card"><h3>Báo cáo chính thức</h3><ul class="list">
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://vietstock.vn/2026/04/ybm-bao-cao-thuong-nien-nam-2025-737-1430929.htm">YBM: Báo cáo thường niên 2025 — Vietstock</a></li>
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://cafefnew.mediacdn.vn/Images/Uploaded/DuLieuDownload/BCTC/YBM_25CN_BCTN.pdf">BCTN 2025 (PDF gốc) — CafeF</a></li>
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://www.vsd.vn/vi/ad/182181">Điều chỉnh số lượng chứng khoán — VSD</a></li>
+      </ul></div>
+      <div class="card"><h3>Tin tức &amp; phân tích</h3><ul class="list">
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://www.tinnhanhchungkhoan.vn/khoang-san-cong-nghiep-yen-bai-ybm-dat-muc-tieu-doanh-thu-2026-tang-truong-31-post386847.html">Mục tiêu DT 2026 tăng 31% — Tinnhanhchungkhoan</a></li>
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://finba.vn/forum/tai-nguyen-co-ban/ybm-muon-doi-ten-muc-tieu-loi-nhuan-tang-31-">Muốn đổi tên, LN tăng 31% — Finba</a></li>
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://doanhnhan.baophapluat.vn/khoang-san-cong-nghiep-yen-bai-ybm-dat-muc-tieu-doanh-thu-va-lai-sau-thue-nam-2026-tang-truong-31.html">Phân tích rủi ro địa chính trị — Báo Pháp luật</a></li>
+      </ul></div>
+      <div class="card"><h3>Dữ liệu tài chính &amp; định giá</h3><ul class="list">
+        <li><a style="color:#5ac8fa;text-decoration:none" href="http://casin.vn/phan-tich/co-phieu/co-phieu-ybm">Phân tích cổ phiếu YBM — casin.vn</a></li>
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://cafef.vn/du-lieu/amc/cong-ty-con.chn">AMC — Khoáng sản Á Châu — CafeF</a></li>
+      </ul></div>
+      <div class="card"><h3>Ngành &amp; thị trường</h3><ul class="list">
+        <li>Phân tích đầu ra thị trường bột đá VN 2025 — Bảo Lai (số liệu Bộ Công Thương)</li>
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://baolai.vn/tin-tuc/thi-truong-tiem-nang-bot-da-2024-tai-viet-nam">Thị trường tiềm năng bột đá 2024 — Bảo Lai Group</a></li>
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://amcvina.vn/vi/su-phat-trien-cua-thi-truong-bot-da-caco3-2023-2030.html">Phát triển thị trường CaCO₃ 2023–2030 — AmcVina</a></li>
+        <li><a style="color:#5ac8fa;text-decoration:none" href="https://adtimin.vn/top-10-cong-ty-cung-cap-bot-da-bot-da-cac03-uy-tin-nhat-viet-nam">Top 10 công ty bột đá uy tín — Adtimin</a></li>
+      </ul></div>
+    </div>
+    <p class="lead r d3" style="font-size:13px;margin-top:26px;font-style:italic">Báo cáo được tổng hợp từ BCTN YBM 2025, công bố thông tin trên HOSE, Cafef, Vietstock, Tinnhanhchungkhoan, Báo Pháp luật và các nguồn ngành. Dữ liệu tài chính đối thủ tham khảo từ công bố công khai và ước tính ngành.</p>
+  </div>
+</section>
+
+<script>
+const secs=[...document.querySelectorAll('section')];
+const nav=document.getElementById('nav');
+secs.forEach(s=>{const a=document.createElement('a');a.href='#'+s.id;nav.appendChild(a)});
+const dots=[...nav.children];
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){[...e.target.querySelectorAll('.r')].forEach(el=>el.classList.add('in'));
+    const i=secs.indexOf(e.target); if(i>-1){dots.forEach(d=>d.classList.remove('act'));dots[i].classList.add('act')}}
+}),{threshold:.25});
+secs.forEach(s=>io.observe(s));
+document.addEventListener('keydown',e=>{
+  const cur=secs.findIndex(s=>s.getBoundingClientRect().top>-window.innerHeight/2);
+  if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();secs[Math.min(cur+1,secs.length-1)]?.scrollIntoView()}
+  if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();secs[Math.max(cur-1,0)]?.scrollIntoView()}
+});
+</script>
+</body>
+</html>
