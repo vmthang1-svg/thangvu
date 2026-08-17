@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HABECO — Tổng quan cấu trúc tổ chức &amp; mối quan hệ công ty con</title>
+<style>
+  :root{
+    --bg:#f4f2ef;
+    --card:#ffffff;
+    --ink:#1c1a18;
+    --muted:#6b6560;
+    --line:#e6e1da;
+    --red:#b3122c;
+    --red-dark:#8d0e22;
+    --amber:#c98a2c;
+    --green:#1f7a4d;
+    --blue:#24537f;
+    --soft-red:#fbeef0;
+    --soft-amber:#fdf5e8;
+    --soft-green:#eef6f1;
+    --soft-blue:#eef4f8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);
+    line-height:1.62;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px 80px}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg,#1c1513 0%,#3a1419 55%,#5a1620 100%);
+    color:#fff;padding:64px 0 56px;position:relative;overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;right:-80px;top:-80px;width:340px;height:340px;
+    border-radius:50%;background:radial-gradient(circle,rgba(179,18,44,.55),transparent 70%);
+  }
+  .hero .wrap{position:relative;z-index:2}
+  .kicker{display:inline-block;font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:#f0c9a8;font-weight:700;margin-bottom:18px}
+  .hero h1{font-size:46px;line-height:1.08;font-weight:800;letter-spacing:-.01em;max-width:820px}
+  .hero .sub{margin-top:20px;font-size:18px;color:#e8dcd6;max-width:720px;font-weight:400}
+  .hero .meta{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px}
+  .chip{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+    border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600;color:#fff}
+
+  /* SECTION */
+  section{margin-top:54px}
+  .sec-title{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .sec-num{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--red);
+    color:#fff;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center}
+  .sec-title h2{font-size:27px;font-weight:800;letter-spacing:-.01em}
+  .sec-desc{color:var(--muted);font-size:15px;max-width:820px;margin-bottom:24px}
+
+  /* CARDS */
+  .grid{display:grid;gap:16px}
+  .grid.kpi{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .grid.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:22px 22px;box-shadow:0 1px 2px rgba(28,22,18,.04)}
+  .kpi .card{padding:20px;border-top:3px solid var(--red)}
+  .kpi .label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpi .value{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-top:6px}
+  .kpi .unit{font-size:14px;color:var(--muted);font-weight:500}
+  .kpi .note{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+  h3{font-size:18px;font-weight:700;margin-bottom:6px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    border-radius:6px;padding:3px 8px;margin-bottom:10px}
+  .tag.prod{background:var(--soft-red);color:var(--red-dark)}
+  .tag.trade{background:var(--soft-amber);color:var(--amber)}
+  .tag.alcohol{background:var(--soft-blue);color:var(--blue)}
+  .tag.pack{background:var(--soft-green);color:var(--green)}
+
+  /* TABLE */
+  .tbl-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 1px 2px rgba(28,22,18,.04)}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+  thead th{background:#faf8f6;text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;padding:14px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody td{padding:13px 16px;border-bottom:1px solid #f0ece7;vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#fbfaf8}
+  .name{font-weight:700;color:var(--ink)}
+  .sub-name{font-size:12px;color:var(--muted);font-weight:500}
+  .num{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+  .pill{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 10px;white-space:nowrap}
+  .pill.high{background:var(--soft-red);color:var(--red-dark)}
+  .pill.mid{background:var(--soft-amber);color:var(--amber)}
+  .pill.low{background:var(--soft-green);color:var(--green)}
+  .target{position:relative}
+  .target .name::after{content:"★";color:var(--red);font-size:12px;margin-left:6px;vertical-align:2px}
+  .highlight-row{background:#fdf6f7 !important}
+
+  /* ORG CHART */
+  .org{display:flex;flex-direction:column;align-items:center;gap:0}
+  .org-node{text-align:center;padding:16px 26px;border-radius:14px;font-weight:700;
+    background:linear-gradient(135deg,#2a1518,#5a1620);color:#fff;font-size:16px;box-shadow:0 6px 18px rgba(90,22,32,.25)}
+  .org-node small{display:block;font-weight:500;font-size:12px;color:#e8c4c9;margin-top:3px}
+  .org-line{width:2px;height:26px;background:#c9b9ad}
+  .org-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+  .org-group{flex:1 1 300px;max-width:420px}
+  .org-branch{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(28,22,18,.05)}
+  .org-branch-head{padding:13px 18px;font-weight:800;font-size:14.5px;color:#fff}
+  .org-branch-head .cnt{font-size:11.5px;font-weight:600;opacity:.85;margin-left:6px}
+  .org-branch ul{list-style:none}
+  .org-branch li{padding:11px 18px;border-top:1px solid #f0ece7;font-size:13.5px}
+  .org-branch li b{display:block;font-size:13.5px}
+  .org-branch li span{font-size:12px;color:var(--muted)}
+  .bh-prod{background:var(--red)}
+  .bh-trade{background:var(--amber)}
+  .bh-alcohol{background:var(--blue)}
+  .bh-pack{background:var(--green)}
+  .bh-assoc{background:#6b6560}
+
+  .callout{background:var(--soft-red);border-left:4px solid var(--red);border-radius:12px;padding:18px 20px;margin-top:22px}
+  .callout h4{font-size:15px;font-weight:800;margin-bottom:6px;color:var(--red-dark)}
+  .callout p,.callout li{font-size:14px;color:#3a2b2b}
+  .callout ul{margin-left:18px}
+  .callout li{margin:4px 0}
+
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 4px;font-size:13px;color:var(--muted)}
+  .legend .dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+  .src{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+  .src a{color:var(--red-dark);text-decoration:none;word-break:break-all}
+  .src li{margin:5px 0}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="kicker">Tài liệu nội bộ · Presales SAP</span>
+    <h1>HABECO — Toàn cảnh cấu trúc tổ chức<br>và mối quan hệ với công ty con</h1>
+    <p class="sub">Tổng hợp quy mô &amp; lĩnh vực kinh doanh của hệ sinh thái HABECO, phục vụ chào giải pháp SAP và thiết kế bài toán tích hợp dữ liệu từ công ty con về công ty mẹ.</p>
+    <div class="meta">
+      <span class="chip">Tổng Công ty CP Bia – Rượu – Nước giải khát Hà Nội</span>
+      <span class="chip">Mã CK: BHN (HOSE)</span>
+      <span class="chip">16 công ty con + 6 công ty liên kết</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. OVERVIEW -->
+  <section>
+    <div class="sec-title"><div class="sec-num">1</div><h2>Tổng quan Tổng công ty (công ty mẹ)</h2></div>
+    <p class="sec-desc">HABECO là một trong hai doanh nghiệp dẫn đầu ngành bia Việt Nam, giữ vai trò chủ đạo ở thị trường phía Bắc ở phân khúc bia phổ thông.</p>
+    <div class="grid kpi">
+      <div class="card"><div class="label">Tổng tài sản</div><div class="value">≈ 7.465 <span class="unit">tỷ đồng</span></div><div class="note">cuối Q3/2024, tăng 4,4% so với đầu năm</div></div>
+      <div class="card"><div class="label">Vốn chủ sở hữu</div><div class="value">≈ 5.166 <span class="unit">tỷ đồng</span></div><div class="note">cuối Q3/2024</div></div>
+      <div class="card"><div class="label">Doanh thu năm</div><div class="value">≈ 6.500 <span class="unit">tỷ đồng</span></div><div class="note">kế hoạch 2024: 6.543 tỷ</div></div>
+      <div class="card"><div class="label">LN sau thuế năm</div><div class="value">≈ 200–250 <span class="unit">tỷ đồng</span></div><div class="note">mục tiêu 2024: 202 tỷ</div></div>
+      <div class="card"><div class="label">Công suất</div><div class="value">≈ 400 <span class="unit">triệu lít/năm</span></div><div class="note">sau khi hoàn thành NM Mê Linh 200 tr.lít</div></div>
+      <div class="card"><div class="label">Vị thế</div><div class="value">Top 2 <span class="unit">ngành bia</span></div><div class="note">dẫn đầu phía Bắc, phân khúc phổ thông</div></div>
+    </div>
+
+    <div class="grid two" style="margin-top:16px">
+      <div class="card">
+        <h3>Hồ sơ pháp lý &amp; lịch sử</h3>
+        <p style="font-size:14px;color:var(--muted)">
+          Thương hiệu Bia Hà Nội có lịch sử gần 130 năm. Nhà máy Bia Hà Nội thành lập 1958;
+          ngày 6/5/2003 Bộ Công nghiệp (nay Bộ Công Thương) thành lập Tổng công ty; từ 16/6/2008
+          chuyển đổi thành công ty cổ phần. Trụ sở: 183 Hoàng Hoa Thám, Ngọc Hà, Ba Đình, Hà Nội · MST 0101376672.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Sản phẩm chủ lực</h3>
+        <p style="font-size:14px;color:var(--muted)">
+          Bia hơi Hà Nội, Bia lon Hà Nội, Bia Trúc Bạch, Hanoi Beer Premium… Sản phẩm phân phối trong
+          nước và xuất khẩu tới Đài Loan, Hàn Quốc, Anh, Đức, Mỹ, Úc, Nhật Bản…
+        </p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h4>Ghi chú quan trọng cho bài toán SAP</h4>
+      <p>HABECO đã triển khai <b>SAP on-premise từ năm 2019</b> (không phải cloud). Đây chính là lý do
+      bảng câu hỏi khảo sát của anh đã bổ sung <b>31 câu hỏi về hạ tầng phần cứng on-premise</b>
+      (server, workstation, mạng, VMware, HA/cluster). Mô hình này ảnh hưởng trực tiếp tới chiến lược
+      tích hợp dữ liệu công ty con → công ty mẹ (BAPI/RFC, IDoc, CPI, file-based…).</p>
+    </div>
+  </section>
+
+  <!-- 2. ORG CHART -->
+  <section>
+    <div class="sec-title"><div class="sec-num">2</div><h2>Sơ đồ tổ chức hệ sinh thái</h2></div>
+    <p class="sec-desc">Tổng cộng <b>22 đơn vị</b>: 16 công ty con (sở hữu &gt;50%) và 6 công ty liên kết/liên doanh (sở hữu &lt;50%).</p>
+
+    <div class="org">
+      <div class="org-node">TCT CP Bia – Rượu – NGK Hà Nội (HABECO / BHN)<small>Công ty mẹ · Trụ sở 183 Hoàng Hoa Thám, Hà Nội</small></div>
+      <div class="org-line"></div>
+    </div>
+
+    <div class="org-row">
+      <div class="org-group">
+        <div class="org-branch">
+          <div class="org-branch-head bh-prod">Sản xuất bia <span class="cnt">11 công ty con</span></div>
+          <ul>
+            <li><b>Bia HN – Hải Dương</b><span>55% · 40 tỷ · Hải Dương</span></li>
+            <li><b>Bia HN – Hải Phòng</b><span>65,01% · 91,8 tỷ · Hải Phòng</span></li>
+            <li><b>Bia HN – Nam Định</b><span>51% · 20 tỷ · Nam Định</span></li>
+            <li><b>Bia HN – Thái Bình</b><span>66,31% · 76,9 tỷ · Thái Bình</span></li>
+            <li><b>Bia HN – Thanh Hóa</b><span>55% · 114,2 tỷ · Thanh Hóa</span></li>
+            <li><b>Bia HN – Quảng Bình</b><span>62,05% · 58 tỷ · Quảng Bình</span></li>
+            <li><b>Bia HN – Nghệ An</b><span>51% · 180 tỷ · Nghệ An</span></li>
+            <li><b>Bia HN – Quảng Trị</b><span>98,56% · 110 tỷ · Quảng Trị</span></li>
+            <li><b>Habeco – Hải Phòng</b><span>75,83% · 160 tỷ · Hải Phòng</span></li>
+            <li><b>Bia HN – Hồng Hà</b><span>53,89% · 100 tỷ · Phú Thọ ★</span></li>
+            <li><b>ĐTPT CN Bia–Rượu–NGK HN (HABECO ID)</b><span>96,10% · 200 tỷ · Hưng Yên ★</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="org-group">
+        <div class="org-branch">
+          <div class="org-branch-head bh-trade">Thương mại bia <span class="cnt">3 công ty con</span></div>
+          <ul>
+            <li><b>CT TNHH MTV TM HABECO</b><span>100% · 50 tỷ · Hà Nội</span></li>
+            <li><b>CTCP TM Bia Hà Nội (HAT)</b><span>60% · 31,2 tỷ · Hà Nội ★</span></li>
+            <li><b>Bia–Rượu–NGK HN Quảng Ninh</b><span>52,64% · 15 tỷ · Quảng Ninh</span></li>
+          </ul>
+        </div>
+        <div class="org-branch" style="margin-top:16px">
+          <div class="org-branch-head bh-alcohol">Sản xuất rượu <span class="cnt">1 công ty con</span></div>
+          <ul>
+            <li><b>CTCP Rượu &amp; NGK Hà Nội</b><span>54,29% · 200 tỷ · Hà Nội</span></li>
+          </ul>
+        </div>
+        <div class="org-branch" style="margin-top:16px">
+          <div class="org-branch-head bh-pack">Sản xuất nắp chai <span class="cnt">1 công ty con</span></div>
+          <ul>
+            <li><b>CTCP Bao bì Bia–Rượu–NGK</b><span>68,95% · 20 tỷ · Hải Phòng</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="org-group">
+        <div class="org-branch">
+          <div class="org-branch-head bh-assoc">Liên kết &amp; liên doanh <span class="cnt">6 đơn vị &lt;50%</span></div>
+          <ul>
+            <li><b>CTCP Bao Bì Habeco</b><span>44,22% · 35 tỷ · Sản xuất bao bì</span></li>
+            <li><b>Bia HN – Kim Bài</b><span>28,10% · 39,9 tỷ · Sản xuất bia</span></li>
+            <li><b>CTCP Vận tải Habeco</b><span>28% · 25 tỷ · Vận tải</span></li>
+            <li><b>Harec Đầu tư &amp; Thương mại</b><span>40% · 63,4 tỷ · Bất động sản</span></li>
+            <li><b>Thủy tinh Sanmiguel Yamamura HP</b><span>27,21% · 160,8 tỷ · Sản xuất chai</span></li>
+            <li><b>Đầu tư phát triển Habeco</b><span>45% · 19,3 tỷ · Bất động sản</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="dot" style="background:var(--red)"></span>Sản xuất bia</span>
+      <span><span class="dot" style="background:var(--amber)"></span>Thương mại</span>
+      <span><span class="dot" style="background:var(--blue)"></span>Rượu</span>
+      <span><span class="dot" style="background:var(--green)"></span>Nắp chai</span>
+      <span><span class="dot" style="background:#6b6560"></span>Liên kết / liên doanh</span>
+      <span>★ = công ty con trong phạm vi khảo sát hiện tại</span>
+    </div>
+  </section>
+
+  <!-- 3. SUBSIDIARY TABLE -->
+  <section>
+    <div class="sec-title"><div class="sec-num">3</div><h2>16 công ty con — quy mô &amp; lĩnh vực</h2></div>
+    <p class="sec-desc">Sắp xếp theo ngành. Vốn điều lệ là quy mô vốn góp tham chiếu (đã xác minh chéo BCTN 2022–2025); tỷ lệ sở hữu quyết định mức độ hợp nhất khi tích hợp SAP.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Công ty con</th><th>Lĩnh vực</th><th>Vốn điều lệ</th><th>Sở hữu</th><th>Mức độ</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="target"><div class="name">CTCP ĐTPT Công nghệ Bia–Rượu–NGK Hà Nội</div><div class="sub-name">HABECO ID · Hưng Yên</div></td><td>Sản xuất bia (bia hơi/rượu/NGK)</td><td class="num">200 tỷ</td><td class="num">96,10%</td><td><span class="pill high">Cao</span></td></tr>
+          <tr class="highlight-row"><td class="num">2</td><td><div class="name">CTCP Rượu &amp; Nước giải khát Hà Nội</div><div class="sub-name">Hà Nội</div></td><td>Sản xuất rượu</td><td class="num">200 tỷ</td><td class="num">54,29%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">3</td><td><div class="name">CTCP Bia Hà Nội – Nghệ An</div><div class="sub-name">KCN Nam Cấm, Nghi Lộc</div></td><td>Sản xuất bia</td><td class="num">180 tỷ</td><td class="num">51,00%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">4</td><td><div class="name">CTCP Habeco – Hải Phòng</div><div class="sub-name">An Lão, Hải Phòng</div></td><td>Sản xuất bia</td><td class="num">160 tỷ</td><td class="num">75,83%</td><td><span class="pill high">Cao</span></td></tr>
+          <tr><td class="num">5</td><td><div class="name">CTCP Bia Hà Nội – Thanh Hóa</div><div class="sub-name">Thanh Hóa</div></td><td>Sản xuất bia</td><td class="num">114,2 tỷ</td><td class="num">55,00%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">6</td><td><div class="name">CTCP Bia Hà Nội – Quảng Trị</div><div class="sub-name">KCN Quán Ngang, Gio Linh, Quảng Trị</div></td><td>Sản xuất bia</td><td class="num">110 tỷ</td><td class="num">98,56%</td><td><span class="pill high">Cao</span></td></tr>
+          <tr class="highlight-row"><td class="num">7</td><td class="target"><div class="name">CTCP Bia Hà Nội – Hồng Hà</div><div class="sub-name">Việt Trì, Phú Thọ</div></td><td>Sản xuất bia</td><td class="num">100 tỷ</td><td class="num">53,89%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">8</td><td><div class="name">CTCP Bia Hà Nội – Hải Phòng</div><div class="sub-name">Lạch Tray, Ngô Quyền</div></td><td>Sản xuất bia</td><td class="num">91,8 tỷ</td><td class="num">65,01%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">9</td><td><div class="name">CTCP Bia Hà Nội – Thái Bình</div><div class="sub-name">KCN TBS – Sông Trà</div></td><td>Sản xuất bia</td><td class="num">76,9 tỷ</td><td class="num">66,31%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">10</td><td><div class="name">CTCP Bia Hà Nội – Quảng Bình</div><div class="sub-name">Đồng Hới</div></td><td>Sản xuất bia</td><td class="num">58 tỷ</td><td class="num">62,05%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">11</td><td><div class="name">CT TNHH MTV TM HABECO</div><div class="sub-name">Ba Đình, Hà Nội</div></td><td>Thương mại bia</td><td class="num">50 tỷ</td><td class="num">100%</td><td><span class="pill high">Cao</span></td></tr>
+          <tr><td class="num">12</td><td><div class="name">CTCP Bia Hà Nội – Hải Dương</div><div class="sub-name">Bình Hàn, Hải Dương</div></td><td>Sản xuất bia</td><td class="num">40 tỷ</td><td class="num">55,00%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr class="highlight-row"><td class="num">13</td><td class="target"><div class="name">CTCP Thương mại Bia Hà Nội</div><div class="sub-name">HAT · Ba Đình, Hà Nội</div></td><td>Thương mại bia (phân phối bia hơi)</td><td class="num">31,2 tỷ</td><td class="num">60,00%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">14</td><td><div class="name">CTCP Bao bì Bia–Rượu–NGK</div><div class="sub-name">Ngô Quyền, Hải Phòng</div></td><td>Sản xuất nắp chai</td><td class="num">20 tỷ</td><td class="num">68,95%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">15</td><td><div class="name">CTCP Bia Hà Nội – Nam Định</div><div class="sub-name">Nam Định</div></td><td>Sản xuất bia</td><td class="num">20 tỷ</td><td class="num">51,00%</td><td><span class="pill mid">Trung bình</span></td></tr>
+          <tr><td class="num">16</td><td><div class="name">CTCP Bia–Rượu–NGK Hà Nội Quảng Ninh</div><div class="sub-name">KCN Cái Lân, Hạ Long</div></td><td>Thương mại bia</td><td class="num">15 tỷ</td><td class="num">52,64%</td><td><span class="pill mid">Trung bình</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Tổng vốn điều lệ 16 công ty con ≈ <b>1.467 tỷ đồng</b>. Các dòng tô đỏ (★) là 3 đơn vị đang nằm trong phạm vi khảo sát sẵn sàng S/4HANA của anh.</p>
+  </section>
+
+  <!-- 4. ASSOCIATES -->
+  <section>
+    <div class="sec-title"><div class="sec-num">4</div><h2>6 công ty liên kết / liên doanh</h2></div>
+    <p class="sec-desc">Sở hữu dưới 50% — thường hạch toán theo phương pháp vốn chủ sở hữu, không hợp nhất toàn bộ. Nhưng vẫn là các mắt xích quan trọng trong chuỗi cung ứng (chai, bao bì, vận tải, bất động sản).</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Đơn vị</th><th>Lĩnh vực</th><th>Vốn điều lệ</th><th>Sở hữu</th><th>Vai trò chuỗi cung ứng</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td><div class="name">CT TNHH Thủy tinh Sanmiguel Yamamura Hải Phòng</div></td><td>Sản xuất chai</td><td class="num">160,8 tỷ</td><td class="num">27,21%</td><td>Nguyên liệu chai thủy tinh</td></tr>
+          <tr><td class="num">2</td><td><div class="name">CTCP Harec Đầu tư &amp; Thương mại</div></td><td>Bất động sản</td><td class="num">63,4 tỷ</td><td class="num">40,00%</td><td>Hạ tầng / văn phòng</td></tr>
+          <tr><td class="num">3</td><td><div class="name">CTCP Bia Hà Nội – Kim Bài</div></td><td>Sản xuất bia</td><td class="num">39,9 tỷ</td><td class="num">28,10%</td><td>Bổ trợ sản lượng</td></tr>
+          <tr><td class="num">4</td><td><div class="name">CTCP Bao Bì Habeco</div></td><td>Sản xuất bao bì</td><td class="num">35 tỷ</td><td class="num">44,22%</td><td>Bao bì carton/nhãn</td></tr>
+          <tr><td class="num">5</td><td><div class="name">CTCP Vận tải Habeco</div></td><td>Vận tải</td><td class="num">25 tỷ</td><td class="num">28,00%</td><td>Logistics phân phối</td></tr>
+          <tr><td class="num">6</td><td><div class="name">CTCP Đầu tư phát triển Habeco</div></td><td>Bất động sản</td><td class="num">19,3 tỷ</td><td class="num">45,00%</td><td>Phát triển dự án</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px">Tổng vốn điều lệ 6 đơn vị liên kết ≈ <b>343 tỷ đồng</b>.</p>
+  </section>
+
+  <!-- 5. SAP ANGLE -->
+  <section>
+    <div class="sec-title"><div class="sec-num">5</div><h2>Góc nhìn chào giải pháp SAP &amp; tích hợp dữ liệu</h2></div>
+    <div class="grid two">
+      <div class="card">
+        <h3>Hợp nhất theo tỷ lệ sở hữu</h3>
+        <ul style="margin-left:18px;font-size:14px;color:#3a2b2b;line-height:1.8">
+          <li><b>&gt;80%</b> (HABECO ID 96,1%, Quảng Trị 98,6%, Hải Phòng 75,8%): ưu tiên tích hợp sâu, hợp nhất toàn phần.</li>
+          <li><b>51–70%</b> (đa số nhà máy bia): hợp nhất toàn bộ nhưng cần cân nhắc lợi ích cổ đông thiểu số.</li>
+          <li><b>&lt;50%</b> (6 đơn vị liên kết): phương pháp vốn CSH, chỉ cần số liệu tài chính kỳ kế toán.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Ba đơn vị khảo sát hiện tại</h3>
+        <ul style="margin-left:18px;font-size:14px;color:#3a2b2b;line-height:1.8">
+          <li><b>HABECO ID</b> (96,1% · E-ANA 7.0 · <span class="pill high">phức tạp cao</span>) — sản xuất bia hơi/rượu/NGK, đơn vị lớn nhất về vốn trong khối sản xuất.</li>
+          <li><b>HAT</b> (60% · SCTT từ 2007 · <span class="pill low">thấp–trung bình</span>) — thương mại/phân phối bia hơi.</li>
+          <li><b>Bia HN – Hồng Hà</b> (53,9% · MINHANH · <span class="pill mid">trung bình</span>) — mới triển khai phần mềm, ~1 tháng dữ liệu.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Đặc thù tích hợp cần lưu ý</h3>
+        <ul style="margin-left:18px;font-size:14px;color:#3a2b2b;line-height:1.8">
+          <li><b>Đa dạng phần mềm cũ</b> tại các đơn vị con (E-ANA, SCTT, MINHANH…), không đồng nhất nền tảng.</li>
+          <li><b>Trải rộng địa lý</b> từ Hải Phòng, Phú Thọ đến Quảng Trị → bài toán mạng WAN / kết nối / hiệu năng.</li>
+          <li><b>Nhiều ngành</b> (sản xuất, thương mại, rượu, nắp chai) → khác biệt master data &amp; quy trình chuẩn hóa.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Gợi ý lập luận chào giải pháp</h3>
+        <ul style="margin-left:18px;font-size:14px;color:#3a2b2b;line-height:1.8">
+          <li>Định vị <b>“mở rộng, không thay thế”</b>: kế thừa SAP on-premise tại công ty mẹ, chuẩn hóa dần các đơn vị con.</li>
+          <li>Dùng <b>SAP CPI / BTP</b> làm lớp trung gian tích hợp để không phải “đập đi xây lại” phần mềm đang chạy.</li>
+          <li>Ưu tiên nhóm <b>sở hữu cao + quy mô lớn</b> (HABECO ID, Quảng Trị, Habeco–Hải Phòng) trước.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="src">
+    <b>Nguồn tham khảo</b>
+    <ul>
+      <li>Báo cáo thường niên 2022 TCT CP Bia – Rượu – NGK Hà Nội (BHN) — <a href="https://static2.vietstock.vn/data/HOSE/2022/BCTN/VN/BHN_Baocaothuongnien_2022.pdf">Vietstock PDF</a></li>
+      <li>Báo cáo thường niên 2023 (BHN) — <a href="https://static2.vietstock.vn/data/HOSE/2023/BCTN/VN/BHN_Baocaothuongnien_2023.pdf">Vietstock PDF</a></li>
+      <li>Báo cáo thường niên 2024 (BHN) — <a href="https://static2.vietstock.vn/data/HOSE/2024/BCTN/VN/BHN_Baocaothuongnien_2024.pdf">Vietstock PDF</a></li>
+      <li>Báo cáo thường niên 2025 (BHN) — <a href="https://static2.vietstock.vn/data/HOSE/2025/BCTN/VN/BHN_Baocaothuongnien_2025.pdf">Vietstock PDF</a></li>
+      <li>Trang thông tin cổ đông Habeco — <a href="https://www.habeco.com.vn?page=shareholder">habeco.com.vn</a></li>
+      <li>Sức khỏe tài chính Sabeco &amp; Habeco (Q3/2024) — <a href="https://thuonggiaonline.vn/soi-suc-khoe-tai-chinh-cua-2-ong-lon-nganh-bia-sabeco-va-habeco-post555714.html">thuonggiaonline.vn</a></li>
+      <li>Habeco tăng trưởng doanh thu Q2/2025 — <a href="https://baodautu.vn/habeco-ghi-nhan-tang-truong-doanh-thu-va-cai-thien-bien-loi-nhuan-trong-quy-ii2025-d374058.html">baodautu.vn</a></li>
+      <li>Giới thiệu HABECO (lịch sử, vị thế) — <a href="https://vnr500.vn/Thong-tin-doanh-nghiep/TONG-CONG-TY-CP-BIA--RUOU--NUOC-GIAI-KHAT-HA-NOI-Chart--30-2024.html">VNR500</a></li>
+      <li>HAT (biahoihanoi.com.vn) — <a href="https://biahoihanoi.com.vn/vi/gioi-thieu.html">Giới thiệu CTCP TM Bia Hà Nội</a></li>
+    </ul>
+    <p style="margin-top:10px"><i>Lưu ý: cấu trúc sở hữu (16 công ty con + 6 công ty liên kết) đã được <b>xác minh chéo qua BCTN 2022 → 2025</b> — không thay đổi về số lượng và vốn điều lệ. Chỉ có 2 biến động nhỏ trong năm 2024: Bao bì Bia–Rượu–NGK từ 69,78% xuống 68,95% và Bia HN – Kim Bài từ 28,00% lên 28,10% (đều ổn định trong 2025). Số liệu tài chính tổng công ty cập nhật 2024–2025.</i></p>
+  </div>
+
+</div>
+</body>
+</html>
