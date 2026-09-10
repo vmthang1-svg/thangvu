@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HABECO ERP P3 — Củng cố lập trường On-premise (A1)</title>
+<style>
+  :root{
+    --bg:#0b0e14; --bg2:#111623; --panel:#161c2b; --panel2:#1c2436;
+    --line:#2a3448; --txt:#e8edf6; --muted:#9aa7bd; --acc:#4da3ff;
+    --green:#3ddc97; --amber:#ffb454; --red:#ff6b6b; --purple:#b18cff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       line-height:1.62;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:48px 28px 80px;}
+  .hero{background:linear-gradient(135deg,#12203c 0%,#0b0e14 70%);border:1px solid var(--line);
+        border-radius:20px;padding:40px 40px 36px;margin-bottom:34px;position:relative;overflow:hidden;}
+  .hero::after{content:"";position:absolute;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;
+        background:radial-gradient(circle,rgba(77,163,255,.25),transparent 70%);}
+  .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);font-weight:700;margin-bottom:12px;}
+  h1{font-size:32px;line-height:1.2;letter-spacing:-.01em;margin-bottom:12px;}
+  h1 .sub{display:block;font-size:16px;font-weight:500;color:var(--muted);margin-top:8px;letter-spacing:0;}
+  .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;vertical-align:middle;}
+  .b-rec{background:rgba(61,220,151,.15);color:var(--green);border:1px solid rgba(61,220,151,.4);}
+  .b-warn{background:rgba(255,180,84,.15);color:var(--amber);border:1px solid rgba(255,180,84,.4);}
+  .b-info{background:rgba(77,163,255,.15);color:var(--acc);border:1px solid rgba(77,163,255,.4);}
+  section{margin-bottom:44px;padding:28px;background:var(--bg2);border:1px solid var(--line);border-radius:16px;}
+  h2{font-size:22px;margin-bottom:14px;display:flex;align-items:center;gap:12px;letter-spacing:-.01em;}
+  h2 .num{background:var(--acc);color:#05101f;font-weight:800;font-size:14px;border-radius:8px;padding:4px 10px;min-width:38px;text-align:center;}
+  h3{font-size:16px;margin:18px 0 8px;color:var(--txt);}
+  p{color:var(--muted);margin-bottom:10px;}
+  .lead{font-size:15px;color:var(--txt);}
+  strong{color:var(--txt);}
+  em{color:var(--acc);font-style:normal;}
+  ul{margin:6px 0 14px 20px;color:var(--muted);}
+  li{margin-bottom:6px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:14px;}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--panel2);color:var(--txt);font-weight:600;}
+  td{color:var(--muted);}
+  .grid{display:grid;gap:14px;margin:12px 0;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+  .hl{border-radius:12px;padding:14px 18px;margin:14px 0;font-size:14px;border:1px solid;}
+  .hl.green{background:rgba(61,220,151,.08);border-color:rgba(61,220,151,.35);color:var(--txt);}
+  .hl.blue{background:rgba(77,163,255,.08);border-color:rgba(77,163,255,.35);color:var(--txt);}
+  .hl.amber{background:rgba(255,180,84,.08);border-color:rgba(255,180,84,.35);color:var(--txt);}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0;}
+  .kpi .k{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;}
+  .kpi .k b{display:block;font-size:22px;color:var(--acc);margin-bottom:2px;}
+  .kpi .k span{font-size:12px;color:var(--muted);}
+  .pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:12px;margin:2px 3px 2px 0;color:var(--txt);}
+  .q{background:var(--panel);border-left:3px solid var(--acc);border-radius:8px;padding:10px 14px;margin:8px 0;font-size:14px;color:var(--muted);}
+  .q b{color:var(--acc);}
+  .scen{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0;}
+  .num2{display:inline-block;background:var(--purple);color:#fff;font-weight:800;border-radius:8px;padding:2px 9px;margin-right:8px;font-size:13px;}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--amber);font-weight:700;margin:14px 0 4px;}
+  .rt{color:var(--red);font-weight:700;}
+  .gt{color:var(--green);font-weight:700;}
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:10px;line-height:1.7;padding-top:20px;border-top:1px solid var(--line);}
+  @media(max-width:820px){.kpi{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}h1{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="kicker">HABECO ERP P3 · Tài liệu nội bộ BCIS / FPT IS</div>
+  <h1>Củng cố lập trường phương án <span style="color:var(--acc)">A1 — Mở rộng On-premise</span>
+    <span class="sub">Lập luận chủ động + phản biện + giảm thiểu rủi ro — dùng cho buổi họp đánh giá tiền khả thi</span>
+  </h1>
+  <div>
+    <span class="badge b-rec">Khuyến nghị theo định hướng HABECO</span>
+    <span class="badge b-info">Mở rộng, không thay thế</span>
+    <span class="badge b-warn">Bối cảnh 2026: siết chi phí</span>
+  </div>
+</div>
+
+<section>
+  <h2><span class="num">00</span>Tóm tắt lập trường trong 60 giây</h2>
+  <p class="lead">Với hiện trạng và bối cảnh của HABECO, <strong>mở rộng On-premise (A1) là lựa chọn đúng đắn nhất ở thời điểm này</strong>: kế thừa hạ tầng &amp; bản quyền sẵn có, giữ dữ liệu trong tầm kiểm soát nội bộ, không gián đoạn vận hành, và <strong>không phát sinh chi phí định kỳ lớn</strong> trong đúng năm kế hoạch lợi nhuận giảm ~57%.</p>
+  <div class="kpi">
+    <div class="k"><b>Kế thừa</b><span>Tận dụng S/4HANA 2019 + hạ tầng + đội ngũ đang chạy ổn định</span></div>
+    <div class="k"><b>Kiểm soát</b><span>Dữ liệu nội bộ, đáp ứng kiểm toán nhà nước &amp; thuế</span></div>
+    <div class="k"><b>Ổn định</b><span>Không "big bang", không rủi ro di chuyển core lên cloud</span></div>
+    <div class="k"><b>CAPEX</b><span>Chi phí khấu hao/phân bổ, không subscription định kỳ</span></div>
+  </div>
+  <div class="hl green"><strong>Thông điệp chốt:</strong> “On-premise không phải là ‘lạc hậu’ — với HABECO, đây là cách <em>an toàn nhất, tiết kiệm nhất và ít gián đoạn nhất</em> để mở rộng ERP trong năm cần bảo vệ thị phần.”</div>
+</section>
+
+<section>
+  <h2><span class="num">01</span>6 lý do On-premise phù hợp với HABECO</h2>
+  <div class="grid g2">
+    <div class="card"><h3>1 · Tận dụng nền tảng sẵn có</h3><p>HABECO đã vận hành <strong>S/4HANA On-premise 2019</strong> với hạ tầng, bản quyền, đội ngũ và quy trình đã thuần thục. Mở rộng A1 là <strong>kế thừa toàn bộ</strong>, không phải “mua lại nền tảng” — giảm chi phí đầu tư ban đầu đúng bài toán 2026.</p></div>
+    <div class="card"><h3>2 · Kiểm soát dữ liệu &amp; tuân thủ</h3><p>Là doanh nghiệp lớn chịu sự giám sát của cơ quan quản lý, kiểm toán nhà nước và thuế, HABECO cần <strong>dữ liệu nằm trọn trong tầm kiểm soát nội bộ</strong>. On-premise đáp ứng yêu cầu <strong>data residency</strong> và truy vết kiểm toán một cách chủ động nhất.</p></div>
+    <div class="card"><h3>3 · Ổn định, không gián đoạn</h3><p>Giữ nguyên core hiện hữu và chỉ <strong>rollout sang 3 công ty con</strong> — không “big bang”, không rủi ro di chuyển dữ liệu/hạ tầng lên cloud. Đúng tinh thần <em>“mở rộng, không thay thế”</em> mà HABECO đặt ra.</p></div>
+    <div class="card"><h3>4 · TCO dễ kiểm soát</h3><p>On-premise là <strong>CAPEX có thể khấu hao, phân bổ nhiều năm</strong>; chi phí vận hành định kỳ thấp và ổn định. Tránh phát sinh subscription/thuê bao hằng tháng — điều quan trọng khi dòng tiền 2026 bị siết.</p></div>
+    <div class="card"><h3>5 · Hiệu năng &amp; độ trễ</h3><p>Nghiệp vụ sản xuất bia và giao dịch liên công ty cần <strong>hiệu năng ổn định, độ trễ thấp</strong>, không phụ thuộc đường truyền internet. On-premise cho HABECO chủ động toàn bộ về hiệu năng và khối lượng giao dịch.</p></div>
+    <div class="card"><h3>6 · Không khoá cửa tương lai</h3><p>Chọn On-premise hôm nay <strong>không loại trừ cloud</strong>: sau này khi tài chính phục hồi, HABECO có thể bổ sung <strong>BTP/hybrid</strong> để hưởng innovation. A1 là lựa chọn <strong>giữ quyền quyết định lâu dài</strong>.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Lập trường TCO: On-premise không “đắt” nếu đo đúng</h2>
+  <p>Luận điểm phổ biến “on-premise nhiều chi phí ẩn” chỉ đúng khi <strong>đo thiếu</strong>. Khi so sánh đúng chuẩn 5 năm, On-premise giữ vị thế rất tốt với HABECO vì đã có sẵn nền tảng.</p>
+  <table>
+    <tr><th>Hạng mục chi phí</th><th>On-premise (A1)</th><th>Private/Public Cloud</th></tr>
+    <tr><td>Đầu tư ban đầu</td><td>CAPEX khấu hao, phân bổ nhiều năm, <strong>tận dụng hạ tầng sẵn có</strong></td><td>Chi phí thiết lập + di chuyển (migration) lớn, mua lại mô hình vận hành</td></tr>
+    <tr><td>Chi phí định kỳ</td><td>Thấp, ổn định (điện, bảo trì, nhân sự đã có)</td><td>Subscription hằng tháng tăng theo khối lượng dữ liệu/người dùng</td></tr>
+    <tr><td>Bản quyền</td><td>Đã có nền; chỉ <strong>bổ sung license cho 3 đơn vị</strong></td><td>Chuyển sang mô hình subscription, thường đội giá tổng thể</td></tr>
+    <tr><td>Rủi ro biến động</td><td>Chủ động kiểm soát, không phụ thuộc tỷ giá/biến động giá cloud</td><td>Chịu biến động giá cloud, phí egress, over-provisioning</td></tr>
+    <tr><td>Rủi ro gián đoạn</td><td>Rất thấp vì giữ nguyên core đang chạy</td><td>Cao ở giai đoạn chuyển đổi “big bang”</td></tr>
+  </table>
+  <div class="hl blue"><strong>Lập luận chốt:</strong> Trong năm lợi nhuận giảm ~57%, thứ HABECO cần là <em>chi phí ổn định và có thể phân bổ</em> — On-premise cho điều đó, thay vì cộng thêm một dòng subscription định kỳ khó cắt giảm.</div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Bảng phản biện: 5 lập luận “cloud tốt hơn” và cách đáp</h2>
+  <table>
+    <tr><th style="width:26%">Đối phương có thể nói</th><th style="width:37%">Sự thật cần làm rõ</th><th style="width:37%">Phản biện BCIS</th></tr>
+    <tr><td>“Cloud đổi mới nhanh hơn (innovation)”</td><td>Đúng về xu hướng, nhưng không phải ưu tiên của HABECO lúc này</td><td>HABECO ưu tiên <strong>ổn định + tiết kiệm + bảo vệ thị phần</strong>. Innovation bổ sung sau bằng <strong>BTP</strong> khi tài chính phục hồi — không cần “đổi nền tảng” để hưởng.</td></tr>
+    <tr><td>“SAP chỉ phát triển tính năng trên cloud”</td><td>SAP ưu tiên innovation trên cloud (DSAG đã xác nhận)</td><td>On-premise vẫn được <strong>duy trì bảo trì dài hạn</strong> (S/4HANA On-premise có lộ trình hỗ trợ đến ~2040) — đủ thời gian để HABECO chuyển đổi có kiểm soát khi muốn.</td></tr>
+    <tr><td>“Phí Enterprise Support tăng (đến ~30%)”</td><td>Áp lực tăng phí là có thật</td><td>Giải quyết bằng <strong>khoá hợp đồng hỗ trợ nhiều năm + tối ưu bản quyền</strong>. Nếu so đúng tổng thể, tổng subscription cloud vẫn cao hơn đáng kể.</td></tr>
+    <tr><td>“On-premise nhiều chi phí ẩn”</td><td>Đúng nếu thiết kế HA/DR kém</td><td>Chi phí ẩn khắc phục bằng <strong>HA/DR right-sized + AMS</strong>. Lưu ý cloud cũng có chi phí ẩn (egress, storage growth, tăng giá) thường bị bỏ qua.</td></tr>
+    <tr><td>“Cloud bảo mật tốt hơn”</td><td>Cloud là mô hình trách nhiệm chia sẻ</td><td>Với DNNN như HABECO, <strong>kiểm soát tuyệt đối dữ liệu nội bộ</strong> là lợi thế quyết định — đáp ứng kiểm toán nhà nước &amp; thuế chặt chẽ hơn.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Định vị trước các phản biện “đinh” của đối thủ</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Phản biện 1: Cloud-only innovation</h3><p>“HABECO không cần chạy theo AI/innovation ngay — cần <strong>ổn định để bảo vệ thị phần</strong>. Đổi mới là bài toán giai đoạn sau, và on-premise vẫn mở được cửa BTP/hybrid.”</p></div>
+    <div class="card"><h3>Phản biện 2: Phí support tăng</h3><p>“Phí support tăng ảnh hưởng mọi khách hàng on-premise, nhưng <strong>khoá đa niên + tối ưu license</strong> giúp HABECO kiểm soát — và vẫn rẻ hơn đáng kể so với chuyển sang subscription.”</p></div>
+    <div class="card"><h3>Phản biện 3: “Cloud là tương lai”</h3><p>“Tương lai là <strong>quyền lựa chọn kiến trúc</strong>, không phải ép chọn cloud. A1 hôm nay giữ HABECO ở vị thế chủ động nhất: muốn lên cloud lúc nào cũng được, không bị ép.”</p></div>
+  </div>
+  <div class="hl amber"><strong>Nguyên tắc đối đáp:</strong> Không phủ nhận ưu điểm cloud — <em>thừa nhận rồi tái định khung về ưu tiên thực của HABECO (chi phí, kiểm soát, ổn định)</em>. Điều này giúp lập trường On-premise đứng vững và có uy tín.</div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Rủi ro On-premise &amp; biện pháp giảm thiểu</h2>
+  <p>Để lập trường On-premise thật sự vững, BCIS cần chủ động nêu rủi ro và phương án xử lý — thay vì né tránh:</p>
+  <table>
+    <tr><th>Rủi ro</th><th>Mức độ</th><th>Biện pháp giảm thiểu</th></tr>
+    <tr><td>Chi phí HA/Backup/DR một lần lớn</td><td class="rt">Cao</td><td>Thiết kế <strong>DR right-sized</strong> theo RTO/RPO thực tế, dùng datacenter sẵn có, <strong>phân kỳ đầu tư</strong> theo từng pha rollout.</td></tr>
+    <tr><td>Hạ tầng HANA cần nâng cấp</td><td class="rt">Cao</td><td>Đánh giá sizing hiện trạng (pha 0), <strong>nâng cấp tăng dần</strong> theo khối lượng giao dịch, không mua thừa công suất.</td></tr>
+    <tr><td>Nhân sự vận hành 24/7</td><td class="amber">Trung bình</td><td>Khoán <strong>dịch vụ AMS</strong> (đã có trong Nhóm II.14) để đảm bảo vận hành không phụ thuộc tuyển dụng nội bộ.</td></tr>
+    <tr><td>Phí Enterprise Support tăng</td><td class="amber">Trung bình</td><td>Khoá hợp đồng nhiều năm, <strong>tối ưu &amp; dọn bản quyền trước khi mua thêm</strong> (chỉ bổ sung cho 3 đơn vị).</td></tr>
+    <tr><td>Lạc hậu innovation dài hạn</td><td class="amber">Trung bình</td><td>Giữ <strong>BTP/hybrid</strong> như lộ trình mở; định kỳ đánh giá lại sau 3–5 năm.</td></tr>
+    <tr><td>Phụ thuộc nhà cung cấp hạ tầng</td><td class="gt">Thấp</td><td>Chuẩn hoá hạ tầng, đa nguồn cung, giữ tài liệu &amp; mã nguồn đầy đủ (đã có trong giai đoạn 12 của RFQ).</td></tr>
+  </table>
+  <div class="hl green"><strong>Hiệu ứng:</strong> Khi BCIS <em>tự nêu rủi ro và cách xử lý</em>, HABECO sẽ thấy phương án On-premise đã được tính toán kỹ — từ đó dễ chốt hướng hơn.</div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Cách triển khai On-premise hiệu quả (để HABECO yên tâm chốt)</h2>
+  <p>Điểm mấu chốt: đưa ra <strong>lộ trình rõ ràng, phân kỳ, chi phí thấp khởi đầu</strong> để giảm áp lực quyết định lớn ngay lập tức.</p>
+  <div class="grid g3">
+    <div class="card"><h3>Pha 0 — Đánh giá &amp; Thiết kế</h3><p>Đánh giá hiện trạng + hoàn thiện kiến trúc + xây dựng <strong>HABECO ERP Template</strong>. Chi phí nhỏ, tạo cơ sở số liệu chính xác cho các pha sau.</p></div>
+    <div class="card"><h3>Pha 1 — Thí điểm 1 công ty</h3><p>Rollout <strong>một đơn vị</strong> làm chuẩn để chứng minh mô hình, rút bài học trước khi nhân rộng.</p></div>
+    <div class="card"><h3>Pha 2 — Nhân rộng 2 đơn vị còn lại</h3><p>Rollout nhanh theo Template đã chuẩn hoá, <strong>tận dụng kinh nghiệm pha 1</strong> để rút ngắn thời gian &amp; giảm rủi ro.</p></div>
+  </div>
+  <div class="hl blue"><strong>Khuyến nghị lộ trình 18–24 tháng</strong> với nguyên tắc <em>“Template trước, rollout nhanh sau”</em>: chất lượng ở pha 0 quyết định tốc độ và chi phí của toàn chương trình. Kèm theo <strong>AMS</strong> + <strong>HA/DR right-sized</strong> + <strong>tối ưu bản quyền</strong> để khoá TCO.</div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Kịch bản trao đổi tại buổi họp (theo hướng On-premise)</h2>
+  <div class="scen">
+    <span class="num2">KB 1</span><strong>HABECO hỏi thẳng: “Vì sao nên chọn On-premise thay vì cloud?”</strong>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Dùng 6 lý do ở Mục 01, đặc biệt nhấn <strong>kế thừa + kiểm soát + không phát sinh subscription</strong>. Kết bằng: “Với bối cảnh 2026, đây là lựa chọn an toàn và tiết kiệm nhất.”</p>
+  </div>
+  <div class="scen">
+    <span class="num2">KB 2</span><strong>HABECO lo “on-premise nhiều chi phí ẩn”</strong>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Đưa bảng TCO Mục 02 + rủi ro &amp; biện pháp giảm thiểu Mục 05. Nhấn: <em>“chi phí ẩn xuất phát từ thiết kế kém, không phải bản chất on-premise — và chúng tôi có cách khoá nó.”</em></p>
+  </div>
+  <div class="scen">
+    <span class="num2">KB 3</span><strong>Đối thủ/ban lãnh đạo nghiêng cloud vì “SAP chỉ phát triển cloud”</strong>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Dùng phản biện Mục 03–04: thừa nhận xu hướng, tái định khung về ưu tiên thực của HABECO, nhấn lộ trình hỗ trợ on-premise dài hạn và cửa BTP/hybrid luôn mở.</p>
+  </div>
+  <div class="scen">
+    <span class="num2">KB 4</span><strong>Phòng Mua sắm hỏi về cách chia gói thầu</strong>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Đề xuất tách <strong>Nhóm I (nền tảng)</strong> và <strong>Nhóm II (rollout + bản quyền + AMS)</strong> riêng, cho phép lựa chọn nhà cung cấp tối ưu từng phần và minh bạch tiêu chí đánh giá.</p>
+  </div>
+  <div class="scen">
+    <span class="num2">KB 5</span><strong>HABECO muốn biết con số ngay</strong>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Giữ nguyên tắc <em>“chốt hướng trước, chốt giá sau”</em>: đề xuất <strong>Pha 0 chi phí nhỏ</strong> để có số liệu chính xác (sizing, fit-gap, bản quyền), tránh báo giá cảm tính gây rủi ro cả hai bên.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Câu hỏi cần làm rõ để khoá chắc phương án On-premise</h2>
+  <p>Trước khi chốt A1, cần HABECO xác nhận các điểm sau (giúp BCIS đưa ra thiết kế &amp; con số đúng):</p>
+  <div class="q"><b>Phạm vi đơn vị:</b> Ngoài 3 công ty HAT, HABECO-ID, Thanh Hóa — các công ty con còn lại (Trading, Hồng Hà…) có nằm trong lộ trình không, hay chỉ là 3 đơn vị hiện tại?</div>
+  <div class="q"><b>Hiện trạng hạ tầng:</b> Năng lực datacenter, HANA sizing, hạ tầng HA/DR hiện có đến đâu — để xác định mức bổ sung chính xác?</div>
+  <div class="q"><b>Bản quyền hiện hữu:</b> Số license SAP đang dùng, mô hình user (named/concurrent), nhu cầu bổ sung cho 3 đơn vị là bao nhiêu?</div>
+  <div class="q"><b>Phân tách chi phí:</b> Nhóm I (nền tảng) và Nhóm II (rollout + bản quyền + AMS) sẽ đấu thầu chung hay tách riêng?</div>
+  <div class="q"><b>AMS:</b> HABECO muốn tự vận hành hay khoán dịch vụ AMS? Mức dịch vụ (SLA) mong muốn?</div>
+  <div class="q"><b>RTO/RPO:</b> Yêu cầu khôi phục sau sự cố (thời gian/mức mất dữ liệu chấp nhận) để thiết kế DR đúng — tránh đội chi phí không cần thiết.</div>
+</section>
+
+<section>
+  <h2><span class="num">09</span>Thông điệp chốt cho buổi họp</h2>
+  <div class="hl green"><strong>Vị thế BCIS:</strong> “Chúng tôi không bán công nghệ — chúng tôi giúp HABECO <em>chốt hướng kiến trúc đúng theo ưu tiên thực</em>: kiểm soát dữ liệu, ổn định vận hành và chi phí có thể phân bổ.”</div>
+  <div class="grid g2">
+    <div class="card"><h3>Nói gì</h3>
+      <ul>
+        <li>On-premise = <strong>kế thừa + kiểm soát + không subscription định kỳ</strong>.</li>
+        <li>Đi theo <strong>lộ trình phân kỳ</strong>, bắt đầu bằng Pha 0 chi phí nhỏ.</li>
+        <li>Rủi ro đã được <strong>nhận diện và có biện pháp khoá</strong> (HA/DR, AMS, license).</li>
+        <li>On-premise <strong>không đóng cửa cloud</strong> — luôn mở lộ trình BTP/hybrid.</li>
+      </ul>
+    </div>
+    <div class="card"><h3>Tránh nói</h3>
+      <ul>
+        <li>Không chốt <strong>giá cụ thể</strong> khi chưa có số liệu pha 0.</li>
+        <li>Không phủ nhận tuyệt đối ưu điểm cloud (mất uy tín).</li>
+        <li>Không hứa <strong>cam kết innovation ngang cloud</strong>.</li>
+        <li>Không đưa con số TCO <strong>thiếu căn cứ</strong> để giành lợi thế.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="foot">
+  Tài liệu nội bộ BCIS / FPT IS · Hỗ trợ buổi họp đánh giá tiền khả thi HABECO ERP P3<br>
+  Định hướng: A1 — Mở rộng On-premise · Chốt hướng trước, chốt giá sau
+</div>
+
+</div>
+</body>
+</html>

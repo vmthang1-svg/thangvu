@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HABECO ERP P3 · Chuẩn bị họp Đánh giá Tiền khả thi</title>
+<style>
+  :root{
+    --bg:#0f0f10; --bg2:#17171a; --card:#1c1c20; --card2:#242428;
+    --border:#313138; --text:#f5f5f7; --muted:#a1a1a6;
+    --accent:#e6b84a; --red:#ff453a; --amber:#ff9f0a; --green:#30d158; --blue:#0a84ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:-apple-system,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:48px 28px 120px}
+  header.hero{padding:64px 0 40px;border-bottom:1px solid var(--border);margin-bottom:48px}
+  .kicker{color:var(--accent);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+  h1{font-size:44px;line-height:1.12;font-weight:700;letter-spacing:-.02em}
+  h1 .sub{display:block;color:var(--muted);font-size:20px;font-weight:500;margin-top:12px;letter-spacing:0}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .meta span{border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:13px;color:var(--muted)}
+  section{margin-bottom:44px}
+  h2{font-size:26px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+  h2 .num{color:var(--accent);font-weight:600;margin-right:10px}
+  h3{font-size:17px;font-weight:650;margin:22px 0 10px}
+  p{color:#d4d4d8;margin-bottom:12px}
+  .lead{color:var(--muted);font-size:15px;margin-bottom:20px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px 24px;margin-bottom:16px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .tag{display:inline-block;font-size:12px;font-weight:600;border-radius:100px;padding:4px 12px;margin-right:6px;vertical-align:middle}
+  .t-green{background:rgba(48,209,88,.15);color:var(--green)}
+  .t-amber{background:rgba(255,159,10,.15);color:var(--amber)}
+  .t-red{background:rgba(255,69,58,.15);color:var(--red)}
+  .t-blue{background:rgba(10,132,255,.16);color:var(--blue)}
+  .t-gold{background:rgba(230,184,74,.16);color:var(--accent)}
+  ul,ol{padding-left:22px;margin:8px 0 14px;color:#d4d4d8}
+  li{margin-bottom:7px}
+  strong{color:#fff}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{color:var(--accent);font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:650}
+  tr:last-child td{border-bottom:none}
+  .hl{background:var(--card2);border-left:3px solid var(--accent);padding:16px 20px;border-radius:12px;margin:16px 0}
+  .hl.red{border-color:var(--red)}
+  .hl.green{border-color:var(--green)}
+  .hl.blue{border-color:var(--blue)}
+  .kpi{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0}
+  .kpi .box{flex:1;min-width:150px;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+  .kpi .v{font-size:28px;font-weight:700;letter-spacing:-.02em}
+  .kpi .l{font-size:12px;color:var(--muted);margin-top:4px}
+  .scen{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px 24px;margin-bottom:18px}
+  .scen h3{margin-top:0;display:flex;align-items:center;gap:10px}
+  .scen .num2{background:var(--accent);color:#0f0f10;font-weight:700;font-size:14px;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+  .q{padding:11px 15px;border-left:3px solid var(--border);margin-bottom:8px;color:#d4d4d8;background:var(--card2);border-radius:8px}
+  .q b{color:var(--accent)}
+  .toc{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+  @media(max-width:720px){.toc{grid-template-columns:1fr}}
+  .toc a{color:var(--text);text-decoration:none;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;font-size:14px;display:flex;gap:12px;align-items:center;transition:.15s}
+  .toc a:hover{border-color:var(--accent)}
+  .toc .n{color:var(--accent);font-weight:700}
+  .foot{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+  .pill{display:inline-block;border:1px solid var(--border);border-radius:10px;padding:2px 9px;font-size:12px;color:var(--muted);margin:0 2px 4px 0}
+  .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;margin-left:8px}
+  .b-rec{background:rgba(48,209,88,.18);color:var(--green)}
+  .b-warn{background:rgba(255,159,10,.18);color:var(--amber)}
+  .b-risk{background:rgba(255,69,58,.18);color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">BCIS · FPT IS · Tài liệu nội bộ chuẩn bị họp</div>
+  <h1>HABECO ERP P3
+    <span class="sub">Chuẩn bị nội dung trao đổi &amp; kịch bản làm việc — Buổi họp Đánh giá Tiền khả thi</span>
+  </h1>
+  <div class="meta">
+    <span>Ngày họp: sáng mai</span>
+    <span>Đối tác: Phòng Đầu tư + Phòng Mua sắm HABECO</span>
+    <span>Đầu vào: “HABECO ERP_P3_Yeu cau chao gia.docx”</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="num">00</span>Tóm tắt nhanh — 60 giây nắm tình hình</h2>
+  <p class="lead">HABECO vừa phát hành tài liệu <strong>Yêu cầu chào giá (RFQ) giai đoạn P3</strong> cho việc mở rộng SAP ERP sang 3 công ty thành viên. Buổi họp sáng mai là bước <strong>đánh giá tiền khả thi</strong> — nơi định hình hướng kiến trúc, phạm vi, ngân sách và cách thức lựa chọn nhà thầu.</p>
+  <div class="kpi">
+    <div class="box"><div class="v">3</div><div class="l">Công ty rollout mục tiêu: HAT · HABECO-ID · Bia HN–Thanh Hóa</div></div>
+    <div class="box"><div class="v">3</div><div class="l">Phương án kiến trúc: A1 (On-premise) · A2 (Private Cloud) · B (Hybrid 2 lớp)</div></div>
+    <div class="box"><div class="v">12</div><div class="l">Giai đoạn trình tự thực hiện (định hướng → hỗ trợ sau go-live)</div></div>
+    <div class="box"><div class="v">2+14</div><div class="l">Nhóm chào giá: Nhóm I (nền tảng) + Nhóm II (14 hạng mục rollout)</div></div>
+  </div>
+  <div class="hl"><strong>Nhiệm vụ của mình trong buổi họp:</strong> giúp HABECO chốt được (1) hướng kiến trúc tối ưu, (2) phạm vi &amp; phân kỳ hợp lý trong bối cảnh chi phí nhạy cảm 2026, (3) khung RFQ khả thi để Phòng Mua sắm tiến hành. <strong>Không vội chào giá số cụ thể</strong> — giai đoạn này là “chốt hướng trước, chốt giá sau”.</div>
+</section>
+
+<section>
+  <h2><span class="num">01</span>Hiểu đúng RFQ P3 — HABECO đang muốn gì</h2>
+  <div class="card">
+    <h3>Mục tiêu (nguyên văn)</h3>
+    <p>“Mở rộng hệ thống SAP ERP HABECO thực hiện tại các công ty: <strong>HAT, HABECO-ID, Bia Hà Nội – Thanh Hóa</strong>. Chuẩn hóa quy trình, chung master data, giao dịch liên công ty, hợp nhất tài chính.”</p>
+    <p style="color:var(--muted);margin-bottom:0">→ Đây không phải “thay ERP” mà là <strong>rollout + chuẩn hóa</strong> trên nền SAP hiện hữu của TCT. Giá trị cốt lõi nằm ở <strong>master data chung, giao dịch liên công ty (intercompany) và hợp nhất tài chính</strong>.</p>
+  </div>
+  <h3>3 phương án mở rộng được HABECO đưa ra</h3>
+  <table>
+    <tr><th>P/án</th><th>Kiến trúc</th><th>Ý nghĩa</th><th>Đánh giá nhanh</th></tr>
+    <tr><td><strong>A1</strong></td><td>One ERP Core – On-premise</td><td>Mở rộng core hiện tại, rollout ra công ty thành viên trên hạ tầng tại chỗ của HABECO</td><td><span class="badge b-risk">Rủi ro chi phí ẩn</span></td></tr>
+    <tr><td><strong>A2</strong></td><td>One ERP Core – Private Cloud</td><td>Chuyển core lên Private Cloud, rollout ra công ty thành viên</td><td><span class="badge b-warn">Dài hạn tốt, tốn kém</span></td></tr>
+    <tr><td><strong>B</strong></td><td>Hybrid Two-tier</td><td>TCT + Công ty MTV HABECO tiếp tục On-premise; Private Cloud cho mở rộng công ty thành viên; tích hợp 2 lớp</td><td><span class="badge b-rec">Khớp khuyến nghị</span></td></tr>
+  </table>
+  <h3>Trình tự thực hiện dự kiến (12 giai đoạn)</h3>
+  <p class="lead" style="margin-bottom:8px">Chuỗi logic chuẩn của một chương trình rollout SAP: <strong>chốt kiến trúc → chọn tư vấn → đánh giá hiện trạng → xây Template → fit-gap → thiết kế/cấu hình → chuyển đổi dữ liệu → kiểm thử → đào tạo/go-live → hỗ trợ sau vận hành.</strong></p>
+  <p>Điểm đáng chú ý: HABECO đặt <strong>“Xây dựng HABECO ERP Template” (GĐ5)</strong> làm trung tâm — nghĩa là họ muốn một <strong>mẫu chuẩn dùng chung</strong> trước khi rollout hàng loạt. Đây chính là “điểm bán” giá trị tư vấn, không chỉ là cấu hình đơn thuần.</p>
+  <h3>Cấu trúc chào giá (2 nhóm lớn)</h3>
+  <table>
+    <tr><th>Nhóm</th><th>Nội dung</th><th>Ghi chú chiến lược</th></tr>
+    <tr><td><strong>Nhóm I</strong><br>Nền tảng nền móng</td><td>1. Nền tảng tích hợp doanh nghiệp · 2. Nền tảng dữ liệu · 3. Bảo mật &amp; an toàn dữ liệu · 4. Giám sát &amp; quản trị · 5. HA/Backup/DR dùng chung</td><td>Tầm nhìn rộng hơn SAP → cơ hội bán thêm BTP / Datasphere / tích hợp / giám sát</td></tr>
+    <tr><td><strong>Nhóm II</strong><br>Rollout SAP ERP</td><td>Khảo sát hiện trạng · Kiến trúc &amp; Template · Rollout HAT/ID/Thanh Hóa · Tích hợp · Báo cáo/phát triển · Phân quyền · Làm sạch &amp; chuyển đổi dữ liệu · Kiểm thử/đào tạo/chuyển đổi · Nâng cấp hạ tầng · <strong>Bản quyền SAP</strong> · <strong>Enterprise Support</strong> · AMS</td><td>Tách rõ: bản quyền (SAP niêm yết) vs tư vấn (cạnh tranh) vs hạ tầng vs AMS</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">02</span>5 nhận định chiến lược khi “đọc vị” RFQ</h2>
+  <div class="grid">
+    <div class="card"><h3>1 · Đang ở ngã rẽ “chọn hướng”</h3><p>HABECO chưa chốt phương án A1/A2/B — mục <em>“Kiến trúc mục tiêu”</em> trong tài liệu còn để trống. Đây là <strong>cơ hội vàng để định hình</strong>, không phải lúc để chào giá.</p></div>
+    <div class="card"><h3>2 · Phạm vi ghi rõ 3 công ty</h3><p>RFQ chỉ nêu HAT, ID, Thanh Hóa. Cần làm rõ <strong>các công ty con khác (Trading, đơn vị còn lại)</strong> có nằm trong phạm vi hay làm giai đoạn sau.</p></div>
+    <div class="card"><h3>3 · Nhóm I “nền tảng” là tín hiệu lớn</h3><p>HABECO muốn kiến trúc doanh nghiệp <strong>vượt ra ngoài SAP</strong> (tích hợp, dữ liệu, bảo mật, giám sát). Cơ hội mở rộng portfolio BCIS/FPT IS.</p></div>
+    <div class="card"><h3>4 · “Template” là trái tim chương trình</h3><p>Xây dựng <strong>HABECO ERP Template</strong> trước khi rollout → ai giúp chuẩn hóa tốt sẽ giữ được lợi thế suốt chương trình.</p></div>
+    <div class="card"><h3>5 · Bối cảnh 2026 buộc phải tiết kiệm</h3><p>Kế hoạch 2026: <strong>LN sau thuế giảm ~57%</strong>, thuế TTĐB tăng, tập trung <strong>bảo vệ thị phần</strong>. → Trục quyết định chính là <strong>TCO dài hạn + khả năng phân kỳ chi phí</strong>, không phải CAPEX năm đầu.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Khung đánh giá tiền khả thi — 5 trục quyết định</h2>
+  <p class="lead">Dùng khung này để dẫn dắt buổi họp: mỗi trục là một câu hỏi then chốt mà Phòng Đầu tư và Phòng Mua sắm cần trả lời trước khi chốt hướng.</p>
+  <table>
+    <tr><th>Trục</th><th>Câu hỏi then chốt</th><th>Ảnh hưởng đến quyết định</th></tr>
+    <tr><td><strong>1. Chiến lược &amp; phạm vi</strong></td><td>Rollout những đơn vị nào, những phân hệ nào, với bao nhiêu người dùng?</td><td>Quy mô bản quyền, công sức triển khai, ngân sách</td></tr>
+    <tr><td><strong>2. Kiến trúc &amp; công nghệ</strong></td><td>On-premise, Private Cloud hay Hybrid? Data có bắt buộc đặt tại VN không?</td><td>Chọn A1/A2/B; cơ sở hạ tầng &amp; tích hợp</td></tr>
+    <tr><td><strong>3. Chi phí &amp; TCO</strong></td><td>Tổng chi phí sở hữu 5 năm của từng phương án là bao nhiêu?</td><td>Phương án “rẻ năm đầu” chưa chắc “rẻ tổng thể”</td></tr>
+    <tr><td><strong>4. Rủi ro &amp; tuân thủ</strong></td><td>Rủi ro gián đoạn, bảo mật, tuân thủ (Luật Đấu thầu, thuế, an toàn dữ liệu)?</td><td>Phân kỳ, quay lui (rollback), điều kiện go-live</td></tr>
+    <tr><td><strong>5. Lộ trình &amp; nguồn lực</strong></td><td>Thời gian thực hiện bao lâu? Đội ngũ nội bộ HABECO sẵn sàng thế nào?</td><td>Phân pha, mốc bàn giao, cam kết nguồn lực</td></tr>
+  </table>
+  <div class="hl blue"><strong>Nguyên tắc dẫn dắt:</strong> đưa HABECO từ “cảm tính chọn phương án” sang “ra quyết định theo dữ liệu TCO + rủi ro + phân kỳ”. Đó cũng là cách định vị BCIS/FPT IS như một <em>cố vấn kiến trúc</em>, không chỉ là nhà thầu.</div>
+</section>
+
+<section>
+  <h2><span class="num">04</span>So sánh A1 / A2 / B &amp; định vị khuyến nghị</h2>
+  <table>
+    <tr><th>Tiêu chí</th><th>A1 · On-premise</th><th>A2 · Private Cloud toàn bộ</th><th>B · Hybrid 2 lớp <span class="badge b-rec">Khuyến nghị</span></th></tr>
+    <tr><td><strong>CAPEX năm đầu</strong></td><td>Thấp (tận dụng hạ tầng có sẵn)</td><td>Cao (di chuyển cả core)</td><td>Trung bình (chỉ dựng cloud cho đơn vị mới)</td></tr>
+    <tr><td><strong>TCO 5 năm</strong></td><td>Cao dần (nâng cấp HANA, HA/DR, nhân sự vận hành)</td><td>Cao (chưa cần thiết với TCT đang ổn)</td><td>Thấp nhất &amp; linh hoạt</td></tr>
+    <tr><td><strong>Rủi ro</strong></td><td>Chi phí ẩn, thiếu innovation</td><td>Gián đoạn khi di chuyển core</td><td>Phải quản trị tích hợp 2 lớp (đã có kinh nghiệm)</td></tr>
+    <tr><td><strong>Đổi mới (innovation)</strong></td><td>Hạn chế — SAP cloud-only innovation</td><td>Tốt</td><td>Tốt ở lớp mở rộng</td></tr>
+    <tr><td><strong>Phù hợp bối cảnh 2026</strong></td><td>Khó bảo vệ TCO dài hạn</td><td>Tốn vốn trong năm khó khăn</td><td>Giữ vốn + chuẩn hóa dần</td></tr>
+  </table>
+  <div class="grid g3">
+    <div class="card"><h3>Vì sao không nên A1</h3><p>Nhìn rẻ ở năm đầu nhưng <strong>OPEX tăng dần</strong>: bảo trì hạ tầng, HA/DR, backup, đội vận hành HANA. Đồng thời SAP đang đẩy <strong>innovation chỉ có trên cloud</strong> (DSAG xác nhận), và on-premise chịu áp lực <strong>tăng phí Enterprise Support</strong>.</p></div>
+    <div class="card"><h3>Vì sao A2 chưa cần vội</h3><p>A2 là đích đến dài hạn hợp lý, nhưng <strong>di chuyển cả core hiện hữu lên cloud</strong> tốn kém và gián đoạn trong đúng năm HABECO cần siết chi phí. Nên đi <strong>từng bước</strong> thay vì “big bang”.</p></div>
+    <div class="card"><h3>Vì sao B là khuyến nghị</h3><p><strong>B khớp với hiện trạng và chiến lược tiết kiệm:</strong> giữ nguyên core On-premise ổn định của TCT, chỉ dựng Private Cloud cho 3 đơn vị mở rộng, tích hợp 2 lớp bằng Central Finance / intercompany. Vừa chuẩn hóa, vừa giãn chi phí, vừa để ngỏ lộ trình lên A2 sau này.</p></div>
+  </div>
+  <div class="hl green"><strong>Thông điệp chốt với HABECO:</strong> “Chọn B là chọn lộ trình <em>ít rủi ro nhất, TCO thấp nhất trong 5 năm, và không khoá cửa tương lai</em>. Nếu sau này muốn hợp nhất toàn bộ lên Private Cloud, B chính là bước đệm an toàn để đi lên A2.”</div>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Nội dung trao đổi — Phòng Đầu tư</h2>
+  <p class="lead">Phòng Đầu tư quan tâm: <strong>lợi ích kinh doanh, TCO, ROI, rủi ro và tính khả thi tài chính</strong> trong bối cảnh 2026 khó khăn. Đây là phần “bán bài toán kinh doanh”.</p>
+  <div class="card">
+    <h3>Nên trình bày gì</h3>
+    <ul>
+      <li><strong>Bài toán &amp; giá trị:</strong> hợp nhất tài chính nhanh hơn, báo cáo liên công ty chính xác, master data thống nhất → giảm đối soát thủ công, giảm rủi ro số liệu khi thị trường biến động.</li>
+      <li><strong>TCO 5 năm 3 phương án:</strong> đưa biểu đồ so sánh — nhấn mạnh A1 “rẻ năm 1, đắt về sau”, B “tối ưu tổng thể”.</li>
+      <li><strong>Phân kỳ đầu tư (phasing):</strong> chia nhỏ để giãn chi phí qua các năm, giảm áp lực ngân sách 2026.</li>
+      <li><strong>Rủi ro &amp; biện pháp:</strong> rollback khi go-live, không ảnh hưởng đơn vị đang vận hành, bảo mật &amp; data residency.</li>
+      <li><strong>Đo lường thành công (KPI):</strong> thời gian chốt sổ/báo cáo hợp nhất, % tự động hóa intercompany, độ chính xác master data.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>3 câu hỏi nên chủ động hỏi Phòng Đầu tư</h3>
+    <div class="q"><b>Q.</b> Khung ngân sách / trần chi phí cho P3 đã được phê duyệt chưa, hay đang cần con số để trình duyệt?</div>
+    <div class="q"><b>Q.</b> HABECO muốn ghi nhận lợi ích theo tiêu chí nào (giảm chi phí, tăng tốc độ báo cáo, giảm rủi ro) để mình cùng xây dựng business case?</div>
+    <div class="q"><b>Q.</b> Với kế hoạch 2026 siết chi phí, HABECO ưu tiên “làm trọn 3 công ty một lần” hay “làm thí điểm 1 công ty trước, chứng minh giá trị rồi nhân rộng”?</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Nội dung trao đổi — Phòng Mua sắm</h2>
+  <p class="lead">Phòng Mua sắm quan tâm: <strong>cấu trúc gói thầu, tiêu chí đánh giá, tiến độ, tuân thủ Luật Đấu thầu</strong>. Đây là phần “mở đường cho RFQ chạy đúng”.</p>
+  <div class="card">
+    <h3>Nên trình bày gì</h3>
+    <ul>
+      <li><strong>Cấu trúc gói thầu:</strong> đề xuất tách rõ <span class="pill">Gói tư vấn triển khai</span><span class="pill">Gói bản quyền SAP</span><span class="pill">Gói hạ tầng/cloud</span><span class="pill">Gói AMS</span> để minh bạch và cạnh tranh đúng chỗ.</li>
+      <li><strong>Tiêu chí đánh giá:</strong> gợi ý tỷ lệ kỹ thuật/tài chính, tiêu chí về kinh nghiệm SAP F&amp;B (food &amp; beverage / bia), năng lực Template, chứng chỉ đội ngũ.</li>
+      <li><strong>Tiến độ:</strong> mốc phát hành RFQ, hạn nộp, thời điểm chọn nhà thầu — nối tiếp 12 giai đoạn HABECO đã nêu.</li>
+      <li><strong>Tuân thủ:</strong> hình thức lựa chọn nhà thầu (đấu thầu rộng rãi / chào hàng cạnh tranh), căn cứ Luật Đấu thầu 2023.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>3 câu hỏi nên chủ động hỏi Phòng Mua sắm</h3>
+    <div class="q"><b>Q.</b> Hình thức lựa chọn nhà thầu dự kiến là gì, và gói bản quyền SAP có tách riêng (đối tác duy nhất của SAP) hay gộp chung?</div>
+    <div class="q"><b>Q.</b> Tỷ lệ điểm kỹ thuật / giá và các tiêu chí ưu tiên (kinh nghiệm ngành bia, năng lực Template, AMS) đã định hướng chưa?</div>
+    <div class="q"><b>Q.</b> Mốc thời gian mong muốn phát hành RFQ và chốt nhà thầu để mình chuẩn bị hồ sơ phù hợp?</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Danh sách câu hỏi làm rõ (Question Log)</h2>
+  <p class="lead">Dùng để “khoan” thông tin trong buổi họp — càng làm rõ sớm, càng chốt hướng và chào giá chính xác về sau.</p>
+
+  <h3>Phạm vi &amp; tổ chức</h3>
+  <div class="q"><b>1.</b> Đơn vị rollout chính xác là HAT, HABECO-ID, Bia Hà Nội–Thanh Hóa — hay còn công ty con khác (Trading, các đơn vị còn lại)? “Công ty MTV HABECO” trong phương án B là pháp nhân nào?</div>
+  <div class="q"><b>2.</b> Phạm vi phân hệ (module) cần rollout: FI/CO, MM, SD, PP…? Hay chỉ kế toán – tài chính trước?</div>
+  <div class="q"><b>3.</b> Số lượng người dùng (named users) dự kiến ở mỗi công ty là bao nhiêu? (cần để ước lượng bản quyền)</div>
+  <div class="q"><b>4.</b> “Hợp nhất tài chính” kỳ vọng dùng <strong>Central Finance</strong> hay <strong>Group Reporting / BPC</strong>?</div>
+
+  <h3>Kiến trúc &amp; hiện trạng</h3>
+  <div class="q"><b>5.</b> TCT đang chạy S/4HANA phiên bản nào (2019)? HANA DB version? Khối lượng custom code, biểu mẫu, giao diện tích hợp hiện hữu?</div>
+  <div class="q"><b>6.</b> Hệ thống nguồn tại HAT / HABECO-ID / Thanh Hóa hiện đang dùng gì (ERP khác, Fast, phần mềm kế toán, Excel)?</div>
+  <div class="q"><b>7.</b> Mục “Kiến trúc mục tiêu” trong tài liệu còn trống — HABECO đã có bản vẽ kiến trúc nội bộ chưa, hay cần tư vấn xây dựng?</div>
+  <div class="q"><b>8.</b> Yêu cầu <strong>data residency</strong> (dữ liệu đặt tại Việt Nam) có bắt buộc không? → ảnh hưởng chọn cloud provider / datacenter.</div>
+
+  <h3>Nền tảng (Nhóm I)</h3>
+  <div class="q"><b>9.</b> “Nền tảng tích hợp doanh nghiệp” kỳ vọng dùng <strong>SAP BTP / Cloud Integration (CPI/PO)</strong> hay middleware khác? Hiện có sẵn nền tảng nào?</div>
+  <div class="q"><b>10.</b> “Nền tảng dữ liệu doanh nghiệp” là <strong>SAP Datasphere / BW</strong> hay data warehouse riêng?</div>
+
+  <h3>Thương mại &amp; mua sắm</h3>
+  <div class="q"><b>11.</b> Khung ngân sách / trần chi phí cho P3?</div>
+  <div class="q"><b>12.</b> Hình thức lựa chọn nhà thầu: đấu thầu rộng rãi, chào hàng cạnh tranh hay chỉ định? (căn cứ Luật Đấu thầu 2023)</div>
+  <div class="q"><b>13.</b> Tiêu chí &amp; tỷ lệ đánh giá kỹ thuật / tài chính?</div>
+  <div class="q"><b>14.</b> Gói bản quyền SAP có tách riêng với gói tư vấn triển khai không?</div>
+  <div class="q"><b>15.</b> Mốc thời gian phát hành RFQ và chốt nhà thầu mong muốn?</div>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Kịch bản làm việc (7 tình huống dự kiến)</h2>
+  <p class="lead">Với mỗi kịch bản: nhận diện tín hiệu → lập luận/giá trị → phản hồi BCIS → rủi ro cần quản lý. Mục tiêu là <strong>luôn lái về phương án B (Hybrid) và phân kỳ hợp lý</strong>.</p>
+
+  <div class="scen">
+    <h3><span class="num2">1</span>HABECO nghiêng về A1 (On-premise) vì “chi phí ban đầu thấp”</h3>
+    <div class="lbl">Tín hiệu nhận diện</div>
+    <p>Họ hỏi nhiều về “chi phí bản quyền tăng thêm”, ngại chi phí cloud định kỳ, nhấn mạnh “hạ tầng hiện có sẵn rồi”.</p>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Dùng <strong>TCO 5 năm</strong> thay vì CAPEX năm 1: A1 chỉ rẻ ở năm đầu nhưng OPEX tăng dần (bảo trì HANA, HA/DR, nhân sự vận hành). Dẫn chứng DSAG: <strong>innovation chỉ có trên cloud</strong> + áp lực <strong>tăng phí Enterprise Support</strong>. Đề xuất B như “giữ được on-premise ở TCT, vẫn có cloud cho mở rộng”.</p>
+    <div class="lbl">Rủi ro cần quản lý</div>
+    <p>Nếu HABECO vẫn muốn A1 để giảm chi phí ngay, đừng phản đối gay gắt — <strong>ghi nhận rồi đưa ra bảng so sánh chi tiết</strong> để họ tự thấy chi phí ẩn.</p>
+  </div>
+
+  <div class="scen">
+    <h3><span class="num2">2</span>HABECO nghiêng về A2 (Private Cloud toàn bộ)</h3>
+    <div class="lbl">Tín hiệu nhận diện</div>
+    <p>Họ muốn “sạch”, chuẩn hóa toàn diện, ít phải quản trị nhiều hệ thống cùng lúc.</p>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Xác nhận A2 là <strong>đích đến dài hạn tốt</strong>, nhưng nên đi <strong>từng bước</strong>: B trước (giữ core ổn định, chỉ cloud cho 3 đơn vị mới), rồi hợp nhất dần. Tránh “big bang” tốn vốn và gián đoạn đúng năm khó khăn.</p>
+    <div class="lbl">Rủi ro cần quản lý</div>
+    <p>Đừng để HABECO hiểu B là “ngăn cản đổi mới” — khẳng định B <strong>là bước đệm an toàn để lên A2</strong>, không phải ngõ cụt.</p>
+  </div>
+
+  <div class="scen">
+    <h3><span class="num2">3</span>HABECO nghiêng về B (Hybrid) — khớp khuyến nghị</h3>
+    <div class="lbl">Tín hiệu nhận diện</div>
+    <p>Họ nhắc “tận dụng core hiện tại”, “mở rộng dần”, “không ảnh hưởng hệ thống đang chạy”.</p>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p><strong>Chốt nhanh, đừng bỏ lỡ đà.</strong> Đưa ngay phạm vi giai đoạn 1 cụ thể (3 đơn vị trên Private Cloud + tích hợp 2 lớp bằng Central Finance/intercompany) và kế hoạch Template. Khẳng định BCIS đã có phương án chi tiết, giảm thời gian thảo luận.</p>
+    <div class="lbl">Rủi ro cần quản lý</div>
+    <p>Quản lý kỳ vọng về <strong>tích hợp 2 lớp</strong> — cần làm rõ độ phức tạp, tránh hứa “đơn giản” quá mức.</p>
+  </div>
+
+  <div class="scen">
+    <h3><span class="num2">4</span>HABECO hỏi “khoảng bao nhiêu tiền” / ngân sách</h3>
+    <div class="lbl">Tín hiệu nhận diện</div>
+    <p>Hỏi trực diện về con số, muốn có dải chi phí để trình duyệt nội bộ.</p>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p><strong>Không chốt số cụ thể khi chưa đủ dữ liệu.</strong> Đưa <strong>dải chi phí theo 3 phương án + các giả định</strong> (số user, module, mức độ chuẩn hóa). Đề xuất làm <strong>“đánh giá hiện trạng + thiết kế chi tiết”</strong> (giai đoạn nhỏ, chi phí thấp) để ra con số chính xác. Tách rõ: bản quyền (SAP niêm yết) vs tư vấn (cạnh tranh) vs hạ tầng.</p>
+    <div class="lbl">Rủi ro cần quản lý</div>
+    <p>Tránh đưa một con số “đẹp” để câu kéo rồi bị đội chi phí sau — giữ <strong>uy tín bằng dải giá trung thực</strong>.</p>
+  </div>
+
+  <div class="scen">
+    <h3><span class="num2">5</span>HABECO muốn tách nhỏ gói / làm theo pha</h3>
+    <div class="lbl">Tín hiệu nhận diện</div>
+    <p>Họ hỏi có thể “làm từng công ty”, “chia giai đoạn”, “thí điểm trước” không.</p>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p><strong>Ủng hộ mạnh mẽ.</strong> Đề xuất pha hóa: <span class="pill">Pha 0: đánh giá + kiến trúc + Template</span><span class="pill">Pha 1: rollout thí điểm 1 công ty</span><span class="pill">Pha 2: rollout 2 công ty còn lại</span>. Vừa giãn chi phí, vừa giảm rủi ro, vừa chứng minh giá trị trước khi nhân rộng.</p>
+    <div class="lbl">Rủi ro cần quản lý</div>
+    <p>Làm rõ <strong>Template phải xong trước</strong> để các pha rollout sau nhanh và rẻ — tránh “mỗi công ty một kiểu”.</p>
+  </div>
+
+  <div class="scen">
+    <h3><span class="num2">6</span>HABECO hỏi về bản quyền SAP &amp; Enterprise Support</h3>
+    <div class="lbl">Tín hiệu nhận diện</div>
+    <p>Họ quan tâm giá bản quyền, phí duy trì hằng năm, và tin đồn SAP tăng phí.</p>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Giải thích rõ mô hình: <strong>bản quyền theo user</strong>, <strong>RISE subscription</strong> cho cloud, <strong>Enterprise Support ~22%</strong> và xu hướng tăng cho on-premise. Đề xuất <strong>đánh giá tối ưu bản quyền hiện hữu</strong> (license optimization) trước khi mua thêm — đây là giá trị tư vấn BCIS làm được.</p>
+    <div class="lbl">Rủi ro cần quản lý</div>
+    <p>Không cam kết số phí cụ thể nếu chưa có bảng giá chính thức từ SAP — nói theo <strong>dải và cơ chế</strong>.</p>
+  </div>
+
+  <div class="scen">
+    <h3><span class="num2">7</span>HABECO hỏi lộ trình &amp; mốc thời gian</h3>
+    <div class="lbl">Tín hiệu nhận diện</div>
+    <p>Họ muốn biết khi nào xong, có kịp cho kỳ báo cáo/quyết toán hay không.</p>
+    <div class="lbl">Phản hồi BCIS</div>
+    <p>Đưa timeline hợp lý <strong>18–24 tháng</strong>: đánh giá 2–3 tháng → thiết kế/Template 3–4 tháng → rollout từng công ty 4–6 tháng/công ty (có thể song song). Nhấn mạnh <strong>“Template trước, rollout nhanh sau”</strong>.</p>
+    <div class="lbl">Rủi ro cần quản lý</div>
+    <p>Quản lý kỳ vọng về <strong>nguồn lực nội bộ HABECO</strong> — tiến độ phụ thuộc cả phía khách hàng, không chỉ nhà thầu.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">09</span>Agenda đề xuất cho buổi họp (~90 phút)</h2>
+  <table>
+    <tr><th>#</th><th>Nội dung</th><th>Thời lượng</th><th>Mục tiêu cần đạt</th></tr>
+    <tr><td>1</td><td>Mở đầu &amp; thống nhất mục tiêu buổi họp</td><td>5 phút</td><td>Đồng thuận “chốt hướng kiến trúc + phạm vi + khung RFQ”</td></tr>
+    <tr><td>2</td><td>Thống nhất hiểu về RFQ P3: mục tiêu, phương án, phạm vi</td><td>15 phút</td><td>Cùng một cách hiểu về 3 phương án &amp; 12 giai đoạn</td></tr>
+    <tr><td>3</td><td>Khung đánh giá tiền khả thi + so sánh A1/A2/B</td><td>20 phút</td><td>HABECO thấy rõ TCO &amp; rủi ro từng phương án</td></tr>
+    <tr><td>4</td><td>Làm rõ câu hỏi: phạm vi, hiện trạng, bản quyền, ngân sách</td><td>20 phút</td><td>Thu thập đủ thông tin để chào giá chính xác</td></tr>
+    <tr><td>5</td><td>Thống nhất hướng kiến trúc &amp; phạm vi phân kỳ</td><td>15 phút</td><td>Chốt phương án (kỳ vọng B) + phân pha</td></tr>
+    <tr><td>6</td><td>Kế hoạch tiếp theo: cấu trúc gói thầu, mốc thời gian, phân công</td><td>10 phút</td><td>Rõ việc tiếp theo của hai bên</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">10</span>Checklist chuẩn bị &amp; việc cần thu thập</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Trước họp — mang theo</h3>
+      <ul>
+        <li>Bản tóm tắt RFQ P3 (tài liệu này).</li>
+        <li>1 slide so sánh TCO A1/A2/B (có biểu đồ).</li>
+        <li>1 slide “đề xuất phân pha + timeline 18–24 tháng”.</li>
+        <li>Bộ câu hỏi làm rõ (Section 07) in/để trên màn hình.</li>
+        <li>Bối cảnh thị trường: thuế TTĐB 2026, DSAG cloud-only innovation.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Trong họp — ghi chú nhanh</h3>
+      <ul>
+        <li>Ai là người ra quyết định cuối (Investment vs Procurement)?</li>
+        <li>Phương án nào được họ “nhắc tên” nhiều nhất?</li>
+        <li>Ngân sách / trần chi phí có hé lộ không?</li>
+        <li>Hình thức đấu thầu &amp; tiêu chí đánh giá.</li>
+        <li>Phạm vi thật: 3 công ty hay nhiều hơn?</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Sau họp — việc cần làm</h3>
+      <ul>
+        <li>Gửi biên bản họp + kết luận kiến trúc (nếu chốt được).</li>
+        <li>Bổ sung Question Log còn trống → gửi HABECO xác nhận.</li>
+        <li>Lên khung business case / TCO sơ bộ theo phương án chốt.</li>
+        <li>Chuẩn bị đề xuất “đánh giá hiện trạng + thiết kế kiến trúc” (pha 0, chi phí thấp) làm bước kế tiếp.</li>
+        <li>Phối hợp FPT IS/SAP để có dải giá bản quyền &amp; RISE sơ bộ.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Điều cần tránh</h3>
+      <ul>
+        <li>Không chốt giá cụ thể khi thiếu dữ liệu.</li>
+        <li>Không hứa timeline quá nhanh / “tích hợp 2 lớp dễ”.</li>
+        <li>Không phản đối A1/A2 gay gắt — dẫn bằng dữ liệu TCO.</li>
+        <li>Không quên yếu tố <strong>tuân thủ Luật Đấu thầu</strong> khi bàn về gói thầu.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">★</span>Một câu để nhớ trước khi vào họp</h2>
+  <div class="hl green" style="font-size:17px">“Chọn <strong>B (Hybrid 2 lớp)</strong> là chọn <strong>TCO 5 năm thấp nhất, ít rủi ro nhất, và không khóa cửa tương lai</strong> — trong đúng năm HABECO cần siết chi phí nhưng vẫn phải chuẩn hóa để bảo vệ thị phần.”</div>
+</section>
+
+<div class="foot">
+  Tài liệu nội bộ BCIS · FPT IS · Chuẩn bị cho buổi họp đánh giá tiền khả thi dự án HABECO ERP P3.<br>
+  Đầu vào: “HABECO ERP_P3_Yeu cau chao gia.docx” · Cập nhật 09/2026.
+</div>
+
+</div>
+</body>
+</html>
