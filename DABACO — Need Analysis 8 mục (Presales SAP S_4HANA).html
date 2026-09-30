@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DABACO (DBC) — Need Analysis 8 mục | Presales SAP S/4HANA</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  html { scroll-behavior: smooth; }
+  .fade-in { animation: fadeIn .6s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px);} to { opacity: 1; transform: none;} }
+  .tbl th { @apply px-3 py-2 text-left text-xs uppercase tracking-wide text-slate-500 bg-slate-50; }
+  .tbl td { @apply px-3 py-3 align-top; }
+  .dot { display:inline-block; width:.7rem; height:.7rem; border-radius:9999px; margin-right:.35rem; vertical-align:middle; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-blue-800 text-white font-extrabold flex items-center justify-center">D</div>
+      <div>
+        <p class="font-bold leading-tight">DABACO <span class="text-blue-700">(DBC)</span> — Need Analysis</p>
+        <p class="text-xs text-slate-500">Presales SAP S/4HANA · sap-need-analyzer-v3</p>
+      </div>
+    </div>
+    <div class="hidden lg:flex gap-4 text-xs font-semibold text-slate-600">
+      <a href="#s1" class="hover:text-blue-700">1 Tổng quan</a>
+      <a href="#s2" class="hover:text-blue-700">2 Động lực</a>
+      <a href="#s3" class="hover:text-blue-700">3 Pain Points</a>
+      <a href="#s4" class="hover:text-blue-700">4 Outcomes</a>
+      <a href="#s5" class="hover:text-blue-700">5 Giải pháp</a>
+      <a href="#s6" class="hover:text-blue-700">6 Đối thủ</a>
+      <a href="#s7" class="hover:text-blue-700">7 Chiến lược</a>
+      <a href="#s8" class="hover:text-blue-700">8 Next Steps</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="bg-gradient-to-br from-slate-900 via-blue-900 to-blue-700 text-white">
+  <div class="max-w-7xl mx-auto px-4 py-14 fade-in">
+    <p class="uppercase tracking-widest text-xs font-semibold text-blue-200 mb-3">Phân tích nhu cầu khách hàng</p>
+    <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">DABACO (DBC) <span class="text-blue-200">— Need Analysis 8 mục</span></h1>
+    <p class="mt-4 text-lg text-blue-50 max-w-3xl">Financial Intelligence Edition — phục vụ Presales <strong>SAP S/4HANA</strong>. Thay thế FoxPro (EOL 2015) bằng nền tảng Tài chính Tập đoàn cho chuỗi 3F.</p>
+    <div class="mt-6 flex flex-wrap gap-3 text-sm">
+      <span class="bg-white/15 px-3 py-1.5 rounded-full">👤 Richard Vu (Thắng Vũ) — BCIS, FPT IS</span>
+      <span class="bg-white/15 px-3 py-1.5 rounded-full">📅 14/09/2026</span>
+      <span class="bg-white/15 px-3 py-1.5 rounded-full">🧩 Skill: sap-need-analyzer-v3</span>
+    </div>
+    <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white/10 rounded-2xl p-5 border border-white/20"><p class="text-3xl font-extrabold">13.574</p><p class="text-sm text-blue-100 mt-1">tỷ đồng DT thuần 2024 (+22%)</p></div>
+      <div class="bg-white/10 rounded-2xl p-5 border border-white/20"><p class="text-3xl font-extrabold">769</p><p class="text-sm text-blue-100 mt-1">tỷ LNST 2024 (gấp ~30× 2023)</p></div>
+      <div class="bg-white/10 rounded-2xl p-5 border border-white/20"><p class="text-3xl font-extrabold">~14.600</p><p class="text-sm text-blue-100 mt-1">tỷ tổng tài sản (Q2/2025)</p></div>
+      <div class="bg-white/10 rounded-2xl p-5 border border-white/20"><p class="text-3xl font-extrabold text-amber-300">CAO</p><p class="text-sm text-blue-100 mt-1">mức độ khẩn cấp · quyết định 6–12 tháng</p></div>
+    </div>
+    <div class="mt-6 bg-amber-400/20 border border-amber-300/40 rounded-xl p-4 text-sm text-amber-50">
+      ⚠️ <strong>Ghi chú hiệu chỉnh số liệu:</strong> Báo cáo dùng BCTC đã đối chiếu chéo (VNDirect, Studocu 2019–2023, BCTC Q2/2025, VCBS). Một số ước tính trước đây (tổng tài sản ~23–24 nghìn tỷ, VCSH ~8.521 tỷ) đã được hiệu chỉnh theo số liệu thực.
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-12 space-y-16">
+
+<!-- 1 -->
+<section id="s1" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-blue-800 text-white flex items-center justify-center text-base">1</span> Tổng quan khách hàng</h2>
+  <div class="mt-6 grid lg:grid-cols-5 gap-6">
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <table class="w-full text-sm"><tbody class="divide-y divide-slate-100">
+        <tr><td class="px-4 py-3 font-semibold text-slate-500 w-36">Doanh nghiệp</td><td class="px-4 py-3">CTCP Tập đoàn DABACO Việt Nam (DABACO GROUP)</td></tr>
+        <tr><td class="px-4 py-3 font-semibold text-slate-500">Phân ngành SAP</td><td class="px-4 py-3">Consumer Industries — Thực phẩm & Nông nghiệp (Agribusiness / Mill Products); chuỗi <strong>3F: Feed – Farm – Food</strong></td></tr>
+        <tr><td class="px-4 py-3 font-semibold text-slate-500">Mã CK</td><td class="px-4 py-3"><strong>DBC — HOSE</strong> (từ 26/07/2019; HNX từ 2008) · MSDN 2300105790</td></tr>
+        <tr><td class="px-4 py-3 font-semibold text-slate-500">Trụ sở</td><td class="px-4 py-3">35 Lý Thái Tổ, P. Võ Cường, TP. Bắc Ninh — dabaco.com.vn</td></tr>
+        <tr><td class="px-4 py-3 font-semibold text-slate-500">Người liên hệ</td><td class="px-4 py-3">Ban Tài chính – Kế toán / CFO / Chủ tịch HĐQT Nguyễn Như So</td></tr>
+      </tbody></table>
+    </div>
+    <div class="lg:col-span-3 grid sm:grid-cols-2 gap-4">
+      <div class="bg-white rounded-2xl shadow-sm border-t-4 border-amber-500 border border-slate-200 p-4"><p class="font-bold text-amber-600">🌾 FEED</p><p class="text-sm text-slate-600 mt-1">TACN 1,5 triệu tấn/năm; 5 nhà máy (Bắc Ninh, Hà Nam, Hà Tĩnh, Bình Phước, Phú Thọ); thương hiệu DABACO, Topfeeds, Nutreco, Nasaco, Kinh Bắc, Growfeed, Sunshine…</p></div>
+      <div class="bg-white rounded-2xl shadow-sm border-t-4 border-green-600 border border-slate-200 p-4"><p class="font-bold text-green-700">🐔 FARM</p><p class="text-sm text-slate-600 mt-1">#1 gà màu VN, đàn giống >700.000 con; >72.000 nái; trại gà đẻ ~1 triệu trứng/ngày; ~250.000 lợn thịt</p></div>
+      <div class="bg-white rounded-2xl shadow-sm border-t-4 border-rose-500 border border-slate-200 p-4"><p class="font-bold text-rose-600">🥫 FOOD</p><p class="text-sm text-slate-600 mt-1">Xúc xích, giò chả, đồ hộp, trứng Devi; GMP/HACCP/ISO 22000; DABACO Meatlife, dầu thực vật</p></div>
+      <div class="bg-white rounded-2xl shadow-sm border-t-4 border-slate-400 border border-slate-200 p-4"><p class="font-bold text-slate-600">🧩 Phụ trợ</p><p class="text-sm text-slate-600 mt-1">Phân bón VIJACO, bao bì/bạt nhựa (8.000 tấn/năm, XK Mỹ/Nga/TBN/Hàn), BĐS, logistics cảng sông, TTTM</p></div>
+    </div>
+  </div>
+
+  <h3 class="mt-8 text-xl font-bold">📊 Dữ liệu tài chính tổng quan</h3>
+  <p class="text-xs text-slate-500 italic">Nguồn: BCTC hợp nhất DBC — Studocu 2019–2023; VNDirect 12/2022; Q2/2025 — tapchicongthuong.vn; VCBS 2024</p>
+  <div class="mt-4 grid lg:grid-cols-5 gap-5">
+    <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto"><table class="w-full text-sm tbl">
+        <thead><tr><th>Chỉ tiêu (tỷ VND)</th><th class="text-right">2022</th><th class="text-right">2023</th><th class="text-right">2024</th><th class="text-right">Q2/2025</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="font-medium">Doanh thu thuần</td><td class="text-right">~11.556</td><td class="text-right">~11.110</td><td class="text-right font-semibold">~13.574</td><td class="text-right">3.800 (quý)</td></tr>
+          <tr><td class="font-medium">LNST</td><td class="text-right">~326</td><td class="text-right text-rose-600">~25</td><td class="text-right text-green-700 font-semibold">~769</td><td class="text-right">507 (quý)</td></tr>
+          <tr><td class="font-medium">Tổng tài sản</td><td class="text-right">12.974</td><td class="text-right">13.012</td><td class="text-right">~14.000</td><td class="text-right">~14.600</td></tr>
+          <tr><td class="font-medium">VCSH</td><td class="text-right">~4.641</td><td class="text-right">~4.667</td><td class="text-right">~5.300 (ƯT)</td><td class="text-right">~6.000+ (sau tăng vốn)</td></tr>
+          <tr><td class="font-medium">Biên LN gộp</td><td class="text-right">~13%</td><td class="text-right">~10%</td><td class="text-right">~18%</td><td class="text-right">~21,6%</td></tr>
+          <tr><td class="font-medium">Biên LN ròng</td><td class="text-right">~2,8%</td><td class="text-right text-rose-600">~0,2%</td><td class="text-right">~5,7%</td><td class="text-right">~13% (quý)</td></tr>
+        </tbody></table></div>
+      <div class="p-5 grid md:grid-cols-2 gap-4">
+        <div class="h-56"><canvas id="chartRev"></canvas></div>
+        <div class="h-56"><canvas id="chartMargin"></canvas></div>
+      </div>
+      <p class="px-5 pb-5 text-sm text-slate-600">📈 <strong>Xu hướng:</strong> DT thuần tăng ổn định (~+22% yoy 2024) nhưng <strong>lợi nhuận biến động cực mạnh</strong> theo chu kỳ giá heo/nguyên liệu: LNST 2023 chỉ 25 tỷ → 2024 bật lên 769 tỷ (gấp ~30 lần). Biên gộp dao động 10%–21,6%.</p>
+    </div>
+
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Chỉ số tài chính vs Benchmark ngành</div>
+      <table class="w-full text-sm tbl">
+        <thead><tr><th>Chỉ số</th><th>Giá trị</th><th>Benchmark</th><th>Đánh giá</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="font-medium">DSO</td><td>~10–19 ngày</td><td class="text-slate-500">≤ 45</td><td><span class="dot bg-green-500"></span>Rất tốt</td></tr>
+          <tr><td class="font-medium">DIO / ITO</td><td>~143–185 ngày / ~2 vòng</td><td class="text-slate-500">DIO ≤ 60, ITO ≥ 6</td><td><span class="dot bg-red-500"></span>Kém</td></tr>
+          <tr><td class="font-medium">DPO</td><td>~54 ngày</td><td class="text-slate-500">30–60</td><td><span class="dot bg-green-500"></span>Tốt</td></tr>
+          <tr><td class="font-medium">C2C</td><td>~98–150 ngày</td><td class="text-slate-500">&lt; 60</td><td><span class="dot bg-red-500"></span>Kém</td></tr>
+          <tr><td class="font-medium">Current Ratio</td><td>~1,5</td><td class="text-slate-500">1,5–2,5</td><td><span class="dot bg-yellow-400"></span>Trung bình</td></tr>
+          <tr><td class="font-medium">D/E</td><td>~1,79</td><td class="text-slate-500">&lt; 1,5</td><td><span class="dot bg-red-500"></span>Rủi ro</td></tr>
+          <tr><td class="font-medium">ROE</td><td>~9%</td><td class="text-slate-500">≥ 15%</td><td><span class="dot bg-red-500"></span>Kém</td></tr>
+          <tr><td class="font-medium">ROA</td><td>~4,7%</td><td class="text-slate-500">≥ 8%</td><td><span class="dot bg-red-500"></span>Kém</td></tr>
+        </tbody></table>
+      <p class="px-4 py-3 text-xs text-slate-500"><span class="dot bg-green-500"></span>Tốt · <span class="dot bg-yellow-400"></span>Trung bình · <span class="dot bg-red-500"></span>Kém/Rủi ro — Benchmark theo KPI Reference Library (Phụ lục B)</p>
+    </div>
+  </div>
+
+  <div class="mt-5 grid md:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-blue-700 uppercase">Quy mô</p><p class="text-sm mt-1 text-slate-700">DTT ~13.574 tỷ, TTS ~14.600 tỷ, 60+ đơn vị, ~7.000 lao động → <strong>Large Enterprise</strong></p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-blue-700 uppercase">Tăng trưởng</p><p class="text-sm mt-1 text-slate-700">Mục tiêu <strong>1 tỷ USD</strong> (~25–30 nghìn tỷ DT gồm nội bộ) trong 5 năm</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-amber-600 uppercase">Sức khỏe tài chính</p><p class="text-sm mt-1 text-slate-700"><strong>Trung bình–yếu</strong>: D/E ~1,79, biên mỏng & biến động, ROE ~9%, ROA ~4,7%</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-rose-600 uppercase">Rủi ro tiềm ẩn</p><p class="text-sm mt-1 text-slate-700">(1) HTK + tài sản sinh học ~5.700 tỷ, ~2 vòng/năm; (2) Nợ vay 4.200–5.867 tỷ; (3) ~50% DT là giao dịch nội bộ 3F</p></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="s2" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-blue-800 text-white flex items-center justify-center text-base">2</span> Bối cảnh & Động lực thay đổi</h2>
+  <div class="mt-6 grid lg:grid-cols-3 gap-5">
+    <div class="bg-rose-50 border-l-4 border-rose-500 rounded-2xl p-5">
+      <p class="font-bold text-rose-700">Tình hình hiện tại</p>
+      <p class="text-sm text-slate-700 mt-2 leading-relaxed">Kế toán tài chính chạy trên <strong>FoxPro</strong> (Visual FoxPro/dBase) — Microsoft <strong>EOL từ 2015</strong>, tuổi đời 30+ năm. Không có ERP tập trung; các đơn vị vận hành độc lập; hợp nhất & báo cáo thủ công qua Excel.</p>
+      <div class="mt-4 text-sm">
+        <p class="font-semibold text-slate-700">Mức độ khẩn cấp</p>
+        <div class="flex gap-2 mt-2">
+          <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-400 text-xs">Thấp</span>
+          <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-400 text-xs">Trung bình</span>
+          <span class="px-3 py-1 rounded-full bg-rose-600 text-white text-xs font-bold">☑ Cao</span>
+          <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-400 text-xs">Rất cao</span>
+        </div>
+        <p class="mt-3 text-slate-700">⏱ Ra quyết định: <strong>6–12 tháng</strong> (cần xác nhận) · Triển khai: <strong>18–24 tháng</strong></p>
+      </div>
+    </div>
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      <p class="font-bold text-slate-700">Compelling Events — động lực thay đổi NGAY BÂY GIỜ</p>
+      <div class="mt-3 grid sm:grid-cols-2 gap-3 text-sm">
+        <div class="flex gap-3 bg-slate-50 rounded-xl p-3"><span class="w-7 h-7 shrink-0 rounded-full bg-blue-800 text-white text-xs font-bold flex items-center justify-center">1</span><p><strong>FoxPro EOL</strong> — hệ thống "huyết mạch" hết vòng đời hỗ trợ, rủi ro vận hành & bảo mật.</p></div>
+        <div class="flex gap-3 bg-slate-50 rounded-xl p-3"><span class="w-7 h-7 shrink-0 rounded-full bg-blue-800 text-white text-xs font-bold flex items-center justify-center">2</span><p><strong>Tăng trưởng mạnh</strong> — mục tiêu >1 tỷ USD, mở rộng nhà máy Quảng Ninh, Thái Nguyên (3.000–5.000 nái/tổ hợp).</p></div>
+        <div class="flex gap-3 bg-slate-50 rounded-xl p-3"><span class="w-7 h-7 shrink-0 rounded-full bg-blue-800 text-white text-xs font-bold flex items-center justify-center">3</span><p><strong>Chuỗi 3F + 60+ đơn vị</strong> — hợp nhất tài chính, giao dịch liên công ty mà FoxPro không đáp ứng.</p></div>
+        <div class="flex gap-3 bg-slate-50 rounded-xl p-3"><span class="w-7 h-7 shrink-0 rounded-full bg-blue-800 text-white text-xs font-bold flex items-center justify-center">4</span><p><strong>Biến động giá heo & nguyên liệu TACN</strong> — cần dòng tiền, giá thành, tồn kho real-time.</p></div>
+        <div class="flex gap-3 bg-slate-50 rounded-xl p-3 sm:col-span-2"><span class="w-7 h-7 shrink-0 rounded-full bg-blue-800 text-white text-xs font-bold flex items-center justify-center">5</span><p><strong>Niêm yết HOSE</strong> — áp lực minh bạch BCTC, báo cáo đúng hạn, tuân thủ chuẩn mực kế toán/kiểm toán.</p></div>
+      </div>
+      <div class="mt-4 bg-blue-50 border-l-4 border-blue-600 rounded-xl p-4 text-sm text-slate-700">
+        💡 <strong>Mẹo từ dữ liệu tài chính:</strong> DSO rất tốt (~10–19 ngày) nhưng DIO rất cao (~143–185 ngày) → vốn lưu động "kẹt" ở tồn kho + tài sản sinh học, KHÔNG phải công nợ khách hàng. Luận điểm với CFO: <em>"Bài toán của DABACO không phải thu tiền chậm, mà là vốn chết trong tồn kho và chuỗi cung ứng."</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="s3" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-blue-800 text-white flex items-center justify-center text-base">3</span> Nỗi đau & Thách thức (Pain Points)</h2>
+  <p class="text-xs text-slate-500 italic mt-1">Đối chiếu theo Pain Point Knowledge Library — Phụ lục A</p>
+
+  <h3 class="mt-6 text-lg font-bold text-slate-700">3.1 Vận hành (Operational)</h3>
+  <div class="mt-3 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-x-auto">
+    <table class="w-full text-sm tbl min-w-[900px]">
+      <thead><tr><th>Nỗi đau</th><th>Tác động</th><th>Mức độ</th><th>Module SAP</th><th>Dẫn chứng</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td><strong>[MFG-01]</strong> 60+ đơn vị vận hành như "ốc đảo dữ liệu"</td><td>Không kiểm soát WIP, phế phẩm, OEE; chi phí SX không hạch toán đúng theo mắt xích</td><td><span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold">Nặng</span></td><td>Manufacturing, QM, PCo</td><td class="text-slate-600">5 nhà máy TACN + trang trại + CBTP phân tán</td></tr>
+        <tr><td><strong>[MFG-02]</strong> Lập kế hoạch SX TACN & chăn nuôi thủ công</td><td>Vừa thiếu vừa thừa; tồn kho TP cao; OT chạy gấp</td><td><span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold">Nặng</span></td><td>PP/DS, IBP</td><td class="text-slate-600">DIO ~143–185 ngày 🔴</td></tr>
+        <tr><td><strong>[PROC-01]</strong> Thu mua ngô, đậu tương, khô dầu thiếu kiểm soát</td><td>Biến động giá ngũ cốc ±20% ảnh hưởng trực tiếp biên gộp</td><td><span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold">Nặng</span></td><td>Procurement, Ariba</td><td class="text-slate-600">Biên gộp 10%→21,6%</td></tr>
+        <tr><td><strong>[SALES-02]</strong> 3.000+ đại lý, 63 tỉnh — đơn hàng, công nợ, chiết khấu phân tán</td><td>Pricing khó kiểm soát; thiếu real-time ATP; mất bán chéo</td><td><span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold">Nặng</span></td><td>Sales, EWM, TM</td><td class="text-slate-600">DSO tốt nhưng thủ công</td></tr>
+        <tr class="bg-rose-50/50"><td><strong>Giao dịch nội bộ chuỗi 3F khổng lồ</strong> — Feed→Farm→Food</td><td>Đối soát liên công ty thủ công, sai lệch, hợp nhất chậm</td><td><span class="bg-rose-600 text-white text-xs px-2 py-1 rounded-full font-semibold">Rất nặng</span></td><td>Inter-company, Group Reporting</td><td class="text-slate-600">~50% DT là nội bộ</td></tr>
+      </tbody></table>
+  </div>
+
+  <h3 class="mt-8 text-lg font-bold text-slate-700">3.2 Tài chính (Financial) — <span class="text-blue-700">Enhanced với dữ liệu thực tế</span></h3>
+  <div class="mt-3 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-x-auto">
+    <table class="w-full text-sm tbl min-w-[900px]">
+      <thead><tr><th>Nỗi đau</th><th>Tác động</th><th>Mức độ</th><th>Module SAP</th><th>Baseline BCTC</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td><strong>[FP-01]</strong> Cash Management — không có cash position real-time cho 60+ đơn vị, nhiều TK ngân hàng rời rạc</td><td>Vay không đúng thời điểm, lãi vay tăng; bỏ lỡ cơ hội đầu tư</td><td><span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold">Nặng</span></td><td>Cash Mgmt, Treasury, BCM</td><td class="text-slate-600">C2C ~98–150 ngày 🔴; nợ vay 4.200–5.867 tỷ</td></tr>
+        <tr class="bg-rose-50/50"><td><strong>[FP-02]</strong> Financial Closing — FoxPro không hợp nhất; bút toán điều chỉnh thủ công; IC reconciliation nhiều ngày</td><td>Chậm BCTC, rủi ro sai sót, OT cuối kỳ nặng</td><td><span class="bg-rose-600 text-white text-xs px-2 py-1 rounded-full font-semibold">Rất nặng</span></td><td>S/4 Finance, FCC, Group Reporting</td><td class="text-slate-600">60+ đơn vị hợp nhất thủ công</td></tr>
+        <tr><td><strong>[FP-03]</strong> Cash Application — đối soát công nợ 3.000 đại lý thủ công</td><td>AR mất nhiều thời gian matching</td><td><span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full font-semibold">Trung bình</span></td><td>AR, Cash App (AI)</td><td class="text-slate-600">DSO ~10–19 ngày 🟢 — giữ vững</td></tr>
+        <tr class="bg-rose-50/50"><td><strong>Vốn chết trong tồn kho & tài sản sinh học</strong> — HTK ~5.700 tỷ, ~2 vòng/năm</td><td>Hàng nghìn tỷ bị kẹt, lãi vay đè nặng</td><td><span class="bg-rose-600 text-white text-xs px-2 py-1 rounded-full font-semibold">Rất nặng</span></td><td>MM, PP, IBP, MRP</td><td class="text-slate-600">DIO ~143–185 ngày 🔴</td></tr>
+        <tr><td><strong>Đòn bẩy tài chính cao</strong> — D/E ~1,79</td><td>Lãi vay lớn, rủi ro thanh khoản khi giá heo giảm</td><td><span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold">Nặng</span></td><td>Treasury, Cash Mgmt</td><td class="text-slate-600">D/E 1,79 🔴 vs ngành 1,46</td></tr>
+        <tr><td><strong>Biên lợi nhuận mỏng & biến động</strong> — LNST 2023 chỉ 25 tỷ</td><td>Nhạy chu kỳ giá; thiếu costing theo mắt xích 3F</td><td><span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold">Nặng</span></td><td>CO-PA, Product Costing</td><td class="text-slate-600">Biên ròng 0,2% → 5,7%</td></tr>
+      </tbody></table>
+  </div>
+
+  <div class="mt-8 grid lg:grid-cols-2 gap-5">
+    <div>
+      <h3 class="text-lg font-bold text-slate-700">3.3 Công nghệ (Technology)</h3>
+      <div class="mt-3 space-y-2 text-sm">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-between gap-3"><div><p class="font-semibold">FoxPro đã EOL từ 2015</p><p class="text-slate-600 text-xs mt-1">Rủi ro vận hành & bảo mật hệ thống kế toán cốt lõi; không có bản vá</p></div><span class="shrink-0 bg-rose-600 text-white text-xs px-2 py-1 rounded-full font-semibold h-fit">Rất nặng</span></div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-between gap-3"><div><p class="font-semibold">Không ERP, không tích hợp, không real-time</p><p class="text-slate-600 text-xs mt-1">Không có single source of truth; báo cáo thủ công, chậm, dễ sai</p></div><span class="shrink-0 bg-rose-600 text-white text-xs px-2 py-1 rounded-full font-semibold h-fit">Rất nặng</span></div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-between gap-3"><div><p class="font-semibold">Không đáp ứng chuẩn kiểm toán/IFRS & hợp nhất</p><p class="text-slate-600 text-xs mt-1">Rủi ro tuân thủ với công ty niêm yết HOSE</p></div><span class="shrink-0 bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold h-fit">Nặng</span></div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-between gap-3"><div><p class="font-semibold">Khó tuyển nhân lực biết FoxPro</p><p class="text-slate-600 text-xs mt-1">Chi phí duy trì tăng, phụ thuộc người cũ</p></div><span class="shrink-0 bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold h-fit">Nặng</span></div>
+      </div>
+    </div>
+    <div>
+      <h3 class="text-lg font-bold text-slate-700">3.4 Nhân sự & Tổ chức</h3>
+      <div class="mt-3 space-y-2 text-sm">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-between gap-3"><div><p class="font-semibold">40% lao động phổ thông</p><p class="text-slate-600 text-xs mt-1">Cần UX đơn giản, đào tạo phù hợp</p></div><span class="shrink-0 bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold h-fit">Nặng</span></div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-between gap-3"><div><p class="font-semibold">Thiếu nhân sự kế toán/CNTT lành nghề</p><p class="text-slate-600 text-xs mt-1">Rủi ro triển khai & vận hành sau go-live</p></div><span class="shrink-0 bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold h-fit">Nặng</span></div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-between gap-3"><div><p class="font-semibold">Phụ thuộc "key person" nắm FoxPro</p><p class="text-slate-600 text-xs mt-1">Mất kiến thức khi nghỉ việc/nghỉ hưu</p></div><span class="shrink-0 bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-semibold h-fit">Nặng</span></div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-between gap-3"><div><p class="font-semibold">Văn hóa Excel lan tràn, ngại thay đổi</p><p class="text-slate-600 text-xs mt-1">Adoption thấp, khó chuẩn hóa quy trình</p></div><span class="shrink-0 bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full font-semibold h-fit">Trung bình</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="s4" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-blue-800 text-white flex items-center justify-center text-base">4</span> Kết quả kinh doanh kỳ vọng (Business Outcomes)</h2>
+  <div class="mt-6 grid lg:grid-cols-3 gap-5">
+    <div class="bg-white rounded-2xl shadow-sm border-t-4 border-sky-500 border border-slate-200 overflow-hidden">
+      <div class="px-4 py-3 font-bold text-sky-700">Ngắn hạn (0–6 tháng)</div>
+      <table class="w-full text-sm tbl"><thead><tr><th>KPI</th><th>Baseline</th><th>Target</th></tr></thead><tbody class="divide-y divide-slate-100">
+        <tr><td><strong>Financial Close Time</strong><br><span class="text-xs text-slate-400">KPI-13</span></td><td>~15+ ngày (cần xác nhận)</td><td class="text-green-700 font-semibold">≤ 7 ngày</td></tr>
+        <tr><td><strong>DSO</strong><br><span class="text-xs text-slate-400">KPI-01</span></td><td>~10–19 ngày 🟢</td><td class="text-green-700 font-semibold">Duy trì ≤ 15</td></tr>
+      </tbody></table>
+      <p class="px-4 py-3 text-xs text-slate-600">→ Quyết định nhanh hơn, giảm OT kế toán cuối kỳ 30–50%; giữ vững điểm mạnh dòng tiền.</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border-t-4 border-blue-600 border border-slate-200 overflow-hidden">
+      <div class="px-4 py-3 font-bold text-blue-700">Trung hạn (6–12 tháng)</div>
+      <table class="w-full text-sm tbl"><thead><tr><th>KPI</th><th>Baseline</th><th>Target</th></tr></thead><tbody class="divide-y divide-slate-100">
+        <tr><td><strong>ITO / DIO</strong><br><span class="text-xs text-slate-400">KPI-02</span></td><td>~2 vòng / 143–185 ngày 🔴</td><td class="text-green-700 font-semibold">≥ 3 vòng / ≤ 100 ngày</td></tr>
+        <tr><td><strong>C2C</strong><br><span class="text-xs text-slate-400">KPI-03</span></td><td>~98–150 ngày 🔴</td><td class="text-green-700 font-semibold">&lt; 90 ngày</td></tr>
+        <tr><td><strong>D/E</strong><br><span class="text-xs text-slate-400">KPI-12</span></td><td>~1,79 🔴</td><td class="text-green-700 font-semibold">≤ 1,5</td></tr>
+        <tr><td><strong>WC/Revenue</strong><br><span class="text-xs text-slate-400">KPI-07</span></td><td>&gt; 25%</td><td class="text-green-700 font-semibold">15–25%</td></tr>
+      </tbody></table>
+      <p class="px-4 py-3 text-xs text-slate-600">→ Giảm 30% tồn kho nguyên liệu TACN (~1.700 tỷ) → giải phóng ~300–500 tỷ; tiết kiệm lãi vay ~30–50 tỷ/năm; giảm nợ 4.200 tỷ × 0,5% ≈ ~21 tỷ/năm.</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border-t-4 border-indigo-600 border border-slate-200 overflow-hidden">
+      <div class="px-4 py-3 font-bold text-indigo-700">Dài hạn (12+ tháng)</div>
+      <table class="w-full text-sm tbl"><thead><tr><th>KPI</th><th>Baseline</th><th>Target</th></tr></thead><tbody class="divide-y divide-slate-100">
+        <tr><td><strong>Biên LN ròng</strong><br><span class="text-xs text-slate-400">KPI-06</span></td><td>~5,7% (2024)</td><td class="text-green-700 font-semibold">~8%</td></tr>
+        <tr><td><strong>ROE</strong><br><span class="text-xs text-slate-400">KPI-10</span></td><td>~9% 🔴</td><td class="text-green-700 font-semibold">≥ 15%</td></tr>
+        <tr><td><strong>ROA</strong><br><span class="text-xs text-slate-400">KPI-11</span></td><td>~4,7% 🔴</td><td class="text-green-700 font-semibold">≥ 8%</td></tr>
+        <tr><td><strong>IC reconciliation</strong></td><td>Nhiều ngày thủ công</td><td class="text-green-700 font-semibold">Vài giờ (tự động)</td></tr>
+      </tbody></table>
+      <p class="px-4 py-3 text-xs text-slate-600">→ +2,3% × 13.574 tỷ ≈ <strong>+312 tỷ LNST</strong>; giảm hàng trăm giờ công/tháng cho 60+ đơn vị.</p>
+    </div>
+  </div>
+
+  <div class="mt-5 grid lg:grid-cols-5 gap-5">
+    <div class="lg:col-span-3 bg-gradient-to-r from-blue-800 to-indigo-700 text-white rounded-2xl p-6">
+      <p class="text-xs uppercase tracking-widest text-blue-200 font-semibold">Ước tính tác động tài chính tổng hợp (nếu đạt target)</p>
+      <div class="mt-4 grid sm:grid-cols-3 gap-4">
+        <div><p class="text-2xl font-extrabold">300–500 tỷ</p><p class="text-xs text-blue-100 mt-1">Giải phóng vốn lưu động (tồn kho nguyên liệu + giảm đòn bẩy)</p></div>
+        <div><p class="text-2xl font-extrabold">30–70 tỷ/năm</p><p class="text-xs text-blue-100 mt-1">Tiết kiệm chi phí lãi vay</p></div>
+        <div><p class="text-2xl font-extrabold">~300 tỷ/năm</p><p class="text-xs text-blue-100 mt-1">Cải thiện biên ròng +2,3% (costing + COGS)</p></div>
+      </div>
+      <div class="mt-5 pt-4 border-t border-white/20 flex items-end justify-between"><p class="text-sm text-blue-100">Tổng giá trị định lượng</p><p class="text-3xl font-extrabold">~400–900 tỷ/năm</p></div>
+      <div class="mt-3 h-40"><canvas id="chartImpact"></canvas></div>
+    </div>
+    <div class="lg:col-span-2 bg-amber-50 border-l-4 border-amber-500 rounded-2xl p-5 text-sm">
+      <p class="font-bold text-amber-800">⚠️ Lưu ý quan trọng về tồn kho DABACO</p>
+      <p class="mt-2 text-slate-700 leading-relaxed">Phần lớn HTK ~5.700 tỷ là <strong>tài sản sinh học</strong> (heo nái, heo thịt, gà giống, gà đẻ) — vòng quay dài là bản chất ngành chăn nuôi, KHÔNG thể giảm nhanh.</p>
+      <p class="mt-2
