@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DABACO — Đánh giá Quy mô & Cách tiếp cận SAP</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  html { scroll-behavior: smooth; }
+  .card { @apply bg-white rounded-2xl shadow-sm border border-slate-200; }
+  .fade-in { animation: fadeIn .6s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px);} to { opacity: 1; transform: none;} }
+  .timeline-dot::before { content:''; position:absolute; left:-1.55rem; top:.35rem; width:.9rem; height:.9rem; border-radius:9999px; background:#16a34a; border:3px solid #fff; box-shadow:0 0 0 2px #16a34a; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-green-700 text-white font-extrabold flex items-center justify-center">D</div>
+      <div>
+        <p class="font-bold leading-tight">DABACO GROUP <span class="text-green-700">(DBC)</span></p>
+        <p class="text-xs text-slate-500">Đánh giá quy mô → Định hướng SAP S/4HANA</p>
+      </div>
+    </div>
+    <div class="hidden md:flex gap-5 text-sm font-medium text-slate-600">
+      <a href="#tongquan" class="hover:text-green-700">Tổng quan</a>
+      <a href="#3f" class="hover:text-green-700">Mô hình 3F</a>
+      <a href="#taichinh" class="hover:text-green-700">Tài chính</a>
+      <a href="#quymo" class="hover:text-green-700">Quy mô</a>
+      <a href="#tiepcan" class="hover:text-green-700">Cách tiếp cận</a>
+      <a href="#roadmap" class="hover:text-green-700">Roadmap</a>
+      <a href="#nextsteps" class="hover:text-green-700">Next Steps</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="bg-gradient-to-br from-green-800 via-green-700 to-emerald-600 text-white">
+  <div class="max-w-7xl mx-auto px-4 py-14 fade-in">
+    <p class="uppercase tracking-widest text-xs font-semibold text-green-200 mb-3">Tổng hợp thông tin & Đánh giá quy mô</p>
+    <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">Tập đoàn DABACO Việt Nam <span class="text-green-200">(DBC)</span></h1>
+    <p class="mt-4 text-lg text-green-50 max-w-3xl">Đánh giá nhu cầu thay thế hệ thống kế toán tài chính từ <strong>FoxPro</strong> → định hướng giải pháp <strong>SAP S/4HANA</strong> cho chuỗi giá trị khép kín 3F.</p>
+    <div class="mt-6 flex flex-wrap gap-3 text-sm">
+      <span class="bg-white/15 px-3 py-1.5 rounded-full">👤 Người thực hiện: Richard Vu (BCIS – FPT IS)</span>
+      <span class="bg-white/15 px-3 py-1.5 rounded-full">📅 Ngày: 14/09/2026</span>
+      <span class="bg-white/15 px-3 py-1.5 rounded-full">📈 HOSE: DBC</span>
+    </div>
+
+    <!-- KPI -->
+    <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/20">
+        <p class="text-3xl font-extrabold">~28.759</p>
+        <p class="text-sm text-green-100 mt-1">tỷ đồng doanh thu KH 2025 (gồm nội bộ)</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/20">
+        <p class="text-3xl font-extrabold">60+</p>
+        <p class="text-sm text-green-100 mt-1">đơn vị thành viên</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/20">
+        <p class="text-3xl font-extrabold">~7.000</p>
+        <p class="text-sm text-green-100 mt-1">lao động</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/20">
+        <p class="text-3xl font-extrabold">&gt; 3.800</p>
+        <p class="text-sm text-green-100 mt-1">tỷ đồng vốn điều lệ</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-12 space-y-16">
+
+<!-- 1. TỔNG QUAN -->
+<section id="tongquan" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-green-700 text-white flex items-center justify-center text-base">1</span> Tổng quan Tập đoàn</h2>
+  <div class="mt-6 grid lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <table class="w-full text-sm">
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="px-5 py-3 font-semibold text-slate-500 w-44">Tên đầy đủ</td><td class="px-5 py-3">CÔNG TY CỔ PHẦN TẬP ĐOÀN DABACO VIỆT NAM (DABACO GROUP)</td></tr>
+          <tr><td class="px-5 py-3 font-semibold text-slate-500">Mã cổ phiếu</td><td class="px-5 py-3"><strong>DBC — niêm yết HOSE</strong> (chuyển từ HNX năm 2019)</td></tr>
+          <tr><td class="px-5 py-3 font-semibold text-slate-500">Mã số DN</td><td class="px-5 py-3">2300105790</td></tr>
+          <tr><td class="px-5 py-3 font-semibold text-slate-500">Trụ sở</td><td class="px-5 py-3">Số 35 Lý Thái Tổ, P. Võ Cường, TP. Bắc Ninh</td></tr>
+          <tr><td class="px-5 py-3 font-semibold text-slate-500">Chủ tịch HĐQT</td><td class="px-5 py-3">Nguyễn Như So (cổ đông lớn nhất, ~78 triệu cổ phiếu)</td></tr>
+          <tr><td class="px-5 py-3 font-semibold text-slate-500">Ngành</td><td class="px-5 py-3">Nông nghiệp – Thực phẩm, chuỗi giá trị khép kín <strong>3F: Feed – Farm – Food</strong></td></tr>
+          <tr><td class="px-5 py-3 font-semibold text-slate-500">Vốn điều lệ</td><td class="px-5 py-3">&gt; 3.800 tỷ đồng (sau tăng vốn 2025)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      <h3 class="font-bold text-slate-700 mb-4">Lịch sử tóm tắt</h3>
+      <ol class="relative border-l-2 border-green-200 ml-3 space-y-4 text-sm">
+        <li class="pl-5 relative timeline-dot"><p class="font-semibold">1996</p><p class="text-slate-600">Thành lập — doanh nghiệp nhà nước</p></li>
+        <li class="pl-5 relative timeline-dot"><p class="font-semibold">1999</p><p class="text-slate-600">Nhà máy TACN Đại Bái (5 tấn/giờ)</p></li>
+        <li class="pl-5 relative timeline-dot"><p class="font-semibold">01/01/2005</p><p class="text-slate-600">Cổ phần hóa</p></li>
+        <li class="pl-5 relative timeline-dot"><p class="font-semibold">18/03/2008</p><p class="text-slate-600">Niêm yết HNX</p></li>
+        <li class="pl-5 relative timeline-dot"><p class="font-semibold">2011</p><p class="text-slate-600">Đổi tên DABACO Việt Nam</p></li>
+        <li class="pl-5 relative timeline-dot"><p class="font-semibold">26/07/2019</p><p class="text-slate-600">Chuyển sang HOSE</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- MÔ HÌNH 3F -->
+<section id="3f" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold">Mô hình kinh doanh 3F <span class="text-green-700">Feed – Farm – Food</span></h2>
+  <p class="text-slate-600 mt-2">DABACO kiểm soát toàn bộ chuỗi giá trị khép kín, từ nguyên liệu đầu vào đến thành phẩm ra thị trường.</p>
+
+  <div class="mt-6 grid md:grid-cols-3 gap-5">
+    <div class="bg-white rounded-2xl shadow-sm border-t-4 border-amber-500 border border-slate-200 p-6">
+      <div class="text-4xl">🌾</div>
+      <h3 class="mt-3 text-xl font-bold text-amber-600">FEED — Thức ăn chăn nuôi</h3>
+      <p class="text-sm text-slate-600 mt-2">Hệ thống nhà máy tại Bắc Ninh, Hà Nam, Hà Tĩnh, Bình Phước, Phú Thọ.</p>
+      <p class="mt-3 text-2xl font-extrabold">1,5 triệu tấn/năm</p>
+      <p class="text-xs text-slate-500">Tổng công suất</p>
+      <div class="mt-3 flex flex-wrap gap-1.5">
+        <span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">DABACO</span><span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">Topfeeds</span><span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">Nutreco</span><span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">Nasaco</span><span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">Kinh Bắc</span><span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">Khangti Vina</span><span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">Growfeed</span><span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">Sunshine</span><span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded">S-Star</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border-t-4 border-green-600 border border-slate-200 p-6">
+      <div class="text-4xl">🐔</div>
+      <h3 class="mt-3 text-xl font-bold text-green-700">FARM — Con giống & chăn nuôi</h3>
+      <ul class="text-sm text-slate-600 mt-2 space-y-1.5 list-disc pl-4">
+        <li><strong>Gà màu số 1 cả nước</strong>: đàn giống &gt;700.000 con, 55–60 triệu con giống/năm</li>
+        <li>Mục tiêu 60.000 nái, &gt;1,5 triệu lợn giống/năm</li>
+        <li>Trại gà đẻ lớn nhất nước: ~1 triệu trứng/ngày</li>
+        <li>Đàn lợn thịt thường xuyên 250.000 con (60.000 tấn/năm)</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border-t-4 border-rose-500 border border-slate-200 p-6">
+      <div class="text-4xl">🥫</div>
+      <h3 class="mt-3 text-xl font-bold text-rose-600">FOOD — Giết mổ & chế biến</h3>
+      <ul class="text-sm text-slate-600 mt-2 space-y-1.5 list-disc pl-4">
+        <li>Xúc xích, dăm bông, giò chả, đồ hộp, trứng gà ăn liền Devi</li>
+        <li>Chứng nhận GMP, HACCP, ISO 22000</li>
+        <li>Dầu thực vật DABACO — nhà máy đầu tiên tại VN khép kín từ hạt đến đóng chai</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+    <h3 class="font-bold text-slate-700">Lĩnh vực phụ trợ</h3>
+    <div class="mt-3 grid sm:grid-cols-2 lg:grid-cols-5 gap-3 text-sm">
+      <div class="bg-slate-50 rounded-xl p-3">🧪 <strong>Phân bón vi sinh</strong> (VIJACO)</div>
+      <div class="bg-slate-50 rounded-xl p-3">📦 <strong>Bao bì/bạt nhựa</strong> — 60 triệu SP/năm, XK Mỹ/Nga/Tây Ban Nha/Hàn Quốc</div>
+      <div class="bg-slate-50 rounded-xl p-3">🥬 <strong>Rau an toàn</strong> công nghệ cao</div>
+      <div class="bg-slate-50 rounded-xl p-3">🏨 <strong>Thương mại dịch vụ</strong> — TTTM, siêu thị, khách sạn Le Indochina 5★, logistics cảng sông</div>
+      <div class="bg-slate-50 rounded-xl p-3">🏗️ <strong>Bất động sản</strong> & hạ tầng</div>
+    </div>
+  </div>
+
+  <!-- Cơ cấu tổ chức -->
+  <div class="mt-5 grid lg:grid-cols-2 gap-5">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h3 class="font-bold text-slate-700">Cơ cấu tổ chức & mạng lưới</h3>
+      <ul class="mt-3 text-sm space-y-2 text-slate-600">
+        <li>🏢 <strong>60+ đơn vị thành viên</strong>: công ty con, công ty liên kết, chi nhánh (2019)</li>
+        <li>👥 <strong>~7.000 lao động</strong>: 25,5% đại học/trên ĐH · 34,5% cao đẳng/trung cấp · 40% phổ thông</li>
+        <li>🗺️ Phủ <strong>63 tỉnh thành</strong>, <strong>&gt;3.000 đại lý/nhà phân phối</strong></li>
+      </ul>
+      <div class="mt-4">
+        <p class="text-xs font-semibold text-slate-500 mb-2">Trình độ lao động</p>
+        <div class="flex h-4 rounded-full overflow-hidden text-[10px] text-white font-semibold">
+          <div class="bg-green-700 flex items-center justify-center" style="width:25.5%">25,5%</div>
+          <div class="bg-emerald-500 flex items-center justify-center" style="width:34.5%">34,5%</div>
+          <div class="bg-slate-400 flex items-center justify-center" style="width:40%">40%</div>
+        </div>
+        <div class="flex justify-between text-[11px] text-slate-500 mt-1"><span>ĐH/trên ĐH</span><span>CĐ/Trung cấp</span><span>Phổ thông</span></div>
+      </div>
+      <div class="mt-4 text-xs text-slate-600 bg-slate-50 rounded-xl p-3 leading-relaxed">
+        <strong>Mô hình:</strong> ĐHĐCĐ → HĐQT / Ban Kiểm soát / Ban TGĐ → Ban chức năng (Nhân sự, <strong class="text-green-700">Tài chính Kế toán</strong>, Kỹ thuật Chất lượng, Công nghệ, QLDA, Vật tư–XNK, NC&PT Thị trường) → chi nhánh / công ty con / liên kết
+      </div>
+    </div>
+    <div class="bg-green-50 border-l-4 border-green-700 rounded-2xl p-6">
+      <p class="font-bold text-green-800">🔑 Điểm mấu chốt cho nhu cầu ERP</p>
+      <p class="mt-2 text-sm text-slate-700 leading-relaxed">Chuỗi 3F khép kín tạo ra khối lượng giao dịch <strong>nội bộ khổng lồ</strong> (thức ăn → trang trại → giết mổ → phân phối). Chênh lệch giữa doanh thu "bao gồm nội bộ" (~25–28 nghìn tỷ) và doanh thu thuần "loại trừ nội bộ" (~13–16 nghìn tỷ) cho thấy <strong>gần một nửa doanh thu là giao dịch liên đơn vị</strong>.</p>
+      <p class="mt-2 text-sm text-slate-700">Đây là lý do FoxPro đơn lẻ không thể đáp ứng, và là "điểm đau" lớn nhất mà SAP có thể giải quyết.</p>
+      <div class="mt-4 h-48"><canvas id="chartIntercompany"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. TÀI CHÍNH -->
+<section id="taichinh" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-green-700 text-white flex items-center justify-center text-base">2</span> Dữ liệu tài chính <span class="text-base font-medium text-slate-500">(baseline từ BCTC công khai)</span></h2>
+
+  <div class="mt-6 grid lg:grid-cols-5 gap-5">
+    <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-5 py-3 border-b border-slate-100 font-bold text-slate-700">Kết quả kinh doanh (P&L) — tỷ đồng</div>
+      <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-500 text-xs uppercase"><tr><th class="px-4 py-2 text-left">Chỉ tiêu</th><th class="px-4 py-2 text-right">2023</th><th class="px-4 py-2 text-right">2024</th><th class="px-4 py-2 text-right">2025</th><th class="px-4 py-2 text-right">6T/2026</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="px-4 py-3 font-medium">Doanh thu (gồm nội bộ)</td><td class="px-4 py-3 text-right">~24.562</td><td class="px-4 py-3 text-right">~25.380 (KH)</td><td class="px-4 py-3 text-right">~28.759 (KH)</td><td class="px-4 py-3 text-right text-slate-400">—</td></tr>
+          <tr><td class="px-4 py-3 font-medium">Doanh thu thuần (loại nội bộ)</td><td class="px-4 py-3 text-right text-slate-400">—</td><td class="px-4 py-3 text-right">~13.501</td><td class="px-4 py-3 text-right">~7.400 (6T)</td><td class="px-4 py-3 text-right">8.377 (6T)</td></tr>
+          <tr><td class="px-4 py-3 font-medium">Lợi nhuận sau thuế</td><td class="px-4 py-3 text-right text-rose-600">~25</td><td class="px-4 py-3 text-right text-green-700">~730</td><td class="px-4 py-3 text-right text-green-700">&gt;1.000 (H1: 1.015)</td><td class="px-4 py-3 text-right text-amber-600">663 (-35% YoY)</td></tr>
+          <tr><td class="px-4 py-3 font-medium">Biên LN gộp</td><td class="px-4 py-3 text-right">thấp</td><td class="px-4 py-3 text-right">~18%</td><td class="px-4 py-3 text-right">~21,6% (Q2)</td><td class="px-4 py-3 text-right">~15,4% (Q2, thu hẹp)</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="p-5 grid md:grid-cols-2 gap-4">
+        <div class="h-56"><canvas id="chartRevenue"></canvas></div>
+        <div class="h-56"><canvas id="chartProfit"></canvas></div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2 space-y-5">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 font-bold text-slate-700">Cân đối kế toán — tỷ đồng</div>
+        <table class="w-full text-sm">
+          <tbody class="divide-y divide-slate-100">
+            <tr><td class="px-4 py-3 text-slate-500">Vốn chủ sở hữu</td><td class="px-4 py-3 text-right font-semibold">~8.521 <span class="block text-xs text-slate-400 font-normal">8.069 → 8.443 → 8.521</span></td></tr>
+            <tr><td class="px-4 py-3 text-slate-500">Tài sản ngắn hạn</td><td class="px-4 py-3 text-right font-semibold">~10.047</td></tr>
+            <tr><td class="px-4 py-3 text-slate-500">Hệ số Nợ/VCSH (D/E)</td><td class="px-4 py-3 text-right font-semibold text-amber-600">~178,85% <span class="block text-xs text-slate-400 font-normal">(2023) · TB ngành ~146%</span></td></tr>
+            <tr><td class="px-4 py-3 text-slate-500">Vốn hóa thị trường</td><td class="px-4 py-3 text-right font-semibold">~9.220 <span class="block text-xs text-slate-400 font-normal">(6/2024) · giá 16.050đ (14/09/2026)</span></td></tr>
+          </tbody>
+        </table>
+        <p class="px-4 pb-3 text-xs text-slate-400 italic">Nguồn: CafeF, VietstockFinance, BCTC hợp nhất.</p>
+      </div>
+      <div class="bg-amber-50 border-l-4 border-amber-500 rounded-2xl p-5 text-sm">
+        <p class="font-bold text-amber-800">⚡ Đặc điểm biến động cao</p>
+        <p class="mt-2 text-slate-700 leading-relaxed">LNST 2023 chỉ ~25 tỷ (giá lợn chạm đáy + dịch tả lợn châu Phi), bật mạnh 2024–2025 (giá heo hơi cao + nguyên liệu hạ nhiệt), rồi hụt ~43% trong Q2/2026 do giá vốn tăng 20%.</p>
+        <p class="mt-2 text-slate-700">→ Cần <strong>kiểm soát chi phí/giá thành theo thời gian thực</strong> — bài toán FoxPro không thể xử lý.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. QUY MÔ -->
+<section id="quymo" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-green-700 text-white flex items-center justify-center text-base">3</span> Đánh giá mức độ quy mô</h2>
+  <div class="mt-6 bg-gradient-to-r from-green-700 to-emerald-600 text-white rounded-2xl p-6 flex flex-col md:flex-row md:items-center gap-4">
+    <div class="text-5xl">🏆</div>
+    <div>
+      <p class="text-xs uppercase tracking-widest text-green-200">Kết luận</p>
+      <p class="text-2xl font-extrabold">Tập đoàn lớn (Large Enterprise)</p>
+      <p class="text-green-50">Mức cao nhất của phân khúc doanh nghiệp Việt Nam</p>
+    </div>
+  </div>
+
+  <div class="mt-5 grid lg:grid-cols-2 gap-5">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-500 text-xs uppercase"><tr><th class="px-4 py-2 text-left">Tiêu chí</th><th class="px-4 py-2 text-left">Giá trị</th><th class="px-4 py-2 text-left">Xếp loại</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="px-4 py-3 font-medium">Doanh thu</td><td class="px-4 py-3">~25–28 nghìn tỷ (gồm nội bộ) / ~13–16 nghìn tỷ (thuần)</td><td class="px-4 py-3"><span class="bg-green-700 text-white text-xs px-2 py-1 rounded-full font-semibold">Rất lớn</span></td></tr>
+          <tr><td class="px-4 py-3 font-medium">Tổng tài sản</td><td class="px-4 py-3">~23–24 nghìn tỷ (ước từ D/E và VCSH)</td><td class="px-4 py-3"><span class="bg-green-700 text-white text-xs px-2 py-1 rounded-full font-semibold">Rất lớn</span></td></tr>
+          <tr><td class="px-4 py-3 font-medium">Vốn điều lệ</td><td class="px-4 py-3">&gt; 3.800 tỷ</td><td class="px-4 py-3"><span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-semibold">Lớn</span></td></tr>
+          <tr><td class="px-4 py-3 font-medium">Số đơn vị</td><td class="px-4 py-3">60+ (đa công ty, đa nhà máy, đa trang trại)</td><td class="px-4 py-3"><span class="bg-rose-600 text-white text-xs px-2 py-1 rounded-full font-semibold">Độ phức tạp cực cao</span></td></tr>
+          <tr><td class="px-4 py-3 font-medium">Lao động</td><td class="px-4 py-3">~7.000+</td><td class="px-4 py-3"><span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-semibold">Lớn</span></td></tr>
+          <tr><td class="px-4 py-3 font-medium">Phạm vi</td><td class="px-4 py-3">63 tỉnh thành, 3.000+ đại lý</td><td class="px-4 py-3"><span class="bg-sky-100 text-sky-800 text-xs px-2 py-1 rounded-full font-semibold">Toàn quốc</span></td></tr>
+          <tr><td class="px-4 py-3 font-medium">Niêm yết</td><td class="px-4 py-3">HOSE, báo cáo hợp nhất, kiểm toán độc lập</td><td class="px-4 py-3"><span class="bg-sky-100 text-sky-800 text-xs px-2 py-1 rounded-full font-semibold">Chuẩn đại chúng</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="space-y-4">
+      <h3 class="font-bold text-slate-700">Hàm ý về lựa chọn giải pháp</h3>
+      <div class="bg-white rounded-2xl shadow-sm border border-rose-200 p-5">
+        <p class="font-bold text-rose-600">❌ KHÔNG phù hợp</p>
+        <p class="text-sm text-slate-600 mt-1">Phần mềm kế toán phổ thông (MISA, Fast, Bravo…) hay <strong>SAP Business One</strong> — không xử lý được hợp nhất 60+ đơn vị, giao dịch liên công ty, giá thành đa nhà máy.</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-green-300 p-5">
+        <p class="font-bold text-green-700">✅ Phù hợp với SAP S/4HANA (tier Enterprise)</p>
+        <p class="text-sm text-slate-600 mt-1">Phân khúc mà S/4HANA (Finance + Logistics + Manufacturing) là lựa chọn chuẩn.</p>
+        <div class="mt-3 bg-slate-50 rounded-xl p-3 text-sm">
+          <p class="text-xs font-semibold text-slate-500 mb-2">Tham chiếu so sánh doanh thu</p>
+          <div class="space-y-2">
+            <div><div class="flex justify-between text-xs"><span>HABECO (đã dùng SAP, đang mở rộng)</span><span>~7.000 tỷ</span></div><div class="h-2.5 bg-slate-200 rounded-full mt-1"><div class="h-2.5 bg-slate-400 rounded-full" style="width:24%"></div></div></div>
+            <div><div class="flex justify-between text-xs font-semibold"><span>DABACO (gồm nội bộ)</span><span>~28.759 tỷ</span></div><div class="h-2.5 bg-slate-200 rounded-full mt-1"><div class="h-2.5 bg-green-600 rounded-full" style="width:100%"></div></div></div>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">DABACO lớn hơn về doanh thu và phức tạp hơn về chuỗi 3F.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. CÁCH TIẾP CẬN -->
+<section id="tiepcan" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-green-700 text-white flex items-center justify-center text-base">4</span> Cách tiếp cận phù hợp</h2>
+
+  <div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+    <h3 class="text-xl font-bold">4.1 Điểm vào (Entry Point): Trục Tài chính – Kế toán <span class="text-slate-400 font-medium">(thay thế FoxPro)</span></h3>
+    <div class="mt-4 grid md:grid-cols-2 gap-4 items-center">
+      <div class="bg-rose-50 rounded-xl p-4 text-sm"><p class="text-xs font-bold text-rose-600 uppercase">Không phải</p><p class="mt-1 text-slate-700">"Thay FoxPro bằng một phần mềm kế toán mới"</p></div>
+      <div class="bg-green-50 rounded-xl p-4 text-sm"><p class="text-xs font-bold text-green-700 uppercase">Mà là</p><p class="mt-1 text-slate-700"><strong>Xây nền tảng Tài chính Tập đoàn (Group Finance Backbone)</strong> cho chuỗi 3F, đặt nền móng mở rộng toàn diện</p></div>
+    </div>
+    <p class="mt-5 font-semibold text-slate-700">Lý do (gắn với đặc thù DABACO):</p>
+    <div class="mt-3 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="border border-slate-200 rounded-xl p-4"><p class="text-2xl font-extrabold text-green-700">01</p><p class="font-semibold mt-1 text-sm">Giao dịch liên đơn vị khổng lồ</p><p class="text-xs text-slate-600 mt-1">Gần 50% doanh thu nội bộ → inter-company tự động, bỏ đối chiếu Excel thủ công.</p></div>
+      <div class="border border-slate-200 rounded-xl p-4"><p class="text-2xl font-extrabold text-green-700">02</p><p class="font-semibold mt-1 text-sm">Hợp nhất 60+ đơn vị</p><p class="text-xs text-slate-600 mt-1">Group Reporting/Consolidation thời gian thực, báo cáo theo chuỗi 3F thay vì chỉ theo pháp nhân.</p></div>
+      <div class="border border-slate-200 rounded-xl p-4"><p class="text-2xl font-extrabold text-green-700">03</p><p class="font-semibold mt-1 text-sm">FoxPro đã EOL (2015)</p><p class="text-xs text-slate-600 mt-1">Microsoft ngừng hỗ trợ → rủi ro vận hành, điểm lỗi duy nhất, dữ liệu phân mảnh.</p></div>
+      <div class="border border-slate-200 rounded-xl p-4"><p class="text-2xl font-extrabold text-green-700">04</p><p class="font-semibold mt-1 text-sm">Biến động giá/chi phí mạnh</p><p class="text-xs text-slate-600 mt-1">Giá heo, nguyên liệu → giá thành & kiểm soát chi phí thời gian thực (CO–PC).</p></div>
+    </div>
+  </div>
+
+  <div class="mt-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+    <h3 class="text-xl font-bold">4.2 Kiến trúc đề xuất: <span class="text-green-700">1 ERP Core cho toàn Tập đoàn</span></h3>
+    <div class="mt-4 grid md:grid-cols-3 gap-4">
+      <div class="rounded-xl border-2 border-green-600 bg-green-50 p-5 relative">
+        <span class="absolute -top-3 left-4 bg-green-700 text-white text-xs font-bold px-3 py-1 rounded-full">✅ KHUYẾN NGHỊ CHÍNH</span>
+        <p class="font-bold mt-2">SAP S/4HANA Private Cloud (RISE)</p>
+        <p class="text-sm text-slate-700 mt-2">1 core duy nhất cho Group + 60+ đơn vị, phù hợp đa pháp nhân + hợp nhất, chi phí vận hành dễ dự báo, hạ tầng do đối tác quản lý.</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-5">
+        <span class="text-xs font-bold text-slate-500">PHƯƠNG ÁN THAY THẾ</span>
+        <p class="font-bold mt-2">S/4HANA On-premise</p>
+        <p class="text-sm text-slate-600 mt-2">Nếu DABACO ưu tiên quản trị hạ tầng tại chỗ; CAPEX lớn, cần đội ngũ IT mạnh.</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-5 opacity-70">
+        <span class="text-xs font-bold text-rose-500">KHÔNG PHÙ HỢP GIAI ĐOẠN ĐẦU</span>
+        <p class="font-bold mt-2">Public Cloud (SaaS)</p>
+        <p class="text-sm text-slate-600 mt-2">Do độ phức tạp hợp nhất đa pháp nhân và tích hợp sản xuất.</p>
+      </div>
+    </div>
+    <div class="mt-4 bg-sky-50 border-l-4 border-sky-500 rounded-xl p-4 text-sm text-slate-700">💡 <strong>Gợi ý bổ sung:</strong> cân nhắc <strong>SAP Central Finance</strong> trong giai đoạn chuyển đổi để nạp dữ liệu từ các đơn vị chưa lên S/4, giúp hợp nhất sớm trước khi roll-out toàn bộ.</div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" class="fade-in">
+  <h3 class="text-xl md:text-2xl font-extrabold">4.3 Phân kỳ triển khai <span class="text-slate-400 font-medium">(Phased Roadmap)</span></h3>
+  <div class="mt-6 grid md:grid-cols-3 gap-5 relative">
+    <div class="hidden md:block absolute top-8 left-[16%] right-[16%] h-1 bg-gradient-to-r from-green-700 via-emerald-500 to-teal-400 -z-0"></div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative z-10">
+      <div class="w-16 h-16 rounded-full bg-green-700 text-white font-extrabold text-xl flex items-center justify-center mx-auto">GĐ1</div>
+      <p class="text-center font-bold mt-3">Nền tảng Tài chính</p>
+      <div class="flex flex-wrap justify-center gap-1.5 mt-2">
+        <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded font-semibold">FI</span><span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded font-semibold">CO</span><span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded font-semibold">Group Reporting</span><span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded font-semibold">Inter-company</span><span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded font-semibold">Master Data</span>
+      </div>
+      <ul class="text-sm text-slate-600 mt-4 space-y-1.5 list-disc pl-4">
+        <li>Thay FoxPro: Sổ cái, Công nợ (AP/AR), TSCĐ, Ngân hàng</li>
+        <li>Giá thành / chi phí</li>
+        <li>Hợp nhất báo cáo</li>
+        <li>Tích hợp hóa đơn điện tử & kê khai thuế</li>
+        <li>Chuẩn hóa danh mục: hệ thống tài khoản, trung tâm chi phí/lợi nhuận theo 3F</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative z-10">
+      <div class="w-16 h-16 rounded-full bg-emerald-500 text-white font-extrabold text-xl flex items-center justify-center mx-auto">GĐ2</div>
+      <p class="text-center font-bold mt-3">Chuỗi cung ứng & Bán hàng</p>
+      <div class="flex flex-wrap justify-center gap-1.5 mt-2">
+        <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">MM</span><span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">SD</span><span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">Tồn kho</span>
+      </div>
+      <ul class="text-sm text-slate-600 mt-4 space-y-1.5 list-disc pl-4">
+        <li>Thu mua nông sản / nguyên liệu TACN</li>
+        <li>Quản lý 3.000 đại lý, đơn hàng & công nợ bán</li>
+        <li>Tồn kho đa nhà máy</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative z-10">
+      <div class="w-16 h-16 rounded-full bg-teal-400 text-white font-extrabold text-xl flex items-center justify-center mx-auto">GĐ3</div>
+      <p class="text-center font-bold mt-3">Sản xuất & Chất lượng</p>
+      <div class="flex flex-wrap justify-center gap-1.5 mt-2">
+        <span class="text-xs bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-semibold">PP</span><span class="text-xs bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-semibold">QM</span>
+      </div>
+      <ul class="text-sm text-slate-600 mt-4 space-y-1.5 list-disc pl-4">
+        <li>Kế hoạch & điều độ sản xuất nhà máy TACN</li>
+        <li>Truy xuất nguồn gốc (GMP/HACCP/ISO 22000)</li>
+        <li>Tích hợp quản lý trang trại (Farm)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Positioning -->
+  <div class="mt-8 bg-slate-900 text-white rounded-2xl p-8 md:p-10 text-center">
+    <p class="text-xs uppercase tracking-widest text-green-300 font-semibold">4.4 Thông điệp bán hàng (Positioning)</p>
+    <p class="mt-4 text-xl md:text-2xl font-semibold italic leading-relaxed max-w-4xl mx-auto">"Không chỉ thay thế FoxPro — mà xây nền tảng Tài chính Tập đoàn, giải quyết bài toán hợp nhất 60+ đơn vị và giao dịch liên công ty của chuỗi 3F, làm nền móng cho chuyển đổi số toàn diện."</p>
+  </div>
+</section>
+
+<!-- 5. NEXT STEPS -->
+<section id="nextsteps" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3"><span class="w-9 h-9 rounded-lg bg-green-700 text-white flex items-center justify-center text-base">5</span> Next Steps đề xuất</h2>
+  <div class="mt-6 space-y-3">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex gap-4"><div class="w-10 h-10 shrink-0 rounded-full bg-green-700 text-white font-bold flex items-center justify-center">1</div><div><p class="font-bold">Xác nhận nhu cầu & động lực</p><p class="text-sm text-slate-600 mt-1">Với Ban Tài chính Kế toán + Ban Tổng Giám đốc: phạm vi ưu tiên (chỉ FI/CO hay cả logistics/sản xuất), số đơn vị đưa lên hệ thống, ngân sách dự kiến, mốc thời gian.</p></div></div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex gap-4"><div class="w-10 h-10 shrink-0 rounded-full bg-green-700 text-white font-bold flex items-center justify-center">2</div><div><p class="font-bold">Khảo sát hiện trạng các đơn vị</p><p class="text-sm text-slate-600 mt-1">Đặc biệt nhóm nhà máy Feed + trại Farm: quy trình kế toán, cách hạch toán nội bộ, số lượng chứng từ, hệ thống phụ trợ (kho, bán hàng).</p></div></div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex gap-4"><div class="w-10 h-10 shrink-0 rounded-full bg-green-700 text-white font-bold flex items-center justify-center">3</div><div><p class="font-bold">Demo S/4HANA Finance + Group Reporting</p><p class="text-sm text-slate-600 mt-1">Cho Ban Lãnh đạo — nhấn mạnh hợp nhất thời gian thực & inter-company.</p></div></div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex gap-4"><div class="w-10 h-10 shrink-0 rounded-full bg-green-700 text-white font-bold flex items-center justify-center">4</div><div><p class="font-bold">Dự thảo scope + ngân sách sơ bộ</p><p class="text-sm text-slate-600 mt-1">Phân kỳ 3 giai đoạn → chốt hướng trước, chốt giá sau.</p></div></div>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex gap-4"><div class="w-10 h-10 shrink-0 rounded-full bg-green-700 text-white font-bold flex items-center justify-center">5</div><div><p class="font-bold">Kích hoạt skill tương ứng sau khi chốt nhu cầu</p><div class="flex flex-wrap gap-2 mt-2"><code class="text-xs bg-slate-100 px-2 py-1 rounded">sap-rfp-writer</code><code class="text-xs bg-slate-100 px-2 py-1 rounded">sap-email-assistant</code><code class="text-xs bg-slate-100 px-2 py-1 rounded">sap-quote-builder</code></div></div></div>
+  </div>
+</section>
+
+<!-- NGUỒN -->
+<section class="fade-in">
+  <h2 class="text-xl font-extrabold text-slate-700">Nguồn tham khảo</h2>
+  <ul class="mt-4 grid md:grid-cols-2 gap-2 text-sm">
+    <li class="bg-white border border-slate-200 rounded-xl p-3"><a class="text-green-700 font-semibold hover:underline" href="https://www.dabaco.com.vn" target="_blank">Profile DABACO.pdf</a> — Hồ sơ năng lực Tập đoàn (67 trang), nguồn chính về lịch sử, lĩnh vực, cơ cấu</li>
+    <li class="bg-white border border-slate-200 rounded-xl p-3"><a class="text-green-700 font-semibold hover:underline" href="https://finance.vietstock.vn/DBC-ctcp-tap-doan-dabaco-viet-nam.htm" target="_blank">VietstockFinance — DBC</a> — Thông tin niêm yết, ngành, giá cổ phiếu</li>
+    <li class="bg-white border border-slate-200 rounded-xl p-3"><a class="text-green-700 font-semibold hover:underline" href="https://cafef.vn/du-lieu/dbc/cong-ty-con.chn" target="_blank">CafeF — Công ty con DBC</a> — Chỉ số tài chính (VCSH, tổng tài sản)</li>
+    <li class="bg-white border border-slate-200 rounded-xl p-3"><a class="text-green-700 font-semibold hover:underline" href="https://www.tinnhanhchungkhoan.vn/dabaco-dbc-giai-trinh-loi-nhuan-sau-thue-quy-iii2024-tang-dot-bien-post355944.html" target="_blank">Dabaco giải trình LNST quý III/2024</a> — DTT 3.678 tỷ Q3/2024, KH 2024</li>
+    <li class="bg-white border border-slate-200 rounded-xl p-3"><a class="text-green-700 font-semibold hover:underline" href="https://tapchicongthuong.vn/cac-mang-kinh-doanh-cot-loi-tang-toc--tap-doan-dabaco--dbc--bao-lai-quy-2-tang-3-5-lan-163184.htm" target="_blank">Dabaco báo lãi quý 2 tăng 3,5 lần</a> — 6T/2025 DTT 7.400 tỷ, lãi ròng 1.015 tỷ</li>
+    <li class="bg-white border border-slate-200 rounded-xl p-3"><a class="text-green-700 font-semibold hover:underline" href="https://thitruongtaichinhtiente.vn/dabaco-thoat-lo-quy-iv-ca-nam-2023-lai-25-ty-dong-55856.html" target="_blank">Dabaco thoát lỗ quý IV, cả năm 2023 lãi 25 tỷ</a> — KQKD 2023</li>
+    <li class="bg-white border border-slate-200 rounded-xl p-3"><a class="text-green-700 font-semibold hover:underline" href="https://www.dnse.com.vn/senses/tin-tuc/dabaco-dbc-bao-lai-dot-bien-hon-1000-ty-dong-gap-5-lan-cung-ky-nam-2025-35101446" target="_blank">Dabaco báo lãi đột biến hơn 1.000 tỷ H1/2025</a> — LNST 6T/2025</li>
+    <li class="bg-white border border-slate-200 rounded-xl p-3"><a class="text-green-700 font-semibold hover:underline" href="https://etime.danviet.vn/vi-dau-doanh-thu-vuot-4200-ty-dabaco-van-hut-43-loi-nhuan-d1447543.html" target="_blank">Doanh thu vượt 4.200 tỷ, Dabaco vẫn hụt 43% lợi nhuận</a> — KQKD Q2/2026, biên gộp thu hẹp</li>
+  </ul>
+</section>
+</main>
+
+<footer class="bg-slate-900 text-slate-400 text-sm">
+  <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between gap-2">
+    <p>© 2026 BCIS – FPT IS · Tài liệu tư vấn nội bộ — Richard Vu</p>
+    <p>Đối tượng: Tập đoàn DABACO Việt Nam (DBC) · Cập nhật 14/09/2026</p>
+  </div>
+</footer>
+
+<script>
+  Chart.defaults.font.family = 'Inter, sans-serif';
+  Chart.defaults.font.size = 11;
+
+  // Doanh thu
+  new Chart(document.getElementById('chartRevenue'), {
+    type: 'bar',
+    data: {
+      labels: ['2023', '2024', '2025 (KH)'],
+      datasets: [
+        { label: 'Doanh thu gồm nội bộ', data: [24562, 25380, 28759], backgroundColor: '#15803d', borderRadius: 6 },
+        { label: 'Doanh thu thuần', data: [null, 13501, null], backgroundColor: '#86efac', borderRadius: 6 }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { title: { display: true, text: 'Doanh thu (tỷ đồng)' }, legend: { position: 'bottom' } },
+      scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString('vi-VN') } } } }
+  });
+
+  // Lợi nhuận
+  new Chart(document.getElementById('chartProfit'), {
+    type: 'line',
+    data: {
+      labels: ['2023', '2024', 'H1/2025', '6T/2026'],
+      datasets: [{ label: 'LNST (tỷ đồng)', data: [25, 730, 1015, 663], borderColor: '#d97706', backgroundColor: 'rgba(217,119,6,.15)', fill: true, tension: .35, pointRadius: 5, pointBackgroundColor: '#d97706' }]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { title: { display: true, text: 'Lợi nhuận sau thuế — biến động mạnh' }, legend: { display: false } },
+      scales: { y: { beginAtZero: true } } }
+  });
+
+  // Intercompany doughnut
+  new Chart(document.getElementById('chartIntercompany'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Doanh thu thuần (loại nội bộ) ~13.5k tỷ', 'Giao dịch liên đơn vị ~12k tỷ'],
+      datasets: [{ data: [13501, 25380 - 13501], backgroundColor: ['#15803d', '#fbbf24'], borderWidth: 2 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '60%',
+      plugins: { title: { display: true, text: 'Cấu trúc doanh thu 2024 (ước)' }, legend: { position: 'bottom' } } }
+  });
+</script>
+<script>window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});
+</script></body>
+</html>
