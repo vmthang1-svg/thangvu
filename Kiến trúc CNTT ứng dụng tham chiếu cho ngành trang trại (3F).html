@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiến trúc CNTT ứng dụng cho ngành Trang trại – Chăn nuôi tích hợp (3F)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  html { scroll-behavior: smooth; }
+  .fade-in { animation: fadeIn .6s ease both; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px);} to { opacity:1; transform:none;} }
+  .chip { display:inline-block; font-size:.7rem; font-weight:600; padding:.15rem .5rem; border-radius:.375rem; }
+  .arrow-down { width:0; height:0; border-left:14px solid transparent; border-right:14px solid transparent; border-top:14px solid #94a3b8; margin:0 auto; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-emerald-700 text-white font-extrabold flex items-center justify-center">🐖</div>
+      <div>
+        <p class="font-bold leading-tight">Kiến trúc CNTT Ứng dụng — Ngành Trang trại</p>
+        <p class="text-xs text-slate-500">Reference Architecture · Chăn nuôi tích hợp Feed – Farm – Food</p>
+      </div>
+    </div>
+    <div class="hidden md:flex gap-5 text-sm font-medium text-slate-600">
+      <a href="#context" class="hover:text-emerald-700">Bối cảnh</a>
+      <a href="#layers" class="hover:text-emerald-700">Sơ đồ phân lớp</a>
+      <a href="#appmap" class="hover:text-emerald-700">Bản đồ ứng dụng 3F</a>
+      <a href="#flow" class="hover:text-emerald-700">Luồng dữ liệu</a>
+      <a href="#integration" class="hover:text-emerald-700">Tích hợp</a>
+      <a href="#principles" class="hover:text-emerald-700">Nguyên tắc</a>
+      <a href="#roadmap" class="hover:text-emerald-700">Roadmap</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="bg-gradient-to-br from-emerald-900 via-emerald-700 to-lime-600 text-white">
+  <div class="max-w-7xl mx-auto px-4 py-14 fade-in">
+    <p class="uppercase tracking-widest text-xs font-semibold text-emerald-200 mb-3">Ví dụ minh họa · Reference Architecture</p>
+    <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">Kiến trúc CNTT ứng dụng<br><span class="text-lime-200">cho ngành Trang trại – Chăn nuôi tích hợp</span></h1>
+    <p class="mt-4 text-lg text-emerald-50 max-w-3xl">Mô hình 6 lớp: từ cảm biến trong chuồng trại đến báo cáo hợp nhất tập đoàn. Xây dựng trên nguyên tắc <strong>"1 ERP Core – nhiều hệ thống chuyên ngành vệ tinh – 1 nền tảng dữ liệu"</strong>.</p>
+    <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white/10 rounded-2xl p-4 border border-white/20"><p class="text-3xl font-extrabold">6</p><p class="text-sm text-emerald-100">lớp kiến trúc</p></div>
+      <div class="bg-white/10 rounded-2xl p-4 border border-white/20"><p class="text-3xl font-extrabold">3F</p><p class="text-sm text-emerald-100">Feed · Farm · Food</p></div>
+      <div class="bg-white/10 rounded-2xl p-4 border border-white/20"><p class="text-3xl font-extrabold">1</p><p class="text-sm text-emerald-100">ERP Core (SAP S/4HANA)</p></div>
+      <div class="bg-white/10 rounded-2xl p-4 border border-white/20"><p class="text-3xl font-extrabold">1</p><p class="text-sm text-emerald-100">Data Platform hợp nhất</p></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-12 space-y-16">
+
+<!-- BỐI CẢNH -->
+<section id="context" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold">Đặc thù ngành trang trại ảnh hưởng đến kiến trúc</h2>
+  <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="text-3xl">🧬</p><p class="font-bold mt-2">Tài sản sinh học</p><p class="text-sm text-slate-600 mt-1">Heo, gà là "hàng tồn kho sống": tăng trọng, hao hụt, chuyển đàn theo ngày → cần định giá & hạch toán động, khác hoàn toàn kho hàng thường.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="text-3xl">🏭</p><p class="font-bold mt-2">Đa địa điểm, đa pháp nhân</p><p class="text-sm text-slate-600 mt-1">Hàng chục nhà máy, trại, công ty con phân tán; giao dịch nội bộ Feed→Farm→Food chiếm tới ~50% doanh thu.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="text-3xl">🦠</p><p class="font-bold mt-2">An toàn sinh học & truy xuất</p><p class="text-sm text-slate-600 mt-1">Dịch bệnh (ASF, cúm gia cầm) và yêu cầu GMP/HACCP/ISO 22000 → truy xuất lô từ nguyên liệu đến bàn ăn.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="text-3xl">📉</p><p class="font-bold mt-2">Biến động giá mạnh</p><p class="text-sm text-slate-600 mt-1">Giá heo hơi, ngô, đậu tương dao động ±20% → cần giá thành & biên lợi nhuận theo thời gian thực để ra quyết định.</p></div>
+  </div>
+</section>
+
+<!-- SƠ ĐỒ PHÂN LỚP -->
+<section id="layers" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold">Sơ đồ kiến trúc phân lớp (Layered Architecture)</h2>
+  <p class="text-slate-600 mt-2">Đọc từ trên xuống: người dùng → ứng dụng → tích hợp → dữ liệu → IoT/hiện trường → hạ tầng.</p>
+
+  <div class="mt-6 space-y-2">
+
+    <!-- L1 -->
+    <div class="bg-white rounded-2xl border-l-8 border-violet-500 border border-slate-200 p-5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="font-bold text-violet-700">LỚP 1 · Kênh tương tác & Trải nghiệm (Presentation / Channels)</h3>
+        <span class="chip bg-violet-100 text-violet-700">Người dùng: Ban lãnh đạo · Kế toán · Quản lý trại · Công nhân · Đại lý · Nhà cung cấp</span>
+      </div>
+      <div class="mt-3 grid sm:grid-cols-2 lg:grid-cols-5 gap-2 text-sm">
+        <div class="bg-violet-50 rounded-xl p-3">📊 <strong>Executive Dashboard</strong><br><span class="text-xs text-slate-600">SAP Analytics Cloud / Power BI</span></div>
+        <div class="bg-violet-50 rounded-xl p-3">💻 <strong>SAP Fiori Web</strong><br><span class="text-xs text-slate-600">Kế toán, mua hàng, kế hoạch</span></div>
+        <div class="bg-violet-50 rounded-xl p-3">📱 <strong>Mobile App trại</strong><br><span class="text-xs text-slate-600">Ghi nhận cân, tiêm, chết, chuyển đàn – offline-first</span></div>
+        <div class="bg-violet-50 rounded-xl p-3">🛒 <strong>Cổng đại lý / B2B Portal</strong><br><span class="text-xs text-slate-600">Đặt hàng TACN, tra cứu công nợ</span></div>
+        <div class="bg-violet-50 rounded-xl p-3">🤝 <strong>Cổng nhà cung cấp</strong><br><span class="text-xs text-slate-600">Ngô, đậu tương, thuốc thú y</span></div>
+      </div>
+    </div>
+    <div class="arrow-down"></div>
+
+    <!-- L2 -->
+    <div class="bg-white rounded-2xl border-l-8 border-blue-600 border border-slate-200 p-5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="font-bold text-blue-700">LỚP 2 · Ứng dụng nghiệp vụ (Business Applications)</h3>
+        <span class="chip bg-blue-100 text-blue-700">Trái tim: ERP Core dùng chung toàn tập đoàn</span>
+      </div>
+      <div class="mt-3 grid lg:grid-cols-3 gap-3">
+        <!-- ERP core -->
+        <div class="lg:col-span-1 rounded-xl border-2 border-blue-600 bg-blue-50 p-4">
+          <p class="font-bold text-blue-800">🏛️ ERP CORE — SAP S/4HANA</p>
+          <p class="text-xs text-slate-600 mb-2">Single source of truth cho tài chính & chuỗi cung ứng</p>
+          <div class="flex flex-wrap gap-1">
+            <span class="chip bg-white text-blue-800 border border-blue-200">FI Kế toán</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">CO Giá thành</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">Group Reporting</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">Inter-company</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">Treasury/Cash</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">MM Mua hàng–Kho</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">SD Bán hàng</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">PP Sản xuất</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">QM Chất lượng</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">PM Bảo trì</span>
+            <span class="chip bg-white text-blue-800 border border-blue-200">Batch/Lô</span>
+          </div>
+        </div>
+        <!-- Chuyên ngành -->
+        <div class="lg:col-span-2 grid sm:grid-cols-3 gap-3">
+          <div class="rounded-xl border border-amber-300 bg-amber-50 p-3">
+            <p class="font-bold text-amber-700 text-sm">🌾 FEED — Nhà máy TACN</p>
+            <ul class="text-xs text-slate-700 mt-1 space-y-0.5 list-disc pl-4">
+              <li><strong>MES nhà máy</strong>: phối trộn, cân định lượng, ép viên</li>
+              <li><strong>Formulation</strong>: tối ưu công thức theo giá nguyên liệu</li>
+              <li>Cân điện tử xe tải, QC phòng lab (NIR)</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-emerald-300 bg-emerald-50 p-3">
+            <p class="font-bold text-emerald-700 text-sm">🐔 FARM — Trang trại</p>
+            <ul class="text-xs text-slate-700 mt-1 space-y-0.5 list-disc pl-4">
+              <li><strong>Farm Management System (FMS)</strong>: quản lý đàn, phả hệ, nái/lứa, FCR, ADG</li>
+              <li><strong>Thú y & an toàn sinh học</strong>: lịch tiêm, thuốc, kiểm dịch</li>
+              <li>Điều khiển môi trường chuồng, cho ăn tự động</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-rose-300 bg-rose-50 p-3">
+            <p class="font-bold text-rose-700 text-sm">🥫 FOOD — Giết mổ & Chế biến</p>
+            <ul class="text-xs text-slate-700 mt-1 space-y-0.5 list-disc pl-4">
+              <li><strong>MES giết mổ</strong>: cân móc hàm, phân loại thịt, yield</li>
+              <li><strong>Truy xuất nguồn gốc</strong> (QR/Blockchain tùy chọn)</li>
+              <li><strong>Kho lạnh / WMS</strong>: FEFO, nhiệt độ chuỗi lạnh</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-slate-300 bg-slate-50 p-3 sm:col-span-3 grid sm:grid-cols-4 gap-2 text-xs">
+            <div>🧑‍💼 <strong>HRM / Payroll</strong><br><span class="text-slate-600">~7.000 lao động, chấm công trại</span></div>
+            <div>🚚 <strong>DMS / CRM</strong><br><span class="text-slate-600">3.000+ đại lý, tuyến bán, chiết khấu</span></div>
+            <div>🧾 <strong>Hóa đơn điện tử & Thuế</strong><br><span class="text-slate-600">Kết nối TCT, chữ ký số</span></div>
+            <div>🏦 <strong>Bank Connectivity</strong><br><span class="text-slate-600">Host-to-host, đối soát tự động</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="arrow-down"></div>
+
+    <!-- L3 -->
+    <div class="bg-white rounded-2xl border-l-8 border-orange-500 border border-slate-200 p-5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="font-bold text-orange-700">LỚP 3 · Tích hợp & Dịch vụ (Integration / API)</h3>
+        <span class="chip bg-orange-100 text-orange-700">Nguyên tắc: không tích hợp point-to-point</span>
+      </div>
+      <div class="mt-3 grid sm:grid-cols-2 lg:grid-cols-4 gap-2 text-sm">
+        <div class="bg-orange-50 rounded-xl p-3">🔀 <strong>Integration Platform (iPaaS)</strong><br><span class="text-xs text-slate-600">SAP Integration Suite / ESB — điều phối luồng FMS ↔ ERP ↔ MES</span></div>
+        <div class="bg-orange-50 rounded-xl p-3">🔌 <strong>API Gateway</strong><br><span class="text-xs text-slate-600">REST/OData, bảo mật OAuth2, giới hạn truy cập cho đại lý/NCC</span></div>
+        <div class="bg-orange-50 rounded-xl p-3">📨 <strong>Event Streaming</strong><br><span class="text-xs text-slate-600">Kafka/Event Mesh — sự kiện cân, xuất chuồng, nhập kho theo thời gian thực</span></div>
+        <div class="bg-orange-50 rounded-xl p-3">🤖 <strong>Workflow & RPA</strong><br><span class="text-xs text-slate-600">Phê duyệt mua hàng, đối soát công nợ, robot nhập hóa đơn</span></div>
+      </div>
+    </div>
+    <div class="arrow-down"></div>
+
+    <!-- L4 -->
+    <div class="bg-white rounded-2xl border-l-8 border-teal-500 border border-slate-200 p-5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="font-bold text-teal-700">LỚP 4 · Dữ liệu & Phân tích (Data & Analytics)</h3>
+        <span class="chip bg-teal-100 text-teal-700">Master Data là nền tảng của hợp nhất</span>
+      </div>
+      <div class="mt-3 grid sm:grid-cols-2 lg:grid-cols-4 gap-2 text-sm">
+        <div class="bg-teal-50 rounded-xl p-3">🗂️ <strong>Master Data Management</strong><br><span class="text-xs text-slate-600">Danh mục vật tư, đối tác, trại/chuồng, hệ thống TK, cost center theo 3F — dùng chung 60+ đơn vị</span></div>
+        <div class="bg-teal-50 rounded-xl p-3">🏗️ <strong>Data Warehouse / Lakehouse</strong><br><span class="text-xs text-slate-600">SAP Datasphere / BW — gom ERP, FMS, MES, IoT</span></div>
+        <div class="bg-teal-50 rounded-xl p-3">📈 <strong>BI & Planning</strong><br><span class="text-xs text-slate-600">SAC / Power BI; IBP lập kế hoạch cung–cầu, giá thành dự báo</span></div>
+        <div class="bg-teal-50 rounded-xl p-3">🧠 <strong>AI / ML</strong><br><span class="text-xs text-slate-600">Dự báo giá heo, phát hiện bệnh sớm qua camera/âm thanh, tối ưu công thức TACN</span></div>
+      </div>
+    </div>
+    <div class="arrow-down"></div>
+
+    <!-- L5 -->
+    <div class="bg-white rounded-2xl border-l-8 border-lime-600 border border-slate-200 p-5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="font-bold text-lime-700">LỚP 5 · IoT & Hiện trường (Edge / OT)</h3>
+        <span class="chip bg-lime-100 text-lime-700">Nơi dữ liệu sinh ra — trong chuồng, trong nhà máy</span>
+      </div>
+      <div class="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+        <div class="bg-lime-50 rounded-xl p-3">🌡️ <strong>Cảm biến môi trường</strong><br><span class="text-slate-600">Nhiệt độ, ẩm, NH₃, CO₂</span></div>
+        <div class="bg-lime-50 rounded-xl p-3">⚖️ <strong>Cân tự động</strong><br><span class="text-slate-600">Cân heo, cân xe, cân silo</span></div>
+        <div class="bg-lime-50 rounded-xl p-3">🏷️ <strong>RFID / Tai đeo</strong><br><span class="text-slate-600">Định danh cá thể nái, lô gà</span></div>
+        <div class="bg-lime-50 rounded-xl p-3">🍽️ <strong>Máy cho ăn/uống</strong><br><span class="text-slate-600">Đo lượng ăn thực → FCR</span></div>
+        <div class="bg-lime-50 rounded-xl p-3">📷 <strong>Camera AI</strong><br><span class="text-slate-600">Đếm đầu, ước trọng, hành vi bệnh</span></div>
+        <div class="bg-lime-50 rounded-xl p-3">⚙️ <strong>PLC / SCADA nhà máy</strong><br><span class="text-slate-600">Dây chuyền TACN, giết mổ, kho lạnh</span></div>
+      </div>
+      <p class="mt-2 text-xs text-slate-500">→ Edge Gateway gom dữ liệu, xử lý tại chỗ (mất mạng vẫn hoạt động), đẩy lên IoT Platform qua MQTT.</p>
+    </div>
+    <div class="arrow-down"></div>
+
+    <!-- L6 -->
+    <div class="bg-white rounded-2xl border-l-8 border-slate-600 border border-slate-200 p-5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="font-bold text-slate-700">LỚP 6 · Hạ tầng, Bảo mật & Vận hành (Infrastructure & Security)</h3>
+        <span class="chip bg-slate-200 text-slate-700">Xuyên suốt tất cả các lớp</span>
+      </div>
+      <div class="mt-3 grid sm:grid-cols-2 lg:grid-cols-5 gap-2 text-sm">
+        <div class="bg-slate-100 rounded-xl p-3">☁️ <strong>Hybrid Cloud</strong><br><span class="text-xs text-slate-600">ERP trên Private Cloud (RISE); Edge tại trại/nhà máy</span></div>
+        <div class="bg-slate-100 rounded-xl p-3">🌐 <strong>Mạng WAN/SD-WAN + 4G/5G</strong><br><span class="text-xs text-slate-600">Trại vùng xa — cần dự phòng đường truyền</span></div>
+        <div class="bg-slate-100 rounded-xl p-3">🔐 <strong>Bảo mật</strong><br><span class="text-xs text-slate-600">IAM/SSO, phân quyền theo pháp nhân, Zero-trust, tách mạng OT/IT</span></div>
+        <div class="bg-slate-100 rounded-xl p-3">💾 <strong>Backup / DR</strong><br><span class="text-xs text-slate-600">RPO/RTO cho hệ thống kế toán & FMS</span></div>
+        <div class="bg-slate-100 rounded-xl p-3">🛠️ <strong>Giám sát & ITSM</strong><br><span class="text-xs text-slate-600">Monitoring, helpdesk, quản lý thay đổi</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BẢN ĐỒ ỨNG DỤNG 3F -->
+<section id="appmap" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold">Bản đồ ứng dụng theo chuỗi giá trị 3F</h2>
+  <p class="text-slate-600 mt-2">Mỗi mắt xích có hệ thống chuyên ngành riêng, nhưng <strong>mọi giao dịch tiền – hàng – giá thành đều chảy về ERP Core</strong>.</p>
+  <div class="mt-6 bg-white rounded-2xl border border-slate-200 overflow-x-auto">
+    <table class="w-full text-sm min-w-max">
+      <thead class="bg-slate-50 text-xs uppercase text-slate-500">
+        <tr><th class="px-4 py-3 text-left">Lớp / Mắt xích</th><th class="px-4 py-3 text-left text-amber-700">🌾 Feed – Nhà máy TACN</th><th class="px-4 py-3 text-left text-emerald-700">🐔 Farm – Trang trại</th><th class="px-4 py-3 text-left text-rose-700">🥫 Food – Chế biến</th><th class="px-4 py-3 text-left text-sky-700">🚚 Phân phối</th></tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="px-4 py-3 font-semibold">Hệ thống chuyên ngành</td><td class="px-4 py-3">MES, Formulation, Lab QC</td><td class="px-4 py-3">Farm Management System, Thú y, Điều khiển chuồng</td><td class="px-4 py-3">MES giết mổ, WMS kho lạnh, Truy xuất</td><td class="px-4 py-3">DMS, CRM, B2B Portal, TMS</td></tr>
+        <tr><td class="px-4 py-3 font-semibold">Module ERP chính</td><td class="px-4 py-3">MM · PP · QM · CO-PC</td><td class="px-4 py-3">MM · PP (lứa/đàn = lệnh SX) · CO · Tài sản sinh học</td><td class="px-4 py-3">PP · QM · Batch · EWM · CO-PC</td><td class="px-4 py-3">SD · Pricing · AR · Credit Mgmt</td></tr>
+        <tr><td class="px-4 py-3 font-semibold">Dữ liệu IoT chính</td><td class="px-4 py-3">Cân silo, PLC dây chuyền, độ ẩm nguyên liệu</td><td class="px-4 py-3">Nhiệt/ẩm/khí, cân heo, lượng ăn, camera</td><td class="px-4 py-3">Cân móc hàm, nhiệt độ kho lạnh</td><td class="px-4 py-3">GPS xe, nhiệt độ thùng lạnh</td></tr>
+        <tr><td class="px-4 py-3 font-semibold">KPI theo dõi</td><td class="px-4 py-3">Giá thành/tấn, yield, chi phí nguyên liệu</td><td class="px-4 py-3">FCR, ADG, tỷ lệ chết, số con/nái/năm</td><td class="px-4 py-3">Yield thịt xẻ, hao hụt, lô đạt chuẩn</td><td class="px-4 py-3">DSO, fill-rate, doanh thu/đại lý</td></tr>
+        <tr class="bg-blue-50/60"><td class="px-4 py-3 font-semibold text-blue-800">Giao dịch nội bộ</td><td class="px-4 py-3" colspan="4">TACN bán cho trại → heo/gà bán cho nhà máy giết mổ → thịt bán cho công ty phân phối. <strong>ERP tự sinh bút toán liên công ty 2 chiều, giá chuyển nội bộ, loại trừ khi hợp nhất.</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- LUỒNG DỮ LIỆU -->
+<section id="flow" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold">Ví dụ luồng dữ liệu end-to-end: "Một lứa heo"</h2>
+  <p class="text-slate-600 mt-2">Minh họa cách dữ liệu đi xuyên qua các lớp — từ cảm biến đến báo cáo hợp nhất.</p>
+  <div class="mt-6 grid md:grid-cols-3 lg:grid-cols-6 gap-3">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-lime-700">① IoT / Edge</p><p class="text-sm mt-1">Cân tự động ghi trọng lượng 2.000 heo; máy cho ăn ghi 12 tấn TACN tiêu thụ trong tuần.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-emerald-700">② FMS</p><p class="text-sm mt-1">Tính FCR = 2,6; ADG 780 g/ngày; cảnh báo chuồng 3 có tỷ lệ chết vượt ngưỡng.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-orange-700">③ Integration</p><p class="text-sm mt-1">Sự kiện "tiêu thụ TACN" & "tăng trọng" đẩy sang ERP theo lịch hàng ngày qua iPaaS.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-blue-700">④ ERP Core</p><p class="text-sm mt-1">MM xuất kho TACN → CO phân bổ chi phí vào lệnh SX "Lứa H-2026-07" → giá thành/kg heo hơi cập nhật.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-blue-700">⑤ Bán nội bộ</p><p class="text-sm mt-1">Xuất chuồng bán cho Cty giết mổ → SD tạo hóa đơn, tự sinh bút toán AP bên mua, đánh dấu loại trừ hợp nhất.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs font-bold text-teal-700">⑥ Analytics</p><p class="text-sm mt-1">Dashboard CFO: biên lợi nhuận theo mắt xích Farm, so sánh giá thành vs giá heo hơi thị trường theo ngày.</p></div>
+  </div>
+  <div class="mt-4 bg-emerald-50 border-l-4 border-emerald-600 rounded-xl p-4 text-sm text-slate-700">
+    💡 <strong>Điểm mấu chốt:</strong> Trước đây với FoxPro + Excel, chuỗi này cần 15+ ngày cuối tháng để ghép số. Với kiến trúc trên, giá thành lứa heo và lợi nhuận nội bộ hiện ra <strong>theo ngày</strong>, cho phép quyết định giữ/bán đàn khi giá thị trường biến động.
+  </div>
+</section>
+
+<!-- TÍCH HỢP -->
+<section id="integration" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold">Mô hình tích hợp: Hub-and-Spoke quanh ERP</h2>
+  <div class="mt-6 grid lg:grid-cols-2 gap-6">
+    <div class="bg-white rounded-2xl border border-slate-200 p-6">
+      <div class="relative flex items-center justify-center py-6">
+        <div class="grid grid-cols-3 gap-6 text-center text-xs font-semibold w-full">
+          <div class="bg-emerald-100 text-emerald-800 rounded-xl p-3">FMS<br>Trang trại</div>
+          <div class="bg-amber-100 text-amber-800 rounded-xl p-3">MES<br>Nhà máy TACN</div>
+          <div class="bg-rose-100 text-rose-800 rounded-xl p-3">MES<br>Giết mổ</div>
+          <div class="bg-sky-100 text-sky-800 rounded-xl p-3">DMS / CRM</div>
+          <div class="bg-blue-700 text-white rounded-2xl p-4 text-sm shadow-lg ring-4 ring-orange-300">🔀 iPaaS<br>⬇<br>🏛️ SAP S/4HANA</div>
+          <div class="bg-lime-100 text-lime-800 rounded-xl p-3">IoT Platform</div>
+          <div class="bg-slate-200 text-slate-800 rounded-xl p-3">HRM</div>
+          <div class="bg-slate-200 text-slate-800 rounded-xl p-3">Hóa đơn ĐT<br>Ngân hàng</div>
+          <div class="bg-teal-100 text-teal-800 rounded-xl p-3">Data Platform<br>BI</div>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 text-center">Mọi hệ thống vệ tinh kết nối qua lớp tích hợp — không nối trực tiếp với nhau.</p>
+    </div>
+    <div class="space-y-3 text-sm">
+      <div class="bg-white rounded-xl border border-slate-200 p-4"><p class="font-bold">Kiểu tích hợp theo nhu cầu</p>
+        <table class="w-full mt-2 text-xs"><tbody class="divide-y divide-slate-100">
+          <tr><td class="py-1.5 font-semibold w-40">Real-time (API/Event)</td><td>Xuất chuồng, nhập kho, đơn hàng đại lý, cảnh báo dịch bệnh</td></tr>
+          <tr><td class="py-1.5 font-semibold">Batch theo ngày</td><td>Tiêu thụ TACN, tăng trọng, chấm công, giá thành</td></tr>
+          <tr><td class="py-1.5 font-semibold">Batch theo tháng</td><td>Khấu hao, phân bổ chi phí chung, hợp nhất</td></tr>
+          <tr><td class="py-1.5 font-semibold">File/EDI</td><td>Sổ phụ ngân hàng, hóa đơn NCC lớn</td></tr>
+        </tbody></table>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 p-4"><p class="font-bold">Ranh giới "ai làm gì" (System of Record)</p>
+        <ul class="mt-2 space-y-1 text-xs list-disc pl-4 text-slate-700">
+          <li><strong>ERP</strong>: sổ cái, tồn kho giá trị, giá thành, hợp nhất, đơn hàng/hóa đơn</li>
+          <li><strong>FMS</strong>: dữ liệu kỹ thuật đàn (phả hệ, tiêm, cân từng cá thể) — chỉ đẩy tổng hợp sang ERP</li>
+          <li><strong>MES</strong>: dữ liệu vận hành dây chuyền theo giây/phút — đẩy kết quả lô sang ERP</li>
+          <li><strong>Data Platform</strong>: nơi duy nhất để phân tích chéo hệ thống, không phải nơi hạch toán</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NGUYÊN TẮC -->
+<section id="principles" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold">Nguyên tắc kiến trúc (Architecture Principles)</h2>
+  <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="font-bold text-emerald-700">1. Một ERP Core, một bộ Master Data</p><p class="text-slate-600 mt-1">Toàn bộ 60+ đơn vị dùng chung hệ thống tài khoản, danh mục vật tư, cấu trúc cost center theo 3F. Không có "ERP riêng" cho từng công ty con.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="font-bold text-emerald-700">2. Fit-to-Standard trước, Custom sau</p><p class="text-slate-600 mt-1">Dùng quy trình chuẩn SAP cho tài chính/mua bán; chỉ tùy biến ở đặc thù ngành (tài sản sinh học, lứa/đàn).</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="font-bold text-emerald-700">3. Best-of-breed cho chuyên ngành</p><p class="text-slate-600 mt-1">FMS, MES, Formulation chọn giải pháp chuyên sâu; ERP không cố "làm mọi thứ".</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="font-bold text-emerald-700">4. Offline-first ở hiện trường</p><p class="text-slate-600 mt-1">Trại vùng xa mất mạng vẫn ghi nhận được; đồng bộ khi có kết nối. Edge xử lý cảnh báo tại chỗ.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="font-bold text-emerald-700">5. Tách biệt IT và OT</p><p class="text-slate-600 mt-1">Mạng điều khiển chuồng/nhà máy tách khỏi mạng văn phòng; đi qua gateway có kiểm soát để tránh lây nhiễm an ninh.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-5"><p class="font-bold text-emerald-700">6. Truy xuất theo lô xuyên suốt</p><p class="text-slate-600 mt-1">Mã lô nguyên liệu → lô TACN → lứa heo → lô thịt → đơn hàng; một mã quét là ra toàn chuỗi.</p></div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" class="fade-in">
+  <h2 class="text-2xl md:text-3xl font-extrabold">Lộ trình hiện thực hóa (gợi ý)</h2>
+  <div class="mt-6 grid md:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl border-t-4 border-blue-700 border border-slate-200 p-5"><p class="text-xs font-bold text-slate-500">GIAI ĐOẠN 1 · 0–12 tháng</p><p class="font-bold mt-1">Nền tảng Tài chính</p><ul class="text-sm text-slate-600 mt-2 list-disc pl-4 space-y-1"><li>S/4HANA FI/CO, Group Reporting, Inter-company</li><li>Master Data & hệ thống tài khoản theo 3F</li><li>Hóa đơn điện tử, ngân hàng</li><li>Thay thế hoàn toàn FoxPro</li></ul></div>
+    <div class="bg-white rounded-2xl border-t-4 border-orange-500 border border-slate-200 p-5"><p class="text-xs font-bold text-slate-500">GIAI ĐOẠN 2 · 12–20 tháng</p><p class="font-bold mt-1">Chuỗi cung ứng</p><ul class="text-sm text-slate-600 mt-2 list-disc pl-4 space-y-1"><li>MM/SD, tồn kho đa nhà máy</li><li>DMS/B2B Portal cho 3.000 đại lý</li><li>iPaaS + API Gateway</li><li>Tích hợp FMS hiện có vào ERP</li></ul></div>
+    <div class="bg-white rounded-2xl border-t-4 border-emerald-600 border border-slate-200 p-5"><p class="text-xs font-bold text-slate-500">GIAI ĐOẠN 3 · 20–30 tháng</p><p class="font-bold mt-1">Sản xuất & Chất lượng</p><ul class="text-sm text-slate-600 mt-2 list-disc pl-4 space-y-1"><li>PP/QM nhà máy TACN & giết mổ</li><li>MES, truy xuất lô end-to-end</li><li>Giá thành theo lứa/đàn</li><li>Data Platform & BI</li></ul></div>
+    <div class="bg-white rounded-2xl border-t-4 border-lime-600 border border-slate-200 p-5"><p class="text-xs font-bold text-slate-500">GIAI ĐOẠN 4 · 30+ tháng</p><p class="font-bold mt-1">Trang trại thông minh</p><ul class="text-sm text-slate-600 mt-2 list-disc pl-4 space-y-1"><li>IoT Platform, camera AI</li><li>IBP dự báo cung–cầu, giá</li><li>AI cảnh báo dịch bệnh, tối ưu FCR</li><li>Tối ưu công thức TACN theo giá thị trường</li></ul></div>
+  </div>
+  <div class="mt-6 bg-slate-900 text-white rounded-2xl p-8 text-center">
+    <p class="text-xs uppercase tracking-widest text-lime-300 font-semibold">Thông điệp cốt lõi</p>
+    <p class="mt-3 text-xl md:text-2xl font-semibold italic max-w-4xl mx-auto leading-relaxed">"Kiến trúc CNTT cho trang trại không bắt đầu từ cảm biến — mà bắt đầu từ một xương sống tài chính tập đoàn đủ vững để mọi dữ liệu chuồng trại, nhà máy đều quy được về giá thành và lợi nhuận."</p>
+  </div>
+</section>
+</main>
+
+<footer class="bg-slate-900 text-slate-400 text-sm">
+  <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between gap-2">
+    <p>Reference Architecture — Ngành Trang trại / Chăn nuôi tích hợp 3F · Ví dụ minh họa phục vụ tư vấn</p>
+    <p>Case tham chiếu: Tập đoàn DABACO (DBC) · 2026</p>
+  </div>
+</footer>
+<script>window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});
+</script></body>
+</html>
